@@ -209,6 +209,8 @@ export function formatAjvErrors(errors) {
 function shouldSkipDirectory(repoRoot, absolutePath) {
   const relative = relPath(repoRoot, absolutePath);
   if (!relative || relative === ".") return false;
+  const segments = relative.split("/");
+  if (segments.some((segment) => segment === "build" || segment.startsWith(".build-tmp-"))) return true;
   const first = relative.split("/")[0];
   if (ignoredScanRoots.has(first)) return true;
   return ignoredScanPrefixes.some((prefix) => relative === prefix || relative.startsWith(`${prefix}/`));

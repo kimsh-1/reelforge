@@ -28,6 +28,7 @@ import {
   formatSemanticViolations,
   validateSemanticsForWrite
 } from "../src/gates/semantic.mjs";
+import { DEFAULT_PRESET, compileProject } from "../src/compiler/compiler.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repoRealRoot = realpathSync(repoRoot);
@@ -42,6 +43,7 @@ Commands:
   vf gate <id> [--json] [--replay|--execute]
   vf verify-report <report.json>
   vf write <file> --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
+  vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
 `;
@@ -575,12 +577,49 @@ function writeCommand(args) {
   );
 }
 
+function compileCommand(args) {
+  const json = args.includes("--json");
+  const projectDir = args.find((arg, index) => index === 0 && !arg.startsWith("--"));
+  if (!projectDir) throw new Error("vf compile requires <projectDir>");
+
+  const preset = optionValue(args, "--preset") ?? DEFAULT_PRESET;
+  const fpsArg = optionValue(args, "--fps");
+  const fps = fpsArg === null ? undefined : Number(fpsArg);
+  if (fps !== undefined && (!Number.isFinite(fps) || fps <= 0)) {
+    throw new Error("--fps must be a positive number");
+  }
+
+  const result = compileProject({
+    repoRoot,
+    projectDir,
+    presetPath: preset,
+    fps
+  });
+
+  if (json) {
+    console.log(JSON.stringify(result, null, 2));
+    return;
+  }
+
+  console.log(`compile: PASS ${result.buildDir}`);
+  console.log(`frames: ${result.timing.totalFrames} @ ${result.timing.fps}fps`);
+  console.log(`scenes: ${result.scenes.length}`);
+  console.log(`render-lint: hyperframes=${result.renderLint.hyperframesExitCode} custom=${result.renderLint.customViolations}`);
+  if (result.warnings.length > 0) {
+    console.log(`warnings: ${result.warnings.length}`);
+    for (const warning of result.warnings) {
+      console.log(`- ${warning.sceneId ? `${warning.sceneId}: ` : ""}${warning.message}`);
+    }
+  }
+}
+
 try {
   const [command, ...args] = process.argv.slice(2);
   if (!command) usage(0);
   if (command === "gate") gateCommand(args);
   else if (command === "verify-report") verifyReportCommand(args);
   else if (command === "write") writeCommand(args);
+  else if (command === "compile") compileCommand(args);
   else usage(1);
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));

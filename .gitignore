@@ -1,5 +1,7 @@
 node_modules/
 out/
+**/build/
+**/.build-tmp-*/
 reports/*.tmp
 .venv*
 npm-debug.log*
