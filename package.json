@@ -1,8 +1,8 @@
 {
-  "name": "video-factory",
+  "name": "reelforge",
   "version": "0.1.0",
   "private": true,
-  "description": "Deterministic narration video factory built around hyperframes 0.7.26.",
+  "description": "Deterministic narration ReelForge built around hyperframes 0.7.26.",
   "type": "module",
   "license": "Apache-2.0",
   "bin": {

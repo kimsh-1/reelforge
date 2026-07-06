@@ -1,6 +1,6 @@
 <h3 align="center"><a href="README.md">한국어</a> | English | <a href="README-ja.md">日本語</a></h3>
 
-<h1 align="center">video-factory</h1>
+<h1 align="center">ReelForge</h1>
 
 <p align="center">
   <a href="#"><img alt="CI placeholder" src="https://img.shields.io/badge/CI-placeholder-lightgrey"></a>
@@ -8,11 +8,11 @@
   <a href="#"><img alt="Docker placeholder" src="https://img.shields.io/badge/docker-placeholder-lightgrey"></a>
 </p>
 
-video-factory is a deterministic video-production repository that starts from a short brief and carries narration contracts, compilation, rendering, and gate verification through one auditable path. Demo videos and large media files are not committed; evidence and research are tracked instead.
+reelforge is a deterministic video-production repository that starts from a short brief and carries narration contracts, compilation, rendering, and gate verification through one auditable path. Demo videos and large media files are not committed; evidence and research are tracked instead.
 
 ## [overview] Project Overview
 
-video-factory targets Korean narration videos in landscape, portrait, and square formats. The render engine is exactly pinned to `hyperframes@0.7.26`, and edits flow through contract files such as `scene_specs` followed by recompilation rather than direct HTML mutation.
+reelforge targets Korean narration videos in landscape, portrait, and square formats. The render engine is exactly pinned to `hyperframes@0.7.26`, and edits flow through contract files such as `scene_specs` followed by recompilation rather than direct HTML mutation.
 
 This T3 commit is the canonical repository foundation, not the finished product. It migrates research documents 00~10, P0 PoC evidence, the gate-runner skeleton, licensing policy, and Codex execution rules into one repo.
 
@@ -55,7 +55,7 @@ Forbidden items are fixed in `THIRD_PARTY_LICENSES.md`. MusicGen, unclear-source
 ## [installation] Installation
 
 ```bash
-cd ~/video-factory
+cd ~/reelforge
 npm ci
 npm run lint
 npm run gate

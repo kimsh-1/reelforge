@@ -3,9 +3,9 @@
 작성: 2026-07-07 · 상태: **v1.2** (T1 적대감사 90건 반영 — 결정 기록은 08-audit/RESOLUTION.md, 이하 [A1]식 참조)
 근거: /mnt/d/video-skill-research/ 조사 25건 + 기능 매트릭스 376클러스터 + 감사 6건.
 
-## 0. 이름 (확정)
+## 0. 이름 (2026-07-07 개명)
 
-**video-factory** · 레포 kimsh-1/video-factory (private). 위치: 코드·worktree는 **ext4**(~/video-factory) — /mnt/d(NTFS)는 산출물 미러만 [C11]. P0 통과 시 T3에서 git init+gh 생성.
+**ReelForge** · 레포 **kimsh-1/reelforge** (private → 공개 예정, 구 video-factory에서 개명 — 스타·검색 유입형: reel+forge, 토픽 ai-video-generator/faceless-video/shorts-automation 등 6종 등록). 위치: 코드·worktree는 **ext4**(~/reelforge) — /mnt/d(NTFS)는 산출물 미러만 [C11].
 
 ## 1. 목표·포지셔닝
 
@@ -91,6 +91,7 @@ brief.json → script.md → scene_specs(step1→step2) → audio/*.mp3+audio_me
 - **T2 — P0 PoC**: P0a→P0b→P0c→P0d 순차, codex 구현+supervisor gate runner 판정. 장소: ext4 (~/video-factory-poc).
 - **T3 — 레포 생성**: ~/video-factory git init+gh private 생성+research/ 이관+PoC fixture·gate runner 이관+`vf` CLI 골격+pre-commit+AGENTS.md.
 - **T4+ — Phase 루프**: fable 브리프 분해(의존 그래프)→codex 웨이브/스웜→gate CLI→리뷰 codex 교차검증→opus 앵커 판정→게이트 리포트 재해시 후 Phase 종료. P6 종료=최종 푸시.
+- **T-데모 (P6 완료 직후, 사용자 지시 2026-07-07)**: **ReelForge 자체 파이프라인으로 데모 영상 3종 제작** — codex 실행, 각 ~30초, 내용 비중복, 산출은 /mnt/d 저장 폴더. 비주얼은 image-prompt+codex-imagegen, 카피는 gn-voice 윤문 경유. ① 스킬 사용법(빠른 how-to), ② "hyperframes는 어떻게 영상을 만드는가"(엔진 원리), ③ 스킬 데모(맨 앞 인트로 + 어떤 스킬인지 소개). 자기 자신으로 자기 데모를 뽑는 것 자체가 최종 실증(dogfooding 게이트) — README 3종에 임베드.
 
 ## 6. 워커·토큰
 

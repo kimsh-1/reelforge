@@ -1,6 +1,6 @@
 <h3 align="center"><a href="README.md">한국어</a> | <a href="README-en.md">English</a> | 日本語</h3>
 
-<h1 align="center">video-factory</h1>
+<h1 align="center">ReelForge</h1>
 
 <p align="center">
   <a href="#"><img alt="CI placeholder" src="https://img.shields.io/badge/CI-placeholder-lightgrey"></a>
@@ -8,11 +8,11 @@
   <a href="#"><img alt="Docker placeholder" src="https://img.shields.io/badge/docker-placeholder-lightgrey"></a>
 </p>
 
-video-factory は、短いブリーフからナレーション契約、コンパイル、レンダー、ゲート検証までを監査可能な一本の経路で扱う決定論的な動画制作リポジトリです。デモ動画や大きなメディアはコミットせず、証拠と研究資料だけを追跡します。
+reelforge は、短いブリーフからナレーション契約、コンパイル、レンダー、ゲート検証までを監査可能な一本の経路で扱う決定論的な動画制作リポジトリです。デモ動画や大きなメディアはコミットせず、証拠と研究資料だけを追跡します。
 
 ## [overview] プロジェクト概要
 
-video-factory は韓国語ナレーションを中心に、横長、縦長、正方形の動画生成を目標にします。レンダーエンジンは `hyperframes@0.7.26` に正確に固定し、編集は HTML を直接変更せず、`scene_specs` などの契約ファイルを変更して再コンパイルする単一経路で行います。
+reelforge は韓国語ナレーションを中心に、横長、縦長、正方形の動画生成を目標にします。レンダーエンジンは `hyperframes@0.7.26` に正確に固定し、編集は HTML を直接変更せず、`scene_specs` などの契約ファイルを変更して再コンパイルする単一経路で行います。
 
 この T3 コミットは完成品ではなく、リポジトリの正本です。研究文書 00~10、P0 PoC の証拠、ゲートランナーの骨格、ライセンス方針、Codex 実行規則を一つの場所へ移管します。
 
@@ -55,7 +55,7 @@ video-factory は韓国語ナレーションを中心に、横長、縦長、正
 ## [installation] インストール
 
 ```bash
-cd ~/video-factory
+cd ~/reelforge
 npm ci
 npm run lint
 npm run gate
