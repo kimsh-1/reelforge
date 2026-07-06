@@ -38,7 +38,20 @@ function mockRenderManifest(overrides = {}) {
         },
         moods: {},
         subtitle: {},
-        fonts: {}
+        fonts: {
+          headline: {
+            family: "Pretendard Display",
+            files: [{ path: "./assets/fonts/PretendardDisplay.woff2", weight: 700, style: "normal" }]
+          },
+          body: {
+            family: "Pretendard",
+            files: [{ path: "./assets/fonts/Pretendard.woff2", weight: 400, style: "normal" }]
+          },
+          mono: {
+            family: "D2Coding",
+            files: [{ path: "./assets/fonts/D2Coding.woff2", weight: 400, style: "normal" }]
+          }
+        }
       },
       subtitleConfig: {}
     },
@@ -91,6 +104,18 @@ test("converts render-manifest scenes into complete deck motion assets", () => {
   const manifest = renderManifestToMotionManifest(mockRenderManifest(), mockSceneSpecs());
 
   assert.equal(manifest.assets.length, 2);
+  const tokenRefs = Object.keys(manifest.tokens);
+  assert.equal(tokenRefs.length, 1);
+  assert.match(tokenRefs[0], /^deck-tokens:inline:102030:[a-f0-9]{16}$/);
+  assert.equal(manifest.tokens[tokenRefs[0]].palette.backgroundHex, "#102030");
+  assert.deepEqual(manifest.tokens[tokenRefs[0]].palette.roles, {
+    canvas: "#102030",
+    accent: "#f0c040"
+  });
+  assert.equal(manifest.tokens[tokenRefs[0]].fonts.pair.display.family, "Pretendard Display");
+  assert.equal(manifest.tokens[tokenRefs[0]].fonts.pair.body.family, "Pretendard");
+  assert.equal(manifest.tokens[tokenRefs[0]].fonts.pair.mono.family, "D2Coding");
+
   for (const asset of manifest.assets) {
     for (const field of REQUIRED_DECK_FIELDS) {
       assert.ok(Object.hasOwn(asset, field), `missing ${field}`);
@@ -101,7 +126,7 @@ test("converts render-manifest scenes into complete deck motion assets", () => {
     assert.equal(asset.height, 1080);
     assert.equal(asset.fps, 30);
     assert.equal(Math.round((asset.durationMs * asset.fps) / 1000), asset.durationFrames);
-    assert.equal(asset.tokensRef, "deck-tokens:inline-background:#102030");
+    assert.equal(asset.tokensRef, tokenRefs[0]);
   }
 
   assert.deepEqual(
@@ -113,6 +138,19 @@ test("converts render-manifest scenes into complete deck motion assets", () => {
   );
 });
 
+test("fails when render-manifest contains duplicate sceneId values", () => {
+  const renderManifest = mockRenderManifest({
+    scenes: [
+      mockRenderManifest().scenes[0],
+      {
+        ...mockRenderManifest().scenes[1],
+        sceneId: "s01"
+      }
+    ]
+  });
+  assert.throws(() => renderManifestToMotionManifest(renderManifest, mockSceneSpecs()), /duplicate render-manifest sceneId: s01/);
+});
+
 test("fails when durationMs/fps cannot round-trip to durationFrames", () => {
   assert.throws(() => durationFramesToMs(1, 1500), /duration round-trip failed/);
 });
@@ -122,9 +160,9 @@ test("fails when scene_specs lacks authored altText for a render scene", () => {
     () =>
       renderManifestToMotionManifest(mockRenderManifest(), {
         ...mockSceneSpecs(),
-        scenes: [{ sceneId: "s01", altText: "Only the first scene is covered." }]
+        scenes: [{ sceneId: "s01", altText: "Only the first scene is covered." }, { sceneId: "s02" }]
       }),
-    /missing altText for sceneId s02/
+    /scene_specs\.scenes\[1\]\.altText/
   );
 });
 

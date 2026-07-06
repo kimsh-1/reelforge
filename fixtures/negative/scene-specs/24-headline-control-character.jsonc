@@ -1,0 +1,32 @@
+// 위반 규칙: scene_specs.scenes[].headline rejects control characters.
+{
+  "version": "1.0.0",
+  "projectId": "demo-project",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "Narration text for s01.",
+      "narration_tts": "Narration text for s01.",
+      "altText": "Accessible description for s01.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "Bad\u0007Title",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": []
+}

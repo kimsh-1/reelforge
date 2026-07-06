@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -9,7 +10,21 @@ export const DECK_MOTION_KIND = "motion";
 
 const SHORT_HEX_COLOR = /^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$/;
 const DECK_HEX_COLOR = /^#[0-9a-fA-F]{6}$/;
+const LONG_HEX_WITH_ALPHA = /^(#[0-9a-fA-F]{6})[0-9a-fA-F]{2}$/;
 const BACKGROUND_COLOR_KEYS = ["background", "canvas", "bg", "surface", "base"];
+const PALETTE_ROLE_ALIASES = new Map([
+  ["background", "canvas"],
+  ["canvas", "canvas"],
+  ["bg", "canvas"],
+  ["surface", "surface"],
+  ["base", "base"],
+  ["accent", "accent"],
+  ["primary", "primary"],
+  ["secondary", "secondary"],
+  ["text", "text"],
+  ["foreground", "text"],
+  ["muted", "muted"]
+]);
 
 function assertObject(value, label) {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -35,6 +50,19 @@ function assertPositiveInteger(value, label) {
   }
 }
 
+function normalizeHexColor(value, label) {
+  if (typeof value !== "string") throw new Error(`${label} must be a color string`);
+  const shortMatch = value.match(SHORT_HEX_COLOR);
+  if (shortMatch) {
+    const [, r, g, b] = shortMatch;
+    return `#${r}${r}${g}${g}${b}${b}`.toLowerCase();
+  }
+  const alphaMatch = value.match(LONG_HEX_WITH_ALPHA);
+  if (alphaMatch) return alphaMatch[1].toLowerCase();
+  if (DECK_HEX_COLOR.test(value)) return value.toLowerCase();
+  throw new Error(`${label} must be #RGB, #RRGGBB, or #RRGGBBAA`);
+}
+
 function readSceneSpecsAltText(sceneSpecs) {
   assertObject(sceneSpecs, "scene_specs");
   if (!Array.isArray(sceneSpecs.scenes)) throw new Error("scene_specs.scenes must be an array");
@@ -50,6 +78,29 @@ function readSceneSpecsAltText(sceneSpecs) {
     bySceneId.set(scene.sceneId, scene.altText);
   }
   return bySceneId;
+}
+
+function assertRenderSceneIds(renderScenes, sceneSpecsById) {
+  const seen = new Set();
+  const renderIds = [];
+  for (const [index, scene] of renderScenes.entries()) {
+    assertObject(scene, `render-manifest.scenes[${index}]`);
+    assertNonEmptyString(scene.sceneId, `render-manifest.scenes[${index}].sceneId`);
+    if (seen.has(scene.sceneId)) throw new Error(`duplicate render-manifest sceneId: ${scene.sceneId}`);
+    seen.add(scene.sceneId);
+    renderIds.push(scene.sceneId);
+  }
+
+  const sceneSpecIds = [...sceneSpecsById.keys()];
+  const missingInSpecs = renderIds.filter((sceneId) => !sceneSpecsById.has(sceneId));
+  const unusedSceneSpecs = sceneSpecIds.filter((sceneId) => !seen.has(sceneId));
+  if (missingInSpecs.length > 0 || unusedSceneSpecs.length > 0) {
+    throw new Error(
+      `sceneId coverage mismatch: missing scene_specs=${missingInSpecs.join(",") || "none"} unused scene_specs=${
+        unusedSceneSpecs.join(",") || "none"
+      }`
+    );
+  }
 }
 
 export function durationFramesToMs(durationFrames, fps) {
@@ -73,12 +124,7 @@ export function resolveBackgroundHex(designTokens) {
   for (const key of BACKGROUND_COLOR_KEYS) {
     const value = designTokens.colors[key];
     if (typeof value !== "string") continue;
-    const shortMatch = value.match(SHORT_HEX_COLOR);
-    if (shortMatch) {
-      const [, r, g, b] = shortMatch;
-      return `#${r}${r}${g}${g}${b}${b}`.toLowerCase();
-    }
-    if (DECK_HEX_COLOR.test(value)) return value.toLowerCase();
+    return normalizeHexColor(value, `render-manifest.meta.designTokens.colors.${key}`);
   }
 
   throw new Error(
@@ -88,9 +134,66 @@ export function resolveBackgroundHex(designTokens) {
   );
 }
 
-export function mapDesignTokensToDeckTokensRef(designTokens) {
+function mapPaletteRoles(designTokens, backgroundHex) {
+  assertObject(designTokens.colors, "render-manifest.meta.designTokens.colors");
+  const roles = { canvas: backgroundHex };
+  for (const [key, value] of Object.entries(designTokens.colors)) {
+    const role = PALETTE_ROLE_ALIASES.get(key) ?? key;
+    roles[role] = normalizeHexColor(value, `render-manifest.meta.designTokens.colors.${key}`);
+  }
+  roles.canvas = backgroundHex;
+  return roles;
+}
+
+function mapFontRole(fonts, sourceRole, deckRole) {
+  const role = fonts?.[sourceRole];
+  assertObject(role, `render-manifest.meta.designTokens.fonts.${sourceRole}`);
+  assertNonEmptyString(role.family, `render-manifest.meta.designTokens.fonts.${sourceRole}.family`);
+  if (!Array.isArray(role.files)) {
+    throw new Error(`render-manifest.meta.designTokens.fonts.${sourceRole}.files must be an array`);
+  }
+
+  return {
+    family: role.family,
+    files: role.files.map((file, index) => {
+      assertObject(file, `render-manifest.meta.designTokens.fonts.${sourceRole}.files[${index}]`);
+      assertNonEmptyString(file.path, `render-manifest.meta.designTokens.fonts.${sourceRole}.files[${index}].path`);
+      return {
+        path: file.path,
+        ...(file.weight !== undefined ? { weight: file.weight } : {}),
+        ...(file.style !== undefined ? { style: file.style } : {})
+      };
+    }),
+    sourceRole,
+    deckRole
+  };
+}
+
+export function mapDesignTokensToDeckTokens(designTokens) {
   const backgroundHex = resolveBackgroundHex(designTokens);
-  return `deck-tokens:inline-background:${backgroundHex}`;
+  assertObject(designTokens.fonts, "render-manifest.meta.designTokens.fonts");
+  return {
+    palette: {
+      backgroundHex,
+      roles: mapPaletteRoles(designTokens, backgroundHex)
+    },
+    fonts: {
+      pair: {
+        display: mapFontRole(designTokens.fonts, "headline", "display"),
+        body: mapFontRole(designTokens.fonts, "body", "body"),
+        mono: mapFontRole(designTokens.fonts, "mono", "mono")
+      }
+    }
+  };
+}
+
+export function mapDesignTokensToDeckTokensRef(designTokens) {
+  const deckTokens = mapDesignTokensToDeckTokens(designTokens);
+  const digest = createHash("sha256").update(JSON.stringify(deckTokens)).digest("hex").slice(0, 16);
+  return {
+    tokensRef: `deck-tokens:inline:${deckTokens.palette.backgroundHex.slice(1)}:${digest}`,
+    tokens: deckTokens
+  };
 }
 
 export function renderManifestToMotionManifest(renderManifest, sceneSpecs) {
@@ -105,7 +208,8 @@ export function renderManifestToMotionManifest(renderManifest, sceneSpecs) {
   }
 
   const altTextBySceneId = readSceneSpecsAltText(sceneSpecs);
-  const tokensRef = mapDesignTokensToDeckTokensRef(renderManifest.meta.designTokens);
+  assertRenderSceneIds(renderManifest.scenes, altTextBySceneId);
+  const { tokensRef, tokens } = mapDesignTokensToDeckTokensRef(renderManifest.meta.designTokens);
   const { width, height } = renderManifest.meta.resolution;
   const fps = renderManifest.meta.fps;
 
@@ -133,7 +237,7 @@ export function renderManifestToMotionManifest(renderManifest, sceneSpecs) {
     };
   });
 
-  return { assets };
+  return { tokens: { [tokensRef]: tokens }, assets };
 }
 
 export async function readJsonFile(filePath) {

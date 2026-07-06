@@ -1,0 +1,41 @@
+{
+  "gate": "L0-12",
+  "pass": true,
+  "checks": [
+    {
+      "id": "contract-semantic-integrity",
+      "pass": true,
+      "measured": {
+        "filesChecked": 8,
+        "rules": [
+          "sceneId unique",
+          "transitions reference existing scenes and are not self-loops",
+          "word timings are monotonic and end >= start",
+          "versions selected references entries",
+          "render subtitles stay within audio duration and startFrame is monotonic",
+          "scene_specs and audio_meta sceneId sets match when paired"
+        ],
+        "violations": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/edit-scenario/audio_meta.json",
+    "fixtures/golden-specs/edit-scenario/scene_specs.json",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "fixtures/golden-specs/stress-edge/audio_meta.json",
+    "fixtures/golden-specs/stress-edge/scene_specs.json",
+    "src/gates/semantic.mjs"
+  ],
+  "canonicalInputMerkleHash": "c76cc167de716a20f215fcde0770f16985808965adf0be488fe57151671993f7",
+  "evidenceHash": "d9d48f9213cb01adeb618ffb95cc07894b01de5adcb2d17bf0dc18dda9d42aba",
+  "gateScriptHash": "2df741c0e11e92d8b74479a2ce837f2f3e6742417487ff231decc4d5e89bfa8c",
+  "gitCommit": "187834c9421641c803a6377c0afc5dabcb536ff0",
+  "command": "node bin/vf gate l0-12 --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T20:39:09.569Z",
+  "finishedAt": "2026-07-06T20:39:09.581Z"
+}

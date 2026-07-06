@@ -7,8 +7,8 @@ import { requiredReportFields } from "../src/gates/registry.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const tmpDir = path.join(repoRoot, "tmp", "vf-selftest");
-const validTarget = "tmp/vf-selftest/scene_specs.valid.json";
-const invalidTarget = "tmp/vf-selftest/scene_specs.invalid.json";
+const validTarget = "tmp/vf-selftest/valid/scene_specs.json";
+const invalidTarget = "tmp/vf-selftest/invalid/scene_specs.json";
 const reportPath = path.join(repoRoot, "reports", "l0-1-report.json");
 
 function runVf(args, input = "") {
@@ -72,6 +72,10 @@ assert(writeInvalid.stderr.includes("schema validation failed"), "invalid write 
 assert(writeInvalid.stderr.includes("- /"), "invalid write did not print violation list");
 assert(!existsSync(path.join(repoRoot, invalidTarget)), "invalid write created target");
 
+const writeEscape = runVf(["write", "../vf-selftest-escape.json", "--schema", "scene-specs"], JSON.stringify(validSceneSpecs()));
+assert(writeEscape.status !== 0, "repo escape write unexpectedly passed");
+assert(writeEscape.stderr.includes("target must stay inside the repository"), "escape write did not print path guard failure");
+
 const gate = runVf(["gate", "l0-1", "--json"]);
 assert(gate.status === 0, `gate l0-1 failed: ${gate.stderr}`);
 const gateReport = JSON.parse(gate.stdout);
@@ -83,13 +87,18 @@ const presentFields = requiredReportFields.filter((field) =>
 );
 assert(presentFields.length === requiredReportFields.length, "gate report missing required fields");
 
+const verifyReport = runVf(["verify-report", "reports/l0-1-report.json"]);
+assert(verifyReport.status === 0, `verify-report failed: ${verifyReport.stderr}`);
+
 rmSync(tmpDir, { recursive: true, force: true });
 
 console.log("vf-selftest: PASS");
 console.log("write valid: PASS schema=scene-specs");
 console.log("write invalid: PASS rejected-with-violations");
+console.log("write path guard: PASS repo-escape-rejected");
 console.log("write atomicity: PASS invalid-target-absent");
 console.log("gate l0-1: PASS");
 console.log(`report fields: PASS ${presentFields.length}/${requiredReportFields.length}`);
+console.log("verify-report: PASS reports/l0-1-report.json");
 console.log("report file: reports/l0-1-report.json");
 console.log("cleanup: PASS tmp/vf-selftest removed");

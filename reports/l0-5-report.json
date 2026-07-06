@@ -6,7 +6,7 @@
       "id": "scene-specs-duration-intrusion",
       "pass": true,
       "measured": {
-        "filesChecked": 3,
+        "filesChecked": 4,
         "allowedDurationPaths": [
           "/transitions/<index>/duration"
         ],
@@ -17,14 +17,15 @@
   "inputSet": [
     "fixtures/golden-specs/edit-scenario/scene_specs.json",
     "fixtures/golden-specs/full-8types/scene_specs.json",
-    "fixtures/golden-specs/minimal-3scene/scene_specs.json"
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "fixtures/golden-specs/stress-edge/scene_specs.json"
   ],
-  "canonicalInputMerkleHash": "fbc03dcd534a924aad88228754ad85339b31407889a09bfbbd5272e91aa87e63",
-  "evidenceHash": "fd86e8bf1d19ff60f3615158004ef91500b53e9529d51a6368d045dc0cff5d82",
-  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
-  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "canonicalInputMerkleHash": "33cabea4ab26e65ae143ba16f3ee148c33c0334e86d7e411c73bfddfc7fdb626",
+  "evidenceHash": "b0a900d84b0a250af8e5fee5e34341c227f177b780f2ad2369ad12721d336977",
+  "gateScriptHash": "b2b0fe357712b73543c39ed93840540d40aa0d1b69d7a71d3bfae6d496ab5e1c",
+  "gitCommit": "187834c9421641c803a6377c0afc5dabcb536ff0",
   "command": "node bin/vf gate l0-5 --json",
   "exitCode": 0,
-  "startedAt": "2026-07-06T20:08:50.593Z",
-  "finishedAt": "2026-07-06T20:08:50.604Z"
+  "startedAt": "2026-07-06T20:39:09.424Z",
+  "finishedAt": "2026-07-06T20:39:09.436Z"
 }

@@ -6,8 +6,8 @@
       "id": "asset-paths-relative-assets-exist",
       "pass": true,
       "measured": {
-        "filesChecked": 3,
-        "refsChecked": 14,
+        "filesChecked": 4,
+        "refsChecked": 26,
         "requiredPrefix": "./assets/",
         "violations": []
       }
@@ -30,14 +30,27 @@
     "fixtures/golden-specs/minimal-3scene/assets/audio/s01.mock.mp3",
     "fixtures/golden-specs/minimal-3scene/assets/audio/s02.mock.mp3",
     "fixtures/golden-specs/minimal-3scene/assets/audio/s03.mock.mp3",
-    "fixtures/golden-specs/minimal-3scene/audio_meta.json"
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/stress-edge/assets/audio/s01.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s02.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s03.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s04.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s05.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s06.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s07.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s08.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s09.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s10.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s11.mock.mp3",
+    "fixtures/golden-specs/stress-edge/assets/audio/s12.mock.mp3",
+    "fixtures/golden-specs/stress-edge/audio_meta.json"
   ],
-  "canonicalInputMerkleHash": "29487a1724689d6447fa5767601c16f7e6fc1b80fadaf837705168efd0429876",
-  "evidenceHash": "7100bacd5c304c61f8249280856909ba1944570878d761ea5ab1daa5d454cc41",
-  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
-  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "canonicalInputMerkleHash": "e5a7f7e8e8c47e8f9fe1618ae53538fc272bc96a9e6f01e19972c909fec67002",
+  "evidenceHash": "bca9079cfa440188a03077abf21c47f177604ded808f87b939a697104be5dca0",
+  "gateScriptHash": "b2b0fe357712b73543c39ed93840540d40aa0d1b69d7a71d3bfae6d496ab5e1c",
+  "gitCommit": "187834c9421641c803a6377c0afc5dabcb536ff0",
   "command": "node bin/vf gate l0-6 --json",
   "exitCode": 0,
-  "startedAt": "2026-07-06T20:08:50.363Z",
-  "finishedAt": "2026-07-06T20:08:50.375Z"
+  "startedAt": "2026-07-06T20:39:09.495Z",
+  "finishedAt": "2026-07-06T20:39:09.508Z"
 }

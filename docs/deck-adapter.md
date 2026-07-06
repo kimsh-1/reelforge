@@ -32,19 +32,19 @@ node src/pipeline/deck-adapter.mjs render-manifest.json scene_specs.json motion-
 | `durationMs` | `scenes[].durationFrames`, `meta.fps` | `Math.round(durationFrames * 1000 / fps)`. |
 | `durationFrames` | `render-manifest.scenes[].durationFrames` | Direct copy; never recovered from `durationMs`. This is the v1.3 extension over the current deck-factory motion schema. |
 | `fps` | `render-manifest.meta.fps` | Direct copy. |
-| `tokensRef` | `render-manifest.meta.designTokens` | Stub deck-token reference in the form `deck-tokens:inline-background:<hex>`. |
+| `tokensRef` | `render-manifest.meta.designTokens` | Reference to the emitted inline deck-token block: `deck-tokens:inline:<background-hex-without-#>:<sha16>`. |
 | `altText` | `scene_specs.scenes[].altText` matched by `sceneId` | Direct copy from authored accessibility text. Narration is not used as fallback. |
 
-## Token Mapping Stub
+The output manifest also includes top-level `tokens` keyed by `tokensRef`, so every
+asset points at a concrete deck-token block in the same file.
 
-The intended bridge is `design-tokens.json` to deck-factory `deck-tokens`.
-Only the background HEX axis is implemented in P1-04.
+## Token Mapping
 
-| deck-token axis | video-factory source | P1-04 behavior |
+| deck-token axis | video-factory source | Adapter behavior |
 |---|---|---|
-| `palette.role.canvas` / background HEX | `designTokens.colors.background`, then `canvas`, `bg`, `surface`, `base` | Implemented; emitted inside `tokensRef` as `deck-tokens:inline-background:<hex>`. |
-| palette role map | `designTokens.colors.*` | Specified as a required future axis; not emitted yet. |
-| fonts three-axis mapping | `designTokens.fonts.headline`, `body`, `mono` into deck `fonts.pair.display`, `body`, `mono` | Specified as a required future axis; not emitted yet. |
+| `palette.backgroundHex` and `palette.roles.canvas` | `designTokens.colors.background`, then `canvas`, `bg`, `surface`, `base` | Resolves `#RGB`, `#RRGGBB`, or `#RRGGBBAA` to lowercase `#RRGGBB`; also encoded in `tokensRef`. |
+| palette role map | `designTokens.colors.*` | Emits every color into `tokens[tokensRef].palette.roles`; known aliases map `background/bg/canvas` to `canvas`, `foreground` to `text`, and preserve other role names. |
+| fonts three-axis mapping | `designTokens.fonts.headline`, `body`, `mono` | Emits `tokens[tokensRef].fonts.pair.display`, `.body`, and `.mono` with family, files, weight, style, sourceRole, and deckRole. |
 
 ## Constraints
 
@@ -63,11 +63,5 @@ The adapter also fails if a render scene has no matching authored `altText`.
 Composition HTML remains a read-only build artifact; accessibility text comes
 from `scene_specs.json`.
 
-## Not Implemented
-
-- Writing a full deck-factory `tokens.json` file.
-- Full palette-role mapping beyond the background HEX needed for seam checks.
-- Font pair and fallback mapping into deck-token `fonts`.
-- deck-factory doctor motion profile changes for the hyperframes branch.
-- Updating deck-factory's current `motion-manifest.schema.json` to accept the
-  P1-04 `durationFrames` extension.
+It fails when `render-manifest.scenes[]` contains duplicate `sceneId` values or
+when the render sceneId set differs from `scene_specs.scenes[]`.

@@ -75,12 +75,12 @@
     "schemas/versions.schema.json",
     "schemas/render-manifest.schema.json"
   ],
-  "canonicalInputMerkleHash": "0109522d5544800ef748777b26b5b68bf13112acbf5a968c1fbe977192f59fc1",
+  "canonicalInputMerkleHash": "b5e18b8d8eed3fbe67aef28b5caa2a9a150674b26ef60b98be1138ea1370b1df",
   "evidenceHash": "f5af69683907469bdc492b59484f87b4406bf757a02624a51268564d42377949",
-  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
-  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "gateScriptHash": "b2b0fe357712b73543c39ed93840540d40aa0d1b69d7a71d3bfae6d496ab5e1c",
+  "gitCommit": "187834c9421641c803a6377c0afc5dabcb536ff0",
   "command": "node bin/vf gate l0-1 --json",
   "exitCode": 0,
-  "startedAt": "2026-07-06T20:08:50.436Z",
-  "finishedAt": "2026-07-06T20:08:50.532Z"
+  "startedAt": "2026-07-06T20:39:09.263Z",
+  "finishedAt": "2026-07-06T20:39:09.362Z"
 }

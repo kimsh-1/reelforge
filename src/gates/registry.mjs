@@ -1,8 +1,12 @@
 import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { existsSync, lstatSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
+import {
+  validateSceneAudioSetMatch,
+  validateSemanticData
+} from "./semantic.mjs";
 
 export const requiredReportFields = [
   "gate",
@@ -136,11 +140,11 @@ export function createAjv(repoRoot) {
 
 export function inferSchemaNameFromPath(filePath) {
   const base = path.basename(filePath).toLowerCase();
-  if (/^scene[_-]specs.*\.json$/.test(base)) return "scene-specs";
-  if (/^audio[_-]meta.*\.json$/.test(base)) return "audio-meta";
-  if (/^design[_-]tokens.*\.json$/.test(base)) return "design-tokens";
-  if (/^versions.*\.json$/.test(base)) return "versions";
-  if (/^render[_-]manifest.*\.json$/.test(base)) return "render-manifest";
+  if (base === "scene_specs.json" || base === "scene-specs.json") return "scene-specs";
+  if (base === "audio_meta.json" || base === "audio-meta.json") return "audio-meta";
+  if (base === "design_tokens.json" || base === "design-tokens.json") return "design-tokens";
+  if (base === "versions.json") return "versions";
+  if (base === "render_manifest.json" || base === "render-manifest.json") return "render-manifest";
   return null;
 }
 
@@ -382,9 +386,17 @@ function validateAssetRef(repoRoot, ref) {
   const contractDir = path.dirname(path.join(repoRoot, ref.file));
   const assetRoot = path.resolve(contractDir, "assets");
   const resolved = path.resolve(contractDir, ref.value);
+  const insideRepo = resolved === repoRoot || resolved.startsWith(`${repoRoot}${path.sep}`);
   const insideAssetRoot = resolved === assetRoot || resolved.startsWith(`${assetRoot}${path.sep}`);
-  const exists = insideAssetRoot && existsSync(resolved) && statSync(resolved).isFile();
 
+  if (!insideRepo) {
+    return {
+      ...ref,
+      resolved: relPath(repoRoot, resolved),
+      rule: "asset path must stay inside repository root after resolve",
+      exists: false
+    };
+  }
   if (!insideAssetRoot) {
     return {
       ...ref,
@@ -392,11 +404,40 @@ function validateAssetRef(repoRoot, ref) {
       exists: false
     };
   }
-  if (!exists) {
+  if (!existsSync(resolved)) {
     return {
       ...ref,
       resolved: relPath(repoRoot, resolved),
       rule: "asset path must exist",
+      exists: false
+    };
+  }
+
+  const linkStats = lstatSync(resolved);
+  if (linkStats.isSymbolicLink()) {
+    return {
+      ...ref,
+      resolved: relPath(repoRoot, resolved),
+      rule: "asset path must not be a symbolic link",
+      exists: false
+    };
+  }
+
+  const stats = statSync(resolved);
+  if (!stats.isFile()) {
+    return {
+      ...ref,
+      resolved: relPath(repoRoot, resolved),
+      rule: "asset path must resolve to a regular file",
+      exists: false
+    };
+  }
+
+  if (stats.size === 0) {
+    return {
+      ...ref,
+      resolved: relPath(repoRoot, resolved),
+      rule: "asset path must not be a 0-byte file",
       exists: false
     };
   }
@@ -565,6 +606,73 @@ function runL06({ repoRoot }) {
   };
 }
 
+function runL012({ repoRoot }) {
+  const files = discoverContractFiles(repoRoot);
+  const violations = [];
+  const parsed = new Map();
+
+  for (const file of files) {
+    const schemaName = inferSchemaNameFromPath(file);
+    try {
+      const data = readJsonFile(path.join(repoRoot, file));
+      parsed.set(file, { schemaName, data });
+      violations.push(...validateSemanticData({ schemaName, data, file }));
+    } catch (error) {
+      violations.push({
+        file,
+        path: "/",
+        rule: "semantic contract must be readable JSON",
+        measured: {
+          error: error instanceof Error ? error.message : String(error)
+        }
+      });
+    }
+  }
+
+  for (const [file, entry] of parsed.entries()) {
+    if (entry.schemaName !== "scene-specs") continue;
+    const dir = path.dirname(file);
+    const audioMetaFile = ["audio_meta.json", "audio-meta.json"]
+      .map((candidate) => normalizeRelPath(path.join(dir, candidate)))
+      .find((candidate) => parsed.get(candidate)?.schemaName === "audio-meta");
+    if (!audioMetaFile) continue;
+
+    violations.push(
+      ...validateSceneAudioSetMatch({
+        sceneSpecs: entry.data,
+        audioMeta: parsed.get(audioMetaFile).data,
+        sceneSpecsFile: file,
+        audioMetaFile
+      })
+    );
+  }
+
+  const checks = [
+    {
+      id: "contract-semantic-integrity",
+      pass: violations.length === 0,
+      measured: {
+        filesChecked: files.length,
+        rules: [
+          "sceneId unique",
+          "transitions reference existing scenes and are not self-loops",
+          "word timings are monotonic and end >= start",
+          "versions selected references entries",
+          "render subtitles stay within audio duration and startFrame is monotonic",
+          "scene_specs and audio_meta sceneId sets match when paired"
+        ],
+        violations
+      }
+    }
+  ];
+
+  return {
+    checks,
+    inputSet: [...files, "src/gates/semantic.mjs"].sort((a, b) => a.localeCompare(b)),
+    evidence: checks
+  };
+}
+
 export const gateRegistry = {
   "l0-1": {
     gate: "L0-1",
@@ -589,6 +697,14 @@ export const gateRegistry = {
     script: "src/gates/registry.mjs",
     render: false,
     run: runL06
+  },
+  "l0-12": {
+    gate: "L0-12",
+    title: "contract semantic integrity checks",
+    kind: "native",
+    script: "src/gates/semantic.mjs",
+    render: false,
+    run: runL012
   },
   p0a: {
     gate: "P0a",

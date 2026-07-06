@@ -18,12 +18,14 @@
     "scenes": {
       "type": "array",
       "minItems": 1,
+      "maxItems": 120,
       "items": {
         "$ref": "#/$defs/scene"
       }
     },
     "transitions": {
       "type": "array",
+      "maxItems": 240,
       "$comment": "Scene-to-scene edges only. Transitions are not owned by either adjacent scene.",
       "items": {
         "$ref": "#/$defs/transition"
@@ -34,6 +36,11 @@
     "sceneId": {
       "type": "string",
       "pattern": "^s\\d{2,}$"
+    },
+    "safeTitleText": {
+      "type": "string",
+      "pattern": "^[^\\u0000-\\u001F\\u007F-\\u009F\\u180E\\u200B\\u200C\\u200D\\u2060\\uFEFF]*$",
+      "$comment": "Headline/title text allows emoji but rejects control and zero-width characters."
     },
     "percent": {
       "type": "number",
@@ -106,7 +113,8 @@
       "properties": {
         "prompt": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 1000
         },
         "placement": {
           "$ref": "#/$defs/imagePlacement"
@@ -196,6 +204,7 @@
         "duration": {
           "type": "number",
           "minimum": 0,
+          "maximum": 10,
           "$comment": "Seconds in authoring space. The compiler derives frame counts."
         }
       }
@@ -232,19 +241,30 @@
         },
         "narration": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 2000
         },
         "narration_tts": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 3000
         },
         "altText": {
           "type": "string",
           "minLength": 1,
+          "maxLength": 500,
           "$comment": "Required for deck accessibility. It is authored, not inferred from narration."
         },
         "caption": {
-          "type": "string"
+          "allOf": [
+            {
+              "$ref": "#/$defs/safeTitleText"
+            },
+            {
+              "type": "string",
+              "maxLength": 280
+            }
+          ]
         },
         "layout": {
           "$ref": "#/$defs/layout"
@@ -259,33 +279,55 @@
           "$ref": "#/$defs/emphasis"
         },
         "headline": {
-          "type": "string",
-          "minLength": 1
+          "allOf": [
+            {
+              "$ref": "#/$defs/safeTitleText"
+            },
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 180
+            }
+          ]
         },
         "items": {
           "type": "array",
+          "maxItems": 40,
           "items": {
-            "type": "string"
+            "allOf": [
+              {
+                "$ref": "#/$defs/safeTitleText"
+              },
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            ]
           }
         },
         "values": {
           "type": "array",
+          "maxItems": 40,
           "items": {
             "oneOf": [
               {
                 "type": "number"
               },
               {
-                "type": "string"
+                "type": "string",
+                "maxLength": 120
               }
             ]
           }
         },
         "unit": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 32
         },
         "source": {
-          "type": "string"
+          "type": "string",
+          "maxLength": 256
         },
         "visual_kind": {
           "$ref": "#/$defs/visualKind"

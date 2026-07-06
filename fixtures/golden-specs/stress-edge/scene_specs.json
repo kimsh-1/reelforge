@@ -1,0 +1,481 @@
+{
+  "version": "1.0.0",
+  "projectId": "golden-stress-edge",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "첫 장면은 전체 캠페인의 핵심 수치를 간결하게 소개합니다.",
+      "narration_tts": "첫 장면은 전체 캠페인의 핵심 수치를 간결하게 소개합니다.",
+      "altText": "대시보드 위에 캠페인 핵심 수치가 큰 헤드라인으로 나타난다.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "캠페인 브리핑",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:stress-edge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "검색 유입은 예상보다 빠르게 늘었고 추천 유입은 안정적으로 유지됐습니다.",
+      "narration_tts": "검색 유입은 예상보다 빠르게 늘었고 추천 유입은 안정적으로 유지됐습니다.",
+      "altText": "막대 차트가 검색 유입과 추천 유입의 증가 흐름을 비교한다.",
+      "layout": "bar",
+      "mood": "triumphant",
+      "reveal": "stagger",
+      "emphasis": "number",
+      "headline": "검색 유입 상승",
+      "items": [
+        "검색",
+        "추천",
+        "광고"
+      ],
+      "values": [
+        7400,
+        5100,
+        2900
+      ],
+      "unit": "명",
+      "source": "fixture:stress-edge-growth",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "제품 소개 화면은 밝고 선명한 이미지 생성 프롬프트로 구성합니다.",
+      "narration_tts": "제품 소개 화면은 밝고 선명한 이미지 생성 프롬프트로 구성합니다.",
+      "altText": "생성 이미지 영역에 제품 카드와 밝은 배경이 배치된다.",
+      "layout": "headline_only",
+      "mood": "dramatic",
+      "reveal": "zoom_in",
+      "emphasis": "keyword",
+      "headline": "성장 신호 🚀",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:stress-edge-image-gen",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "bright product dashboard hero image with readable metric cards",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "overrides": {
+        "headline": {
+          "x": 9,
+          "y": 14,
+          "width": 72,
+          "height": 18
+        },
+        "byFormat": {
+          "9:16": {
+            "headline": {
+              "x": 8,
+              "y": 10,
+              "width": 84,
+              "height": 20
+            },
+            "image": {
+              "x": 0,
+              "y": 0,
+              "width": 100,
+              "height": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": "지역별 반응은 지도 장면으로 보여주고 수도권과 남부권을 나눠 표시합니다.",
+      "narration_tts": "지역별 반응은 지도 장면으로 보여주고 수도권과 남부권을 나눠 표시합니다.",
+      "altText": "지도 위에 수도권과 남부권 반응 지표가 서로 다른 색으로 표시된다.",
+      "layout": "compare",
+      "mood": "contemplative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "지역 반응 비교",
+      "items": [
+        "수도권",
+        "남부권"
+      ],
+      "values": [
+        63,
+        54
+      ],
+      "unit": "%",
+      "source": "fixture:stress-edge-map",
+      "visual_kind": "map_scene",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": "검색 이미지 장면은 실제 매장 분위기를 참고해 차분한 배경으로 배치합니다.",
+      "narration_tts": "검색 이미지 장면은 실제 매장 분위기를 참고해 차분한 배경으로 배치합니다.",
+      "altText": "매장 내부 사진을 참고한 배경 위에 짧은 설명 문구가 놓인다.",
+      "layout": "quote",
+      "mood": "somber",
+      "reveal": "typewriter",
+      "emphasis": "quote",
+      "headline": "현장 피드백",
+      "items": [
+        "매장 인터뷰",
+        "차분한 안내가 좋았습니다"
+      ],
+      "values": [
+        "6회 반복",
+        "핵심 문장"
+      ],
+      "unit": "인용",
+      "source": "fixture:stress-edge-search-image",
+      "visual_kind": "search_image",
+      "imageAsset": {
+        "prompt": "calm retail interior reference photo with soft lighting",
+        "placement": "left"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": "긴 설명 장면은 삼십 초 오디오를 사용해 문제 정의, 사용자 맥락, 실험 계획, 예상 리스크를 순서대로 설명합니다.",
+      "narration_tts": "긴 설명 장면은 삼십 초 오디오를 사용해 문제 정의, 사용자 맥락, 실험 계획, 예상 리스크를 순서대로 설명합니다.",
+      "altText": "긴 설명 카드가 네 단계 타임라인으로 표시되고 각 단계가 순서대로 강조된다.",
+      "layout": "numbered",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "30초 설명 구간",
+      "items": [
+        "문제 정의",
+        "사용자 맥락",
+        "실험 계획",
+        "예상 리스크"
+      ],
+      "values": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "unit": "단계",
+      "source": "fixture:stress-edge-long-audio",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke",
+      "overrides": {
+        "byFormat": {
+          "16:9": {
+            "headline": {
+              "x": 8,
+              "y": 8,
+              "width": 60,
+              "height": 16
+            }
+          },
+          "1:1": {
+            "headline": {
+              "x": 10,
+              "y": 12,
+              "width": 80,
+              "height": 18
+            }
+          }
+        }
+      }
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": "비디오 장면은 앱 사용 흐름을 짧은 클립으로 보여주는 자리입니다.",
+      "narration_tts": "비디오 장면은 앱 사용 흐름을 짧은 클립으로 보여주는 자리입니다.",
+      "altText": "휴대폰 화면 클립이 앱 사용 흐름을 짧게 보여준다.",
+      "layout": "list",
+      "mood": "urgent",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "앱 흐름 클립",
+      "items": [
+        "탐색",
+        "선택",
+        "완료"
+      ],
+      "values": [
+        "2초",
+        "3초",
+        "1초"
+      ],
+      "unit": "구간",
+      "source": "fixture:stress-edge-video",
+      "visual_kind": "video",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword",
+      "ost": 1
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": "비용 구조는 인력과 인프라, 콘텐츠 제작비로 나눠 설명합니다.",
+      "narration_tts": "비용 구조는 인력과 인프라, 콘텐츠 제작비로 나눠 설명합니다.",
+      "altText": "원형 차트가 인력, 인프라, 콘텐츠 제작비 비중을 보여준다.",
+      "layout": "pie",
+      "mood": "somber",
+      "reveal": "spotlight",
+      "emphasis": "contrast",
+      "headline": "비용 구조",
+      "items": [
+        "인력",
+        "인프라",
+        "콘텐츠"
+      ],
+      "values": [
+        52,
+        31,
+        17
+      ],
+      "unit": "%",
+      "source": "fixture:stress-edge-cost",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": "핵심 지표는 평균 시청 시간과 저장률을 함께 보여주면 맥락이 분명해집니다.",
+      "narration_tts": "핵심 지표는 평균 시청 시간과 저장률을 함께 보여주면 맥락이 분명해집니다.",
+      "altText": "두 개의 큰 숫자가 평균 시청 시간과 저장률을 나란히 보여준다.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "저장률 18.4%",
+      "items": [
+        "평균 시청 시간",
+        "저장률"
+      ],
+      "values": [
+        21.8,
+        18.4
+      ],
+      "unit": "초/%",
+      "source": "fixture:stress-edge-stat",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s10",
+      "sceneNumber": 10,
+      "narration": "실험군과 대조군의 차이는 병렬 공개 애니메이션으로 동시에 비교합니다.",
+      "narration_tts": "실험군과 대조군의 차이는 병렬 공개 애니메이션으로 동시에 비교합니다.",
+      "altText": "실험군과 대조군 카드가 좌우로 배치되고 차이가 동시에 강조된다.",
+      "layout": "compare",
+      "mood": "suspense",
+      "reveal": "parallel",
+      "emphasis": "contrast",
+      "headline": "실험군 대조군",
+      "items": [
+        "실험군 전환",
+        "대조군 전환"
+      ],
+      "values": [
+        7.4,
+        6.1
+      ],
+      "unit": "%",
+      "source": "fixture:stress-edge-ab",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s11",
+      "sceneNumber": 11,
+      "narration": "마지막 전 단계에서는 다음 주 실행 항목을 세 가지로 압축합니다.",
+      "narration_tts": "마지막 전 단계에서는 다음 주 실행 항목을 세 가지로 압축합니다.",
+      "altText": "다음 주 실행 항목 세 가지가 체크리스트로 나타난다.",
+      "layout": "list",
+      "mood": "contemplative",
+      "reveal": "build_up",
+      "emphasis": "count",
+      "headline": "다음 주 실행",
+      "items": [
+        "후킹 문구 수정",
+        "썸네일 교체",
+        "리텐션 확인"
+      ],
+      "values": [
+        "월",
+        "수",
+        "금"
+      ],
+      "unit": "요일",
+      "source": "fixture:stress-edge-next",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s12",
+      "sceneNumber": 12,
+      "narration": "마무리는 의사결정자가 바로 볼 수 있도록 결론만 남깁니다.",
+      "narration_tts": "마무리는 의사결정자가 바로 볼 수 있도록 결론만 남깁니다.",
+      "altText": "결론 문구 하나가 중앙에 크게 표시되는 마무리 장면이다.",
+      "layout": "headline_only",
+      "mood": "triumphant",
+      "reveal": "dramatic_pause",
+      "emphasis": "keyword",
+      "headline": "결론만 남기기",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:stress-edge-close",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "slide_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "slide_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "slide_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s09",
+      "to": "s10",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s10",
+      "to": "s11",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s11",
+      "to": "s12",
+      "type": "slide_left",
+      "duration": 0.2
+    }
+  ]
+}

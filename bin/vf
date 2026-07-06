@@ -6,6 +6,7 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  realpathSync,
   renameSync,
   statSync,
   writeFileSync
@@ -23,8 +24,13 @@ import {
   schemaPathForName,
   validateJsonForSchema
 } from "../src/gates/registry.mjs";
+import {
+  formatSemanticViolations,
+  validateSemanticsForWrite
+} from "../src/gates/semantic.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const repoRealRoot = realpathSync(repoRoot);
 
 function usage(exitCode = 0) {
   const text = `vf
@@ -34,6 +40,7 @@ Commands:
   vf gate list
   vf gate all [--json] [--replay|--execute]
   vf gate <id> [--json] [--replay|--execute]
+  vf verify-report <report.json>
   vf write <file> --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
@@ -61,6 +68,14 @@ function normalizeRelPath(value) {
 
 function repoRelative(absolutePath) {
   return normalizeRelPath(path.relative(repoRoot, absolutePath));
+}
+
+function isInsideRepo(absolutePath) {
+  return absolutePath === repoRoot || absolutePath.startsWith(`${repoRoot}${path.sep}`);
+}
+
+function isInsideRealRepo(absolutePath) {
+  return absolutePath === repoRealRoot || absolutePath.startsWith(`${repoRealRoot}${path.sep}`);
 }
 
 function listFilesRecursive(absPath) {
@@ -268,6 +283,184 @@ function runGate(id, options) {
   return runNativeGate(normalizedId, gate, command);
 }
 
+function gateForReport(report) {
+  const normalized = normalizeGateId(report?.gate);
+  if (gateRegistry[normalized]) return { id: normalized, gate: gateRegistry[normalized] };
+  const found = Object.entries(gateRegistry).find(([, gate]) => normalizeGateId(gate.gate) === normalized);
+  return found ? { id: found[0], gate: found[1] } : null;
+}
+
+function inputFilesFromInputSet(inputSet) {
+  const files = [];
+  const uniqueInputs = [...new Set(inputSet ?? [])].sort((a, b) => a.localeCompare(b));
+  for (const rel of uniqueInputs) {
+    const abs = path.join(repoRoot, rel);
+    if (!existsSync(abs)) continue;
+    const stats = statSync(abs);
+    if (stats.isDirectory()) files.push(...listFilesRecursive(abs));
+    else if (stats.isFile()) files.push(abs);
+  }
+  return files;
+}
+
+function legacyEvidenceBaseDir(gate) {
+  const firstSegment = gate.script.split(/[\\/]/)[0];
+  return firstSegment ? path.join(repoRoot, firstSegment) : repoRoot;
+}
+
+function resolveLegacyEvidencePath(gate, rel, expectedHash = null) {
+  const bases = [legacyEvidenceBaseDir(gate), repoRoot];
+  const existing = [];
+  for (const base of bases) {
+    const abs = path.resolve(base, rel);
+    if (!isInsideRepo(abs) || !existsSync(abs)) continue;
+    existing.push(abs);
+    if (expectedHash && sha256File(abs) === expectedHash) return abs;
+  }
+  return existing[0] ?? path.resolve(legacyEvidenceBaseDir(gate), rel);
+}
+
+function verifyLegacyEvidenceFiles(report, gate, failures) {
+  const sourceReport = report.sourceReport ?? gate.legacyReport;
+  if (!sourceReport) {
+    failures.push("legacy report is missing sourceReport");
+    return { evidenceHash: null, freshnessFiles: [] };
+  }
+
+  let legacyReport;
+  try {
+    legacyReport = readJson(sourceReport);
+  } catch (error) {
+    failures.push(`sourceReport is not readable JSON: ${sourceReport}: ${error.message}`);
+    return { evidenceHash: null, freshnessFiles: [] };
+  }
+
+  const freshnessFiles = [path.join(repoRoot, sourceReport)];
+  const evidence = Array.isArray(legacyReport.evidence) ? legacyReport.evidence : [];
+  for (const item of evidence) {
+    const rel = String(item.path ?? "");
+    const abs = resolveLegacyEvidencePath(gate, rel, item.sha256 ?? null);
+    if (!isInsideRepo(abs)) {
+      failures.push(`legacy evidence escapes repo: ${rel}`);
+      continue;
+    }
+    if (!existsSync(abs)) {
+      failures.push(`legacy evidence missing: ${rel}`);
+      continue;
+    }
+    const bytes = readFileSync(abs);
+    const actualHash = sha256Bytes(bytes);
+    if (item.sha256 && item.sha256 !== actualHash) {
+      failures.push(`legacy evidence hash mismatch: ${rel}`);
+    }
+    if (Number.isInteger(item.bytes) && item.bytes !== bytes.length) {
+      failures.push(`legacy evidence byte count mismatch: ${rel}`);
+    }
+    freshnessFiles.push(abs);
+  }
+
+  return {
+    evidenceHash: legacyEvidenceHash(legacyReport),
+    freshnessFiles
+  };
+}
+
+function verifyNativeEvidence(gate, failures) {
+  let result;
+  try {
+    result = gate.run({ repoRoot });
+  } catch (error) {
+    failures.push(`current native gate execution failed: ${error instanceof Error ? error.message : String(error)}`);
+    return { evidenceHash: null, freshnessFiles: [] };
+  }
+
+  const checks = Array.isArray(result.checks) ? result.checks : [];
+  if (checks.length === 0 || checks.some((check) => check.pass !== true)) {
+    failures.push("current native gate checks do not all pass");
+  }
+
+  return {
+    evidenceHash: hashGateEvidence(result.evidence ?? checks),
+    freshnessFiles: inputFilesFromInputSet(result.inputSet ?? [])
+  };
+}
+
+function verifyFreshness(reportPath, freshnessFiles, failures) {
+  const reportMtime = statSync(reportPath).mtimeMs;
+  const stale = freshnessFiles
+    .filter((file) => existsSync(file) && statSync(file).mtimeMs > reportMtime)
+    .map((file) => repoRelative(file))
+    .sort((a, b) => a.localeCompare(b));
+  if (stale.length > 0) {
+    failures.push(`report is older than evidence: ${stale.slice(0, 5).join(", ")}${stale.length > 5 ? " ..." : ""}`);
+  }
+}
+
+function verifyReportCommand(args) {
+  const file = targetFileArg(args);
+  if (!file) throw new Error("vf verify-report requires a report JSON file");
+
+  const abs = path.resolve(repoRoot, file);
+  if (!isInsideRepo(abs)) throw new Error("vf verify-report target must stay inside the repository");
+  const report = JSON.parse(readFileSync(abs, "utf8"));
+  const failures = [];
+
+  for (const field of requiredReportFields) {
+    if (!Object.prototype.hasOwnProperty.call(report, field)) failures.push(`missing required field: ${field}`);
+  }
+  if (report.pass !== true) failures.push("report pass must be true");
+  if (report.exitCode !== 0) failures.push("report exitCode must be 0");
+
+  const gateEntry = gateForReport(report);
+  if (!gateEntry) {
+    failures.push(`unknown gate in report: ${report.gate}`);
+  } else {
+    const { gate } = gateEntry;
+    const input = canonicalInput(report.inputSet);
+    if (report.canonicalInputMerkleHash !== input.hash) {
+      failures.push("canonicalInputMerkleHash mismatch");
+    }
+
+    const scriptPath = path.join(repoRoot, gate.script);
+    const scriptHash = existsSync(scriptPath) ? sha256File(scriptPath) : null;
+    if (report.gateScriptHash !== scriptHash) {
+      failures.push("gateScriptHash mismatch");
+    }
+
+    const currentCommit = gitCommit();
+    if (report.gitCommit !== currentCommit) {
+      failures.push("gitCommit mismatch");
+    }
+
+    const evidence =
+      gate.kind === "legacy"
+        ? verifyLegacyEvidenceFiles(report, gate, failures)
+        : verifyNativeEvidence(gate, failures);
+    if (report.evidenceHash !== evidence.evidenceHash) {
+      failures.push("evidenceHash mismatch");
+    }
+    verifyFreshness(abs, evidence.freshnessFiles, failures);
+  }
+
+  if (failures.length > 0) {
+    console.error(`verify-report: FAIL ${repoRelative(abs)}`);
+    for (const failure of failures) console.error(`- ${failure}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(
+    JSON.stringify(
+      {
+        report: repoRelative(abs),
+        verification: "passed"
+      },
+      null,
+      2
+    )
+  );
+}
+
 function listCommand() {
   console.log(JSON.stringify(listGates(), null, 2));
 }
@@ -321,7 +514,12 @@ function targetFileArg(args) {
 }
 
 function atomicWriteJson(absPath, data) {
-  mkdirSync(path.dirname(absPath), { recursive: true });
+  const parent = path.dirname(absPath);
+  mkdirSync(parent, { recursive: true });
+  const realParent = realpathSync(parent);
+  if (!isInsideRealRepo(realParent)) {
+    throw new Error("vf write target parent must stay inside the repository");
+  }
   const tmp = `${absPath}.${process.pid}.${Date.now()}.tmp`;
   writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
   renameSync(tmp, absPath);
@@ -332,6 +530,11 @@ function writeCommand(args) {
   if (!file) throw new Error("vf write requires a target file");
   if (path.extname(file).toLowerCase() !== ".json") {
     throw new Error("vf write accepts JSON targets only");
+  }
+
+  const abs = path.resolve(repoRoot, file);
+  if (!isInsideRepo(abs)) {
+    throw new Error("vf write target must stay inside the repository");
   }
 
   const schemaArg = optionValue(args, "--schema") ?? "auto";
@@ -350,7 +553,12 @@ function writeCommand(args) {
     throw new Error(`schema validation failed: ${schemaName} (${validation.schemaPath})\n${violations}`);
   }
 
-  const abs = path.resolve(repoRoot, file);
+  const semantic = validateSemanticsForWrite({ repoRoot, schemaName, data, targetPath: abs });
+  if (!semantic.pass) {
+    const violations = formatSemanticViolations(semantic.violations).map((message) => `- ${message}`).join("\n");
+    throw new Error(`semantic validation failed: ${schemaName}\n${violations}`);
+  }
+
   atomicWriteJson(abs, data);
   console.log(
     JSON.stringify(
@@ -371,6 +579,7 @@ try {
   const [command, ...args] = process.argv.slice(2);
   if (!command) usage(0);
   if (command === "gate") gateCommand(args);
+  else if (command === "verify-report") verifyReportCommand(args);
   else if (command === "write") writeCommand(args);
   else usage(1);
 } catch (error) {

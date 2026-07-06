@@ -1,0 +1,699 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "./assets/audio/s01.mock.mp3",
+      "audioDurationSec": 4.2,
+      "words": [
+        {
+          "word": "첫",
+          "start": 0.2,
+          "end": 0.515
+        },
+        {
+          "word": "장면은",
+          "start": 0.637,
+          "end": 0.952
+        },
+        {
+          "word": "전체",
+          "start": 1.075,
+          "end": 1.39
+        },
+        {
+          "word": "캠페인의",
+          "start": 1.512,
+          "end": 1.827
+        },
+        {
+          "word": "핵심",
+          "start": 1.95,
+          "end": 2.265
+        },
+        {
+          "word": "수치를",
+          "start": 2.388,
+          "end": 2.703
+        },
+        {
+          "word": "간결하게",
+          "start": 2.825,
+          "end": 3.14
+        },
+        {
+          "word": "소개합니다",
+          "start": 3.263,
+          "end": 3.578
+        }
+      ],
+      "sourceHash": "2b29912d5af19a195d78670bdf042dc56cc5c2cf741ebb62787515264567e2a5",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "./assets/audio/s02.mock.mp3",
+      "audioDurationSec": 4.8,
+      "words": [
+        {
+          "word": "검색",
+          "start": 0.2,
+          "end": 0.528
+        },
+        {
+          "word": "유입은",
+          "start": 0.656,
+          "end": 0.984
+        },
+        {
+          "word": "예상보다",
+          "start": 1.111,
+          "end": 1.439
+        },
+        {
+          "word": "빠르게",
+          "start": 1.567,
+          "end": 1.895
+        },
+        {
+          "word": "늘었고",
+          "start": 2.022,
+          "end": 2.35
+        },
+        {
+          "word": "추천",
+          "start": 2.478,
+          "end": 2.806
+        },
+        {
+          "word": "유입은",
+          "start": 2.933,
+          "end": 3.261
+        },
+        {
+          "word": "안정적으로",
+          "start": 3.389,
+          "end": 3.717
+        },
+        {
+          "word": "유지됐습니다",
+          "start": 3.844,
+          "end": 4.172
+        }
+      ],
+      "sourceHash": "e66e1ea2968c7a2f224c2efe880940139be05cc1a22a5a6b44e58458790e4be5",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "./assets/audio/s03.mock.mp3",
+      "audioDurationSec": 4.4,
+      "words": [
+        {
+          "word": "제품",
+          "start": 0.2,
+          "end": 0.496
+        },
+        {
+          "word": "소개",
+          "start": 0.611,
+          "end": 0.907
+        },
+        {
+          "word": "화면은",
+          "start": 1.022,
+          "end": 1.318
+        },
+        {
+          "word": "밝고",
+          "start": 1.433,
+          "end": 1.729
+        },
+        {
+          "word": "선명한",
+          "start": 1.844,
+          "end": 2.14
+        },
+        {
+          "word": "이미지",
+          "start": 2.256,
+          "end": 2.552
+        },
+        {
+          "word": "생성",
+          "start": 2.667,
+          "end": 2.963
+        },
+        {
+          "word": "프롬프트로",
+          "start": 3.078,
+          "end": 3.374
+        },
+        {
+          "word": "구성합니다",
+          "start": 3.489,
+          "end": 3.785
+        }
+      ],
+      "sourceHash": "1ed83624dca9afdb26d70659e3417b4990c1e4183409c8cb82b857cccd6caa38",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s04",
+      "audioPath": "./assets/audio/s04.mock.mp3",
+      "audioDurationSec": 5.1,
+      "words": [
+        {
+          "word": "지역별",
+          "start": 0.2,
+          "end": 0.552
+        },
+        {
+          "word": "반응은",
+          "start": 0.689,
+          "end": 1.041
+        },
+        {
+          "word": "지도",
+          "start": 1.178,
+          "end": 1.53
+        },
+        {
+          "word": "장면으로",
+          "start": 1.667,
+          "end": 2.019
+        },
+        {
+          "word": "보여주고",
+          "start": 2.156,
+          "end": 2.508
+        },
+        {
+          "word": "수도권과",
+          "start": 2.644,
+          "end": 2.996
+        },
+        {
+          "word": "남부권을",
+          "start": 3.133,
+          "end": 3.485
+        },
+        {
+          "word": "나눠",
+          "start": 3.622,
+          "end": 3.974
+        },
+        {
+          "word": "표시합니다",
+          "start": 4.111,
+          "end": 4.463
+        }
+      ],
+      "sourceHash": "6de9fe4381540fceeeac2fd18c46a3413a92bd305c32d8cb104697cf1b7d0857",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s05",
+      "audioPath": "./assets/audio/s05.mock.mp3",
+      "audioDurationSec": 4.7,
+      "words": [
+        {
+          "word": "검색",
+          "start": 0.2,
+          "end": 0.488
+        },
+        {
+          "word": "이미지",
+          "start": 0.6,
+          "end": 0.888
+        },
+        {
+          "word": "장면은",
+          "start": 1,
+          "end": 1.288
+        },
+        {
+          "word": "실제",
+          "start": 1.4,
+          "end": 1.688
+        },
+        {
+          "word": "매장",
+          "start": 1.8,
+          "end": 2.088
+        },
+        {
+          "word": "분위기를",
+          "start": 2.2,
+          "end": 2.488
+        },
+        {
+          "word": "참고해",
+          "start": 2.6,
+          "end": 2.888
+        },
+        {
+          "word": "차분한",
+          "start": 3,
+          "end": 3.288
+        },
+        {
+          "word": "배경으로",
+          "start": 3.4,
+          "end": 3.688
+        },
+        {
+          "word": "배치합니다",
+          "start": 3.8,
+          "end": 4.088
+        }
+      ],
+      "sourceHash": "b56fdfb61e2bde4001d2df798c2a2973e251742bfdd17e702941029d692a9708",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s06",
+      "audioPath": "./assets/audio/s06.mock.mp3",
+      "audioDurationSec": 30,
+      "words": [
+        {
+          "word": "긴",
+          "start": 0.2,
+          "end": 0.65
+        },
+        {
+          "word": "설명",
+          "start": 1.924,
+          "end": 2.374
+        },
+        {
+          "word": "장면은",
+          "start": 3.647,
+          "end": 4.097
+        },
+        {
+          "word": "삼십",
+          "start": 5.371,
+          "end": 5.821
+        },
+        {
+          "word": "초",
+          "start": 7.094,
+          "end": 7.544
+        },
+        {
+          "word": "오디오를",
+          "start": 8.818,
+          "end": 9.268
+        },
+        {
+          "word": "사용해",
+          "start": 10.541,
+          "end": 10.991
+        },
+        {
+          "word": "문제",
+          "start": 12.265,
+          "end": 12.715
+        },
+        {
+          "word": "정의",
+          "start": 13.988,
+          "end": 14.438
+        },
+        {
+          "word": "사용자",
+          "start": 15.712,
+          "end": 16.162
+        },
+        {
+          "word": "맥락",
+          "start": 17.435,
+          "end": 17.885
+        },
+        {
+          "word": "실험",
+          "start": 19.159,
+          "end": 19.609
+        },
+        {
+          "word": "계획",
+          "start": 20.882,
+          "end": 21.332
+        },
+        {
+          "word": "예상",
+          "start": 22.606,
+          "end": 23.056
+        },
+        {
+          "word": "리스크를",
+          "start": 24.329,
+          "end": 24.779
+        },
+        {
+          "word": "순서대로",
+          "start": 26.053,
+          "end": 26.503
+        },
+        {
+          "word": "설명합니다",
+          "start": 27.776,
+          "end": 28.226
+        }
+      ],
+      "sourceHash": "160e5156efd12a1f68b42115b408bac12624fdc41c85ab08b29a627b11d39e07",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s07",
+      "audioPath": "./assets/audio/s07.mock.mp3",
+      "audioDurationSec": 4.3,
+      "words": [
+        {
+          "word": "비디오",
+          "start": 0.2,
+          "end": 0.488
+        },
+        {
+          "word": "장면은",
+          "start": 0.6,
+          "end": 0.888
+        },
+        {
+          "word": "앱",
+          "start": 1,
+          "end": 1.288
+        },
+        {
+          "word": "사용",
+          "start": 1.4,
+          "end": 1.688
+        },
+        {
+          "word": "흐름을",
+          "start": 1.8,
+          "end": 2.088
+        },
+        {
+          "word": "짧은",
+          "start": 2.2,
+          "end": 2.488
+        },
+        {
+          "word": "클립으로",
+          "start": 2.6,
+          "end": 2.888
+        },
+        {
+          "word": "보여주는",
+          "start": 3,
+          "end": 3.288
+        },
+        {
+          "word": "자리입니다",
+          "start": 3.4,
+          "end": 3.688
+        }
+      ],
+      "sourceHash": "0d745bfd8364ca0cbd50b13b8e6250ac191561731acb4aa76161916fc5479d22",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s08",
+      "audioPath": "./assets/audio/s08.mock.mp3",
+      "audioDurationSec": 4.6,
+      "words": [
+        {
+          "word": "비용",
+          "start": 0.2,
+          "end": 0.551
+        },
+        {
+          "word": "구조는",
+          "start": 0.688,
+          "end": 1.039
+        },
+        {
+          "word": "인력과",
+          "start": 1.175,
+          "end": 1.526
+        },
+        {
+          "word": "인프라",
+          "start": 1.662,
+          "end": 2.013
+        },
+        {
+          "word": "콘텐츠",
+          "start": 2.15,
+          "end": 2.501
+        },
+        {
+          "word": "제작비로",
+          "start": 2.637,
+          "end": 2.988
+        },
+        {
+          "word": "나눠",
+          "start": 3.125,
+          "end": 3.476
+        },
+        {
+          "word": "설명합니다",
+          "start": 3.612,
+          "end": 3.963
+        }
+      ],
+      "sourceHash": "eebb26b0f378f8961761e6672d089e0ed3a3880419ab86c985502a243a796a14",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s09",
+      "audioPath": "./assets/audio/s09.mock.mp3",
+      "audioDurationSec": 4.5,
+      "words": [
+        {
+          "word": "핵심",
+          "start": 0.2,
+          "end": 0.474
+        },
+        {
+          "word": "지표는",
+          "start": 0.58,
+          "end": 0.854
+        },
+        {
+          "word": "평균",
+          "start": 0.96,
+          "end": 1.234
+        },
+        {
+          "word": "시청",
+          "start": 1.34,
+          "end": 1.614
+        },
+        {
+          "word": "시간과",
+          "start": 1.72,
+          "end": 1.994
+        },
+        {
+          "word": "저장률을",
+          "start": 2.1,
+          "end": 2.374
+        },
+        {
+          "word": "함께",
+          "start": 2.48,
+          "end": 2.754
+        },
+        {
+          "word": "보여주면",
+          "start": 2.86,
+          "end": 3.134
+        },
+        {
+          "word": "맥락이",
+          "start": 3.24,
+          "end": 3.514
+        },
+        {
+          "word": "분명해집니다",
+          "start": 3.62,
+          "end": 3.894
+        }
+      ],
+      "sourceHash": "7c879c4731c98f2e9a585bdf786b6d5b7ba95a3a9e6bcc3dc515075f4c15e79f",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s10",
+      "audioPath": "./assets/audio/s10.mock.mp3",
+      "audioDurationSec": 4.9,
+      "words": [
+        {
+          "word": "실험군과",
+          "start": 0.2,
+          "end": 0.578
+        },
+        {
+          "word": "대조군의",
+          "start": 0.725,
+          "end": 1.103
+        },
+        {
+          "word": "차이는",
+          "start": 1.25,
+          "end": 1.628
+        },
+        {
+          "word": "병렬",
+          "start": 1.775,
+          "end": 2.153
+        },
+        {
+          "word": "공개",
+          "start": 2.3,
+          "end": 2.678
+        },
+        {
+          "word": "애니메이션으로",
+          "start": 2.825,
+          "end": 3.203
+        },
+        {
+          "word": "동시에",
+          "start": 3.35,
+          "end": 3.728
+        },
+        {
+          "word": "비교합니다",
+          "start": 3.875,
+          "end": 4.253
+        }
+      ],
+      "sourceHash": "3efed85668be0bc9b0d9a34659f8a6345dfcf5f67ac6000749e84215f3afc5cb",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s11",
+      "audioPath": "./assets/audio/s11.mock.mp3",
+      "audioDurationSec": 4.2,
+      "words": [
+        {
+          "word": "마지막",
+          "start": 0.2,
+          "end": 0.452
+        },
+        {
+          "word": "전",
+          "start": 0.55,
+          "end": 0.802
+        },
+        {
+          "word": "단계에서는",
+          "start": 0.9,
+          "end": 1.152
+        },
+        {
+          "word": "다음",
+          "start": 1.25,
+          "end": 1.502
+        },
+        {
+          "word": "주",
+          "start": 1.6,
+          "end": 1.852
+        },
+        {
+          "word": "실행",
+          "start": 1.95,
+          "end": 2.202
+        },
+        {
+          "word": "항목을",
+          "start": 2.3,
+          "end": 2.552
+        },
+        {
+          "word": "세",
+          "start": 2.65,
+          "end": 2.902
+        },
+        {
+          "word": "가지로",
+          "start": 3,
+          "end": 3.252
+        },
+        {
+          "word": "압축합니다",
+          "start": 3.35,
+          "end": 3.602
+        }
+      ],
+      "sourceHash": "1c3efaec2aa98e880853ca62aa72aa07f68d3ee80e5ae4579905efb5453248c8",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    },
+    {
+      "sceneId": "s12",
+      "audioPath": "./assets/audio/s12.mock.mp3",
+      "audioDurationSec": 3.8,
+      "words": [
+        {
+          "word": "마무리는",
+          "start": 0.2,
+          "end": 0.479
+        },
+        {
+          "word": "의사결정자가",
+          "start": 0.587,
+          "end": 0.866
+        },
+        {
+          "word": "바로",
+          "start": 0.975,
+          "end": 1.254
+        },
+        {
+          "word": "볼",
+          "start": 1.362,
+          "end": 1.641
+        },
+        {
+          "word": "수",
+          "start": 1.75,
+          "end": 2.029
+        },
+        {
+          "word": "있도록",
+          "start": 2.137,
+          "end": 2.416
+        },
+        {
+          "word": "결론만",
+          "start": 2.525,
+          "end": 2.804
+        },
+        {
+          "word": "남깁니다",
+          "start": 2.912,
+          "end": 3.191
+        }
+      ],
+      "sourceHash": "77e43f11758a7a8784feacca651becad4ac099d1a878810c721b26c122f83e37",
+      "provider": "mock-tts:ffmpeg-anullsrc",
+      "voice": "ko-KR-stress-edge-silent"
+    }
+  ]
+}
