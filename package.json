@@ -11,9 +11,12 @@
   "scripts": {
     "gate": "node bin/vf gate all --replay",
     "lint": "node scripts/schema-lint.mjs && node scripts/readme-sync.mjs",
+    "schemas": "node scripts/validate-schemas.mjs",
     "render": "hyperframes render poc/fixtures/p0a --output out/p0a.mp4 --fps=30 --quality=high --workers=1 --no-browser-gpu"
   },
   "dependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
     "hyperframes": "0.7.26"
   },
   "engines": {

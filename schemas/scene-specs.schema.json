@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/scene-specs.schema.json",
+  "title": "video-factory scene_specs.json",
+  "description": "Authoring-layer source of truth. Composition HTML is generated from this contract and is not edited directly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "projectId", "scenes", "transitions"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$"
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/scene"
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "$comment": "Scene-to-scene edges only. Transitions are not owned by either adjacent scene.",
+      "items": {
+        "$ref": "#/$defs/transition"
+      }
+    }
+  },
+  "$defs": {
+    "sceneId": {
+      "type": "string",
+      "pattern": "^s\\d{2,}$"
+    },
+    "percent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "layout": {
+      "type": "string",
+      "enum": ["bar", "pie", "line", "list", "numbered", "statistic", "compare", "quote", "headline_only"]
+    },
+    "mood": {
+      "type": "string",
+      "enum": ["dramatic", "urgent", "somber", "informative", "contemplative", "suspense", "triumphant"]
+    },
+    "reveal": {
+      "type": "string",
+      "enum": [
+        "fade_in",
+        "stagger",
+        "stagger_then_flash",
+        "cascade",
+        "count_up",
+        "typewriter",
+        "spotlight",
+        "split_reveal",
+        "zoom_in",
+        "build_up",
+        "dramatic_pause",
+        "parallel"
+      ]
+    },
+    "emphasis": {
+      "type": "string",
+      "enum": ["number", "keyword", "count", "contrast", "sequence", "person", "quote"]
+    },
+    "visualKind": {
+      "type": "string",
+      "enum": ["generate_image", "search_image", "chart", "map_scene", "video", "none"]
+    },
+    "imagePlacement": {
+      "type": "string",
+      "enum": ["fullscreen", "background", "center", "left", "right", "inline"]
+    },
+    "kenBurns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "zoomFactor", "zoomDirection", "panDirection"],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "zoomFactor": {
+          "type": "number",
+          "minimum": 1
+        },
+        "zoomDirection": {
+          "type": "string",
+          "enum": ["in", "out"]
+        },
+        "panDirection": {
+          "type": "string",
+          "enum": ["none", "left", "right", "up", "down"]
+        }
+      }
+    },
+    "imageAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "placement"],
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "placement": {
+          "$ref": "#/$defs/imagePlacement"
+        }
+      },
+      "$comment": "Selected/generated image results live in image-manifest, not scene_specs."
+    },
+    "coordinateBox": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "x": {
+          "$ref": "#/$defs/percent"
+        },
+        "y": {
+          "$ref": "#/$defs/percent"
+        },
+        "width": {
+          "$ref": "#/$defs/percent"
+        },
+        "height": {
+          "$ref": "#/$defs/percent"
+        }
+      }
+    },
+    "canvasOverrideNoFormat": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "headline": {
+          "$ref": "#/$defs/coordinateBox"
+        },
+        "image": {
+          "$ref": "#/$defs/coordinateBox"
+        }
+      }
+    },
+    "formatOverrideMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "16:9": {
+          "$ref": "#/$defs/canvasOverrideNoFormat"
+        },
+        "9:16": {
+          "$ref": "#/$defs/canvasOverrideNoFormat"
+        },
+        "1:1": {
+          "$ref": "#/$defs/canvasOverrideNoFormat"
+        }
+      }
+    },
+    "canvasOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "headline": {
+          "$ref": "#/$defs/coordinateBox"
+        },
+        "image": {
+          "$ref": "#/$defs/coordinateBox"
+        },
+        "byFormat": {
+          "$ref": "#/$defs/formatOverrideMap"
+        }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "type", "duration"],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "to": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["cut", "fade", "crossfade", "slide", "wipe", "slide_left", "slide_right", "wipe_left", "wipe_right"]
+        },
+        "duration": {
+          "type": "number",
+          "minimum": 0,
+          "$comment": "Seconds in authoring space. The compiler derives frame counts."
+        }
+      }
+    },
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sceneId",
+        "sceneNumber",
+        "narration",
+        "narration_tts",
+        "altText",
+        "layout",
+        "mood",
+        "reveal",
+        "emphasis",
+        "headline",
+        "items",
+        "values",
+        "unit",
+        "source",
+        "visual_kind",
+        "kenBurns",
+        "subtitleMode"
+      ],
+      "properties": {
+        "sceneId": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "sceneNumber": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "narration": {
+          "type": "string",
+          "minLength": 1
+        },
+        "narration_tts": {
+          "type": "string",
+          "minLength": 1
+        },
+        "altText": {
+          "type": "string",
+          "minLength": 1,
+          "$comment": "Required for deck accessibility. It is authored, not inferred from narration."
+        },
+        "caption": {
+          "type": "string"
+        },
+        "layout": {
+          "$ref": "#/$defs/layout"
+        },
+        "mood": {
+          "$ref": "#/$defs/mood"
+        },
+        "reveal": {
+          "$ref": "#/$defs/reveal"
+        },
+        "emphasis": {
+          "$ref": "#/$defs/emphasis"
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 1
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "unit": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "visual_kind": {
+          "$ref": "#/$defs/visualKind"
+        },
+        "imageAsset": {
+          "$ref": "#/$defs/imageAsset"
+        },
+        "kenBurns": {
+          "$ref": "#/$defs/kenBurns"
+        },
+        "subtitleMode": {
+          "type": "string",
+          "enum": ["karaoke", "keyword"]
+        },
+        "ost": {
+          "enum": [0, 1, 2, null],
+          "default": null,
+          "$comment": "Reserved for v2 OST selection."
+        },
+        "overrides": {
+          "$ref": "#/$defs/canvasOverride"
+        }
+      }
+    }
+  }
+}

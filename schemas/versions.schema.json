@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/versions.schema.json",
+  "title": "video-factory versions.json",
+  "description": "Resource generation index. resources[type].selected is the single source of active resource state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resources", "editLock", "dirty"],
+  "properties": {
+    "resources": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+      },
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9_-]*$": {
+          "$ref": "#/$defs/resourceHistory"
+        }
+      },
+      "additionalProperties": false
+    },
+    "editLock": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/editLock"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "dirty": {
+      "type": "boolean"
+    }
+  },
+  "$defs": {
+    "resourceEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gen", "path", "createdAt", "note"],
+      "properties": {
+        "gen": {
+          "type": "string",
+          "pattern": "^gen_\\d{2,}$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "resourceHistory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entries", "selected"],
+      "properties": {
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/resourceEntry"
+          }
+        },
+        "selected": {
+          "$comment": "Runtime validation must ensure the selected gen exists in this resource's entries.",
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^gen_\\d{2,}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "editLock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner", "acquiredAt"],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acquiredAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

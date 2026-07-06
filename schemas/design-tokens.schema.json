@@ -1,0 +1,460 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/design-tokens.schema.json",
+  "title": "video-factory design-tokens.json",
+  "description": "Preset design token source. Project and scene overrides use the DeepPartial schemas in $defs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "presetId", "colors", "moods", "subtitle", "fonts"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "presetId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$"
+    },
+    "colors": {
+      "$ref": "#/$defs/colorMap"
+    },
+    "moods": {
+      "$ref": "#/$defs/moods"
+    },
+    "subtitle": {
+      "$ref": "#/$defs/subtitle"
+    },
+    "fonts": {
+      "$ref": "#/$defs/fonts"
+    }
+  },
+  "$defs": {
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$"
+    },
+    "colorMap": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9_]*$": {
+          "$ref": "#/$defs/hexColor"
+        }
+      },
+      "additionalProperties": false
+    },
+    "moodName": {
+      "type": "string",
+      "enum": ["dramatic", "urgent", "somber", "informative", "contemplative", "suspense", "triumphant"]
+    },
+    "mood": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accent", "speed", "glow"],
+      "properties": {
+        "accent": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "speed": {
+          "type": "string",
+          "enum": ["slow", "normal", "fast"],
+          "$comment": "Animation pacing/easing only. This value never changes audio duration."
+        },
+        "glow": {
+          "type": "string"
+        }
+      }
+    },
+    "moods": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dramatic", "urgent", "somber", "informative", "contemplative", "suspense", "triumphant"],
+      "properties": {
+        "dramatic": {
+          "$ref": "#/$defs/mood"
+        },
+        "urgent": {
+          "$ref": "#/$defs/mood"
+        },
+        "somber": {
+          "$ref": "#/$defs/mood"
+        },
+        "informative": {
+          "$ref": "#/$defs/mood"
+        },
+        "contemplative": {
+          "$ref": "#/$defs/mood"
+        },
+        "suspense": {
+          "$ref": "#/$defs/mood"
+        },
+        "triumphant": {
+          "$ref": "#/$defs/mood"
+        }
+      }
+    },
+    "fontWeight": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1000
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ]
+    },
+    "subtitle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fontFamily",
+        "fontSize",
+        "fontWeight",
+        "color",
+        "strokeColor",
+        "strokeWidth",
+        "keywordColor",
+        "keywordStrokeColor",
+        "backgroundColor",
+        "borderRadius",
+        "boxShadow",
+        "bottomOffset",
+        "maxWidth",
+        "lineHeight",
+        "maxCharsPerLine",
+        "visible"
+      ],
+      "properties": {
+        "fontFamily": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fontSize": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fontWeight": {
+          "$ref": "#/$defs/fontWeight"
+        },
+        "color": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strokeColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strokeWidth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "keywordColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keywordStrokeColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "backgroundColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "borderRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "boxShadow": {
+          "type": "string"
+        },
+        "bottomOffset": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "lineHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maxCharsPerLine": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "fontFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^.+\\.woff2$"
+        },
+        "weight": {
+          "$ref": "#/$defs/fontWeight"
+        },
+        "style": {
+          "type": "string",
+          "enum": ["normal", "italic"]
+        }
+      }
+    },
+    "fontRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "files"],
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fontFile"
+          }
+        }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body", "headline", "value", "subtitle", "mono"],
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/fontRole"
+        },
+        "headline": {
+          "$ref": "#/$defs/fontRole"
+        },
+        "value": {
+          "$ref": "#/$defs/fontRole"
+        },
+        "subtitle": {
+          "$ref": "#/$defs/fontRole"
+        },
+        "mono": {
+          "$ref": "#/$defs/fontRole"
+        }
+      }
+    },
+    "partialColorMap": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+      },
+      "patternProperties": {
+        "^[A-Za-z][A-Za-z0-9_]*$": {
+          "$ref": "#/$defs/hexColor"
+        }
+      },
+      "additionalProperties": false
+    },
+    "partialMood": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "accent": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "speed": {
+          "type": "string",
+          "enum": ["slow", "normal", "fast"],
+          "$comment": "Animation pacing/easing only. This value never changes audio duration."
+        },
+        "glow": {
+          "type": "string"
+        }
+      }
+    },
+    "partialMoods": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "dramatic": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "urgent": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "somber": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "informative": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "contemplative": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "suspense": {
+          "$ref": "#/$defs/partialMood"
+        },
+        "triumphant": {
+          "$ref": "#/$defs/partialMood"
+        }
+      }
+    },
+    "partialSubtitle": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "fontFamily": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fontSize": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "fontWeight": {
+          "$ref": "#/$defs/fontWeight"
+        },
+        "color": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strokeColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strokeWidth": {
+          "type": "number",
+          "minimum": 0
+        },
+        "keywordColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keywordStrokeColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "backgroundColor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "borderRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "boxShadow": {
+          "type": "string"
+        },
+        "bottomOffset": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxWidth": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "lineHeight": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "maxCharsPerLine": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "visible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "partialFontFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "path": {
+          "type": "string",
+          "pattern": "^.+\\.woff2$"
+        },
+        "weight": {
+          "$ref": "#/$defs/fontWeight"
+        },
+        "style": {
+          "type": "string",
+          "enum": ["normal", "italic"]
+        }
+      }
+    },
+    "partialFontRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partialFontFile"
+          }
+        }
+      }
+    },
+    "partialFonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/partialFontRole"
+        },
+        "headline": {
+          "$ref": "#/$defs/partialFontRole"
+        },
+        "value": {
+          "$ref": "#/$defs/partialFontRole"
+        },
+        "subtitle": {
+          "$ref": "#/$defs/partialFontRole"
+        },
+        "mono": {
+          "$ref": "#/$defs/partialFontRole"
+        }
+      }
+    },
+    "deepPartialDesignTokens": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "$comment": "Reusable DeepPartial schema for the project and scene override tiers above the preset.",
+      "properties": {
+        "colors": {
+          "$ref": "#/$defs/partialColorMap"
+        },
+        "moods": {
+          "$ref": "#/$defs/partialMoods"
+        },
+        "subtitle": {
+          "$ref": "#/$defs/partialSubtitle"
+        },
+        "fonts": {
+          "$ref": "#/$defs/partialFonts"
+        }
+      }
+    }
+  }
+}
