@@ -1,0 +1,32 @@
+// 위반 규칙: scene_specs.scenes[].visual_kind must be a known visual kind.
+{
+  "version": "1.0.0",
+  "projectId": "demo-project",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "Narration text.",
+      "narration_tts": "Narration text.",
+      "altText": "A simple accessible visual description.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "Headline",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "",
+      "visual_kind": "photo",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": []
+}

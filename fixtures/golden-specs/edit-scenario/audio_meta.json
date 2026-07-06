@@ -1,0 +1,304 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "./assets/audio/s01.mock.mp3",
+      "audioDurationSec": 5.535,
+      "words": [
+        {
+          "word": "첫",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "번째",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "word": "장면은",
+          "start": 0.8,
+          "end": 1.085
+        },
+        {
+          "word": "편집",
+          "start": 1.165,
+          "end": 1.405
+        },
+        {
+          "word": "루프의",
+          "start": 1.485,
+          "end": 1.77
+        },
+        {
+          "word": "기준점입니다",
+          "start": 1.97,
+          "end": 2.42
+        },
+        {
+          "word": "이",
+          "start": 2.5,
+          "end": 2.74
+        },
+        {
+          "word": "구간은",
+          "start": 2.82,
+          "end": 3.105
+        },
+        {
+          "word": "이후",
+          "start": 3.185,
+          "end": 3.425
+        },
+        {
+          "word": "렌더에서도",
+          "start": 3.505,
+          "end": 3.9
+        },
+        {
+          "word": "변하지",
+          "start": 4.1,
+          "end": 4.385
+        },
+        {
+          "word": "않아야",
+          "start": 4.465,
+          "end": 4.75
+        },
+        {
+          "word": "합니다",
+          "start": 4.83,
+          "end": 5.115
+        }
+      ],
+      "sourceHash": "6fc348b49d0c78c2c76c30fd4dec7cd7b6dc91e8effbb24b99d27ea753d30d06",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "./assets/audio/s02.mock.mp3",
+      "audioDurationSec": 12.22,
+      "words": [
+        {
+          "word": "두",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "번째",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "word": "장면의",
+          "start": 0.8,
+          "end": 1.085
+        },
+        {
+          "word": "나레이션을",
+          "start": 1.165,
+          "end": 1.56
+        },
+        {
+          "word": "더",
+          "start": 1.64,
+          "end": 1.88
+        },
+        {
+          "word": "길게",
+          "start": 2.08,
+          "end": 2.32
+        },
+        {
+          "word": "고칩니다",
+          "start": 2.4,
+          "end": 2.74
+        },
+        {
+          "word": "이",
+          "start": 2.82,
+          "end": 3.06
+        },
+        {
+          "word": "변경은",
+          "start": 3.14,
+          "end": 3.425
+        },
+        {
+          "word": "sourceHash를",
+          "start": 3.505,
+          "end": 4.23
+        },
+        {
+          "word": "바꾸고",
+          "start": 4.43,
+          "end": 4.715
+        },
+        {
+          "word": "두",
+          "start": 4.795,
+          "end": 5.035
+        },
+        {
+          "word": "번째",
+          "start": 5.115,
+          "end": 5.355
+        },
+        {
+          "word": "씬만",
+          "start": 5.435,
+          "end": 5.675
+        },
+        {
+          "word": "다시",
+          "start": 5.755,
+          "end": 5.995
+        },
+        {
+          "word": "합성해야",
+          "start": 6.195,
+          "end": 6.535
+        },
+        {
+          "word": "합니다",
+          "start": 6.615,
+          "end": 6.9
+        },
+        {
+          "word": "전체",
+          "start": 6.98,
+          "end": 7.22
+        },
+        {
+          "word": "컴파일은",
+          "start": 7.3,
+          "end": 7.64
+        },
+        {
+          "word": "뒤따르는",
+          "start": 7.72,
+          "end": 8.06
+        },
+        {
+          "word": "세",
+          "start": 8.26,
+          "end": 8.5
+        },
+        {
+          "word": "번째",
+          "start": 8.58,
+          "end": 8.82
+        },
+        {
+          "word": "씬의",
+          "start": 8.9,
+          "end": 9.14
+        },
+        {
+          "word": "시작",
+          "start": 9.22,
+          "end": 9.46
+        },
+        {
+          "word": "시각을",
+          "start": 9.54,
+          "end": 9.825
+        },
+        {
+          "word": "새",
+          "start": 10.025,
+          "end": 10.265
+        },
+        {
+          "word": "길이에",
+          "start": 10.345,
+          "end": 10.63
+        },
+        {
+          "word": "맞춰",
+          "start": 10.71,
+          "end": 10.95
+        },
+        {
+          "word": "뒤로",
+          "start": 11.03,
+          "end": 11.27
+        },
+        {
+          "word": "이동시킵니다",
+          "start": 11.35,
+          "end": 11.8
+        }
+      ],
+      "sourceHash": "77e07ef6dee3f4283801a7b110a8ee2f4b68d4cbf1f3475149882943c2da58cf",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "./assets/audio/s03.mock.mp3",
+      "audioDurationSec": 4.63,
+      "words": [
+        {
+          "word": "세",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "번째",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "word": "장면은",
+          "start": 0.8,
+          "end": 1.085
+        },
+        {
+          "word": "내용은",
+          "start": 1.165,
+          "end": 1.45
+        },
+        {
+          "word": "그대로",
+          "start": 1.53,
+          "end": 1.815
+        },
+        {
+          "word": "유지하고",
+          "start": 2.015,
+          "end": 2.355
+        },
+        {
+          "word": "시작",
+          "start": 2.435,
+          "end": 2.675
+        },
+        {
+          "word": "시각만",
+          "start": 2.755,
+          "end": 3.04
+        },
+        {
+          "word": "뒤로",
+          "start": 3.12,
+          "end": 3.36
+        },
+        {
+          "word": "밀려야",
+          "start": 3.44,
+          "end": 3.725
+        },
+        {
+          "word": "합니다",
+          "start": 3.925,
+          "end": 4.21
+        }
+      ],
+      "sourceHash": "7b834c9cd4924e2ab7b2dde390a7e45059666d3c41e186f54f3fdca8f34f66d1",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    }
+  ]
+}

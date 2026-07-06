@@ -1,0 +1,242 @@
+{
+  "version": "1.0.0",
+  "projectId": "golden-full-8types",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "지난주 신규 가입은 검색 유입이 가장 컸고, 추천 유입이 그 뒤를 이었습니다.",
+      "narration_tts": "지난주 신규 가입은 검색 유입이 가장 컸고, 추천 유입이 그 뒤를 이었습니다.",
+      "altText": "막대 차트가 검색 유입 6200명, 추천 유입 4800명, 광고 유입 3100명을 비교한다.",
+      "layout": "bar",
+      "mood": "informative",
+      "reveal": "stagger",
+      "emphasis": "number",
+      "headline": "채널별 신규 가입",
+      "items": ["검색 유입", "추천 유입", "광고 유입"],
+      "values": [6200, 4800, 3100],
+      "unit": "명",
+      "source": "fixture:2026-07-growth-snapshot",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "월간 지출은 인건비가 절반에 가깝고, 인프라와 마케팅이 나머지를 나눕니다.",
+      "narration_tts": "월간 지출은 인건비가 절반에 가깝고, 인프라와 마케팅이 나머지를 나눕니다.",
+      "altText": "원형 차트가 인건비 48%, 인프라 27%, 마케팅 18%, 기타 7% 지출 비중을 보여준다.",
+      "layout": "pie",
+      "mood": "somber",
+      "reveal": "cascade",
+      "emphasis": "contrast",
+      "headline": "월간 지출 비중",
+      "items": ["인건비", "인프라", "마케팅", "기타"],
+      "values": [48, 27, 18, 7],
+      "unit": "%",
+      "source": "fixture:2026-07-finance-rollup",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "재방문율은 네 주 연속 상승해 마지막 주에 삼십칠 퍼센트에 도달했습니다.",
+      "narration_tts": "재방문율은 네 주 연속 상승해 마지막 주에 삼십칠 퍼센트에 도달했습니다.",
+      "altText": "선 그래프가 1주차 29%, 2주차 31%, 3주차 34%, 4주차 37%로 상승한다.",
+      "layout": "line",
+      "mood": "triumphant",
+      "reveal": "build_up",
+      "emphasis": "sequence",
+      "headline": "재방문율 4주 추이",
+      "items": ["1주차", "2주차", "3주차", "4주차"],
+      "values": [29, 31, 34, 37],
+      "unit": "%",
+      "source": "fixture:2026-07-retention-weekly",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": "운영팀은 온보딩 문서, 알림 문구, 결제 안내를 우선 점검합니다.",
+      "narration_tts": "운영팀은 온보딩 문서, 알림 문구, 결제 안내를 우선 점검합니다.",
+      "altText": "세 개의 운영 점검 항목이 상태 값과 함께 목록으로 표시된다.",
+      "layout": "list",
+      "mood": "informative",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "이번 주 점검 항목",
+      "items": ["온보딩 문서 최신화", "알림 문구 A/B 테스트", "결제 안내 오류 점검"],
+      "values": ["진행", "대기", "완료"],
+      "unit": "상태",
+      "source": "fixture:2026-07-ops-checklist",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": "출시 준비는 검수, 승인, 배포 순서로 진행됩니다.",
+      "narration_tts": "출시 준비는 검수, 승인, 배포 순서로 진행됩니다.",
+      "altText": "품질 검수, 법무 승인, 점진 배포가 1번부터 3번까지 번호로 정렬된다.",
+      "layout": "numbered",
+      "mood": "urgent",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "출시 전 세 단계",
+      "items": ["품질 검수", "법무 승인", "점진 배포"],
+      "values": [1, 2, 3],
+      "unit": "단계",
+      "source": "fixture:2026-07-release-readiness",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": "평균 응답 시간은 백팔십사 밀리초로 목표치보다 십육 밀리초 빠릅니다.",
+      "narration_tts": "평균 응답 시간은 백팔십사 밀리초로 목표치보다 십육 밀리초 빠릅니다.",
+      "altText": "큰 숫자 184ms와 목표 대비 16ms 빠름이라는 보조 수치가 표시된다.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "응답 시간 184ms",
+      "items": ["평균 응답 시간", "목표 대비 개선"],
+      "values": [184, 16],
+      "unit": "ms",
+      "source": "fixture:2026-07-latency-sli",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": "새 추천 모델은 기존 모델보다 클릭률은 높이고 이탈률은 낮췄습니다.",
+      "narration_tts": "새 추천 모델은 기존 모델보다 클릭률은 높이고 이탈률은 낮췄습니다.",
+      "altText": "기존 모델과 신규 모델의 클릭률 및 이탈률이 나란히 비교된다.",
+      "layout": "compare",
+      "mood": "suspense",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "추천 모델 비교",
+      "items": ["기존 클릭률", "신규 클릭률", "기존 이탈률", "신규 이탈률"],
+      "values": [12.4, 15.8, 9.1, 7.6],
+      "unit": "%",
+      "source": "fixture:2026-07-recommendation-ab",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": "사용자 인터뷰에서 가장 많이 반복된 문장은 설정이 쉬워야 다시 쓴다는 말이었습니다.",
+      "narration_tts": "사용자 인터뷰에서 가장 많이 반복된 문장은 설정이 쉬워야 다시 쓴다는 말이었습니다.",
+      "altText": "사용자 인터뷰 인용문이 따옴표 스타일의 텍스트 블록으로 표시된다.",
+      "layout": "quote",
+      "mood": "contemplative",
+      "reveal": "typewriter",
+      "emphasis": "quote",
+      "headline": "사용자 인용",
+      "items": ["사용자 인터뷰", "설정이 쉬워야 다시 씁니다"],
+      "values": ["5회 반복", "핵심 문장"],
+      "unit": "인용",
+      "source": "fixture:2026-07-user-interviews",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "slide_left",
+      "duration": 0.25
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "wipe_right",
+      "duration": 0.25
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "slide_right",
+      "duration": 0.25
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "wipe_left",
+      "duration": 0.25
+    }
+  ]
+}

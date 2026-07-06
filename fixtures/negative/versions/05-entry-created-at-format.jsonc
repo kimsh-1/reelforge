@@ -1,0 +1,18 @@
+// 위반 규칙: versions resources.*.entries[].createdAt must be date-time.
+{
+  "resources": {
+    "image": {
+      "entries": [
+        {
+          "gen": "gen_01",
+          "path": "assets/s01.png",
+          "createdAt": "2026-07-07",
+          "note": "initial"
+        }
+      ],
+      "selected": "gen_01"
+    }
+  },
+  "editLock": null,
+  "dirty": false
+}

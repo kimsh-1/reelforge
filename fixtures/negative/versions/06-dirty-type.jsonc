@@ -1,0 +1,18 @@
+// 위반 규칙: versions dirty must be boolean.
+{
+  "resources": {
+    "image": {
+      "entries": [
+        {
+          "gen": "gen_01",
+          "path": "assets/s01.png",
+          "createdAt": "2026-07-07T00:00:00.000Z",
+          "note": "initial"
+        }
+      ],
+      "selected": "gen_01"
+    }
+  },
+  "editLock": null,
+  "dirty": "false"
+}

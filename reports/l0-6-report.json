@@ -1,0 +1,43 @@
+{
+  "gate": "L0-6",
+  "pass": true,
+  "checks": [
+    {
+      "id": "asset-paths-relative-assets-exist",
+      "pass": true,
+      "measured": {
+        "filesChecked": 3,
+        "refsChecked": 14,
+        "requiredPrefix": "./assets/",
+        "violations": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/edit-scenario/assets/audio/s01.mock.mp3",
+    "fixtures/golden-specs/edit-scenario/assets/audio/s02.mock.mp3",
+    "fixtures/golden-specs/edit-scenario/assets/audio/s03.mock.mp3",
+    "fixtures/golden-specs/edit-scenario/audio_meta.json",
+    "fixtures/golden-specs/full-8types/assets/audio/s01.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s02.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s03.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s04.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s05.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s06.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s07.mock.mp3",
+    "fixtures/golden-specs/full-8types/assets/audio/s08.mock.mp3",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/assets/audio/s01.mock.mp3",
+    "fixtures/golden-specs/minimal-3scene/assets/audio/s02.mock.mp3",
+    "fixtures/golden-specs/minimal-3scene/assets/audio/s03.mock.mp3",
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json"
+  ],
+  "canonicalInputMerkleHash": "29487a1724689d6447fa5767601c16f7e6fc1b80fadaf837705168efd0429876",
+  "evidenceHash": "7100bacd5c304c61f8249280856909ba1944570878d761ea5ab1daa5d454cc41",
+  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
+  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "command": "node bin/vf gate l0-6 --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T20:08:50.363Z",
+  "finishedAt": "2026-07-06T20:08:50.375Z"
+}

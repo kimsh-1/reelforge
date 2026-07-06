@@ -1,0 +1,111 @@
+{
+  "gate": "P0a",
+  "pass": true,
+  "checks": [
+    {
+      "id": "doctor-critical",
+      "pass": true,
+      "measured": {
+        "doctorOk": false,
+        "required": [
+          "Node.js",
+          "CPU",
+          "Memory",
+          "Disk",
+          "/dev/shm",
+          "Environment",
+          "FFmpeg",
+          "FFprobe",
+          "Chrome"
+        ],
+        "missingRequired": [],
+        "fatalFailures": [],
+        "nonFatalFailures": [
+          {
+            "name": "Version",
+            "detail": "0.7.26 → 0.7.36 available",
+            "hint": "Run: hyperframes upgrade"
+          },
+          {
+            "name": "whisper-cpp",
+            "detail": "Not found (optional — needed for transcription)",
+            "hint": "Build from source: https://github.com/ggml-org/whisper.cpp#building (requires cmake and a C compiler)"
+          },
+          {
+            "name": "TTS (Kokoro)",
+            "detail": "Not installed (optional — local voice fallback)",
+            "hint": "pip install kokoro-onnx soundfile"
+          },
+          {
+            "name": "BGM (MusicGen)",
+            "detail": "Not installed (optional — local music fallback)",
+            "hint": "pip install transformers torch soundfile numpy"
+          },
+          {
+            "name": "Docker",
+            "detail": "Not found",
+            "hint": "https://docs.docker.com/get-docker/"
+          },
+          {
+            "name": "Docker running",
+            "detail": "Not running",
+            "hint": "Start Docker Desktop or run: sudo systemctl start docker"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mp4-exists",
+      "pass": true,
+      "measured": {
+        "path": "out/p0a.mp4",
+        "bytes": 74557
+      }
+    },
+    {
+      "id": "ffprobe-profile",
+      "pass": true,
+      "measured": {
+        "codec": "h264",
+        "pix_fmt": "yuv420p",
+        "duration": 5,
+        "durationToleranceSec": 0.3,
+        "audioTrackCount": 0,
+        "hasAudioTrack": false,
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "pix_fmt": "yuv420p"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faststart",
+      "pass": true,
+      "measured": {
+        "moovOffset": 32,
+        "mdatOffset": 1475,
+        "fileSize": 74557,
+        "method": "top-level MP4 atom scan"
+      }
+    }
+  ],
+  "inputSet": [
+    "poc/fixtures/p0a",
+    "poc/reports/doctor.json",
+    "poc/scripts/gate-p0a.mjs"
+  ],
+  "canonicalInputMerkleHash": "0352c63f274a5ab5af94721b430ec8e33ae10a23473e74f1164ee3e201ff1262",
+  "evidenceHash": "7188b698e2bb7faa854d6c2ad63b6452817387a304e638b9afbb0541c7683b12",
+  "gateScriptHash": "e73e3c605c743c082de16552ae1c81da879e86c0c093648f91a5cff2433bc141",
+  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "command": "node bin/vf gate p0a --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T20:06:32.575Z",
+  "finishedAt": "2026-07-06T20:06:32.584Z",
+  "mode": "replay",
+  "sourceReport": "poc/reports/P0a-report.json"
+}

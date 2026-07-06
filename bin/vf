@@ -12,7 +12,17 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { gateRegistry, listGates } from "../src/gates/registry.mjs";
+import {
+  formatAjvErrors,
+  gateRegistry,
+  hashGateEvidence,
+  listGates,
+  normalizeGateId,
+  requiredReportFields,
+  resolveSchemaName,
+  schemaPathForName,
+  validateJsonForSchema
+} from "../src/gates/registry.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -20,10 +30,11 @@ function usage(exitCode = 0) {
   const text = `vf
 
 Commands:
+  vf gate --list
   vf gate list
-  vf gate all [--replay|--execute]
-  vf gate <p0a|p0b|p0c|p0d> [--replay|--execute]
-  vf write <file> [--schema <schema.json>]
+  vf gate all [--json] [--replay|--execute]
+  vf gate <id> [--json] [--replay|--execute]
+  vf write <file> --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
 `;
@@ -44,6 +55,14 @@ function gitCommit() {
   return result.status === 0 ? result.stdout.trim() : null;
 }
 
+function normalizeRelPath(value) {
+  return value.split(path.sep).join("/");
+}
+
+function repoRelative(absolutePath) {
+  return normalizeRelPath(path.relative(repoRoot, absolutePath));
+}
+
 function listFilesRecursive(absPath) {
   const entries = readdirSync(absPath, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name));
   const files = [];
@@ -57,7 +76,8 @@ function listFilesRecursive(absPath) {
 
 function canonicalInput(inputSet) {
   const entries = [];
-  for (const rel of inputSet) {
+  const uniqueInputs = [...new Set(inputSet ?? [])].sort((a, b) => a.localeCompare(b));
+  for (const rel of uniqueInputs) {
     const abs = path.join(repoRoot, rel);
     if (!existsSync(abs)) {
       entries.push({ path: rel, type: "missing", bytes: 0, sha256: null });
@@ -66,7 +86,7 @@ function canonicalInput(inputSet) {
     const stats = statSync(abs);
     if (stats.isDirectory()) {
       for (const file of listFilesRecursive(abs)) {
-        const fileRel = path.relative(repoRoot, file).split(path.sep).join("/");
+        const fileRel = repoRelative(file);
         const bytes = readFileSync(file);
         entries.push({ path: fileRel, type: "file", bytes: bytes.length, sha256: sha256Bytes(bytes) });
       }
@@ -78,11 +98,11 @@ function canonicalInput(inputSet) {
   entries.sort((a, b) => a.path.localeCompare(b.path));
   return {
     entries,
-    hash: sha256Bytes(Buffer.from(JSON.stringify(entries), "utf8"))
+    hash: hashGateEvidence(entries)
   };
 }
 
-function evidenceHash(legacyReport) {
+function legacyEvidenceHash(legacyReport) {
   const evidence = Array.isArray(legacyReport?.evidence) ? legacyReport.evidence : [];
   const entries = evidence
     .map((item) => ({
@@ -91,7 +111,7 @@ function evidenceHash(legacyReport) {
       bytes: item.bytes ?? null
     }))
     .sort((a, b) => a.path.localeCompare(b.path));
-  return sha256Bytes(Buffer.from(JSON.stringify(entries), "utf8"));
+  return hashGateEvidence(entries);
 }
 
 function readJson(relPath) {
@@ -101,17 +121,56 @@ function readJson(relPath) {
 function writeReport(id, report) {
   const reportsDir = path.join(repoRoot, "reports");
   mkdirSync(reportsDir, { recursive: true });
-  const tmp = path.join(reportsDir, `${id}-report.json.tmp`);
+  const tmp = path.join(reportsDir, `${id}-report.json.${process.pid}.tmp`);
   const finalPath = path.join(reportsDir, `${id}-report.json`);
   writeFileSync(tmp, `${JSON.stringify(report, null, 2)}\n`);
   renameSync(tmp, finalPath);
   return finalPath;
 }
 
-function runGate(id, mode) {
-  const gate = gateRegistry[id];
-  if (!gate) throw new Error(`unknown gate: ${id}`);
+function requiredFieldComplete(report) {
+  return requiredReportFields.every((field) => Object.prototype.hasOwnProperty.call(report, field));
+}
 
+function reportForGate({ gate, checks, inputSet, evidenceHash, exitCode, startedAt, command }) {
+  const input = canonicalInput(inputSet);
+  const scriptPath = path.join(repoRoot, gate.script);
+  const pass = checks.every((check) => check.pass === true) && exitCode === 0;
+  return {
+    gate: gate.gate,
+    pass,
+    checks,
+    inputSet,
+    canonicalInputMerkleHash: input.hash,
+    evidenceHash,
+    gateScriptHash: existsSync(scriptPath) ? sha256File(scriptPath) : null,
+    gitCommit: gitCommit(),
+    command,
+    exitCode: pass ? 0 : exitCode || 1,
+    startedAt,
+    finishedAt: new Date().toISOString()
+  };
+}
+
+function legacyFailureReport(gate, error) {
+  return {
+    gate: gate.gate,
+    pass: false,
+    checks: [
+      {
+        id: "legacy-report-readable",
+        pass: false,
+        measured: {
+          error: error instanceof Error ? error.message : String(error),
+          path: gate.legacyReport
+        }
+      }
+    ],
+    exitCode: 1
+  };
+}
+
+function runLegacyGate(id, gate, mode, command) {
   const startedAt = new Date().toISOString();
   let child = null;
   if (mode === "execute") {
@@ -127,85 +186,156 @@ function runGate(id, mode) {
     });
   }
 
-  let legacyReport = {};
+  let legacyReport;
   try {
     legacyReport = readJson(gate.legacyReport);
   } catch (error) {
-    legacyReport = {
-      gate: gate.gate,
-      pass: false,
-      checks: [
-        {
-          id: "legacy-report-readable",
-          pass: false,
-          measured: { error: error instanceof Error ? error.message : String(error), path: gate.legacyReport }
-        }
-      ],
-      exitCode: 1
+    legacyReport = legacyFailureReport(gate, error);
+  }
+
+  const childExitCode = child ? child.status ?? (child.signal ? 128 : 1) : null;
+  const legacyExitCode = Number.isInteger(legacyReport.exitCode) ? legacyReport.exitCode : legacyReport.pass ? 0 : 1;
+  const exitCode = mode === "execute" ? childExitCode : legacyExitCode;
+  const checks = Array.isArray(legacyReport.checks) ? legacyReport.checks : [];
+  const report = reportForGate({
+    gate,
+    checks,
+    inputSet: gate.inputSet,
+    evidenceHash: legacyEvidenceHash(legacyReport),
+    exitCode,
+    startedAt,
+    command
+  });
+
+  report.pass = exitCode === 0 && legacyReport.pass === true && checks.every((check) => check.pass === true);
+  report.exitCode = report.pass ? 0 : exitCode || 1;
+  report.mode = mode;
+  report.sourceReport = gate.legacyReport;
+  if (child) {
+    report.execution = {
+      exitCode: childExitCode,
+      signal: child.signal ?? null,
+      error: child.error?.message ?? null
     };
   }
 
-  const exitCode = mode === "execute" ? child.status ?? (child.signal ? 128 : 1) : legacyReport.exitCode ?? 0;
-  const input = canonicalInput(gate.inputSet);
-  const gateScriptPath = path.join(repoRoot, gate.script);
-  const report = {
-    gate: gate.gate,
-    pass: exitCode === 0 && legacyReport.pass === true,
-    checks: Array.isArray(legacyReport.checks) ? legacyReport.checks : [],
-    inputSet: gate.inputSet,
-    canonicalInputMerkleHash: input.hash,
-    evidenceHash: evidenceHash(legacyReport),
-    gateScriptHash: existsSync(gateScriptPath) ? sha256File(gateScriptPath) : null,
-    gitCommit: gitCommit(),
-    command:
-      mode === "execute"
-        ? `node ${gate.script}`
-        : `vf gate ${id} --replay from ${gate.legacyReport}`,
-    exitCode,
+  const reportPath = writeReport(id, report);
+  return { id, report, reportPath };
+}
+
+function runNativeGate(id, gate, command) {
+  const startedAt = new Date().toISOString();
+  let result;
+  try {
+    result = gate.run({ repoRoot });
+  } catch (error) {
+    result = {
+      checks: [
+        {
+          id: "native-gate-runner",
+          pass: false,
+          measured: { error: error instanceof Error ? error.message : String(error) }
+        }
+      ],
+      inputSet: [gate.script],
+      evidence: []
+    };
+  }
+
+  const checks = Array.isArray(result.checks) ? result.checks : [];
+  const pass = checks.length > 0 && checks.every((check) => check.pass === true);
+  const report = reportForGate({
+    gate,
+    checks,
+    inputSet: result.inputSet ?? [gate.script],
+    evidenceHash: hashGateEvidence(result.evidence ?? checks),
+    exitCode: pass ? 0 : 1,
     startedAt,
-    finishedAt: new Date().toISOString(),
-    mode,
-    renderGate: gate.render,
-    legacyReport: gate.legacyReport,
-    execution:
-      child === null
-        ? null
-        : {
-            stdout: child.stdout,
-            stderr: child.stderr,
-            signal: child.signal ?? null,
-            error: child.error?.message ?? null
-          }
-  };
+    command
+  });
 
   const reportPath = writeReport(id, report);
-  console.log(JSON.stringify({ id, report: path.relative(repoRoot, reportPath), pass: report.pass }, null, 2));
-  return report.pass;
+  return { id, report, reportPath };
+}
+
+function runGate(id, options) {
+  const normalizedId = normalizeGateId(id);
+  const gate = gateRegistry[normalizedId];
+  if (!gate) throw new Error(`unknown gate: ${id}`);
+
+  const command = options.command;
+  if (gate.kind === "legacy") return runLegacyGate(normalizedId, gate, options.mode, command);
+  return runNativeGate(normalizedId, gate, command);
+}
+
+function listCommand() {
+  console.log(JSON.stringify(listGates(), null, 2));
 }
 
 function gateCommand(args) {
-  const target = args[0];
-  if (!target || target === "help") usage(0);
-  if (target === "list") {
-    console.log(JSON.stringify(listGates(), null, 2));
+  const json = args.includes("--json");
+  const mode = args.includes("--execute") ? "execute" : "replay";
+  const listRequested = args.includes("--list") || args[0] === "list";
+  if (listRequested) {
+    listCommand();
     return;
   }
-  const mode = args.includes("--execute") ? "execute" : "replay";
+
+  const positional = args.filter((arg) => !arg.startsWith("--"));
+  const target = positional[0];
+  if (!target || target === "help") usage(0);
+
   const ids = target === "all" ? Object.keys(gateRegistry) : [target];
-  let ok = true;
-  for (const id of ids) ok = runGate(id, mode) && ok;
-  if (!ok) process.exitCode = 1;
+  const command = ["node", "bin/vf", ...process.argv.slice(2)].join(" ");
+  const results = ids.map((id) => runGate(id, { mode, command }));
+
+  if (json) {
+    const payload = results.length === 1 ? results[0].report : results.map((result) => result.report);
+    console.log(JSON.stringify(payload, null, 2));
+  } else {
+    for (const result of results) {
+      const status = result.report.pass ? "PASS" : "FAIL";
+      console.log(`${result.id}: ${status} ${repoRelative(result.reportPath)}`);
+    }
+  }
+
+  if (results.some((result) => !result.report.pass || !requiredFieldComplete(result.report))) {
+    process.exitCode = 1;
+  }
 }
 
 function readStdin() {
   return readFileSync(0, "utf8");
 }
 
+function optionValue(args, optionName) {
+  const index = args.indexOf(optionName);
+  if (index < 0) return null;
+  const value = args[index + 1];
+  if (!value || value.startsWith("--")) throw new Error(`${optionName} requires a value`);
+  return value;
+}
+
+function targetFileArg(args) {
+  return args.find((arg, index) => index === 0 && !arg.startsWith("--")) ?? null;
+}
+
+function atomicWriteJson(absPath, data) {
+  mkdirSync(path.dirname(absPath), { recursive: true });
+  const tmp = `${absPath}.${process.pid}.${Date.now()}.tmp`;
+  writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
+  renameSync(tmp, absPath);
+}
+
 function writeCommand(args) {
-  const file = args[0];
+  const file = targetFileArg(args);
   if (!file) throw new Error("vf write requires a target file");
-  const schemaIndex = args.indexOf("--schema");
-  const schemaPath = schemaIndex >= 0 ? args[schemaIndex + 1] : null;
+  if (path.extname(file).toLowerCase() !== ".json") {
+    throw new Error("vf write accepts JSON targets only");
+  }
+
+  const schemaArg = optionValue(args, "--schema") ?? "auto";
+  const schemaName = resolveSchemaName(schemaArg, file);
   const raw = readStdin();
   let data;
   try {
@@ -213,23 +343,22 @@ function writeCommand(args) {
   } catch (error) {
     throw new Error(`JSON parse failed: ${error.message}`);
   }
-  if (!file.endsWith(".json")) {
-    throw new Error("vf write stub currently accepts .json targets only");
+
+  const validation = validateJsonForSchema(repoRoot, data, schemaName);
+  if (!validation.pass) {
+    const violations = formatAjvErrors(validation.errors).map((message) => `- ${message}`).join("\n");
+    throw new Error(`schema validation failed: ${schemaName} (${validation.schemaPath})\n${violations}`);
   }
-  if (schemaPath && !existsSync(path.resolve(repoRoot, schemaPath))) {
-    throw new Error(`schema not found: ${schemaPath}`);
-  }
+
   const abs = path.resolve(repoRoot, file);
-  mkdirSync(path.dirname(abs), { recursive: true });
-  const tmp = `${abs}.${process.pid}.tmp`;
-  writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
-  renameSync(tmp, abs);
+  atomicWriteJson(abs, data);
   console.log(
     JSON.stringify(
       {
-        file: path.relative(repoRoot, abs),
-        schema: schemaPath,
-        validation: schemaPath ? "schema-exists-stub" : "json-parse-only-stub",
+        file: repoRelative(abs),
+        schema: schemaName,
+        schemaPath: schemaPathForName(schemaName),
+        validation: "passed",
         atomic: true
       },
       null,

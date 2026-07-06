@@ -1,0 +1,92 @@
+{
+  "version": "1.0.0",
+  "projectId": "golden-minimal-3scene",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "서비스 지표를 한눈에 보는 세 장면 요약입니다.",
+      "narration_tts": "서비스 지표를 한눈에 보는 세 장면 요약입니다.",
+      "altText": "짙은 배경 위에 오늘의 핵심 헤드라인만 배치된 첫 장면.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "오늘의 핵심",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:golden-minimal-3scene",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "고객 반응은 안정적이고, 전환율은 천천히 개선되고 있습니다.",
+      "narration_tts": "고객 반응은 안정적이고, 전환율은 천천히 개선되고 있습니다.",
+      "altText": "밝은 제목 영역에 전환율 안정권 문구만 크게 표시된 두 번째 장면.",
+      "layout": "headline_only",
+      "mood": "contemplative",
+      "reveal": "zoom_in",
+      "emphasis": "keyword",
+      "headline": "전환율 안정권",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:golden-minimal-3scene",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "다음 실험은 가격 안내 문구를 더 명확하게 다듬는 것입니다.",
+      "narration_tts": "다음 실험은 가격 안내 문구를 더 명확하게 다듬는 것입니다.",
+      "altText": "다음 실험 헤드라인만 중앙에 놓인 마무리 장면.",
+      "layout": "headline_only",
+      "mood": "triumphant",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "다음 실험",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:golden-minimal-3scene",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "fade",
+      "duration": 0.25
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "cut",
+      "duration": 0
+    }
+  ]
+}

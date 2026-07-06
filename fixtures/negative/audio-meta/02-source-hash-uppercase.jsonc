@@ -1,0 +1,20 @@
+// 위반 규칙: audio_meta.scenes[].sourceHash rejects uppercase hex characters.
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "audio/s01.wav",
+      "audioDurationSec": 1.2,
+      "words": [
+        {
+          "word": "Hello",
+          "start": 0,
+          "end": 0.5
+        }
+      ],
+      "sourceHash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "provider": "local",
+      "voice": "ko-KR"
+    }
+  ]
+}

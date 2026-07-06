@@ -1,0 +1,30 @@
+{
+  "gate": "L0-5",
+  "pass": true,
+  "checks": [
+    {
+      "id": "scene-specs-duration-intrusion",
+      "pass": true,
+      "measured": {
+        "filesChecked": 3,
+        "allowedDurationPaths": [
+          "/transitions/<index>/duration"
+        ],
+        "violations": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/edit-scenario/scene_specs.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json"
+  ],
+  "canonicalInputMerkleHash": "fbc03dcd534a924aad88228754ad85339b31407889a09bfbbd5272e91aa87e63",
+  "evidenceHash": "fd86e8bf1d19ff60f3615158004ef91500b53e9529d51a6368d045dc0cff5d82",
+  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
+  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "command": "node bin/vf gate l0-5 --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T20:08:50.593Z",
+  "finishedAt": "2026-07-06T20:08:50.604Z"
+}

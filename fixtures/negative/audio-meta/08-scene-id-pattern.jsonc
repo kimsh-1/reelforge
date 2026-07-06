@@ -1,0 +1,20 @@
+// 위반 규칙: audio_meta.scenes[].sceneId must match the shared sceneId pattern.
+{
+  "scenes": [
+    {
+      "sceneId": "scene-1",
+      "audioPath": "audio/s01.wav",
+      "audioDurationSec": 1.2,
+      "words": [
+        {
+          "word": "Hello",
+          "start": 0,
+          "end": 0.5
+        }
+      ],
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local",
+      "voice": "ko-KR"
+    }
+  ]
+}

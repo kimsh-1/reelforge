@@ -1,0 +1,149 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "./assets/audio/s01.mock.mp3",
+      "audioDurationSec": 3.15,
+      "words": [
+        {
+          "word": "서비스",
+          "start": 0.16,
+          "end": 0.445
+        },
+        {
+          "word": "지표를",
+          "start": 0.525,
+          "end": 0.81
+        },
+        {
+          "word": "한눈에",
+          "start": 0.89,
+          "end": 1.175
+        },
+        {
+          "word": "보는",
+          "start": 1.255,
+          "end": 1.495
+        },
+        {
+          "word": "세",
+          "start": 1.575,
+          "end": 1.815
+        },
+        {
+          "word": "장면",
+          "start": 2.015,
+          "end": 2.255
+        },
+        {
+          "word": "요약입니다",
+          "start": 2.335,
+          "end": 2.73
+        }
+      ],
+      "sourceHash": "c53772c32e58946f719c2b41bfa425e7e4c294e170446cc10c581dee2b6aec45",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "./assets/audio/s02.mock.mp3",
+      "audioDurationSec": 3.405,
+      "words": [
+        {
+          "word": "고객",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "반응은",
+          "start": 0.48,
+          "end": 0.765
+        },
+        {
+          "word": "안정적이고",
+          "start": 0.845,
+          "end": 1.24
+        },
+        {
+          "word": "전환율은",
+          "start": 1.32,
+          "end": 1.66
+        },
+        {
+          "word": "천천히",
+          "start": 1.74,
+          "end": 2.025
+        },
+        {
+          "word": "개선되고",
+          "start": 2.225,
+          "end": 2.565
+        },
+        {
+          "word": "있습니다",
+          "start": 2.645,
+          "end": 2.985
+        }
+      ],
+      "sourceHash": "55afd29892484e6c1b2d29070e06ba8a006f29327e0c280d52dc60e93830b66e",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "./assets/audio/s03.mock.mp3",
+      "audioDurationSec": 3.835,
+      "words": [
+        {
+          "word": "다음",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "실험은",
+          "start": 0.48,
+          "end": 0.765
+        },
+        {
+          "word": "가격",
+          "start": 0.845,
+          "end": 1.085
+        },
+        {
+          "word": "안내",
+          "start": 1.165,
+          "end": 1.405
+        },
+        {
+          "word": "문구를",
+          "start": 1.485,
+          "end": 1.77
+        },
+        {
+          "word": "더",
+          "start": 1.97,
+          "end": 2.21
+        },
+        {
+          "word": "명확하게",
+          "start": 2.29,
+          "end": 2.63
+        },
+        {
+          "word": "다듬는",
+          "start": 2.71,
+          "end": 2.995
+        },
+        {
+          "word": "것입니다",
+          "start": 3.075,
+          "end": 3.415
+        }
+      ],
+      "sourceHash": "dfb5c2cd301c79a56de2e0cca8d92060a7ae430e74f37812f11c4daa7ea11f4e",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+// 위반 규칙: audio_meta words[] requires word.
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "audio/s01.wav",
+      "audioDurationSec": 1.2,
+      "words": [
+        {
+          "start": 0,
+          "end": 0.5
+        }
+      ],
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local",
+      "voice": "ko-KR"
+    }
+  ]
+}

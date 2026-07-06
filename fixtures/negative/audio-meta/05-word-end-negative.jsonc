@@ -1,0 +1,20 @@
+// 위반 규칙: audio_meta word end must be non-negative.
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "audio/s01.wav",
+      "audioDurationSec": 1.2,
+      "words": [
+        {
+          "word": "Hello",
+          "start": 0,
+          "end": -0.1
+        }
+      ],
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "provider": "local",
+      "voice": "ko-KR"
+    }
+  ]
+}

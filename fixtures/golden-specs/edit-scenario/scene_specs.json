@@ -1,0 +1,92 @@
+{
+  "version": "1.0.0",
+  "projectId": "golden-edit-scenario",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "첫 번째 장면은 편집 루프의 기준점입니다. 이 구간은 이후 렌더에서도 변하지 않아야 합니다.",
+      "narration_tts": "첫 번째 장면은 편집 루프의 기준점입니다. 이 구간은 이후 렌더에서도 변하지 않아야 합니다.",
+      "altText": "편집 전후에도 유지되어야 하는 기준 장면 헤드라인.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "기준 장면",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:p0d-edit-loop",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "두 번째 장면의 나레이션을 더 길게 고칩니다. 이 변경은 sourceHash를 바꾸고, 두 번째 씬만 다시 합성해야 합니다. 전체 컴파일은 뒤따르는 세 번째 씬의 시작 시각을 새 길이에 맞춰 뒤로 이동시킵니다.",
+      "narration_tts": "두 번째 장면의 나레이션을 더 길게 고칩니다. 이 변경은 sourceHash를 바꾸고, 두 번째 씬만 다시 합성해야 합니다. 전체 컴파일은 뒤따르는 세 번째 씬의 시작 시각을 새 길이에 맞춰 뒤로 이동시킵니다.",
+      "altText": "편집 대상 장면으로 표시된 긴 나레이션 검증 장면.",
+      "layout": "list",
+      "mood": "urgent",
+      "reveal": "stagger",
+      "emphasis": "count",
+      "headline": "편집 대상",
+      "items": ["sourceHash 변경", "해당 씬 재합성", "후속 씬 시작 시각 이동"],
+      "values": ["예상", "부분", "전체 컴파일"],
+      "unit": "편집 영향",
+      "source": "fixture:p0d-edit-loop",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.",
+      "narration_tts": "세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.",
+      "altText": "내용은 유지되고 타이밍만 이동하는 후속 장면.",
+      "layout": "headline_only",
+      "mood": "contemplative",
+      "reveal": "dramatic_pause",
+      "emphasis": "keyword",
+      "headline": "시프트 확인",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "fixture:p0d-edit-loop",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "crossfade",
+      "duration": 0.5
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "crossfade",
+      "duration": 0.25
+    }
+  ]
+}

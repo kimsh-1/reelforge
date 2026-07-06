@@ -1,0 +1,27 @@
+// 위반 규칙: scene_specs.scenes[].kenBurns must be an object.
+{
+  "version": "1.0.0",
+  "projectId": "demo-project",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "Narration text.",
+      "narration_tts": "Narration text.",
+      "altText": "A simple accessible visual description.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "Headline",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "",
+      "visual_kind": "none",
+      "kenBurns": true,
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": []
+}

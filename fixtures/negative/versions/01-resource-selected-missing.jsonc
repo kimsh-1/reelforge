@@ -1,0 +1,17 @@
+// 위반 규칙: versions resources.* requires selected.
+{
+  "resources": {
+    "image": {
+      "entries": [
+        {
+          "gen": "gen_01",
+          "path": "assets/s01.png",
+          "createdAt": "2026-07-07T00:00:00.000Z",
+          "note": "initial"
+        }
+      ]
+    }
+  },
+  "editLock": null,
+  "dirty": false
+}

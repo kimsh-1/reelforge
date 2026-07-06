@@ -1,0 +1,464 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "./assets/audio/s01.mock.mp3",
+      "audioDurationSec": 4.915,
+      "words": [
+        {
+          "word": "지난주",
+          "start": 0.16,
+          "end": 0.445
+        },
+        {
+          "word": "신규",
+          "start": 0.525,
+          "end": 0.765
+        },
+        {
+          "word": "가입은",
+          "start": 0.845,
+          "end": 1.13
+        },
+        {
+          "word": "검색",
+          "start": 1.21,
+          "end": 1.45
+        },
+        {
+          "word": "유입이",
+          "start": 1.53,
+          "end": 1.815
+        },
+        {
+          "word": "가장",
+          "start": 2.015,
+          "end": 2.255
+        },
+        {
+          "word": "컸고",
+          "start": 2.335,
+          "end": 2.575
+        },
+        {
+          "word": "추천",
+          "start": 2.655,
+          "end": 2.895
+        },
+        {
+          "word": "유입이",
+          "start": 2.975,
+          "end": 3.26
+        },
+        {
+          "word": "그",
+          "start": 3.34,
+          "end": 3.58
+        },
+        {
+          "word": "뒤를",
+          "start": 3.78,
+          "end": 4.02
+        },
+        {
+          "word": "이었습니다",
+          "start": 4.1,
+          "end": 4.495
+        }
+      ],
+      "sourceHash": "3d0621f70f76bf7dd3104928638c7093e5c6f8ca1127463f6a4baf13a399570b",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "./assets/audio/s02.mock.mp3",
+      "audioDurationSec": 4.135,
+      "words": [
+        {
+          "word": "월간",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "지출은",
+          "start": 0.48,
+          "end": 0.765
+        },
+        {
+          "word": "인건비가",
+          "start": 0.845,
+          "end": 1.185
+        },
+        {
+          "word": "절반에",
+          "start": 1.265,
+          "end": 1.55
+        },
+        {
+          "word": "가깝고",
+          "start": 1.63,
+          "end": 1.915
+        },
+        {
+          "word": "인프라와",
+          "start": 2.115,
+          "end": 2.455
+        },
+        {
+          "word": "마케팅이",
+          "start": 2.535,
+          "end": 2.875
+        },
+        {
+          "word": "나머지를",
+          "start": 2.955,
+          "end": 3.295
+        },
+        {
+          "word": "나눕니다",
+          "start": 3.375,
+          "end": 3.715
+        }
+      ],
+      "sourceHash": "cbea062c0e757761d8e3bd3f55feb4507b5718e6d8bcb04dbc332ef149b29ff2",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "./assets/audio/s03.mock.mp3",
+      "audioDurationSec": 4.42,
+      "words": [
+        {
+          "word": "재방문율은",
+          "start": 0.16,
+          "end": 0.555
+        },
+        {
+          "word": "네",
+          "start": 0.635,
+          "end": 0.875
+        },
+        {
+          "word": "주",
+          "start": 0.955,
+          "end": 1.195
+        },
+        {
+          "word": "연속",
+          "start": 1.275,
+          "end": 1.515
+        },
+        {
+          "word": "상승해",
+          "start": 1.595,
+          "end": 1.88
+        },
+        {
+          "word": "마지막",
+          "start": 2.08,
+          "end": 2.365
+        },
+        {
+          "word": "주에",
+          "start": 2.445,
+          "end": 2.685
+        },
+        {
+          "word": "삼십칠",
+          "start": 2.765,
+          "end": 3.05
+        },
+        {
+          "word": "퍼센트에",
+          "start": 3.13,
+          "end": 3.47
+        },
+        {
+          "word": "도달했습니다",
+          "start": 3.55,
+          "end": 4
+        }
+      ],
+      "sourceHash": "93ea4f50146fb69187eef14497ad7b1ab6993d06880a3eb347335214bf96d8e2",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s04",
+      "audioPath": "./assets/audio/s04.mock.mp3",
+      "audioDurationSec": 3.845,
+      "words": [
+        {
+          "word": "운영팀은",
+          "start": 0.16,
+          "end": 0.5
+        },
+        {
+          "word": "온보딩",
+          "start": 0.58,
+          "end": 0.865
+        },
+        {
+          "word": "문서",
+          "start": 0.945,
+          "end": 1.185
+        },
+        {
+          "word": "알림",
+          "start": 1.265,
+          "end": 1.505
+        },
+        {
+          "word": "문구",
+          "start": 1.585,
+          "end": 1.825
+        },
+        {
+          "word": "결제",
+          "start": 2.025,
+          "end": 2.265
+        },
+        {
+          "word": "안내를",
+          "start": 2.345,
+          "end": 2.63
+        },
+        {
+          "word": "우선",
+          "start": 2.71,
+          "end": 2.95
+        },
+        {
+          "word": "점검합니다",
+          "start": 3.03,
+          "end": 3.425
+        }
+      ],
+      "sourceHash": "ea5807bca637ed3195b5b0cceeaced33cbe1775e06ca92fc7c0c4a0db03d245a",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s05",
+      "audioPath": "./assets/audio/s05.mock.mp3",
+      "audioDurationSec": 3.105,
+      "words": [
+        {
+          "word": "출시",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "준비는",
+          "start": 0.48,
+          "end": 0.765
+        },
+        {
+          "word": "검수",
+          "start": 0.845,
+          "end": 1.085
+        },
+        {
+          "word": "승인",
+          "start": 1.165,
+          "end": 1.405
+        },
+        {
+          "word": "배포",
+          "start": 1.485,
+          "end": 1.725
+        },
+        {
+          "word": "순서로",
+          "start": 1.925,
+          "end": 2.21
+        },
+        {
+          "word": "진행됩니다",
+          "start": 2.29,
+          "end": 2.685
+        }
+      ],
+      "sourceHash": "32e53fee1cb5c81f6e3d35e5d81cf1b09f1879c5eee5e6a23c04434453ff04d8",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s06",
+      "audioPath": "./assets/audio/s06.mock.mp3",
+      "audioDurationSec": 4.045,
+      "words": [
+        {
+          "word": "평균",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "응답",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "word": "시간은",
+          "start": 0.8,
+          "end": 1.085
+        },
+        {
+          "word": "백팔십사",
+          "start": 1.165,
+          "end": 1.505
+        },
+        {
+          "word": "밀리초로",
+          "start": 1.585,
+          "end": 1.925
+        },
+        {
+          "word": "목표치보다",
+          "start": 2.125,
+          "end": 2.52
+        },
+        {
+          "word": "십육",
+          "start": 2.6,
+          "end": 2.84
+        },
+        {
+          "word": "밀리초",
+          "start": 2.92,
+          "end": 3.205
+        },
+        {
+          "word": "빠릅니다",
+          "start": 3.285,
+          "end": 3.625
+        }
+      ],
+      "sourceHash": "e8338c2efeda3e13f7e584b646720b49dfb0c178ae5fc86a23444e2a6c167b1d",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s07",
+      "audioPath": "./assets/audio/s07.mock.mp3",
+      "audioDurationSec": 4.045,
+      "words": [
+        {
+          "word": "새",
+          "start": 0.16,
+          "end": 0.4
+        },
+        {
+          "word": "추천",
+          "start": 0.48,
+          "end": 0.72
+        },
+        {
+          "word": "모델은",
+          "start": 0.8,
+          "end": 1.085
+        },
+        {
+          "word": "기존",
+          "start": 1.165,
+          "end": 1.405
+        },
+        {
+          "word": "모델보다",
+          "start": 1.485,
+          "end": 1.825
+        },
+        {
+          "word": "클릭률은",
+          "start": 2.025,
+          "end": 2.365
+        },
+        {
+          "word": "높이고",
+          "start": 2.445,
+          "end": 2.73
+        },
+        {
+          "word": "이탈률은",
+          "start": 2.81,
+          "end": 3.15
+        },
+        {
+          "word": "낮췄습니다",
+          "start": 3.23,
+          "end": 3.625
+        }
+      ],
+      "sourceHash": "7aa6d29b81fb7d17802bb1e63152df056476b4bec065bc2b77ed675767359cd7",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    },
+    {
+      "sceneId": "s08",
+      "audioPath": "./assets/audio/s08.mock.mp3",
+      "audioDurationSec": 4.895,
+      "words": [
+        {
+          "word": "사용자",
+          "start": 0.16,
+          "end": 0.445
+        },
+        {
+          "word": "인터뷰에서",
+          "start": 0.525,
+          "end": 0.92
+        },
+        {
+          "word": "가장",
+          "start": 1,
+          "end": 1.24
+        },
+        {
+          "word": "많이",
+          "start": 1.32,
+          "end": 1.56
+        },
+        {
+          "word": "반복된",
+          "start": 1.64,
+          "end": 1.925
+        },
+        {
+          "word": "문장은",
+          "start": 2.125,
+          "end": 2.41
+        },
+        {
+          "word": "설정이",
+          "start": 2.49,
+          "end": 2.775
+        },
+        {
+          "word": "쉬워야",
+          "start": 2.855,
+          "end": 3.14
+        },
+        {
+          "word": "다시",
+          "start": 3.22,
+          "end": 3.46
+        },
+        {
+          "word": "쓴다는",
+          "start": 3.54,
+          "end": 3.825
+        },
+        {
+          "word": "말이었습니다",
+          "start": 4.025,
+          "end": 4.475
+        }
+      ],
+      "sourceHash": "c2f270c00c76407c2f9aedd202e920d4c22d1eff0ea4b788206b69ba6d6f1e7e",
+      "provider": "mock-tts",
+      "voice": "ko-KR-fixture-neutral"
+    }
+  ]
+}

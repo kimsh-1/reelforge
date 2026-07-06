@@ -1,0 +1,86 @@
+{
+  "gate": "L0-1",
+  "pass": true,
+  "checks": [
+    {
+      "id": "schema:scene-specs",
+      "pass": true,
+      "measured": {
+        "name": "scene-specs",
+        "path": "schemas/scene-specs.schema.json",
+        "schemaId": "https://video-factory.local/schemas/scene-specs.schema.json",
+        "jsonReadable": true,
+        "schemaValid": true,
+        "compiled": true,
+        "errors": []
+      }
+    },
+    {
+      "id": "schema:audio-meta",
+      "pass": true,
+      "measured": {
+        "name": "audio-meta",
+        "path": "schemas/audio-meta.schema.json",
+        "schemaId": "https://video-factory.local/schemas/audio-meta.schema.json",
+        "jsonReadable": true,
+        "schemaValid": true,
+        "compiled": true,
+        "errors": []
+      }
+    },
+    {
+      "id": "schema:design-tokens",
+      "pass": true,
+      "measured": {
+        "name": "design-tokens",
+        "path": "schemas/design-tokens.schema.json",
+        "schemaId": "https://video-factory.local/schemas/design-tokens.schema.json",
+        "jsonReadable": true,
+        "schemaValid": true,
+        "compiled": true,
+        "errors": []
+      }
+    },
+    {
+      "id": "schema:versions",
+      "pass": true,
+      "measured": {
+        "name": "versions",
+        "path": "schemas/versions.schema.json",
+        "schemaId": "https://video-factory.local/schemas/versions.schema.json",
+        "jsonReadable": true,
+        "schemaValid": true,
+        "compiled": true,
+        "errors": []
+      }
+    },
+    {
+      "id": "schema:render-manifest",
+      "pass": true,
+      "measured": {
+        "name": "render-manifest",
+        "path": "schemas/render-manifest.schema.json",
+        "schemaId": "https://video-factory.local/schemas/render-manifest.schema.json",
+        "jsonReadable": true,
+        "schemaValid": true,
+        "compiled": true,
+        "errors": []
+      }
+    }
+  ],
+  "inputSet": [
+    "schemas/scene-specs.schema.json",
+    "schemas/audio-meta.schema.json",
+    "schemas/design-tokens.schema.json",
+    "schemas/versions.schema.json",
+    "schemas/render-manifest.schema.json"
+  ],
+  "canonicalInputMerkleHash": "0109522d5544800ef748777b26b5b68bf13112acbf5a968c1fbe977192f59fc1",
+  "evidenceHash": "f5af69683907469bdc492b59484f87b4406bf757a02624a51268564d42377949",
+  "gateScriptHash": "4832fcce91a0fc9388f605e3341640538bda373cc9e61aaa942f4eac408ca2ba",
+  "gitCommit": "d05318edbbe4b7807b91a6b21243d50837649a49",
+  "command": "node bin/vf gate l0-1 --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T20:08:50.436Z",
+  "finishedAt": "2026-07-06T20:08:50.532Z"
+}
