@@ -1,0 +1,537 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"순위 리스트"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"currentColor"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"rank"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"list"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge numbered block</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .numbered-block {
+          --numbered-accent: var(--rf-accent, currentColor);
+          --numbered-text: var(--rf-text, currentColor);
+          --numbered-muted: var(--rf-muted-text, color-mix(in srgb, currentColor 62%, transparent));
+          --numbered-surface: var(--rf-surface, Canvas);
+          --numbered-panel: var(--rf-panel, color-mix(in srgb, currentColor 7%, Canvas));
+          --numbered-line: color-mix(in srgb, currentColor 16%, transparent);
+          --numbered-accent-soft: color-mix(in srgb, var(--numbered-accent) 16%, transparent);
+          --numbered-shadow: color-mix(in srgb, currentColor 18%, transparent);
+          --row-count: 3;
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          box-sizing: border-box;
+          overflow: hidden;
+          color: var(--numbered-text);
+          font-family:
+            "Pretendard",
+            "Pretendard Variable",
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+        }
+
+        .numbered-stage {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          gap: 2.2rem;
+          box-sizing: border-box;
+          padding: 5.25rem 8.25rem 12.25rem;
+        }
+
+        .numbered-header {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 2rem;
+        }
+
+        .numbered-eyebrow {
+          margin: 0 0 0.7rem;
+          color: var(--numbered-muted);
+          font-size: 1.45rem;
+          font-weight: 760;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .numbered-title {
+          margin: 0;
+          max-width: 66rem;
+          color: var(--numbered-text);
+          font-size: 5.25rem;
+          font-weight: 920;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .numbered-unit {
+          min-width: 8.2rem;
+          max-width: 22rem;
+          box-sizing: border-box;
+          padding: 0.85rem 1.15rem;
+          border: 0.1rem solid var(--numbered-line);
+          border-radius: 0.5rem;
+          background: var(--numbered-panel);
+          color: var(--numbered-text);
+          font-size: 1.65rem;
+          font-weight: 820;
+          line-height: 1.1;
+          letter-spacing: 0;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .numbered-list {
+          min-height: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          grid-template-rows: repeat(var(--row-count), minmax(0, 1fr));
+          gap: 1.15rem;
+          list-style: none;
+        }
+
+        .numbered-row {
+          position: relative;
+          min-width: 0;
+          min-height: 0;
+          display: grid;
+          grid-template-columns: 8.8rem minmax(0, 1fr) 0.55rem;
+          align-items: center;
+          gap: 1.55rem;
+          box-sizing: border-box;
+          padding: 1.1rem 1.35rem 1.1rem 1.1rem;
+          border: 0.1rem solid var(--numbered-line);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(90deg, var(--numbered-accent-soft), transparent 48%),
+            var(--numbered-surface);
+          box-shadow: 0 1rem 2.8rem var(--numbered-shadow);
+          overflow: hidden;
+        }
+
+        .numbered-row::before {
+          content: "";
+          position: absolute;
+          inset: 0 auto 0 0;
+          width: 0.38rem;
+          background: var(--numbered-accent);
+        }
+
+        .numbered-stamp {
+          position: relative;
+          z-index: 1;
+          width: 7.2rem;
+          aspect-ratio: 1;
+          display: grid;
+          align-content: center;
+          justify-items: center;
+          box-sizing: border-box;
+          border: 0.16rem solid var(--numbered-accent);
+          border-radius: 50%;
+          background: var(--numbered-panel);
+          color: var(--numbered-accent);
+          box-shadow:
+            inset 0 0 0 0.32rem color-mix(in srgb, var(--numbered-accent) 12%, transparent),
+            0 0.85rem 1.6rem var(--numbered-shadow);
+        }
+
+        .numbered-stamp::after {
+          content: "";
+          position: absolute;
+          inset: 0.52rem;
+          border: 0.08rem dashed var(--numbered-accent);
+          border-radius: 50%;
+          opacity: 0.72;
+        }
+
+        .numbered-rank {
+          position: relative;
+          z-index: 1;
+          font-size: 2.55rem;
+          font-weight: 950;
+          line-height: 0.9;
+          letter-spacing: 0;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .numbered-rank-unit {
+          position: relative;
+          z-index: 1;
+          margin-top: 0.35rem;
+          max-width: 5.4rem;
+          color: var(--numbered-muted);
+          font-size: 0.95rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .numbered-copy {
+          min-width: 0;
+          display: grid;
+          gap: 0.55rem;
+        }
+
+        .numbered-label {
+          margin: 0;
+          color: var(--numbered-text);
+          font-size: 3.45rem;
+          font-weight: 880;
+          line-height: 1.08;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .numbered-meta {
+          margin: 0;
+          color: var(--numbered-muted);
+          font-size: 1.45rem;
+          font-weight: 720;
+          line-height: 1.18;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .numbered-rule {
+          width: 100%;
+          height: 74%;
+          border-radius: 999rem;
+          background: var(--numbered-accent);
+        }
+
+        .numbered-footer {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1rem;
+          min-height: 1.8rem;
+          color: var(--numbered-muted);
+          font-size: 1.25rem;
+          font-weight: 650;
+          line-height: 1.2;
+          letter-spacing: 0;
+        }
+
+        .numbered-source {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .numbered-count {
+          color: var(--numbered-accent);
+          font-weight: 850;
+          white-space: nowrap;
+        }
+
+        .numbered-block[data-density="medium"] .numbered-stage {
+          gap: 1.6rem;
+        }
+
+        .numbered-block[data-density="medium"] .numbered-row {
+          grid-template-columns: 7.8rem minmax(0, 1fr) 0.45rem;
+          gap: 1.25rem;
+          padding-block: 0.85rem;
+        }
+
+        .numbered-block[data-density="medium"] .numbered-stamp {
+          width: 6.4rem;
+        }
+
+        .numbered-block[data-density="medium"] .numbered-label {
+          font-size: 2.85rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-stage {
+          gap: 1.15rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-row {
+          grid-template-columns: 6.6rem minmax(0, 1fr) 0.38rem;
+          gap: 1rem;
+          padding-block: 0.65rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-stamp {
+          width: 5.35rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-rank {
+          font-size: 1.95rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-rank-unit {
+          display: none;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-label {
+          font-size: 2.25rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-meta {
+          font-size: 1.12rem;
+        }
+      </style>
+      <div
+        class="numbered-block"
+        data-composition-id="numbered"
+        data-width="1920"
+        data-height="1080"
+        data-duration="4"
+        role="img"
+        aria-label=""
+      >
+        <section class="numbered-stage">
+          <header class="numbered-header">
+            <div>
+              <p class="numbered-eyebrow" data-numbered-mood></p>
+              <h1 class="numbered-title" data-numbered-title></h1>
+            </div>
+            <div class="numbered-unit" data-numbered-unit></div>
+          </header>
+          <ol class="numbered-list" data-numbered-list></ol>
+          <footer class="numbered-footer">
+            <div class="numbered-source" data-numbered-source></div>
+            <div class="numbered-count" data-numbered-count></div>
+          </footer>
+        </section>
+      </div>
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+
+          const root =
+            document.querySelector('[data-composition-id="numbered"]') ??
+            document.querySelector('[data-hf-original-composition-id="numbered"]');
+          const tl = gsap.timeline({ paused: true });
+
+          if (!root) {
+            window.__timelines["numbered"] = tl;
+            return;
+          }
+
+          const variables = readVariables(root);
+          const title = textValue(variables.title, "순위 리스트");
+          const items = arrayValue(variables.items);
+          const values = arrayValue(variables.values);
+          const unit = textValue(variables.unit, "");
+          const mood = textValue(variables.mood, "informative");
+          const source = textValue(variables.source, "");
+          const rows = normalizeRows({ items, values, unit, title });
+
+          root.style.setProperty("--numbered-accent", safeColor(variables.accent));
+          root.style.setProperty("--row-count", String(Math.max(1, rows.length)));
+          root.dataset.density = rows.length > 6 ? "compact" : rows.length > 4 ? "medium" : "standard";
+
+          root.querySelector("[data-numbered-title]").textContent = title;
+          root.querySelector("[data-numbered-mood]").textContent = mood;
+          root.querySelector("[data-numbered-unit]").textContent = unit || "순위";
+          root.querySelector("[data-numbered-source]").textContent = source || "";
+          root.querySelector("[data-numbered-count]").textContent = `${rows.length}개 항목`;
+          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+
+          const list = root.querySelector("[data-numbered-list]");
+          rows.forEach((row) => {
+            const item = document.createElement("li");
+            const stamp = document.createElement("div");
+            const rank = document.createElement("span");
+            const stampUnit = document.createElement("span");
+            const copy = document.createElement("div");
+            const label = document.createElement("h2");
+            const meta = document.createElement("p");
+            const rule = document.createElement("div");
+
+            item.className = "numbered-row";
+            stamp.className = "numbered-stamp";
+            rank.className = "numbered-rank";
+            stampUnit.className = "numbered-rank-unit";
+            copy.className = "numbered-copy";
+            label.className = "numbered-label";
+            meta.className = "numbered-meta";
+            rule.className = "numbered-rule";
+
+            rank.textContent = row.badge;
+            stampUnit.textContent = unit;
+            label.textContent = row.label;
+            meta.textContent = row.meta;
+            rule.setAttribute("aria-hidden", "true");
+
+            stamp.append(rank, stampUnit);
+            copy.append(label, meta);
+            item.append(stamp, copy, rule);
+            list.appendChild(item);
+
+            row.elements = { item, stamp, copy, rule };
+          });
+
+          tl.fromTo(
+            root.querySelector(".numbered-header"),
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
+            0
+          );
+          rows.forEach((row, index) => {
+            const start = 0.24 + index * 0.18;
+            tl.fromTo(
+              row.elements.item,
+              { opacity: 0, x: -58 },
+              { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" },
+              start
+            );
+            tl.fromTo(
+              row.elements.stamp,
+              { opacity: 0, scale: 1.42, rotation: -8 },
+              { opacity: 1, scale: 1, rotation: 0, duration: 0.34, ease: "back.out(1.9)" },
+              start + 0.06
+            );
+            tl.fromTo(
+              row.elements.copy,
+              { opacity: 0, x: 38 },
+              { opacity: 1, x: 0, duration: 0.36, ease: "power2.out" },
+              start + 0.1
+            );
+            tl.fromTo(
+              row.elements.rule,
+              { scaleY: 0, transformOrigin: "center bottom" },
+              { scaleY: 1, duration: 0.28, ease: "power2.out" },
+              start + 0.18
+            );
+          });
+          tl.fromTo(
+            root.querySelector(".numbered-footer"),
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" },
+            0.72 + rows.length * 0.16
+          );
+
+          window.__timelines["numbered"] = tl;
+
+          function readVariables(scope) {
+            const hf = typeof __hyperframes !== "undefined" ? __hyperframes : window.__hyperframes;
+            const direct = hf && typeof hf.getVariables === "function" ? hf.getVariables() : {};
+            const host = hostVariables(scope);
+            return { ...host, ...direct };
+          }
+
+          function hostVariables(scope) {
+            let node = scope;
+            while (node) {
+              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
+                try {
+                  const parsed = JSON.parse(node.getAttribute("data-variable-values"));
+                  return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+                } catch {
+                  return {};
+                }
+              }
+              node = node.parentElement;
+            }
+            return {};
+          }
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function textValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text ? text : fallback;
+          }
+
+          function normalizeRows({ items, values, unit, title }) {
+            const count = Math.max(items.length, values.length);
+            if (count === 0) {
+              return [
+                {
+                  label: title,
+                  badge: "01",
+                  meta: unit ? `1 ${unit}` : "1"
+                }
+              ];
+            }
+            const rows = [];
+            for (let index = 0; index < count; index += 1) {
+              const raw = values[index];
+              const numeric = numericValue(raw);
+              const rank = Number.isFinite(numeric) && numeric > 0 ? Math.round(numeric) : index + 1;
+              rows.push({
+                label: textValue(items[index], `항목 ${index + 1}`),
+                badge: formatRank(rank),
+                meta: metaText(raw, index, unit)
+              });
+            }
+            return rows;
+          }
+
+          function numericValue(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return value;
+            const match = String(value ?? "")
+              .replace(/,/g, "")
+              .match(/-?\d+(?:\.\d+)?/);
+            return match ? Number(match[0]) : NaN;
+          }
+
+          function formatRank(value) {
+            const normalized = Math.max(1, Math.min(99, Math.round(value)));
+            return normalized < 10 ? `0${normalized}` : String(normalized);
+          }
+
+          function metaText(raw, index, unit) {
+            if (raw === undefined || raw === null || String(raw).trim() === "") {
+              return unit ? `${index + 1} ${unit}` : `#${index + 1}`;
+            }
+            const text = String(raw).trim();
+            return unit && !text.includes(unit) ? `${text} ${unit}` : text;
+          }
+
+          function ariaLabel(chartTitle, chartRows, unit) {
+            const suffix = unit ? ` ${unit}` : "";
+            const summary = chartRows.map((row) => `${row.badge}${suffix} ${row.label}`).join(", ");
+            return `${chartTitle}: ${summary}`;
+          }
+
+          function safeColor(value) {
+            const text = textValue(value, "currentColor");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "currentColor";
+          }
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,562 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":""},
+    {"id":"items","type":"string","label":"Items","default":"[]"},
+    {"id":"values","type":"string","label":"Values","default":"[]"},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"string","label":"Accent","default":"currentColor"},
+    {"id":"mood","type":"string","label":"Mood","default":""},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":""},
+    {"id":"reveal","type":"string","label":"Reveal","default":""},
+    {"id":"visualKind","type":"string","label":"Visual Kind","default":""},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge Line Block</title>
+  </head>
+  <body>
+    <template>
+      <div
+        id="line-root"
+        data-composition-id="line"
+        data-width="1920"
+        data-height="1080"
+        data-duration="4"
+      >
+        <style>
+        #line-root {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          box-sizing: border-box;
+          color: inherit;
+          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          overflow: hidden;
+          --line-accent: currentColor;
+          --line-text: currentColor;
+          --line-muted: color-mix(in srgb, var(--line-text) 68%, transparent);
+          --line-subtle: color-mix(in srgb, var(--line-text) 18%, transparent);
+          --line-faint: color-mix(in srgb, var(--line-text) 9%, transparent);
+          --line-panel: color-mix(in srgb, var(--line-text) 7%, transparent);
+          --line-accent-soft: color-mix(in srgb, var(--line-accent) 20%, transparent);
+          --line-accent-faint: color-mix(in srgb, var(--line-accent) 10%, transparent);
+        }
+
+        .line-stage {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          grid-template-rows: auto 1fr;
+          gap: 2.75rem;
+          box-sizing: border-box;
+          padding: 5.75rem 8.5rem 12.75rem;
+        }
+
+        .line-heading {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 2rem;
+        }
+
+        .line-kicker {
+          margin: 0 0 0.75rem;
+          color: var(--line-muted);
+          font-size: 1.625rem;
+          font-weight: 760;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .line-title {
+          margin: 0;
+          color: var(--line-text);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, sans-serif;
+          font-size: 5.35rem;
+          font-weight: 900;
+          line-height: 1.05;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .line-unit {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 8.5rem;
+          min-height: 3.75rem;
+          box-sizing: border-box;
+          padding: 0.75rem 1.5rem;
+          border: 0.125rem solid var(--line-subtle);
+          color: var(--line-text);
+          background: var(--line-panel);
+          font-size: 1.875rem;
+          font-weight: 850;
+          line-height: 1.05;
+          letter-spacing: 0;
+          white-space: nowrap;
+        }
+
+        .line-chart-shell {
+          position: relative;
+          min-height: 0;
+          border: 0.125rem solid var(--line-subtle);
+          background:
+            linear-gradient(90deg, var(--line-accent-faint), transparent 44%),
+            var(--line-panel);
+          box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--line-text) 14%, transparent);
+          overflow: hidden;
+        }
+
+        .line-chart-shell::before {
+          content: "";
+          position: absolute;
+          inset: 1.5rem;
+          border: 0.0625rem solid var(--line-faint);
+          pointer-events: none;
+        }
+
+        .line-svg {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .line-grid {
+          stroke: var(--line-faint);
+          stroke-width: 2;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .line-axis {
+          stroke: var(--line-subtle);
+          stroke-width: 3;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .line-area {
+          fill: var(--line-accent-soft);
+          opacity: 0.55;
+        }
+
+        .line-path {
+          fill: none;
+          stroke: var(--line-accent);
+          stroke-width: 10;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+          filter: drop-shadow(0 0.5rem 1rem var(--line-accent-soft));
+        }
+
+        .line-marker {
+          stroke: var(--line-subtle);
+          stroke-width: 2;
+          stroke-dasharray: 8 14;
+          vector-effect: non-scaling-stroke;
+        }
+
+        .line-point {
+          fill: var(--line-accent);
+          stroke: color-mix(in srgb, var(--line-text) 96%, transparent);
+          stroke-width: 7;
+          transform-box: fill-box;
+          transform-origin: center;
+          filter: drop-shadow(0 0.35rem 0.7rem var(--line-accent-soft));
+        }
+
+        .line-value,
+        .line-label,
+        .line-y-label,
+        .line-source {
+          fill: var(--line-text);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, sans-serif;
+          letter-spacing: 0;
+        }
+
+        .line-value {
+          font-size: 44px;
+          font-weight: 900;
+          text-anchor: middle;
+        }
+
+        .line-label {
+          fill: var(--line-muted);
+          font-size: 34px;
+          font-weight: 760;
+          text-anchor: middle;
+        }
+
+        .line-y-label {
+          fill: var(--line-muted);
+          font-size: 28px;
+          font-weight: 720;
+          text-anchor: end;
+        }
+
+        .line-source {
+          fill: var(--line-muted);
+          font-size: 26px;
+          font-weight: 650;
+          text-anchor: end;
+        }
+
+        .line-empty {
+          position: absolute;
+          inset: 0;
+          display: none;
+          align-items: center;
+          justify-content: center;
+          padding: 4rem;
+          color: var(--line-muted);
+          font-size: 3rem;
+          font-weight: 800;
+          line-height: 1.15;
+          letter-spacing: 0;
+          text-align: center;
+          word-break: keep-all;
+        }
+
+        #line-root[data-empty="true"] .line-svg {
+          display: none;
+        }
+
+        #line-root[data-empty="true"] .line-empty {
+          display: flex;
+        }
+      </style>
+        <section class="line-stage" aria-label="라인차트">
+          <header class="line-heading">
+            <div>
+              <p id="line-kicker" class="line-kicker">LINE CHART</p>
+              <h1 id="line-title" class="line-title"></h1>
+            </div>
+            <div id="line-unit" class="line-unit"></div>
+          </header>
+          <figure class="line-chart-shell">
+            <svg
+              id="line-svg"
+              class="line-svg"
+              viewBox="0 0 1440 620"
+              role="img"
+              aria-labelledby="line-title"
+              preserveAspectRatio="none"
+            ></svg>
+            <div class="line-empty">표시할 데이터가 없습니다</div>
+          </figure>
+        </section>
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+
+          const root = document.getElementById("line-root");
+          const svg = document.getElementById("line-svg");
+          const title = document.getElementById("line-title");
+          const unitBadge = document.getElementById("line-unit");
+          const kicker = document.getElementById("line-kicker");
+          const isVariableBag = (value) => value && typeof value === "object" && !Array.isArray(value);
+          const hasChartData = (value) => isVariableBag(value) && Array.isArray(value.items) && Array.isArray(value.values);
+          const decodeAttr = (value) =>
+            String(value || "")
+              .replaceAll("&quot;", '"')
+              .replaceAll("&#34;", '"')
+              .replaceAll("&#39;", "'")
+              .replaceAll("&apos;", "'")
+              .replaceAll("&amp;", "&");
+          const parseVariableJson = (value) => {
+            try {
+              const parsed = JSON.parse(decodeAttr(value));
+              return isVariableBag(parsed) ? parsed : {};
+            } catch {
+              return {};
+            }
+          };
+          const hostVariables = () => {
+            let node = root;
+            while (node) {
+              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
+                return parseVariableJson(node.getAttribute("data-variable-values"));
+              }
+              node = node.parentElement;
+            }
+            return {};
+          };
+          const registryVariables = () => {
+            const byComp = window.__hfVariablesByComp;
+            if (!isVariableBag(byComp)) return {};
+            const hostId = root && root.parentElement ? root.parentElement.getAttribute("data-composition-id") : "";
+            for (const key of ["line", hostId]) {
+              if (key && hasChartData(byComp[key])) return byComp[key];
+            }
+            for (const value of Object.values(byComp)) {
+              if (hasChartData(value)) return value;
+            }
+            return {};
+          };
+          const documentHostVariables = () => {
+            const docs = [document, window.document].filter(Boolean);
+            for (const doc of docs) {
+              if (typeof doc.querySelectorAll !== "function") continue;
+              const hosts = Array.from(doc.querySelectorAll("[data-variable-values]"));
+              for (const host of hosts) {
+                const source = host.getAttribute("data-composition-src") || "";
+                const hostId = host.getAttribute("data-composition-id") || "";
+                const candidate = parseVariableJson(host.getAttribute("data-variable-values"));
+                if (hasChartData(candidate) && (hostId === "line" || source.includes("line/block.html") || !root || host.contains(root))) {
+                  return candidate;
+                }
+              }
+            }
+            return {};
+          };
+          const hyperframeVars =
+            window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+              ? window.__hyperframes.getVariables()
+              : {};
+          const vars = { ...documentHostVariables(), ...registryVariables(), ...hostVariables(), ...hyperframeVars };
+
+          const textOf = (value) => (value === null || value === undefined ? "" : String(value));
+          const listOf = (value) => {
+            if (Array.isArray(value)) return value;
+            if (typeof value === "string" && value.trim().startsWith("[")) {
+              try {
+                const parsed = JSON.parse(value);
+                return Array.isArray(parsed) ? parsed : [];
+              } catch {
+                return [];
+              }
+            }
+            return [];
+          };
+          let lineLength = 0;
+          const items = listOf(vars.items).map(textOf);
+          const rawValues = listOf(vars.values);
+          const values = rawValues
+            .map((value) => {
+              if (typeof value === "number") return value;
+              const normalized = textOf(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+              return normalized ? Number(normalized[0]) : NaN;
+            })
+            .filter((value) => Number.isFinite(value));
+          const count = Math.min(items.length, values.length);
+          const unit = textOf(vars.unit);
+          const source = textOf(vars.source);
+          const accent = textOf(vars.accent).trim() || "currentColor";
+          const mood = textOf(vars.mood).trim();
+
+          root.style.setProperty("--line-accent", accent);
+          title.textContent = textOf(vars.title) || "라인차트";
+          unitBadge.textContent = unit || "값";
+          kicker.textContent = mood ? `${mood} · LINE CHART` : "LINE CHART";
+
+          const svgNode = (name, attrs = {}) => {
+            const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+            Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value)));
+            return node;
+          };
+
+          const fmt = (value) => {
+            const rounded = Math.round(value * 10) / 10;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+          };
+
+          if (count < 2) {
+            root.dataset.empty = "true";
+          } else {
+            const chart = {
+              width: 1440,
+              height: 620,
+              left: 118,
+              right: 78,
+              top: 64,
+              bottom: 112
+            };
+            const plotWidth = chart.width - chart.left - chart.right;
+            const plotHeight = chart.height - chart.top - chart.bottom;
+            const usedItems = items.slice(0, count);
+            const usedValues = values.slice(0, count);
+            const minValue = Math.min(...usedValues);
+            const maxValue = Math.max(...usedValues);
+            const span = Math.max(1, maxValue - minValue);
+            const yMin = Math.floor((minValue - span * 0.18) * 10) / 10;
+            const yMax = Math.ceil((maxValue + span * 0.18) * 10) / 10;
+            const yRange = Math.max(1, yMax - yMin);
+            const xFor = (index) => chart.left + (plotWidth * index) / Math.max(1, count - 1);
+            const yFor = (value) => chart.top + plotHeight - ((value - yMin) / yRange) * plotHeight;
+            const points = usedValues.map((value, index) => ({
+              x: xFor(index),
+              y: yFor(value),
+              label: usedItems[index],
+              value
+            }));
+
+            const gridGroup = svgNode("g", { class: "line-grid-group" });
+            const markerGroup = svgNode("g", { class: "line-marker-group" });
+            const lineGroup = svgNode("g", { class: "line-series" });
+            const pointGroup = svgNode("g", { class: "line-points" });
+            const labelGroup = svgNode("g", { class: "line-labels" });
+            const steps = 4;
+
+            for (let index = 0; index <= steps; index += 1) {
+              const ratio = index / steps;
+              const y = chart.top + plotHeight * ratio;
+              const value = yMax - yRange * ratio;
+              const row = svgNode("g", { class: "line-grid-row" });
+              row.appendChild(
+                svgNode("line", {
+                  class: "line-grid",
+                  x1: chart.left,
+                  y1: y,
+                  x2: chart.width - chart.right,
+                  y2: y
+                })
+              );
+              const yLabel = svgNode("text", {
+                class: "line-y-label",
+                x: chart.left - 24,
+                y: y + 10
+              });
+              yLabel.textContent = `${fmt(value)}${unit}`;
+              row.appendChild(yLabel);
+              gridGroup.appendChild(row);
+            }
+
+            gridGroup.appendChild(
+              svgNode("line", {
+                class: "line-axis",
+                x1: chart.left,
+                y1: chart.top + plotHeight,
+                x2: chart.width - chart.right,
+                y2: chart.top + plotHeight
+              })
+            );
+
+            points.forEach((point) => {
+              markerGroup.appendChild(
+                svgNode("line", {
+                  class: "line-marker",
+                  x1: point.x,
+                  y1: chart.top,
+                  x2: point.x,
+                  y2: chart.top + plotHeight
+                })
+              );
+            });
+
+            const pathD = points
+              .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+              .join(" ");
+            const areaD = `${pathD} L ${points[points.length - 1].x.toFixed(2)} ${(chart.top + plotHeight).toFixed(
+              2
+            )} L ${points[0].x.toFixed(2)} ${(chart.top + plotHeight).toFixed(2)} Z`;
+            const area = svgNode("path", { class: "line-area", d: areaD });
+            const path = svgNode("path", { id: "line-path", class: "line-path", d: pathD });
+
+            lineGroup.appendChild(area);
+            lineGroup.appendChild(path);
+
+            points.forEach((point) => {
+              const circle = svgNode("circle", {
+                class: "line-point",
+                cx: point.x,
+                cy: point.y,
+                r: 14
+              });
+              const value = svgNode("text", {
+                class: "line-value",
+                x: point.x,
+                y: point.y - 32
+              });
+              const label = svgNode("text", {
+                class: "line-label",
+                x: point.x,
+                y: chart.top + plotHeight + 58
+              });
+              value.textContent = `${fmt(point.value)}${unit}`;
+              label.textContent = point.label;
+              pointGroup.appendChild(circle);
+              labelGroup.appendChild(value);
+              labelGroup.appendChild(label);
+            });
+
+            if (source) {
+              const sourceText = svgNode("text", {
+                class: "line-source",
+                x: chart.width - chart.right,
+                y: chart.height - 34
+              });
+              sourceText.textContent = source;
+              labelGroup.appendChild(sourceText);
+            }
+
+            svg.appendChild(gridGroup);
+            svg.appendChild(markerGroup);
+            svg.appendChild(lineGroup);
+            svg.appendChild(pointGroup);
+            svg.appendChild(labelGroup);
+
+            lineLength = path.getTotalLength();
+            path.style.strokeDasharray = String(lineLength);
+            path.style.strokeDashoffset = String(lineLength);
+          }
+
+          const tl = gsap.timeline({ paused: true });
+          const chartShell = "#line-root .line-chart-shell";
+          const detailText = gsap.utils.toArray("#line-root .line-value, #line-root .line-label, #line-root .line-source");
+          tl.fromTo("#line-root .line-heading", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, 0);
+          tl.fromTo(chartShell, { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.46, ease: "power3.out" }, 0.08);
+          tl.fromTo("#line-root .line-grid-row", { opacity: 0 }, { opacity: 1, duration: 0.36, stagger: 0.05, ease: "none" }, 0.18);
+          tl.fromTo("#line-root .line-marker", { opacity: 0 }, { opacity: 0.72, duration: 0.28, stagger: 0.07, ease: "none" }, 0.42);
+          tl.fromTo("#line-root .line-area", { opacity: 0 }, { opacity: 0.55, duration: 0.5, ease: "power1.out" }, 0.58);
+          tl.fromTo("#line-path", { strokeDashoffset: lineLength }, { strokeDashoffset: 0, duration: 1.08, ease: "power2.out" }, 0.62);
+          tl.fromTo(
+            "#line-root .line-point",
+            { opacity: 0, scale: 0 },
+            { opacity: 1, scale: 1, duration: 0.28, stagger: 0.15, ease: "back.out(1.7)" },
+            0.92
+          );
+          tl.fromTo(detailText, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.28, stagger: 0.06, ease: "power2.out" }, 1.02);
+          timelineIds(root).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
+          });
+          signalRuntimeReady();
+
+          function timelineIds(rootElement) {
+            return new Set([
+              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
+              "line"
+            ]);
+          }
+
+          function signalRuntimeReady() {
+            if (typeof window.__hfForceTimelineRebind === "function") {
+              window.__hfForceTimelineRebind();
+            }
+            if (typeof window.__hfFlushSync === "function") {
+              window.__hfFlushSync();
+            }
+            window.__playerReady = true;
+            window.__renderReady = true;
+          }
+        })();
+      </script>
+      </div>
+    </template>
+  </body>
+</html>

@@ -1,6 +1,18 @@
 import { secondsFromFrames } from "./utils.mjs";
 
-export const TRANSITION_HOOK_VERSION = "P2-00.transition-hook.v1";
+export const TRANSITION_HOOK_VERSION = "P2-01.transition-hook.v1";
+
+const TRANSITION_ALIASES = new Map([
+  ["cut", "cut"],
+  ["fade", "crossfade"],
+  ["crossfade", "crossfade"],
+  ["slide", "slide_left"],
+  ["slide_left", "slide_left"],
+  ["slide_right", "slide_right"],
+  ["wipe", "wipe"],
+  ["wipe_left", "wipe_left"],
+  ["wipe_right", "wipe_right"]
+]);
 
 export function transitionHookSignature() {
   return {
@@ -21,33 +33,77 @@ export function transitionHookSignature() {
 }
 
 export function resolveTransitionType(type) {
-  if (type === "cut") return "cut";
-  if (type === "crossfade" || type === "fade") return "crossfade";
-  return "crossfade";
+  return TRANSITION_ALIASES.get(type) ?? "crossfade";
+}
+
+function zOrderLines({ fromSlotId, toSlotId, startSec }) {
+  return [
+    `        tl.set("#${fromSlotId}", { zIndex: 999 }, ${startSec});`,
+    `        tl.set("#${toSlotId}", { zIndex: 1000 }, ${startSec});`
+  ];
+}
+
+function crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec }) {
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.to("#${fromSlotId}", { opacity: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.fromTo("#${toSlotId}", { opacity: 0 }, { opacity: 1, duration: ${durationSec}, ease: "none" }, ${startSec});`
+  ];
+}
+
+function slideLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction }) {
+  const xPercent = direction === "right" ? -100 : 100;
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
+    `        tl.fromTo("#${toSlotId}", { xPercent: ${xPercent} }, { xPercent: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
+  ];
+}
+
+function wipeInsetForType(type) {
+  if (type === "wipe_right") return "inset(0 100% 0 0)";
+  return "inset(0 0 0 100%)";
+}
+
+function wipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, type }) {
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
+    `        tl.fromTo("#${toSlotId}", { clipPath: "${wipeInsetForType(type)}" }, { clipPath: "inset(0 0 0 0)", duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.set("#${toSlotId}", { clearProps: "clipPath" }, ${endSec});`
+  ];
 }
 
 export function emitTransition({ transition, fromSlotId, toSlotId, startFrame, durationFrames, fps }) {
   const resolvedType = resolveTransitionType(transition.type);
   const warnings = [];
 
-  if (transition.type !== resolvedType && transition.type !== "fade") {
+  if (!TRANSITION_ALIASES.has(transition.type)) {
     warnings.push({
       code: "transition-fallback",
-      message: `transition ${transition.type} is compiled as crossfade until P2-01 expands the registry`,
+      message: `transition ${transition.type} is compiled as crossfade because it is not in the transition registry`,
       transition
     });
   }
 
   if (resolvedType === "cut" || durationFrames === 0) {
-    return { resolvedType: "cut", lines: [], warnings };
+    return { resolvedType, lines: [], warnings };
   }
 
   const startSec = secondsFromFrames(startFrame, fps);
+  const endSec = secondsFromFrames(startFrame + durationFrames, fps);
   const durationSec = secondsFromFrames(durationFrames, fps);
-  const lines = [
-    `        tl.to("#${fromSlotId}", { opacity: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`,
-    `        tl.fromTo("#${toSlotId}", { opacity: 0 }, { opacity: 1, duration: ${durationSec}, ease: "none" }, ${startSec});`
-  ];
+
+  let lines;
+  if (resolvedType === "crossfade") {
+    lines = crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec });
+  } else if (resolvedType === "slide_left" || resolvedType === "slide_right") {
+    const direction = resolvedType === "slide_right" ? "right" : "left";
+    lines = slideLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction });
+  } else {
+    lines = wipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, type: resolvedType });
+  }
 
   return { resolvedType, lines, warnings };
 }

@@ -1,0 +1,410 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"목록"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"count"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"list"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge list block</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          box-sizing: border-box;
+          overflow: hidden;
+          color: var(--rf-text, currentColor);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          --list-accent: var(--rf-accent, Highlight);
+          --list-ink: var(--rf-text, currentColor);
+          --list-muted: var(--rf-muted-text, color-mix(in srgb, var(--list-ink) 62%, transparent));
+          --list-surface: var(--rf-surface, color-mix(in srgb, Canvas 94%, transparent));
+          --list-panel: var(--rf-panel, color-mix(in srgb, var(--list-ink) 7%, transparent));
+          --list-line: color-mix(in srgb, var(--list-accent) 32%, transparent);
+          --list-line-soft: color-mix(in srgb, var(--list-ink) 14%, transparent);
+          --list-accent-soft: color-mix(in srgb, var(--list-accent) 14%, transparent);
+          --list-shadow: var(--rf-shadow, var(--list-ink));
+        }
+
+        .list-stage {
+          position: absolute;
+          inset: 8.25% 7.25% 15.75%;
+          display: grid;
+          grid-template-columns: minmax(0, 0.78fr) minmax(42rem, 1.18fr);
+          align-items: center;
+          gap: 5rem;
+          box-sizing: border-box;
+        }
+
+        .list-header {
+          min-width: 0;
+          display: grid;
+          align-content: center;
+          gap: 1.55rem;
+        }
+
+        .list-kicker {
+          margin: 0;
+          width: fit-content;
+          max-width: 100%;
+          box-sizing: border-box;
+          padding: 0.7rem 0.9rem;
+          border: 0.1rem solid var(--list-line);
+          border-radius: 0.5rem;
+          background: var(--list-accent-soft);
+          color: var(--list-muted);
+          font-size: 1.45rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+          overflow-wrap: anywhere;
+        }
+
+        .list-title {
+          margin: 0;
+          color: var(--list-ink);
+          font-size: 5.45rem;
+          font-weight: 920;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .list-source {
+          margin: 0;
+          max-width: 36rem;
+          color: var(--list-muted);
+          font-size: 1.42rem;
+          font-weight: 650;
+          line-height: 1.36;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .list-stack {
+          min-width: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          gap: 1.15rem;
+          list-style: none;
+          counter-reset: list-item-count;
+        }
+
+        .list-item {
+          min-width: 0;
+          min-height: 8.7rem;
+          display: grid;
+          grid-template-columns: 4.75rem minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1.35rem;
+          box-sizing: border-box;
+          padding: 1.28rem 1.45rem;
+          border: 0.1rem solid var(--list-line-soft);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(90deg, var(--list-accent-soft), transparent 38%),
+            var(--list-surface);
+          box-shadow: 0 1.15rem 2.8rem color-mix(in srgb, var(--list-shadow) 12%, transparent);
+          opacity: 0;
+          counter-increment: list-item-count;
+        }
+
+        .list-icon {
+          position: relative;
+          width: 4.75rem;
+          aspect-ratio: 1;
+          display: grid;
+          place-items: center;
+          border: 0.12rem solid var(--list-line);
+          border-radius: 0.5rem;
+          background: var(--list-panel);
+          overflow: hidden;
+        }
+
+        .list-icon::before {
+          content: "";
+          width: 1.15rem;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          background: var(--list-accent);
+          box-shadow: 0 0 1.1rem var(--list-accent-soft);
+        }
+
+        .list-icon::after {
+          content: counter(list-item-count, decimal-leading-zero);
+          position: absolute;
+          right: 0.38rem;
+          bottom: 0.32rem;
+          color: var(--list-muted);
+          font-size: 0.95rem;
+          font-weight: 820;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+
+        .list-copy {
+          min-width: 0;
+          display: grid;
+          gap: 0.48rem;
+        }
+
+        .list-label {
+          min-width: 0;
+          color: var(--list-ink);
+          font-size: 2.55rem;
+          font-weight: 850;
+          line-height: 1.14;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .list-meta {
+          min-width: 0;
+          color: var(--list-muted);
+          font-size: 1.18rem;
+          font-weight: 720;
+          line-height: 1.15;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .list-value {
+          max-width: 18rem;
+          box-sizing: border-box;
+          padding: 0.7rem 1rem;
+          border: 0.1rem solid var(--list-line);
+          border-radius: 0.5rem;
+          background: var(--list-accent-soft);
+          color: var(--list-ink);
+          font-size: 1.8rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: 0;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-variant-numeric: tabular-nums;
+          opacity: 0;
+        }
+
+        #root[data-has-values="false"] .list-item {
+          grid-template-columns: 4.75rem minmax(0, 1fr);
+        }
+
+        #root[data-has-values="false"] .list-value {
+          display: none;
+        }
+      </style>
+      <div
+        id="root"
+        data-composition-id="list"
+        data-width="1920"
+        data-height="1080"
+        data-duration="4"
+        role="img"
+        aria-label=""
+      >
+        <section class="list-stage">
+          <header class="list-header">
+            <p class="list-kicker" data-list-mood></p>
+            <h1 class="list-title" data-list-title></h1>
+            <p class="list-source" data-list-source></p>
+          </header>
+          <ol class="list-stack" data-list-items aria-label="목록 항목"></ol>
+        </section>
+      </div>
+      <script>
+        (function () {
+          const root =
+            document.querySelector('[data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
+            document.querySelector('[data-hf-inner-root="true"]') ||
+            document.querySelector('#root[data-composition-id="list"], #root[data-hf-original-composition-id="list"]') ||
+            document.getElementById("root") ||
+            document.querySelector('[data-composition-id="list"], [data-hf-original-composition-id="list"]');
+          const host = root.closest("[data-composition-id]") || root;
+          const titleEl = root.querySelector("[data-list-title]");
+          const moodEl = root.querySelector("[data-list-mood]");
+          const sourceEl = root.querySelector("[data-list-source]");
+          const listEl = root.querySelector("[data-list-items]");
+          const variables = readVariables(host);
+
+          const title = stringValue(variables.title, "목록");
+          const mood = stringValue(variables.mood, "informative");
+          const source = stringValue(variables.source, "");
+          const unit = stringValue(variables.unit, "");
+          const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
+
+          root.style.setProperty("--list-accent", safeColor(variables.accent));
+          root.dataset.hasValues = rows.some((row) => row.value.length > 0) ? "true" : "false";
+          titleEl.textContent = title;
+          moodEl.textContent = mood;
+          sourceEl.textContent = source;
+          sourceEl.style.opacity = source ? "1" : "0";
+          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+
+          rows.forEach((row, index) => {
+            const item = document.createElement("li");
+            const icon = document.createElement("span");
+            const copy = document.createElement("span");
+            const label = document.createElement("span");
+            const meta = document.createElement("span");
+            const value = document.createElement("span");
+
+            item.className = "list-item";
+            icon.className = "list-icon";
+            copy.className = "list-copy";
+            label.className = "list-label";
+            meta.className = "list-meta";
+            value.className = "list-value";
+
+            icon.setAttribute("aria-hidden", "true");
+            label.textContent = row.label;
+            meta.textContent = unit ? `${unit} · ${index + 1}/${rows.length}` : `${index + 1}/${rows.length}`;
+            value.textContent = row.value;
+
+            copy.append(label, meta);
+            item.append(icon, copy, value);
+            listEl.appendChild(item);
+          });
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          const items = gsap.utils.toArray(root.querySelectorAll(".list-item"));
+          const icons = gsap.utils.toArray(root.querySelectorAll(".list-icon"));
+          const values = gsap.utils.toArray(root.querySelectorAll(".list-value"));
+
+          tl.fromTo(
+            root.querySelector(".list-header"),
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.44, ease: "power3.out" },
+            0
+          );
+          tl.fromTo(
+            items,
+            { opacity: 0, y: 34 },
+            { opacity: 1, y: 0, duration: 0.48, ease: "power3.out", stagger: 0.16 },
+            0.24
+          );
+          tl.fromTo(
+            icons,
+            { opacity: 0, scale: 0.82 },
+            { opacity: 1, scale: 1, duration: 0.34, ease: "back.out(1.4)", stagger: 0.16 },
+            0.32
+          );
+          tl.fromTo(
+            values,
+            { opacity: 0, x: 18 },
+            { opacity: 1, x: 0, duration: 0.34, ease: "power2.out", stagger: 0.16 },
+            0.48
+          );
+          tl.addLabel("final", 1.42 + rows.length * 0.16);
+          timelineIds(host).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function readVariables(hostElement) {
+            const direct =
+              window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+                ? window.__hyperframes.getVariables()
+                : {};
+            const runtimeId = hostElement?.getAttribute("data-composition-id") || "";
+            const authoredId = hostElement?.getAttribute("data-hf-original-composition-id") || "list";
+            const registry = {
+              ...(globalThis.__hfVariablesByComp?.[authoredId] || {}),
+              ...(globalThis.__hfVariablesByComp?.[runtimeId] || {})
+            };
+            return { ...readHostVariables(hostElement), ...registry, ...direct };
+          }
+
+          function readHostVariables(element) {
+            let node = element;
+            while (node) {
+              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
+                try {
+                  const parsed = JSON.parse(node.getAttribute("data-variable-values"));
+                  return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+                } catch {
+                  return {};
+                }
+              }
+              node = node.parentElement;
+            }
+            return {};
+          }
+
+          function timelineIds(hostElement) {
+            return new Set([
+              hostElement?.getAttribute("data-composition-id") || "",
+              hostElement?.getAttribute("data-hf-original-composition-id") || "",
+              "list"
+            ]);
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function normalizeRows(labels, rawValues, fallbackTitle) {
+            const count = Math.max(labels.length, rawValues.length);
+            if (count === 0) {
+              return [{ label: fallbackTitle, value: "" }];
+            }
+            const rows = [];
+            for (let index = 0; index < count; index += 1) {
+              rows.push({
+                label: stringValue(labels[index], `항목 ${index + 1}`),
+                value: valueText(rawValues[index])
+              });
+            }
+            return rows;
+          }
+
+          function valueText(value) {
+            if (value === undefined || value === null) return "";
+            return String(value).trim();
+          }
+
+          function ariaLabel(listTitle, rows, unitText) {
+            const itemText = rows
+              .map((row) => (row.value ? `${row.label} ${unitText ? `${unitText} ` : ""}${row.value}` : row.label))
+              .join(", ");
+            return `${listTitle}: ${itemText}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "Highlight");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "Highlight";
+          }
+        })();
+      </script>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,495 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"핵심 지표"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"number"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"count_up"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"none"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge statistic block</title>
+  </head>
+  <body>
+    <template>
+      <div
+        id="root"
+        data-composition-id="statistic"
+        data-width="1920"
+        data-height="1080"
+        data-duration="4"
+        role="img"
+        aria-label=""
+      >
+        <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          box-sizing: border-box;
+          overflow: hidden;
+          color: var(--stat-ink);
+          font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          --stat-accent: var(--rf-accent, Highlight);
+          --stat-ink: var(--rf-text, currentColor);
+          --stat-muted: var(--rf-muted-text, color-mix(in srgb, var(--stat-ink) 62%, transparent));
+          --stat-surface: var(--rf-surface, color-mix(in srgb, Canvas 96%, transparent));
+          --stat-panel: var(--rf-panel, color-mix(in srgb, var(--stat-ink) 8%, transparent));
+          --stat-line: color-mix(in srgb, var(--stat-accent) 34%, transparent);
+          --stat-line-soft: color-mix(in srgb, var(--stat-ink) 14%, transparent);
+          --stat-accent-soft: color-mix(in srgb, var(--stat-accent) 15%, transparent);
+          --stat-accent-faint: color-mix(in srgb, var(--stat-accent) 8%, transparent);
+          --stat-shadow: var(--rf-shadow, var(--stat-ink));
+        }
+
+        .stat-stage {
+          position: absolute;
+          inset: 8.148% 7.083% 15.926%;
+          display: grid;
+          grid-template-columns: minmax(0, 1.04fr) minmax(31rem, 0.64fr);
+          align-items: stretch;
+          gap: 4.25rem;
+          box-sizing: border-box;
+        }
+
+        .stat-hero,
+        .stat-details {
+          min-width: 0;
+          box-sizing: border-box;
+          border: 0.125rem solid var(--stat-line);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(135deg, var(--stat-accent-faint), transparent 42%),
+            var(--stat-surface);
+          box-shadow: 0 1.45rem 4.2rem color-mix(in srgb, var(--stat-shadow) 14%, transparent);
+        }
+
+        .stat-hero {
+          position: relative;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          gap: 2.1rem;
+          padding: 3.95rem 4.45rem 3.5rem;
+          overflow: hidden;
+        }
+
+        .stat-hero::before {
+          content: "";
+          position: absolute;
+          inset: 2rem;
+          border: 0.08rem solid var(--stat-line-soft);
+          border-radius: 0.5rem;
+          pointer-events: none;
+        }
+
+        .stat-header {
+          position: relative;
+          z-index: 1;
+          display: grid;
+          gap: 1.1rem;
+          min-width: 0;
+        }
+
+        .stat-kicker {
+          margin: 0;
+          width: fit-content;
+          max-width: 100%;
+          box-sizing: border-box;
+          padding: 0.68rem 0.9rem;
+          border: 0.1rem solid var(--stat-line);
+          border-radius: 0.5rem;
+          background: var(--stat-accent-soft);
+          color: var(--stat-muted);
+          font-size: 1.35rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+          overflow-wrap: anywhere;
+        }
+
+        .stat-title {
+          margin: 0;
+          max-width: 100%;
+          color: var(--stat-ink);
+          font-size: 5.05rem;
+          font-weight: 920;
+          line-height: 1.05;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .stat-main {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
+          display: grid;
+          align-content: center;
+          gap: 1rem;
+        }
+
+        .stat-number-line {
+          min-width: 0;
+          display: flex;
+          align-items: baseline;
+          gap: 1.1rem;
+          color: var(--stat-ink);
+          font-variant-numeric: tabular-nums;
+          white-space: nowrap;
+        }
+
+        .stat-number {
+          display: inline-block;
+          min-width: 0;
+          font-size: 14.2rem;
+          font-weight: 950;
+          line-height: 0.88;
+          letter-spacing: 0;
+        }
+
+        .stat-unit {
+          display: inline-block;
+          color: var(--stat-accent);
+          font-size: 5.6rem;
+          font-weight: 920;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+
+        .stat-caption {
+          margin: 0;
+          max-width: 54rem;
+          color: var(--stat-muted);
+          font-size: 2.35rem;
+          font-weight: 760;
+          line-height: 1.22;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .stat-source {
+          position: relative;
+          z-index: 1;
+          margin: 0;
+          max-width: 100%;
+          color: var(--stat-muted);
+          font-size: 1.25rem;
+          font-weight: 680;
+          line-height: 1.26;
+          letter-spacing: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .stat-details {
+          display: grid;
+          grid-template-rows: auto 1fr;
+          gap: 1.6rem;
+          padding: 3.2rem 2.75rem;
+          overflow: hidden;
+        }
+
+        .stat-details-title {
+          margin: 0;
+          color: var(--stat-muted);
+          font-size: 1.45rem;
+          font-weight: 800;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .stat-list {
+          min-width: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          align-content: center;
+          gap: 1.05rem;
+          list-style: none;
+        }
+
+        .stat-item {
+          min-width: 0;
+          min-height: 8.2rem;
+          box-sizing: border-box;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1.3rem;
+          padding: 1.22rem 1.3rem;
+          border: 0.1rem solid var(--stat-line-soft);
+          border-radius: 0.5rem;
+          background: var(--stat-panel);
+          opacity: 0;
+        }
+
+        .stat-item-label {
+          min-width: 0;
+          color: var(--stat-ink);
+          font-size: 1.95rem;
+          font-weight: 820;
+          line-height: 1.14;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .stat-item-value {
+          color: var(--stat-ink);
+          font-size: 2.5rem;
+          font-weight: 930;
+          line-height: 1;
+          letter-spacing: 0;
+          white-space: nowrap;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .stat-item:first-child {
+          border-color: var(--stat-line);
+          background:
+            linear-gradient(90deg, var(--stat-accent-soft), transparent 58%),
+            var(--stat-panel);
+        }
+
+        .stat-item:first-child .stat-item-value {
+          color: var(--stat-accent);
+        }
+
+        #root[data-row-count="1"] .stat-stage {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        #root[data-row-count="1"] .stat-details {
+          display: none;
+        }
+      </style>
+        <section class="stat-stage">
+          <article class="stat-hero">
+            <header class="stat-header">
+              <p class="stat-kicker" data-stat-kicker></p>
+              <h1 class="stat-title" data-stat-title></h1>
+            </header>
+            <div class="stat-main">
+              <div class="stat-number-line" aria-hidden="true">
+                <span class="stat-number" data-stat-number>0</span>
+                <span class="stat-unit" data-stat-unit></span>
+              </div>
+              <p class="stat-caption" data-stat-caption></p>
+            </div>
+            <p class="stat-source" data-stat-source></p>
+          </article>
+          <aside class="stat-details" aria-label="세부 지표">
+            <p class="stat-details-title">항목</p>
+            <ol class="stat-list" data-stat-list></ol>
+          </aside>
+        </section>
+      <script>
+        (function () {
+          const root = document.querySelector('[data-composition-id="statistic"], [data-hf-original-composition-id="statistic"]');
+          const hf = typeof __hyperframes !== "undefined" ? __hyperframes : window.__hyperframes;
+          const variables = hf && typeof hf.getVariables === "function" ? hf.getVariables() : {};
+          const titleEl = root.querySelector("[data-stat-title]");
+          const kickerEl = root.querySelector("[data-stat-kicker]");
+          const numberEl = root.querySelector("[data-stat-number]");
+          const unitEl = root.querySelector("[data-stat-unit]");
+          const captionEl = root.querySelector("[data-stat-caption]");
+          const sourceEl = root.querySelector("[data-stat-source]");
+          const listEl = root.querySelector("[data-stat-list]");
+
+          const title = stringValue(variables.title, "핵심 지표");
+          const unit = stringValue(variables.unit, "");
+          const mood = stringValue(variables.mood, "informative");
+          const source = stringValue(variables.source, "");
+          const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
+          const main = rows[0];
+
+          root.style.setProperty("--stat-accent", safeColor(variables.accent));
+          root.dataset.rowCount = String(rows.length);
+          titleEl.textContent = title;
+          kickerEl.textContent = mood;
+          numberEl.textContent = formatNumber(0, main.decimals);
+          unitEl.textContent = unit;
+          captionEl.textContent = main.label;
+          sourceEl.textContent = source;
+          sourceEl.style.opacity = source ? "1" : "0";
+          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+
+          rows.forEach((row) => {
+            const item = document.createElement("li");
+            const label = document.createElement("span");
+            const value = document.createElement("span");
+            item.className = "stat-item";
+            label.className = "stat-item-label";
+            value.className = "stat-item-value";
+            label.textContent = row.label;
+            value.textContent = formatDisplayValue(row, unit);
+            item.append(label, value);
+            listEl.appendChild(item);
+          });
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          const hero = root.querySelector(".stat-hero");
+          const details = root.querySelector(".stat-details");
+          const header = root.querySelector(".stat-header");
+          const numberLine = root.querySelector(".stat-number-line");
+          const caption = root.querySelector(".stat-caption");
+          const listItems = gsap.utils.toArray(root.querySelectorAll(".stat-item"));
+          const counter = { value: 0 };
+
+          tl.addLabel("start", 0);
+          tl.fromTo(hero, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 0);
+          tl.fromTo(details, { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" }, 0.1);
+          tl.fromTo(header, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.38, ease: "power2.out" }, 0.12);
+          tl.fromTo(
+            numberLine,
+            { opacity: 0, y: 34, scale: 0.94 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "power3.out" },
+            0.3
+          );
+          tl.to(
+            counter,
+            {
+              value: main.numeric,
+              duration: 1.18,
+              ease: "power2.out",
+              onUpdate: function () {
+                numberEl.textContent = formatNumber(counter.value, main.decimals);
+              },
+              onComplete: function () {
+                numberEl.textContent = formatNumber(main.numeric, main.decimals);
+              }
+            },
+            0.38
+          );
+          tl.fromTo(caption, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" }, 0.54);
+          tl.fromTo(
+            listItems,
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.42, ease: "power3.out", stagger: 0.12 },
+            0.72
+          );
+          tl.fromTo(sourceEl, { opacity: 0, y: 12 }, { opacity: source ? 1 : 0, y: 0, duration: 0.3, ease: "power2.out" }, 1.12);
+          tl.addLabel("final", 2.05 + rows.length * 0.12);
+          timelineIds(root).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
+          });
+          signalRuntimeReady();
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function normalizeRows(labels, rawValues, fallbackTitle) {
+            const count = Math.max(labels.length, rawValues.length);
+            if (count === 0) {
+              return [
+                {
+                  label: fallbackTitle,
+                  raw: 0,
+                  numeric: 0,
+                  decimals: 0
+                }
+              ];
+            }
+            const rows = [];
+            for (let index = 0; index < count; index += 1) {
+              const raw = rawValues[index] ?? 0;
+              rows.push({
+                label: stringValue(labels[index], `항목 ${index + 1}`),
+                raw,
+                numeric: numericValue(raw),
+                decimals: decimalPlaces(raw)
+              });
+            }
+            return rows;
+          }
+
+          function numericValue(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return value;
+            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+            return match ? Number(match[0]) : 0;
+          }
+
+          function decimalPlaces(value) {
+            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+            }
+            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
+            return match ? Math.min(2, match[1].length) : 0;
+          }
+
+          function formatNumber(value, decimals) {
+            const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
+            return new Intl.NumberFormat("ko-KR", {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            }).format(Number(fixed));
+          }
+
+          function formatDisplayValue(row, suffix) {
+            return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
+          }
+
+          function ariaLabel(statTitle, statRows, suffix) {
+            const detail = statRows.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
+            return `${statTitle}: ${detail}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "Highlight");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "Highlight";
+          }
+
+          function timelineIds(rootElement) {
+            return new Set([
+              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
+              "statistic"
+            ]);
+          }
+
+          function signalRuntimeReady() {
+            if (typeof window.__hfForceTimelineRebind === "function") {
+              window.__hfForceTimelineRebind();
+            }
+            if (typeof window.__hfFlushSync === "function") {
+              window.__hfFlushSync();
+            }
+            window.__playerReady = true;
+            window.__renderReady = true;
+          }
+        })();
+      </script>
+      </div>
+    </template>
+  </body>
+</html>

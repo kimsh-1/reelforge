@@ -1,0 +1,576 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"인용"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"contemplative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"quote"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"typewriter"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"none"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge quote block</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          box-sizing: border-box;
+          overflow: hidden;
+          color: var(--quote-ink);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          --quote-accent: var(--rf-accent, Highlight);
+          --quote-ink: var(--rf-text, currentColor);
+          --quote-muted: var(--rf-muted-text, color-mix(in srgb, var(--quote-ink) 62%, transparent));
+          --quote-surface: var(--rf-surface, color-mix(in srgb, Canvas 94%, transparent));
+          --quote-panel: var(--rf-panel, color-mix(in srgb, var(--quote-ink) 7%, transparent));
+          --quote-line: color-mix(in srgb, var(--quote-accent) 34%, transparent);
+          --quote-line-soft: color-mix(in srgb, var(--quote-ink) 14%, transparent);
+          --quote-accent-soft: color-mix(in srgb, var(--quote-accent) 14%, transparent);
+          --quote-accent-faint: color-mix(in srgb, var(--quote-accent) 7%, transparent);
+          --quote-shadow: var(--rf-shadow, var(--quote-ink));
+        }
+
+        .quote-stage {
+          position: absolute;
+          inset: 7.963% 7.083% 17.963%;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(25rem, 0.38fr);
+          gap: 2.75rem;
+          box-sizing: border-box;
+        }
+
+        .quote-frame,
+        .quote-details {
+          min-width: 0;
+          box-sizing: border-box;
+          border: 0.125rem solid var(--quote-line);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(135deg, var(--quote-accent-faint), transparent 46%),
+            var(--quote-surface);
+          box-shadow: 0 1.45rem 4rem color-mix(in srgb, var(--quote-shadow) 14%, transparent);
+        }
+
+        .quote-frame {
+          position: relative;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          gap: 2.2rem;
+          padding: 3.55rem 4.25rem 3.15rem;
+          overflow: hidden;
+        }
+
+        .quote-frame::before {
+          content: "“";
+          position: absolute;
+          top: -2.4rem;
+          right: 3rem;
+          color: var(--quote-accent-soft);
+          font-size: 18rem;
+          font-weight: 950;
+          line-height: 1;
+          pointer-events: none;
+        }
+
+        .quote-header {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: start;
+          gap: 1.5rem;
+        }
+
+        .quote-title-group {
+          min-width: 0;
+          display: grid;
+          gap: 0.88rem;
+        }
+
+        .quote-kicker,
+        .quote-chip,
+        .quote-source-label,
+        .quote-detail-label {
+          color: var(--quote-muted);
+          font-size: 1.16rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .quote-kicker {
+          width: fit-content;
+          max-width: 100%;
+          box-sizing: border-box;
+          padding: 0.68rem 0.88rem;
+          border: 0.1rem solid var(--quote-line);
+          border-radius: 0.5rem;
+          background: var(--quote-accent-soft);
+          overflow-wrap: anywhere;
+        }
+
+        .quote-title {
+          margin: 0;
+          color: var(--quote-ink);
+          font-size: 5.15rem;
+          font-weight: 930;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .quote-meta {
+          min-width: 0;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          gap: 0.65rem;
+        }
+
+        .quote-chip {
+          max-width: 14rem;
+          box-sizing: border-box;
+          padding: 0.62rem 0.82rem;
+          border: 0.1rem solid var(--quote-line-soft);
+          border-radius: 0.5rem;
+          background: var(--quote-panel);
+          color: var(--quote-muted);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .quote-body {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
+          min-height: 0;
+          display: grid;
+          align-content: center;
+          gap: 1.65rem;
+        }
+
+        .quote-rule {
+          width: min(18rem, 44%);
+          height: 0.38rem;
+          background: var(--quote-accent);
+          transform-origin: left center;
+        }
+
+        .quote-text {
+          margin: 0;
+          max-width: 61rem;
+          color: var(--quote-ink);
+          font-size: 5.35rem;
+          font-weight: 900;
+          line-height: 1.13;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .quote-char {
+          display: inline-block;
+          opacity: 1;
+          will-change: transform, opacity;
+        }
+
+        .quote-context {
+          margin: 0;
+          max-width: 52rem;
+          color: var(--quote-muted);
+          font-size: 2.05rem;
+          font-weight: 760;
+          line-height: 1.2;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .quote-footer {
+          position: relative;
+          z-index: 1;
+          min-width: 0;
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          align-items: center;
+          gap: 0.9rem;
+          padding-top: 1.25rem;
+          border-top: 0.1rem solid var(--quote-line-soft);
+        }
+
+        .quote-source {
+          min-width: 0;
+          color: var(--quote-muted);
+          font-size: 1.34rem;
+          font-weight: 680;
+          line-height: 1.2;
+          letter-spacing: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .quote-details {
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr);
+          gap: 1.55rem;
+          padding: 3.1rem 2.55rem;
+          overflow: hidden;
+        }
+
+        .quote-details-title {
+          margin: 0;
+          color: var(--quote-muted);
+          font-size: 1.38rem;
+          font-weight: 820;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .quote-detail-list {
+          min-width: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          align-content: center;
+          gap: 1.1rem;
+          list-style: none;
+        }
+
+        .quote-detail {
+          min-width: 0;
+          min-height: 8.2rem;
+          box-sizing: border-box;
+          display: grid;
+          align-content: center;
+          gap: 0.66rem;
+          padding: 1.25rem 1.25rem;
+          border: 0.1rem solid var(--quote-line-soft);
+          border-radius: 0.5rem;
+          background: var(--quote-panel);
+          opacity: 1;
+        }
+
+        .quote-detail:first-child {
+          border-color: var(--quote-line);
+          background:
+            linear-gradient(90deg, var(--quote-accent-soft), transparent 58%),
+            var(--quote-panel);
+        }
+
+        .quote-detail-value {
+          min-width: 0;
+          color: var(--quote-ink);
+          font-size: 2.28rem;
+          font-weight: 890;
+          line-height: 1.08;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .quote-detail-note {
+          min-width: 0;
+          color: var(--quote-muted);
+          font-size: 1.28rem;
+          font-weight: 700;
+          line-height: 1.18;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        #root[data-detail-count="0"] .quote-stage {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        #root[data-detail-count="0"] .quote-details {
+          display: none;
+        }
+      </style>
+      <div
+        id="root"
+        data-composition-id="quote"
+        data-width="1920"
+        data-height="1080"
+        data-duration="5"
+        role="img"
+        aria-label=""
+      >
+        <section class="quote-stage">
+          <article class="quote-frame">
+            <header class="quote-header">
+              <div class="quote-title-group">
+                <p class="quote-kicker" data-quote-mood></p>
+                <h1 class="quote-title" data-quote-title></h1>
+              </div>
+              <div class="quote-meta" data-quote-meta></div>
+            </header>
+            <div class="quote-body">
+              <div class="quote-rule" aria-hidden="true"></div>
+              <p class="quote-text" data-quote-text></p>
+              <p class="quote-context" data-quote-context></p>
+            </div>
+            <footer class="quote-footer">
+              <span class="quote-source-label">source</span>
+              <span class="quote-source" data-quote-source></span>
+            </footer>
+          </article>
+          <aside class="quote-details" aria-label="인용 세부 정보">
+            <p class="quote-details-title">quote data</p>
+            <ol class="quote-detail-list" data-quote-details></ol>
+          </aside>
+        </section>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (function () {
+          const scriptParent = document.currentScript?.parentElement || document;
+          const root =
+            scriptParent.querySelector(':scope > #root[data-composition-id="quote"]') ||
+            scriptParent.querySelector(':scope > #root[data-hf-original-composition-id="quote"]') ||
+            scriptParent.querySelector(':scope > [data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
+            document.querySelector('#root[data-composition-id="quote"], #root[data-hf-original-composition-id="quote"]') ||
+            document.querySelector('[data-composition-id="quote"], [data-hf-original-composition-id="quote"]');
+          const host = root.closest("[data-composition-id]") || root;
+          const variables = readVariables(host);
+          const titleEl = root.querySelector("[data-quote-title]");
+          const moodEl = root.querySelector("[data-quote-mood]");
+          const metaEl = root.querySelector("[data-quote-meta]");
+          const quoteEl = root.querySelector("[data-quote-text]");
+          const contextEl = root.querySelector("[data-quote-context]");
+          const sourceEl = root.querySelector("[data-quote-source]");
+          const detailsEl = root.querySelector("[data-quote-details]");
+
+          const title = stringValue(variables.title, "인용");
+          const items = arrayValue(variables.items).map((item) => stringValue(item, ""));
+          const values = arrayValue(variables.values).map((value) => valueText(value));
+          const unit = stringValue(variables.unit, "");
+          const mood = stringValue(variables.mood, "contemplative");
+          const emphasis = stringValue(variables.emphasis, "quote");
+          const reveal = stringValue(variables.reveal, "typewriter");
+          const source = stringValue(variables.source, "");
+          const quoteText = stringValue(items[1] || items[0], title);
+          const context = stringValue(items[0], unit || mood);
+          const detailRows = buildDetailRows({ items, values, unit, emphasis, reveal });
+
+          root.style.setProperty("--quote-accent", safeColor(variables.accent));
+          root.dataset.detailCount = String(detailRows.length);
+          titleEl.textContent = title;
+          moodEl.textContent = mood;
+          renderMeta(metaEl, [unit, emphasis, reveal]);
+          renderQuoteText(quoteEl, quoteText);
+          contextEl.textContent = context;
+          sourceEl.textContent = source ? `${source} · ${context}` : context;
+          root.setAttribute("aria-label", ariaLabel({ title, quoteText, context, source, detailRows }));
+
+          detailRows.forEach((row) => {
+            const item = document.createElement("li");
+            const label = document.createElement("span");
+            const value = document.createElement("span");
+            const note = document.createElement("span");
+            item.className = "quote-detail";
+            label.className = "quote-detail-label";
+            value.className = "quote-detail-value";
+            note.className = "quote-detail-note";
+            label.textContent = row.label;
+            value.textContent = row.value;
+            note.textContent = row.note;
+            item.append(label, value, note);
+            detailsEl.appendChild(item);
+          });
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          const chars = gsap.utils.toArray(root.querySelectorAll(".quote-char"));
+          const details = gsap.utils.toArray(root.querySelectorAll(".quote-detail"));
+          const typewriter = reveal.toLowerCase().includes("type");
+          const charStagger = chars.length > 0 ? Math.min(0.048, Math.max(0.018, 1.36 / chars.length)) : 0.03;
+
+          tl.addLabel("start", 0);
+          tl.fromTo(
+            root.querySelector(".quote-frame"),
+            { opacity: 0, y: 34 },
+            { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+            0
+          );
+          tl.fromTo(
+            root.querySelector(".quote-details"),
+            { opacity: 0, x: 26 },
+            { opacity: 1, x: 0, duration: 0.46, ease: "power3.out" },
+            0.1
+          );
+          tl.fromTo(
+            root.querySelector(".quote-rule"),
+            { scaleX: 0, opacity: 0 },
+            { scaleX: 1, opacity: 1, duration: 0.48, ease: "power2.out" },
+            0.22
+          );
+          tl.fromTo(
+            chars,
+            { opacity: 0, y: typewriter ? 10 : 18 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: typewriter ? 0.08 : 0.42,
+              ease: typewriter ? "none" : "power2.out",
+              stagger: typewriter ? charStagger : 0.012
+            },
+            0.36
+          );
+          tl.fromTo(
+            contextEl,
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
+            0.72
+          );
+          tl.fromTo(
+            details,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.38, ease: "power3.out", stagger: 0.12 },
+            0.82
+          );
+          tl.fromTo(
+            root.querySelector(".quote-footer"),
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
+            1.15
+          );
+          tl.addLabel("final", 1.8 + detailRows.length * 0.12 + chars.length * charStagger);
+          timelineIds(host).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function valueText(value) {
+            if (value === undefined || value === null) return "";
+            return String(value).trim();
+          }
+
+          function buildDetailRows({ items: itemTexts, values: valueTexts, unit: unitText, emphasis: emphasisText, reveal: revealText }) {
+            const rows = [];
+            const max = Math.max(itemTexts.length, valueTexts.length);
+            for (let index = 0; index < max; index += 1) {
+              const itemText = stringValue(itemTexts[index], index === 0 ? "출처" : `항목 ${index + 1}`);
+              const rawValue = valueTexts[index] || (index === 0 ? unitText : "");
+              const displayValue = rawValue || itemText;
+              rows.push({
+                label: index === 0 ? "context" : `quote ${index + 1}`,
+                value: displayValue,
+                note: itemText
+              });
+            }
+            if (rows.length === 0) {
+              rows.push({ label: "unit", value: unitText || emphasisText, note: revealText });
+            }
+            return rows.slice(0, 4);
+          }
+
+          function renderMeta(container, entries) {
+            entries
+              .map((entry) => stringValue(entry, ""))
+              .filter(Boolean)
+              .slice(0, 3)
+              .forEach((entry) => {
+                const chip = document.createElement("span");
+                chip.className = "quote-chip";
+                chip.textContent = entry;
+                container.appendChild(chip);
+              });
+          }
+
+          function renderQuoteText(container, text) {
+            container.setAttribute("aria-label", text);
+            Array.from(text).forEach((char) => {
+              const span = document.createElement("span");
+              span.className = "quote-char";
+              span.setAttribute("aria-hidden", "true");
+              span.textContent = char === " " ? "\u00a0" : char;
+              container.appendChild(span);
+            });
+          }
+
+          function readVariables(hostElement) {
+            const direct =
+              window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+                ? window.__hyperframes.getVariables()
+                : {};
+            const scoped = typeof __hyperframes === "undefined" ? {} : __hyperframes.getVariables?.() ?? {};
+            const runtimeId = hostElement?.getAttribute("data-composition-id") || "";
+            const authoredId = hostElement?.getAttribute("data-hf-original-composition-id") || "quote";
+            const registry = {
+              ...(globalThis.__hfVariablesByComp?.[authoredId] || {}),
+              ...(globalThis.__hfVariablesByComp?.[runtimeId] || {}),
+              ...(globalThis.__hfVariablesByComp?.quote || {})
+            };
+            return { ...readHostVariables(hostElement), ...registry, ...direct, ...scoped };
+          }
+
+          function readHostVariables(element) {
+            let node = element;
+            while (node) {
+              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
+                try {
+                  const parsed = JSON.parse(node.getAttribute("data-variable-values"));
+                  return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+                } catch {
+                  return {};
+                }
+              }
+              node = node.parentElement;
+            }
+            return {};
+          }
+
+          function timelineIds(hostElement) {
+            return new Set([
+              hostElement?.getAttribute("data-composition-id") || "",
+              hostElement?.getAttribute("data-hf-original-composition-id") || "",
+              "quote"
+            ]);
+          }
+
+          function ariaLabel({ title: labelTitle, quoteText: labelQuote, context: labelContext, source: labelSource, detailRows: rows }) {
+            const details = rows.map((row) => `${row.label} ${row.value} ${row.note}`).join(", ");
+            return `${labelTitle}: ${labelQuote}. ${labelContext}. ${labelSource}. ${details}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "Highlight");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "Highlight";
+          }
+        })();
+      </script>
+    </template>
+  </body>
+</html>

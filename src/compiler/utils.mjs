@@ -21,6 +21,16 @@ export function normalizeRelPath(value) {
   return value.split(path.sep).join("/");
 }
 
+export function isPathInsideRoot(candidatePath, rootPath) {
+  const candidate = path.resolve(candidatePath);
+  const root = path.resolve(rootPath);
+  return candidate === root || candidate.startsWith(`${root}${path.sep}`);
+}
+
+export function isPathInsideAnyRoot(candidatePath, rootPaths) {
+  return rootPaths.some((rootPath) => isPathInsideRoot(candidatePath, rootPath));
+}
+
 export function readJsonFile(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }

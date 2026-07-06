@@ -6,3 +6,4 @@ reports/*.tmp
 .venv*
 npm-debug.log*
 .DS_Store
+tmp/

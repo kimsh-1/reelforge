@@ -250,9 +250,6 @@ function sceneHtml({ scene, timing, tokens, block }) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=${DEFAULT_WIDTH}, height=${DEFAULT_HEIGHT}" />
     <title>ReelForge ${htmlEscape(scene.sceneId)}</title>
-  </head>
-  <body>
-    <template>
       <style>
 ${fontFaceCss(tokens)}
         #root {
@@ -328,6 +325,8 @@ ${fontFaceCss(tokens)}
         }
 ${subtitleCss(tokens)}
       </style>
+  </head>
+  <body>
       <div
         id="root"
         data-composition-id="${scene.sceneId}"
@@ -374,7 +373,6 @@ ${content}
           window.__timelines[${cssString(scene.sceneId)}] = tl;
         })();
       </script>
-    </template>
   </body>
 </html>
 `;

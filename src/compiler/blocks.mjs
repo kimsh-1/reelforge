@@ -80,7 +80,7 @@ export function blockHostHtml({ scene, timing, block, variables }) {
           id="${scene.sceneId}-block-host"
           class="clip block-host"
           data-composition-id="${block.compositionId}"
-          data-composition-src="../${block.targetRel}"
+          data-composition-src="${block.targetRel}"
           data-variable-values='${jsonAttr(variables)}'
           data-start="0"
           data-duration="${timing.durationSec}"

@@ -29,9 +29,10 @@ import {
   validateSemanticsForWrite
 } from "../src/gates/semantic.mjs";
 import { DEFAULT_PRESET, compileProject } from "../src/compiler/compiler.mjs";
+import { isPathInsideAnyRoot } from "../src/compiler/utils.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const repoRealRoot = realpathSync(repoRoot);
+const projectRootsEnv = "VF_PROJECT_ROOTS";
 
 function usage(exitCode = 0) {
   const text = `vf
@@ -42,7 +43,7 @@ Commands:
   vf gate all [--json] [--replay|--execute]
   vf gate <id> [--json] [--replay|--execute]
   vf verify-report <report.json>
-  vf write <file> --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
+  vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
   vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
@@ -74,10 +75,6 @@ function repoRelative(absolutePath) {
 
 function isInsideRepo(absolutePath) {
   return absolutePath === repoRoot || absolutePath.startsWith(`${repoRoot}${path.sep}`);
-}
-
-function isInsideRealRepo(absolutePath) {
-  return absolutePath === repoRealRoot || absolutePath.startsWith(`${repoRealRoot}${path.sep}`);
 }
 
 function listFilesRecursive(absPath) {
@@ -515,12 +512,57 @@ function targetFileArg(args) {
   return args.find((arg, index) => index === 0 && !arg.startsWith("--")) ?? null;
 }
 
-function atomicWriteJson(absPath, data) {
+function uniquePaths(paths) {
+  return [...new Set(paths.filter(Boolean).map((item) => path.resolve(item)))];
+}
+
+function envProjectRoots() {
+  return uniquePaths((process.env[projectRootsEnv] ?? "").split(path.delimiter).filter(Boolean));
+}
+
+function writeAllowedRoots(args) {
+  const projectRoot = optionValue(args, "--project-root");
+  return uniquePaths([
+    repoRoot,
+    ...envProjectRoots(),
+    ...(projectRoot ? [path.resolve(process.cwd(), projectRoot)] : [])
+  ]);
+}
+
+function realAllowedRoots(roots) {
+  return uniquePaths(roots.map((root) => (existsSync(root) ? realpathSync(root) : root)));
+}
+
+function assertTargetAllowed(absPath, allowedRoots, label) {
+  if (!isPathInsideAnyRoot(absPath, allowedRoots)) {
+    throw new Error(`${label} must stay inside the repository or project root`);
+  }
+}
+
+function outputPathFor(absPath, allowedRoots) {
+  if (isInsideRepo(absPath)) return repoRelative(absPath);
+  const projectRoot = allowedRoots.find((root) => root !== repoRoot && isPathInsideAnyRoot(absPath, [root]));
+  return projectRoot ? normalizeRelPath(path.relative(projectRoot, absPath)) : normalizeRelPath(absPath);
+}
+
+function withProjectRootEnv(projectRoot, callback) {
+  const previous = process.env[projectRootsEnv];
+  process.env[projectRootsEnv] = uniquePaths([...(previous ?? "").split(path.delimiter), projectRoot]).join(path.delimiter);
+  try {
+    return callback();
+  } finally {
+    if (previous === undefined) delete process.env[projectRootsEnv];
+    else process.env[projectRootsEnv] = previous;
+  }
+}
+
+function atomicWriteJson(absPath, data, allowedRoots) {
+  assertTargetAllowed(absPath, allowedRoots, "vf write target");
   const parent = path.dirname(absPath);
   mkdirSync(parent, { recursive: true });
   const realParent = realpathSync(parent);
-  if (!isInsideRealRepo(realParent)) {
-    throw new Error("vf write target parent must stay inside the repository");
+  if (!isPathInsideAnyRoot(realParent, realAllowedRoots(allowedRoots))) {
+    throw new Error("vf write target parent must stay inside the repository or project root");
   }
   const tmp = `${absPath}.${process.pid}.${Date.now()}.tmp`;
   writeFileSync(tmp, `${JSON.stringify(data, null, 2)}\n`);
@@ -534,10 +576,9 @@ function writeCommand(args) {
     throw new Error("vf write accepts JSON targets only");
   }
 
-  const abs = path.resolve(repoRoot, file);
-  if (!isInsideRepo(abs)) {
-    throw new Error("vf write target must stay inside the repository");
-  }
+  const abs = path.resolve(process.cwd(), file);
+  const allowedRoots = writeAllowedRoots(args);
+  assertTargetAllowed(abs, allowedRoots, "vf write target");
 
   const schemaArg = optionValue(args, "--schema") ?? "auto";
   const schemaName = resolveSchemaName(schemaArg, file);
@@ -561,11 +602,11 @@ function writeCommand(args) {
     throw new Error(`semantic validation failed: ${schemaName}\n${violations}`);
   }
 
-  atomicWriteJson(abs, data);
+  atomicWriteJson(abs, data, allowedRoots);
   console.log(
     JSON.stringify(
       {
-        file: repoRelative(abs),
+        file: outputPathFor(abs, allowedRoots),
         schema: schemaName,
         schemaPath: schemaPathForName(schemaName),
         validation: "passed",
@@ -589,12 +630,15 @@ function compileCommand(args) {
     throw new Error("--fps must be a positive number");
   }
 
-  const result = compileProject({
-    repoRoot,
-    projectDir,
-    presetPath: preset,
-    fps
-  });
+  const absoluteProjectDir = path.resolve(process.cwd(), projectDir);
+  const result = withProjectRootEnv(absoluteProjectDir, () =>
+    compileProject({
+      repoRoot,
+      projectDir: absoluteProjectDir,
+      presetPath: preset,
+      fps
+    })
+  );
 
   if (json) {
     console.log(JSON.stringify(result, null, 2));

@@ -54,27 +54,26 @@ function checkSceneFile({ repoRoot, buildDir, file, expectedSceneIds, violations
   checkNoFetch({ rel, html, violations });
   checkPausedTimelines({ rel, html, violations });
 
-  const templateStart = html.indexOf("<template");
-  const templateEnd = html.indexOf("</template>");
-  if (templateStart < 0 || templateEnd < 0) {
-    pushViolation(violations, rel, "scene sub-composition must wrap live DOM in <template>");
+  // body-root 계약: 벤더 htmlCompiler는 <template>/<body> 양쪽을 허용하지만,
+  // 단독 --composition 렌더의 정적 메타 파싱(querySelector)은 root가 template 밖
+  // live DOM일 때만 성립한다 (P2 통합 실증 — template 내부는 comp-id 조회 불가).
+  // 프리뷰 티어(씬 단독 렌더)가 핵심 계약이므로 씬 파일의 template 래핑을 금지한다.
+  if (/<template\b/i.test(html)) {
+    pushViolation(violations, rel, "scene sub-composition must be body-root (no <template>) so standalone --composition render can read root metadata");
     return;
   }
 
-  for (const tag of ["<style", "<script"]) {
-    const index = html.indexOf(tag);
-    if (index >= 0 && index < templateStart) {
-      pushViolation(violations, rel, `${tag} must live inside the scene <template>`, {
-        line: lineForOffset(html, index)
-      });
-    }
+  const bodyStart = html.indexOf("<body");
+  if (bodyStart < 0) {
+    pushViolation(violations, rel, "scene sub-composition must be a full document with <body>");
+    return;
   }
 
   if (/<(?:audio|video)\b/i.test(html)) {
     pushViolation(violations, rel, "scene sub-compositions must not contain <audio> or <video>");
   }
 
-  const templateHtml = html.slice(templateStart, templateEnd);
+  const templateHtml = html;
   const rootMatch = templateHtml.match(/<div\b[^>]*\bid=["']root["'][^>]*data-composition-id=["']([^"']+)["'][^>]*>/);
   if (!rootMatch) {
     pushViolation(violations, rel, "scene template root must be #root with data-composition-id");

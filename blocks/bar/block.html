@@ -1,0 +1,388 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"가로 막대차트"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"number"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"chart"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge bar block</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          box-sizing: border-box;
+          color: var(--rf-text, CanvasText);
+          font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          --bar-accent: var(--rf-accent, Highlight);
+          --bar-surface: var(--rf-surface, Canvas);
+          --bar-panel: var(--rf-panel, color-mix(in srgb, CanvasText 8%, Canvas));
+          --bar-muted: var(--rf-muted-text, color-mix(in srgb, CanvasText 60%, Canvas));
+          --bar-shadow: var(--rf-shadow, CanvasText);
+          --bar-track: color-mix(in srgb, var(--bar-muted) 18%, transparent);
+          --bar-grid: color-mix(in srgb, var(--bar-muted) 28%, transparent);
+        }
+
+        .bar-frame {
+          position: absolute;
+          inset: 8.889% 7.083% 15.741%;
+          display: grid;
+          grid-template-rows: auto 1fr auto;
+          gap: 3.25rem;
+          box-sizing: border-box;
+          padding: 4rem 4.5rem 3.25rem;
+          background: color-mix(in srgb, var(--bar-surface) 92%, transparent);
+          border: 0.125rem solid color-mix(in srgb, var(--bar-accent) 32%, transparent);
+          box-shadow: 0 1.5rem 4.375rem color-mix(in srgb, var(--bar-shadow) 18%, transparent);
+        }
+
+        .bar-header {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 2rem;
+        }
+
+        .bar-title {
+          margin: 0;
+          color: var(--rf-text, CanvasText);
+          font-size: 5.5rem;
+          font-weight: 900;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .bar-kicker {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          min-width: 0;
+          color: var(--bar-muted);
+          font-size: 1.75rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        .bar-kicker::before {
+          content: "";
+          display: block;
+          width: 0.875rem;
+          height: 0.875rem;
+          background: var(--bar-accent);
+        }
+
+        .bar-chart {
+          position: relative;
+          display: grid;
+          align-content: center;
+          gap: 2rem;
+          min-height: 0;
+        }
+
+        .bar-chart::before {
+          content: "";
+          position: absolute;
+          inset: 0 0 0 19.5rem;
+          background:
+            linear-gradient(90deg, var(--bar-grid) 0 0.125rem, transparent 0.125rem 100%) 0 0 / 25% 100%,
+            linear-gradient(90deg, transparent 0, transparent 100%);
+          pointer-events: none;
+        }
+
+        .bar-row {
+          position: relative;
+          display: grid;
+          grid-template-columns: 16.5rem minmax(0, 1fr) 12rem;
+          align-items: center;
+          gap: 1.5rem;
+          min-height: 6.375rem;
+          opacity: 0;
+        }
+
+        .bar-label {
+          color: var(--rf-text, CanvasText);
+          font-size: 2.5rem;
+          font-weight: 820;
+          line-height: 1.12;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .bar-track {
+          position: relative;
+          height: 4.625rem;
+          overflow: hidden;
+          background: var(--bar-track);
+        }
+
+        .bar-fill {
+          position: absolute;
+          inset: 0 auto 0 0;
+          width: var(--bar-width);
+          min-width: 0.75rem;
+          transform: scaleX(0);
+          transform-origin: left center;
+          background:
+            linear-gradient(
+              90deg,
+              color-mix(in srgb, var(--bar-accent) 72%, var(--bar-surface)),
+              var(--bar-accent)
+            );
+          box-shadow: 0 0 1.625rem color-mix(in srgb, var(--bar-accent) 34%, transparent);
+        }
+
+        .bar-value {
+          color: var(--rf-text, CanvasText);
+          font-variant-numeric: tabular-nums;
+          font-size: 2.75rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: 0;
+          text-align: right;
+          opacity: 0;
+          white-space: nowrap;
+        }
+
+        .bar-footer {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1.5rem;
+          color: var(--bar-muted);
+          font-size: 1.5rem;
+          font-weight: 680;
+          line-height: 1.2;
+          letter-spacing: 0;
+        }
+
+        .bar-source {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .bar-unit {
+          color: var(--bar-accent);
+          font-weight: 820;
+          white-space: nowrap;
+        }
+      </style>
+      <div
+        id="root"
+        data-composition-id="bar"
+        data-width="1920"
+        data-height="1080"
+        data-duration="5"
+        role="img"
+        aria-label=""
+      >
+        <section class="bar-frame">
+          <header class="bar-header">
+            <h1 class="bar-title" data-bar-title></h1>
+            <div class="bar-kicker" data-bar-mood></div>
+          </header>
+          <div class="bar-chart" data-bar-chart></div>
+          <footer class="bar-footer">
+            <div class="bar-source" data-bar-source></div>
+            <div class="bar-unit" data-bar-unit></div>
+          </footer>
+        </section>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (function () {
+          const root =
+            document.getElementById("root") ||
+            document.querySelector('[data-composition-id="bar"], [data-hf-original-composition-id="bar"]');
+          const host = root.closest("[data-composition-id]") || root;
+          const frame = root.querySelector(".bar-frame");
+          const chart = root.querySelector("[data-bar-chart]");
+          const titleEl = root.querySelector("[data-bar-title]");
+          const moodEl = root.querySelector("[data-bar-mood]");
+          const sourceEl = root.querySelector("[data-bar-source]");
+          const unitEl = root.querySelector("[data-bar-unit]");
+          const scopedHyperframes = typeof __hyperframes === "undefined" ? null : __hyperframes;
+          const hostCompositionId = host.getAttribute("data-composition-id");
+          const variables = {
+            ...(window.__hyperframes?.getVariables?.() ?? {}),
+            ...(scopedHyperframes?.getVariables?.() ?? {}),
+            ...((hostCompositionId && globalThis.__hfVariablesByComp?.[hostCompositionId]) || {}),
+            ...readHostVariables(host)
+          };
+          const title = stringValue(variables.title, "가로 막대차트");
+          const unit = stringValue(variables.unit, "");
+          const mood = stringValue(variables.mood, "informative");
+          const source = stringValue(variables.source, "");
+          const items = arrayValue(variables.items);
+          const values = arrayValue(variables.values);
+          const rows = normalizeRows(items, values);
+          const maxValue = Math.max(1, ...rows.map((row) => Math.abs(row.numeric)));
+
+          root.style.setProperty("--rf-accent", safeColor(variables.accent));
+          titleEl.textContent = title;
+          moodEl.textContent = mood;
+          sourceEl.textContent = source ? source : "source";
+          unitEl.textContent = unit ? `unit: ${unit}` : "";
+          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+
+          rows.forEach((row) => {
+            const item = document.createElement("div");
+            const label = document.createElement("div");
+            const track = document.createElement("div");
+            const fill = document.createElement("div");
+            const value = document.createElement("div");
+
+            item.className = "bar-row";
+            label.className = "bar-label";
+            track.className = "bar-track";
+            fill.className = "bar-fill";
+            value.className = "bar-value";
+
+            label.textContent = row.label;
+            value.textContent = formatValue(0, row, unit);
+            fill.style.setProperty("--bar-width", `${Math.max(4, (Math.abs(row.numeric) / maxValue) * 100).toFixed(3)}%`);
+
+            track.appendChild(fill);
+            item.append(label, track, value);
+            chart.appendChild(item);
+
+            row.elements = { item, fill, value };
+          });
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo(frame, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.42, ease: "power2.out" }, 0);
+
+          rows.forEach((row, index) => {
+            const start = 0.42 + index * 0.18;
+            const counter = { value: 0 };
+            tl.fromTo(
+              row.elements.item,
+              { opacity: 0, y: 26 },
+              { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" },
+              start
+            );
+            tl.fromTo(
+              row.elements.fill,
+              { scaleX: 0 },
+              { scaleX: 1, duration: 0.92, ease: "power3.out" },
+              start + 0.08
+            );
+            tl.to(
+              counter,
+              {
+                value: row.numeric,
+                duration: 0.92,
+                ease: "power3.out",
+                onStart: function () {
+                  row.elements.value.style.opacity = "1";
+                },
+                onUpdate: function () {
+                  row.elements.value.textContent = formatValue(counter.value, row, unit);
+                },
+                onComplete: function () {
+                  row.elements.value.textContent = formatValue(row.numeric, row, unit);
+                }
+              },
+              start + 0.08
+            );
+          });
+
+          window.__timelines["bar"] = tl;
+          globalThis.__timelines = globalThis.__timelines || {};
+          globalThis.__timelines["bar"] = tl;
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function readHostVariables(element) {
+            const raw = element?.getAttribute("data-variable-values");
+            if (!raw) return {};
+            try {
+              const parsed = JSON.parse(raw);
+              return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+            } catch {
+              return {};
+            }
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function normalizeRows(labels, rawValues) {
+            const count = Math.max(labels.length, rawValues.length);
+            const next = [];
+            for (let index = 0; index < count; index += 1) {
+              const raw = rawValues[index] ?? 0;
+              next.push({
+                label: stringValue(labels[index], `항목 ${index + 1}`),
+                raw,
+                numeric: numericValue(raw),
+                decimals: decimalPlaces(raw)
+              });
+            }
+            return next;
+          }
+
+          function numericValue(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return value;
+            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+            return match ? Number(match[0]) : 0;
+          }
+
+          function decimalPlaces(value) {
+            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+            }
+            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
+            return match ? Math.min(2, match[1].length) : 0;
+          }
+
+          function formatValue(amount, row, unitText) {
+            const value = row.decimals > 0 ? Number(amount).toFixed(row.decimals) : String(Math.round(amount));
+            const formatted = new Intl.NumberFormat("ko-KR").format(Number(value));
+            return `${formatted}${unitText}`;
+          }
+
+          function ariaLabel(chartTitle, chartRows, unitText) {
+            const text = chartRows.map((row) => `${row.label} ${formatValue(row.numeric, row, unitText)}`).join(", ");
+            return `${chartTitle}: ${text}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "Highlight");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "Highlight";
+          }
+        })();
+      </script>
+    </template>
+  </body>
+</html>

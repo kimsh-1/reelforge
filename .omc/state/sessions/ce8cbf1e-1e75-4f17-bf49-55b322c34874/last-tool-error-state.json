@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd ~/reelforge && pkill -f \\\"hyperframe[s] preview\\\" 2>/dev/null; (./node_modules/.bin/hyperframes preview tmp/bisect-statistic/build --no-open --port 47315 >/tmp/prev.log 2>&1 &); sleep 8...",
+  "error": "Exit code 144",
+  "timestamp": "2026-07-06T22:45:41.307Z",
+  "retry_count": 3
+}

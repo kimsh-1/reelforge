@@ -1,0 +1,899 @@
+<!doctype html>
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"비교"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"contrast"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"split_reveal"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"chart"},
+    {"id":"source","type":"string","label":"Source","default":""}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge compare block</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        #compare-root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          box-sizing: border-box;
+          overflow: hidden;
+          color: var(--compare-ink);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          --compare-accent: var(--rf-accent, Highlight);
+          --compare-ink: var(--rf-text, currentColor);
+          --compare-muted: var(--rf-muted-text, color-mix(in srgb, var(--compare-ink) 62%, transparent));
+          --compare-surface: var(--rf-surface, color-mix(in srgb, var(--compare-ink) 6%, transparent));
+          --compare-panel: var(--rf-panel, color-mix(in srgb, var(--compare-ink) 9%, transparent));
+          --compare-line: color-mix(in srgb, var(--compare-accent) 34%, transparent);
+          --compare-line-soft: color-mix(in srgb, var(--compare-ink) 15%, transparent);
+          --compare-accent-soft: color-mix(in srgb, var(--compare-accent) 16%, transparent);
+          --compare-accent-faint: color-mix(in srgb, var(--compare-accent) 8%, transparent);
+          --compare-shadow: var(--rf-shadow, var(--compare-ink));
+        }
+
+        .compare-stage {
+          position: absolute;
+          inset: 7.778% 7.083% 15.741%;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          gap: 2.55rem;
+          box-sizing: border-box;
+        }
+
+        .compare-header {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: end;
+          gap: 2rem;
+        }
+
+        .compare-title-group {
+          min-width: 0;
+          display: grid;
+          gap: 0.85rem;
+        }
+
+        .compare-kicker,
+        .compare-source {
+          margin: 0;
+          color: var(--compare-muted);
+          font-size: 1.35rem;
+          font-weight: 760;
+          line-height: 1.16;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .compare-kicker {
+          width: fit-content;
+          max-width: 100%;
+          box-sizing: border-box;
+          padding: 0.66rem 0.9rem;
+          border: 0.1rem solid var(--compare-line);
+          border-radius: 0.5rem;
+          background: var(--compare-accent-soft);
+          text-transform: uppercase;
+        }
+
+        .compare-title {
+          margin: 0;
+          color: var(--compare-ink);
+          font-size: 5.35rem;
+          font-weight: 930;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .compare-source {
+          max-width: 30rem;
+          text-align: right;
+        }
+
+        .compare-body {
+          position: relative;
+          min-width: 0;
+          min-height: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) 10.5rem minmax(0, 1fr);
+          align-items: stretch;
+          gap: 2.1rem;
+        }
+
+        .compare-panel {
+          min-width: 0;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr);
+          gap: 1.45rem;
+          box-sizing: border-box;
+          padding: 2.55rem 2.35rem 2.35rem;
+          border: 0.125rem solid var(--compare-line-soft);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(135deg, var(--compare-accent-faint), transparent 44%),
+            var(--compare-surface);
+          box-shadow: 0 1.25rem 3.4rem color-mix(in srgb, var(--compare-shadow) 14%, transparent);
+          opacity: 0;
+        }
+
+        .compare-panel[data-side="right"] {
+          border-color: var(--compare-line);
+          background:
+            linear-gradient(135deg, var(--compare-accent-soft), transparent 42%),
+            var(--compare-surface);
+        }
+
+        .compare-panel-head {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1rem;
+          padding-bottom: 1.3rem;
+          border-bottom: 0.1rem solid var(--compare-line-soft);
+        }
+
+        .compare-side-title {
+          margin: 0;
+          color: var(--compare-ink);
+          font-size: 2.35rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .compare-side-tag {
+          display: inline-grid;
+          place-items: center;
+          min-width: 3.2rem;
+          height: 3.2rem;
+          box-sizing: border-box;
+          border: 0.1rem solid var(--compare-line);
+          border-radius: 0.5rem;
+          background: var(--compare-panel);
+          color: var(--compare-accent);
+          font-size: 1.25rem;
+          font-weight: 900;
+          line-height: 1;
+          letter-spacing: 0;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .compare-list {
+          min-width: 0;
+          min-height: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          align-content: center;
+          gap: 1.15rem;
+          list-style: none;
+        }
+
+        .compare-item {
+          min-width: 0;
+          min-height: 8.25rem;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1.3rem;
+          box-sizing: border-box;
+          padding: 1.15rem 1.2rem;
+          border: 0.1rem solid var(--compare-line-soft);
+          border-radius: 0.5rem;
+          background: var(--compare-panel);
+          opacity: 0;
+        }
+
+        .compare-copy {
+          min-width: 0;
+          display: grid;
+          gap: 0.52rem;
+        }
+
+        .compare-label {
+          min-width: 0;
+          color: var(--compare-ink);
+          font-size: 2.15rem;
+          font-weight: 840;
+          line-height: 1.12;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .compare-meter {
+          position: relative;
+          width: 100%;
+          height: 0.62rem;
+          overflow: hidden;
+          background: color-mix(in srgb, var(--compare-muted) 22%, transparent);
+        }
+
+        .compare-meter-fill {
+          position: absolute;
+          inset: 0 auto 0 0;
+          width: var(--compare-width);
+          min-width: 0.65rem;
+          transform: scaleX(0);
+          transform-origin: left center;
+          background: var(--compare-accent);
+        }
+
+        .compare-value {
+          color: var(--compare-ink);
+          font-size: 2.65rem;
+          font-weight: 940;
+          line-height: 1;
+          letter-spacing: 0;
+          text-align: right;
+          white-space: nowrap;
+          font-variant-numeric: tabular-nums;
+          opacity: 0;
+        }
+
+        .compare-divider {
+          position: relative;
+          min-width: 0;
+          display: grid;
+          place-items: center;
+          opacity: 0;
+        }
+
+        .compare-divider-line {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 50%;
+          width: 0.16rem;
+          transform: translateX(-50%) scaleY(0);
+          transform-origin: center center;
+          background: var(--compare-line);
+        }
+
+        .compare-vs {
+          position: relative;
+          z-index: 1;
+          width: 7rem;
+          aspect-ratio: 1;
+          display: grid;
+          place-items: center;
+          box-sizing: border-box;
+          border: 0.14rem solid var(--compare-line);
+          border-radius: 50%;
+          background: var(--compare-surface);
+          color: var(--compare-accent);
+          box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
+          font-size: 2rem;
+          font-weight: 950;
+          line-height: 1;
+          letter-spacing: 0;
+          opacity: 0;
+          transform: scale(0.9);
+        }
+
+        .compare-footer {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1.5rem;
+          color: var(--compare-muted);
+          font-size: 1.24rem;
+          font-weight: 690;
+          line-height: 1.2;
+          letter-spacing: 0;
+        }
+
+        .compare-footnote {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .compare-unit {
+          color: var(--compare-accent);
+          font-weight: 840;
+          white-space: nowrap;
+        }
+      </style>
+      <div
+        id="compare-root"
+        data-composition-id="compare"
+        data-width="1920"
+        data-height="1080"
+        data-duration="5"
+        role="img"
+        aria-label=""
+      >
+        <style>
+          #compare-root {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: var(--compare-ink);
+            font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --compare-accent: var(--rf-accent, Highlight);
+            --compare-ink: var(--rf-text, currentColor);
+            --compare-muted: var(--rf-muted-text, color-mix(in srgb, var(--compare-ink) 62%, transparent));
+            --compare-surface: var(--rf-surface, color-mix(in srgb, var(--compare-ink) 6%, transparent));
+            --compare-panel: var(--rf-panel, color-mix(in srgb, var(--compare-ink) 9%, transparent));
+            --compare-line: color-mix(in srgb, var(--compare-accent) 34%, transparent);
+            --compare-line-soft: color-mix(in srgb, var(--compare-ink) 15%, transparent);
+            --compare-accent-soft: color-mix(in srgb, var(--compare-accent) 16%, transparent);
+            --compare-accent-faint: color-mix(in srgb, var(--compare-accent) 8%, transparent);
+            --compare-shadow: var(--rf-shadow, var(--compare-ink));
+          }
+
+          .compare-stage {
+            position: absolute;
+            inset: 7.778% 7.083% 15.741%;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            gap: 2.55rem;
+            box-sizing: border-box;
+          }
+
+          .compare-header {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 2rem;
+          }
+
+          .compare-title-group {
+            min-width: 0;
+            display: grid;
+            gap: 0.85rem;
+          }
+
+          .compare-kicker,
+          .compare-source {
+            margin: 0;
+            color: var(--compare-muted);
+            font-size: 1.35rem;
+            font-weight: 760;
+            line-height: 1.16;
+            letter-spacing: 0;
+            overflow-wrap: anywhere;
+          }
+
+          .compare-kicker {
+            width: fit-content;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 0.66rem 0.9rem;
+            border: 0.1rem solid var(--compare-line);
+            border-radius: 0.5rem;
+            background: var(--compare-accent-soft);
+            text-transform: uppercase;
+          }
+
+          .compare-title {
+            margin: 0;
+            color: var(--compare-ink);
+            font-size: 5.35rem;
+            font-weight: 930;
+            line-height: 1.04;
+            letter-spacing: 0;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+            text-wrap: balance;
+          }
+
+          .compare-source {
+            max-width: 30rem;
+            text-align: right;
+          }
+
+          .compare-body {
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 10.5rem minmax(0, 1fr);
+            align-items: stretch;
+            gap: 2.1rem;
+          }
+
+          .compare-panel {
+            min-width: 0;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 1.45rem;
+            box-sizing: border-box;
+            padding: 2.55rem 2.35rem 2.35rem;
+            border: 0.125rem solid var(--compare-line-soft);
+            border-radius: 0.5rem;
+            background:
+              linear-gradient(135deg, var(--compare-accent-faint), transparent 44%),
+              var(--compare-surface);
+            box-shadow: 0 1.25rem 3.4rem color-mix(in srgb, var(--compare-shadow) 14%, transparent);
+            opacity: 0;
+          }
+
+          .compare-panel[data-side="right"] {
+            border-color: var(--compare-line);
+            background:
+              linear-gradient(135deg, var(--compare-accent-soft), transparent 42%),
+              var(--compare-surface);
+          }
+
+          .compare-panel-head {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1.3rem;
+            border-bottom: 0.1rem solid var(--compare-line-soft);
+          }
+
+          .compare-side-title {
+            margin: 0;
+            color: var(--compare-ink);
+            font-size: 2.35rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0;
+            overflow-wrap: anywhere;
+          }
+
+          .compare-side-tag {
+            display: inline-grid;
+            place-items: center;
+            min-width: 3.2rem;
+            height: 3.2rem;
+            box-sizing: border-box;
+            border: 0.1rem solid var(--compare-line);
+            border-radius: 0.5rem;
+            background: var(--compare-panel);
+            color: var(--compare-accent);
+            font-size: 1.25rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: 0;
+            font-variant-numeric: tabular-nums;
+          }
+
+          .compare-list {
+            min-width: 0;
+            min-height: 0;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            align-content: center;
+            gap: 1.15rem;
+            list-style: none;
+          }
+
+          .compare-item {
+            min-width: 0;
+            min-height: 8.25rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.3rem;
+            box-sizing: border-box;
+            padding: 1.15rem 1.2rem;
+            border: 0.1rem solid var(--compare-line-soft);
+            border-radius: 0.5rem;
+            background: var(--compare-panel);
+            opacity: 0;
+          }
+
+          .compare-copy {
+            min-width: 0;
+            display: grid;
+            gap: 0.52rem;
+          }
+
+          .compare-label {
+            min-width: 0;
+            color: var(--compare-ink);
+            font-size: 2.15rem;
+            font-weight: 840;
+            line-height: 1.12;
+            letter-spacing: 0;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .compare-meter {
+            position: relative;
+            width: 100%;
+            height: 0.62rem;
+            overflow: hidden;
+            background: color-mix(in srgb, var(--compare-muted) 22%, transparent);
+          }
+
+          .compare-meter-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: var(--compare-width);
+            min-width: 0.65rem;
+            transform: scaleX(0);
+            transform-origin: left center;
+            background: var(--compare-accent);
+          }
+
+          .compare-value {
+            color: var(--compare-ink);
+            font-size: 2.65rem;
+            font-weight: 940;
+            line-height: 1;
+            letter-spacing: 0;
+            text-align: right;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+            opacity: 0;
+          }
+
+          .compare-divider {
+            position: relative;
+            min-width: 0;
+            display: grid;
+            place-items: center;
+            opacity: 0;
+          }
+
+          .compare-divider-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 0.16rem;
+            transform: translateX(-50%) scaleY(0);
+            transform-origin: center center;
+            background: var(--compare-line);
+          }
+
+          .compare-vs {
+            position: relative;
+            z-index: 1;
+            width: 7rem;
+            aspect-ratio: 1;
+            display: grid;
+            place-items: center;
+            box-sizing: border-box;
+            border: 0.14rem solid var(--compare-line);
+            border-radius: 50%;
+            background: var(--compare-surface);
+            color: var(--compare-accent);
+            box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
+            font-size: 2rem;
+            font-weight: 950;
+            line-height: 1;
+            letter-spacing: 0;
+            opacity: 0;
+            transform: scale(0.9);
+          }
+
+          .compare-footer {
+            min-width: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.5rem;
+            color: var(--compare-muted);
+            font-size: 1.24rem;
+            font-weight: 690;
+            line-height: 1.2;
+            letter-spacing: 0;
+          }
+
+          .compare-footnote {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .compare-unit {
+            color: var(--compare-accent);
+            font-weight: 840;
+            white-space: nowrap;
+          }
+        </style>
+        <section class="compare-stage">
+          <header class="compare-header">
+            <div class="compare-title-group">
+              <p class="compare-kicker" data-compare-mood></p>
+              <h1 class="compare-title" data-compare-title></h1>
+            </div>
+            <p class="compare-source" data-compare-source></p>
+          </header>
+          <div class="compare-body">
+            <article class="compare-panel" data-side="left">
+              <header class="compare-panel-head">
+                <h2 class="compare-side-title" data-compare-left-title></h2>
+                <span class="compare-side-tag">01</span>
+              </header>
+              <ol class="compare-list" data-compare-left-list></ol>
+            </article>
+            <div class="compare-divider" aria-hidden="true">
+              <span class="compare-divider-line"></span>
+              <span class="compare-vs">VS</span>
+            </div>
+            <article class="compare-panel" data-side="right">
+              <header class="compare-panel-head">
+                <h2 class="compare-side-title" data-compare-right-title></h2>
+                <span class="compare-side-tag">02</span>
+              </header>
+              <ol class="compare-list" data-compare-right-list></ol>
+            </article>
+          </div>
+          <footer class="compare-footer">
+            <div class="compare-footnote" data-compare-footnote></div>
+            <div class="compare-unit" data-compare-unit></div>
+          </footer>
+        </section>
+        <script>
+        (function () {
+          const root =
+            document.querySelector("#compare-root") ||
+            document.querySelector('[data-hf-authored-id="compare-root"]') ||
+            document.querySelector('[data-hf-inner-root="true"]');
+          const host =
+            root.parentElement?.closest("[data-variable-values]") ||
+            root.closest("[data-variable-values]") ||
+            root.closest("[data-composition-id]") ||
+            root;
+          const scopedHyperframes = typeof __hyperframes === "undefined" ? null : __hyperframes;
+          const hostCompositionId = host.getAttribute("data-composition-id");
+          const variables = {
+            ...(window.__hyperframes?.getVariables?.() ?? {}),
+            ...(scopedHyperframes?.getVariables?.() ?? {}),
+            ...((hostCompositionId && globalThis.__hfVariablesByComp?.[hostCompositionId]) || {}),
+            ...readHostVariables(host)
+          };
+
+          const title = stringValue(variables.title, "비교");
+          const mood = stringValue(variables.mood, "informative");
+          const source = stringValue(variables.source, "");
+          const unit = stringValue(variables.unit, "");
+          const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title);
+          const maxValue = Math.max(1, ...groups.left.concat(groups.right).map((row) => Math.abs(row.numeric)));
+
+          root.style.setProperty("--compare-accent", safeColor(variables.accent));
+          root.querySelector("[data-compare-title]").textContent = title;
+          root.querySelector("[data-compare-mood]").textContent = mood;
+          root.querySelector("[data-compare-source]").textContent = source;
+          root.querySelector("[data-compare-source]").style.opacity = source ? "1" : "0";
+          root.querySelector("[data-compare-left-title]").textContent = groups.leftTitle;
+          root.querySelector("[data-compare-right-title]").textContent = groups.rightTitle;
+          root.querySelector("[data-compare-footnote]").textContent = source ? source : title;
+          root.querySelector("[data-compare-unit]").textContent = unit ? `unit: ${unit}` : "";
+          root.setAttribute("aria-label", ariaLabel(title, groups, unit));
+
+          renderRows(root.querySelector("[data-compare-left-list]"), groups.left, unit, maxValue);
+          renderRows(root.querySelector("[data-compare-right-list]"), groups.right, unit, maxValue);
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          const header = root.querySelector(".compare-header");
+          const leftPanel = root.querySelector('[data-side="left"]');
+          const rightPanel = root.querySelector('[data-side="right"]');
+          const divider = root.querySelector(".compare-divider");
+          const dividerLine = root.querySelector(".compare-divider-line");
+          const vs = root.querySelector(".compare-vs");
+          const leftRows = gsap.utils.toArray(root.querySelectorAll('[data-side="left"] .compare-item'));
+          const rightRows = gsap.utils.toArray(root.querySelectorAll('[data-side="right"] .compare-item'));
+          const fills = gsap.utils.toArray(root.querySelectorAll(".compare-meter-fill"));
+          const values = gsap.utils.toArray(root.querySelectorAll(".compare-value"));
+          const footer = root.querySelector(".compare-footer");
+
+          tl.fromTo(header, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.42, ease: "power3.out" }, 0);
+          tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "none" }, 0.2);
+          tl.fromTo(dividerLine, { scaleY: 0 }, { scaleY: 1, duration: 0.58, ease: "power2.out" }, 0.22);
+          tl.fromTo(vs, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.4)" }, 0.46);
+          tl.fromTo(leftPanel, { opacity: 0, x: -42 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.36);
+          tl.fromTo(leftRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.12 }, 0.58);
+          tl.fromTo(rightPanel, { opacity: 0, x: 42 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.9);
+          tl.fromTo(rightRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.12 }, 1.12);
+          tl.fromTo(fills, { scaleX: 0 }, { scaleX: 1, duration: 0.82, ease: "power3.out", stagger: 0.08 }, 1.18);
+          tl.fromTo(values, { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out", stagger: 0.08 }, 1.24);
+          tl.fromTo(footer, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.32, ease: "power2.out" }, 1.62);
+          tl.addLabel("final", 2.3);
+          timelineIds(root).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
+          });
+          signalRuntimeReady();
+
+          function renderRows(list, rows, suffix, maxNumeric) {
+            rows.forEach((row) => {
+              const item = document.createElement("li");
+              const copy = document.createElement("span");
+              const label = document.createElement("span");
+              const meter = document.createElement("span");
+              const fill = document.createElement("span");
+              const value = document.createElement("span");
+
+              item.className = "compare-item";
+              copy.className = "compare-copy";
+              label.className = "compare-label";
+              meter.className = "compare-meter";
+              fill.className = "compare-meter-fill";
+              value.className = "compare-value";
+
+              label.textContent = row.label;
+              fill.style.setProperty("--compare-width", `${Math.max(8, (Math.abs(row.numeric) / maxNumeric) * 100).toFixed(3)}%`);
+              value.textContent = formatDisplayValue(row, suffix);
+
+              meter.appendChild(fill);
+              copy.append(label, meter);
+              item.append(copy, value);
+              list.appendChild(item);
+            });
+          }
+
+          function groupRows(labels, rawValues, fallbackTitle) {
+            const rows = normalizeRows(labels, rawValues, fallbackTitle);
+            const left = [];
+            const right = [];
+            for (const row of rows) {
+              const side = sideForLabel(row.label);
+              if (side === "left") left.push(row);
+              else if (side === "right") right.push(row);
+            }
+
+            if (left.length > 0 && right.length > 0) {
+              return {
+                left,
+                right,
+                leftTitle: titleForRows(left, "기존"),
+                rightTitle: titleForRows(right, "신규")
+              };
+            }
+
+            const midpoint = Math.max(1, Math.ceil(rows.length / 2));
+            return {
+              left: rows.slice(0, midpoint),
+              right: rows.slice(midpoint),
+              leftTitle: "비교 A",
+              rightTitle: "비교 B"
+            };
+          }
+
+          function normalizeRows(labels, rawValues, fallbackTitle) {
+            const count = Math.max(labels.length, rawValues.length);
+            if (count === 0) {
+              return [{ label: fallbackTitle, raw: 0, numeric: 0, decimals: 0 }];
+            }
+            const rows = [];
+            for (let index = 0; index < count; index += 1) {
+              const raw = rawValues[index] ?? 0;
+              rows.push({
+                label: stringValue(labels[index], `항목 ${index + 1}`),
+                raw,
+                numeric: numericValue(raw),
+                decimals: decimalPlaces(raw)
+              });
+            }
+            return rows;
+          }
+
+          function sideForLabel(label) {
+            const text = String(label).toLowerCase();
+            if (/(기존|이전|현재|전|old|previous|before|baseline)/i.test(text)) return "left";
+            if (/(신규|새|개선|후|new|after|target|next)/i.test(text)) return "right";
+            return "none";
+          }
+
+          function titleForRows(rows, fallback) {
+            const labels = rows.map((row) => row.label);
+            if (labels.some((label) => /(기존|이전|old|previous|before|baseline)/i.test(label))) return "기존";
+            if (labels.some((label) => /(신규|새|new|after|target|next)/i.test(label))) return "신규";
+            return fallback;
+          }
+
+          function arrayValue(value) {
+            return Array.isArray(value) ? value : [];
+          }
+
+          function readHostVariables(element) {
+            const raw = element?.getAttribute("data-variable-values");
+            if (!raw) return {};
+            try {
+              const parsed = JSON.parse(raw);
+              return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+            } catch {
+              return {};
+            }
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function numericValue(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return value;
+            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+            return match ? Number(match[0]) : 0;
+          }
+
+          function decimalPlaces(value) {
+            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+            }
+            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
+            return match ? Math.min(2, match[1].length) : 0;
+          }
+
+          function formatNumber(value, decimals) {
+            const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
+            return new Intl.NumberFormat("ko-KR", {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            }).format(Number(fixed));
+          }
+
+          function formatDisplayValue(row, suffix) {
+            return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
+          }
+
+          function ariaLabel(compareTitle, groups, suffix) {
+            const leftText = groups.left.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
+            const rightText = groups.right.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
+            return `${compareTitle}: ${groups.leftTitle} ${leftText}; ${groups.rightTitle} ${rightText}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "Highlight");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "Highlight";
+          }
+
+          function timelineIds(rootElement) {
+            return new Set([
+              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
+              "compare"
+            ]);
+          }
+
+          function signalRuntimeReady() {
+            if (typeof window.__hfForceTimelineRebind === "function") {
+              window.__hfForceTimelineRebind();
+            }
+            if (typeof window.__hfFlushSync === "function") {
+              window.__hfFlushSync();
+            }
+            window.__playerReady = true;
+            window.__renderReady = true;
+          }
+        })();
+        </script>
+      </div>
+    </template>
+  </body>
+</html>

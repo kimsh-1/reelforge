@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="ko">
+  <body>
+    <template>
+      <style>
+        .pie-block {
+          --rf-pie-accent: currentColor;
+          --rf-pie-ink: currentColor;
+          --rf-pie-muted: color-mix(in srgb, currentColor 62%, transparent);
+          --rf-pie-hairline: color-mix(in srgb, currentColor 16%, transparent);
+          --rf-pie-panel: color-mix(in srgb, var(--rf-pie-accent) 9%, transparent);
+          --rf-pie-panel-strong: color-mix(in srgb, var(--rf-pie-accent) 13%, transparent);
+          --rf-pie-shadow: color-mix(in srgb, currentColor 18%, transparent);
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          color: inherit;
+          font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        .pie-frame {
+          position: absolute;
+          inset: 0;
+          box-sizing: border-box;
+          display: grid;
+          grid-template-columns: minmax(0, 0.9fr) minmax(32rem, 0.95fr) minmax(28rem, 0.74fr);
+          align-items: center;
+          gap: 4.5rem;
+          padding: 6rem 8.5rem 13rem;
+        }
+
+        .pie-copy {
+          min-width: 0;
+          display: grid;
+          gap: 1.5rem;
+        }
+
+        .pie-kicker {
+          margin: 0;
+          width: fit-content;
+          max-width: 100%;
+          box-sizing: border-box;
+          padding: 0.65rem 0.9rem;
+          border: 0.09rem solid var(--rf-pie-hairline);
+          border-radius: 0.5rem;
+          background: var(--rf-pie-panel);
+          color: var(--rf-pie-muted);
+          font-size: 1.45rem;
+          font-weight: 760;
+          line-height: 1;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .pie-title {
+          margin: 0;
+          color: var(--rf-pie-ink);
+          font-size: 5.4rem;
+          font-weight: 900;
+          line-height: 1.04;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+          text-wrap: balance;
+        }
+
+        .pie-source {
+          margin: 0;
+          max-width: 28rem;
+          color: var(--rf-pie-muted);
+          font-size: 1.35rem;
+          font-weight: 650;
+          line-height: 1.35;
+          letter-spacing: 0;
+          overflow-wrap: anywhere;
+        }
+
+        .pie-visual {
+          position: relative;
+          width: min(100%, 38rem);
+          aspect-ratio: 1;
+          justify-self: center;
+          display: grid;
+          place-items: center;
+        }
+
+        .pie-svg,
+        .pie-center {
+          position: absolute;
+          inset: 0;
+        }
+
+        .pie-svg {
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+        }
+
+        .pie-track {
+          fill: none;
+          stroke: var(--rf-pie-hairline);
+          stroke-width: 3.25rem;
+        }
+
+        .pie-slice {
+          fill: none;
+          stroke: var(--slice-color, var(--rf-pie-accent));
+          stroke-width: 3.25rem;
+          stroke-linecap: butt;
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .pie-center {
+          display: grid;
+          place-items: center;
+          pointer-events: none;
+        }
+
+        .pie-center-card {
+          width: 17rem;
+          aspect-ratio: 1;
+          box-sizing: border-box;
+          display: grid;
+          align-content: center;
+          justify-items: center;
+          gap: 0.35rem;
+          border: 0.1rem solid var(--rf-pie-hairline);
+          border-radius: 50%;
+          background: var(--rf-pie-panel-strong);
+          box-shadow: 0 1.4rem 3.4rem var(--rf-pie-shadow);
+        }
+
+        .pie-center-label {
+          color: var(--rf-pie-muted);
+          font-size: 1.35rem;
+          font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+
+        .pie-center-value {
+          color: var(--rf-pie-ink);
+          font-size: 4.65rem;
+          font-weight: 940;
+          line-height: 0.95;
+          letter-spacing: 0;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .pie-legend {
+          min-width: 0;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          gap: 0.9rem;
+          list-style: none;
+        }
+
+        .pie-row {
+          min-width: 0;
+          display: grid;
+          grid-template-columns: 1.15rem minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 1rem;
+          box-sizing: border-box;
+          padding: 1.05rem 1.1rem;
+          border: 0.09rem solid var(--rf-pie-hairline);
+          border-radius: 0.5rem;
+          background: var(--rf-pie-panel);
+          box-shadow: 0 0.75rem 2rem var(--rf-pie-shadow);
+        }
+
+        .pie-dot {
+          width: 1.15rem;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          background: var(--slice-color, var(--rf-pie-accent));
+        }
+
+        .pie-label {
+          min-width: 0;
+          color: var(--rf-pie-ink);
+          font-size: 2rem;
+          font-weight: 800;
+          line-height: 1.16;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        .pie-value {
+          color: var(--rf-pie-ink);
+          font-size: 2.25rem;
+          font-weight: 920;
+          line-height: 1;
+          letter-spacing: 0;
+          font-variant-numeric: tabular-nums;
+          white-space: nowrap;
+        }
+      </style>
+      <div class="pie-block" data-composition-id="pie" data-width="1920" data-height="1080" data-duration="4">
+        <div class="pie-frame">
+          <section class="pie-copy" aria-label="차트 제목">
+            <p class="pie-kicker" data-mood></p>
+            <h1 class="pie-title" data-title></h1>
+            <p class="pie-source" data-source></p>
+          </section>
+          <section class="pie-visual" aria-label="도넛 차트">
+            <svg class="pie-svg" viewBox="0 0 440 440" role="img" aria-label="도넛 차트">
+              <circle class="pie-track" cx="220" cy="220" r="168"></circle>
+              <g class="pie-slices" data-slices transform="rotate(-90 220 220)"></g>
+            </svg>
+            <div class="pie-center">
+              <div class="pie-center-card">
+                <div class="pie-center-label">합계</div>
+                <div class="pie-center-value" data-total>0</div>
+              </div>
+            </div>
+          </section>
+          <ol class="pie-legend" data-legend aria-label="차트 항목"></ol>
+        </div>
+      </div>
+      <script>
+        (function () {
+          const root = document.querySelector(".pie-block") ?? document.querySelector("[data-hf-inner-root]");
+          const compositionId =
+            typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId
+              ? __hfTimelineCompId
+              : root?.closest("[data-composition-id]")?.getAttribute("data-composition-id") ?? root?.dataset.compositionId ?? "pie";
+          if (!root) {
+            window.__timelines = window.__timelines || {};
+            window.__timelines[compositionId] = gsap.timeline({ paused: true });
+            return;
+          }
+          const hf = typeof __hyperframes !== "undefined" ? __hyperframes : window.__hyperframes;
+          const variables = scopedVariables();
+          const items = Array.isArray(variables.items) ? variables.items.map((item) => String(item ?? "")) : [];
+          const rawValues = Array.isArray(variables.values) ? variables.values : [];
+          const unit = String(variables.unit ?? "");
+          const title = String(variables.title ?? "");
+          const mood = String(variables.mood ?? "");
+          const source = String(variables.source ?? "");
+          const accent = String(variables.accent ?? "").trim();
+          const rows = items.map((label, index) => ({
+            label,
+            rawValue: rawValues[index] ?? "",
+            numericValue: numericValue(rawValues[index])
+          }));
+          const visibleRows = rows.length > 0 ? rows : [{ label: title, rawValue: 1, numericValue: 1 }];
+          const numericTotal = visibleRows.reduce((sum, row) => sum + Math.max(0, row.numericValue), 0);
+          const shareTotal = numericTotal > 0 ? numericTotal : visibleRows.length;
+          const totalForDisplay = numericTotal > 0 ? numericTotal : visibleRows.length;
+          const circumference = 2 * Math.PI * 168;
+          const gap = Math.min(7, circumference * 0.009);
+          const palette = [
+            "var(--rf-pie-accent)",
+            "color-mix(in srgb, var(--rf-pie-accent) 78%, currentColor)",
+            "color-mix(in srgb, var(--rf-pie-accent) 56%, currentColor)",
+            "color-mix(in srgb, var(--rf-pie-accent) 42%, transparent)",
+            "color-mix(in srgb, var(--rf-pie-accent) 66%, transparent)",
+            "color-mix(in srgb, var(--rf-pie-accent) 34%, currentColor)"
+          ];
+
+          if (accent) root.style.setProperty("--rf-pie-accent", accent);
+          root.querySelector("[data-title]").textContent = title;
+          root.querySelector("[data-mood]").textContent = mood;
+          const sourceEl = root.querySelector("[data-source]");
+          sourceEl.textContent = source;
+          sourceEl.style.opacity = source ? "1" : "0";
+
+          root.querySelector(".pie-svg").setAttribute("aria-label", title ? `${title} 도넛 차트` : "도넛 차트");
+          const slicesEl = root.querySelector("[data-slices]");
+          const legendEl = root.querySelector("[data-legend]");
+          const sliceElements = [];
+          const legendRows = [];
+          let running = 0;
+
+          visibleRows.forEach((row, index) => {
+            const value = Math.max(0, row.numericValue);
+            const share = numericTotal > 0 ? value / shareTotal : 1 / shareTotal;
+            const rawArc = circumference * share;
+            const arc = Math.max(0.5, rawArc - gap);
+            const offset = running + gap / 2;
+            const color = palette[index % palette.length];
+            const slice = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            slice.setAttribute("class", "pie-slice");
+            slice.setAttribute("cx", "220");
+            slice.setAttribute("cy", "220");
+            slice.setAttribute("r", "168");
+            slice.style.setProperty("--slice-color", color);
+            slice.style.strokeDasharray = `0 ${circumference}`;
+            slice.style.strokeDashoffset = String(-offset);
+            slicesEl.appendChild(slice);
+            sliceElements.push({ element: slice, arc, rest: Math.max(0, circumference - arc) });
+
+            const rowEl = document.createElement("li");
+            rowEl.className = "pie-row";
+            rowEl.style.setProperty("--slice-color", color);
+            rowEl.innerHTML = [
+              '<span class="pie-dot" aria-hidden="true"></span>',
+              '<span class="pie-label"></span>',
+              '<span class="pie-value"></span>'
+            ].join("");
+            rowEl.querySelector(".pie-label").textContent = row.label;
+            rowEl.querySelector(".pie-value").textContent = formatValue(row.rawValue, unit);
+            legendEl.appendChild(rowEl);
+            legendRows.push(rowEl);
+            running += rawArc;
+          });
+
+          const totalEl = root.querySelector("[data-total]");
+          totalEl.textContent = formatNumber(0, totalForDisplay, unit);
+
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          tl.addLabel("start", 0);
+          tl.fromTo(root.querySelector(".pie-copy"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.52, ease: "power3.out" }, 0);
+          tl.fromTo(root.querySelector(".pie-track"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0.08);
+          tl.fromTo(root.querySelector(".pie-center-card"), { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.58, ease: "back.out(1.2)" }, 0.28);
+          sliceElements.forEach((slice, index) => {
+            tl.fromTo(
+              slice.element,
+              { opacity: 0.36, strokeDasharray: `0 ${circumference}` },
+              {
+                opacity: 1,
+                strokeDasharray: `${slice.arc} ${slice.rest}`,
+                duration: 0.62,
+                ease: "power2.out",
+                immediateRender: false
+              },
+              0.28 + index * 0.16
+            );
+          });
+          const counter = { value: 0 };
+          tl.to(
+            counter,
+            {
+              value: totalForDisplay,
+              duration: 1.04,
+              ease: "power2.out",
+              onUpdate: () => {
+                totalEl.textContent = formatNumber(counter.value, totalForDisplay, unit);
+              },
+              onComplete: () => {
+                totalEl.textContent = formatNumber(totalForDisplay, totalForDisplay, unit);
+              }
+            },
+            0.28
+          );
+          tl.fromTo(
+            legendRows,
+            { opacity: 0, x: 28 },
+            { opacity: 1, x: 0, duration: 0.42, ease: "power3.out", stagger: 0.09 },
+            0.68
+          );
+          tl.addLabel("final", 2.25);
+          new Set([compositionId, "pie"]).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+
+          function numericValue(value) {
+            if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+            const parsed = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+            return Number.isFinite(parsed) ? parsed : 0;
+          }
+
+          function scopedVariables() {
+            const scoped = hf?.getVariables?.() ?? {};
+            if (scoped && Object.keys(scoped).length > 0) return scoped;
+            const host = root.closest("[data-variable-values]") ?? document.querySelector("[data-variable-values]");
+            const raw = host?.getAttribute("data-variable-values");
+            if (!raw) return {};
+            try {
+              const parsed = JSON.parse(raw);
+              return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+            } catch {
+              return {};
+            }
+          }
+
+          function formatValue(value, suffix) {
+            if (typeof value === "number") return `${formatPlainNumber(value)}${suffix}`;
+            const text = String(value ?? "");
+            return suffix && text && !text.includes(suffix) ? `${text}${suffix}` : text;
+          }
+
+          function formatNumber(value, finalValue, suffix) {
+            const rounded = Math.abs(finalValue % 1) > 0.001 ? Math.round(value * 10) / 10 : Math.round(value);
+            return `${formatPlainNumber(rounded)}${suffix}`;
+          }
+
+          function formatPlainNumber(value) {
+            return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 }).format(value);
+          }
+        })();
+      </script>
+    </template>
+  </body>
+</html>
