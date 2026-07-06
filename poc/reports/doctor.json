@@ -1,0 +1,93 @@
+{
+  "ok": false,
+  "platform": "linux",
+  "arch": "x64",
+  "checks": [
+    {
+      "name": "Version",
+      "ok": false,
+      "detail": "0.7.26 → 0.7.36 available",
+      "hint": "Run: hyperframes upgrade"
+    },
+    {
+      "name": "Node.js",
+      "ok": true,
+      "detail": "v22.22.3 (linux x64)"
+    },
+    {
+      "name": "CPU",
+      "ok": true,
+      "detail": "12 cores · AMD Ryzen 5 5600 6-Core Processor"
+    },
+    {
+      "name": "Memory",
+      "ok": true,
+      "detail": "7.7 GB total · 6.4 GB available"
+    },
+    {
+      "name": "Disk",
+      "ok": true,
+      "detail": "914.9 GB free"
+    },
+    {
+      "name": "/dev/shm",
+      "ok": true,
+      "detail": "3953 MB"
+    },
+    {
+      "name": "Environment",
+      "ok": true,
+      "detail": "WSL · non-TTY"
+    },
+    {
+      "name": "whisper-cpp",
+      "ok": false,
+      "detail": "Not found (optional — needed for transcription)",
+      "hint": "Build from source: https://github.com/ggml-org/whisper.cpp#building (requires cmake and a C compiler)"
+    },
+    {
+      "name": "TTS (Kokoro)",
+      "ok": false,
+      "detail": "Not installed (optional — local voice fallback)",
+      "hint": "pip install kokoro-onnx soundfile"
+    },
+    {
+      "name": "BGM (MusicGen)",
+      "ok": false,
+      "detail": "Not installed (optional — local music fallback)",
+      "hint": "pip install transformers torch soundfile numpy"
+    },
+    {
+      "name": "FFmpeg",
+      "ok": true,
+      "detail": "ffmpeg 7.0.2-static at $HOME/.local/bin/ffmpeg"
+    },
+    {
+      "name": "FFprobe",
+      "ok": true,
+      "detail": "ffprobe 7.0.2-static at $HOME/.local/bin/ffprobe"
+    },
+    {
+      "name": "Chrome",
+      "ok": true,
+      "detail": "cache: $HOME/.cache/hyperframes/chrome/chrome-headless-shell/linux-131.0.6778.85/chrome-headless-shell-linux64/chrome-headless-shell"
+    },
+    {
+      "name": "Docker",
+      "ok": false,
+      "detail": "Not found",
+      "hint": "https://docs.docker.com/get-docker/"
+    },
+    {
+      "name": "Docker running",
+      "ok": false,
+      "detail": "Not running",
+      "hint": "Start Docker Desktop or run: sudo systemctl start docker"
+    }
+  ],
+  "_meta": {
+    "version": "0.7.26",
+    "latestVersion": "0.7.36",
+    "updateAvailable": true
+  }
+}

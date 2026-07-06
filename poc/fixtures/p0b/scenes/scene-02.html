@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0b Scene 02</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #050608;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .p0b-scene-02-bg {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        box-sizing: border-box;
+        background: #3c1642;
+      }
+
+      #p0b-scene-02-panel {
+        display: grid;
+        gap: 30px;
+        justify-items: center;
+        max-width: 1320px;
+        padding: 74px 96px;
+        border: 2px solid rgba(255, 255, 255, 0.26);
+        background: rgba(18, 7, 26, 0.52);
+        color: #fff8ff;
+      }
+
+      #p0b-scene-02-title {
+        margin: 0;
+        font-size: 104px;
+        font-weight: 820;
+        line-height: 1.08;
+        letter-spacing: 0;
+        text-align: center;
+      }
+
+      #p0b-scene-02-subtitle {
+        margin: 0;
+        font-size: 38px;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: 0;
+        color: #ffd9f8;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="p0b-scene-02-root"
+      data-composition-id="p0b-scene-02"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5"
+      style="position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden;"
+    >
+      <div id="p0b-scene-02-bg" class="p0b-scene-02-bg">
+        <section id="p0b-scene-02-panel">
+          <h1 id="p0b-scene-02-title">두 번째 장면</h1>
+          <p id="p0b-scene-02-subtitle">단독 렌더와 본문 프레임 비교</p>
+        </section>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#p0b-scene-02-panel",
+          { opacity: 0, x: -72, scale: 0.97 },
+          { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "power3.out" },
+          0.25,
+        );
+        window.__timelines = window.__timelines || {};
+        window.__timelines["p0b-scene-02"] = tl;
+      })();
+    </script>
+    <template id="p0b-scene-02-template">
+      <style>
+        .p0b-scene-02-bg {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          box-sizing: border-box;
+          background: #3c1642;
+        }
+        #p0b-scene-02-panel {
+          display: grid;
+          gap: 30px;
+          justify-items: center;
+          max-width: 1320px;
+          padding: 74px 96px;
+          border: 2px solid rgba(255, 255, 255, 0.26);
+          background: rgba(18, 7, 26, 0.52);
+          color: #fff8ff;
+        }
+        #p0b-scene-02-title {
+          margin: 0;
+          font-size: 104px;
+          font-weight: 820;
+          line-height: 1.08;
+          letter-spacing: 0;
+          text-align: center;
+        }
+        #p0b-scene-02-subtitle {
+          margin: 0;
+          font-size: 38px;
+          font-weight: 600;
+          line-height: 1.35;
+          letter-spacing: 0;
+          color: #ffd9f8;
+        }
+      </style>
+      <div
+        id="p0b-scene-02-root"
+        data-composition-id="p0b-scene-02"
+        data-width="1920"
+        data-height="1080"
+        data-start="0"
+        data-duration="5"
+        style="position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden;"
+      >
+        <div id="p0b-scene-02-bg" class="p0b-scene-02-bg">
+          <section id="p0b-scene-02-panel">
+            <h1 id="p0b-scene-02-title">두 번째 장면</h1>
+            <p id="p0b-scene-02-subtitle">단독 렌더와 본문 프레임 비교</p>
+          </section>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo(
+            "#p0b-scene-02-panel",
+            { opacity: 0, x: -72, scale: 0.97 },
+            { opacity: 1, x: 0, scale: 1, duration: 0.8, ease: "power3.out" },
+            0.25,
+          );
+          window.__timelines = window.__timelines || {};
+          window.__timelines["p0b-scene-02"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

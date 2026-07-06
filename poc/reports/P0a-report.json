@@ -1,0 +1,127 @@
+{
+  "gate": "P0a",
+  "pass": true,
+  "checks": [
+    {
+      "id": "doctor-critical",
+      "pass": true,
+      "measured": {
+        "doctorOk": false,
+        "required": [
+          "Node.js",
+          "CPU",
+          "Memory",
+          "Disk",
+          "/dev/shm",
+          "Environment",
+          "FFmpeg",
+          "FFprobe",
+          "Chrome"
+        ],
+        "missingRequired": [],
+        "fatalFailures": [],
+        "nonFatalFailures": [
+          {
+            "name": "Version",
+            "detail": "0.7.26 → 0.7.36 available",
+            "hint": "Run: hyperframes upgrade"
+          },
+          {
+            "name": "whisper-cpp",
+            "detail": "Not found (optional — needed for transcription)",
+            "hint": "Build from source: https://github.com/ggml-org/whisper.cpp#building (requires cmake and a C compiler)"
+          },
+          {
+            "name": "TTS (Kokoro)",
+            "detail": "Not installed (optional — local voice fallback)",
+            "hint": "pip install kokoro-onnx soundfile"
+          },
+          {
+            "name": "BGM (MusicGen)",
+            "detail": "Not installed (optional — local music fallback)",
+            "hint": "pip install transformers torch soundfile numpy"
+          },
+          {
+            "name": "Docker",
+            "detail": "Not found",
+            "hint": "https://docs.docker.com/get-docker/"
+          },
+          {
+            "name": "Docker running",
+            "detail": "Not running",
+            "hint": "Start Docker Desktop or run: sudo systemctl start docker"
+          }
+        ]
+      }
+    },
+    {
+      "id": "mp4-exists",
+      "pass": true,
+      "measured": {
+        "path": "out/p0a.mp4",
+        "bytes": 74557
+      }
+    },
+    {
+      "id": "ffprobe-profile",
+      "pass": true,
+      "measured": {
+        "codec": "h264",
+        "pix_fmt": "yuv420p",
+        "duration": 5,
+        "durationToleranceSec": 0.3,
+        "audioTrackCount": 0,
+        "hasAudioTrack": false,
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "pix_fmt": "yuv420p"
+          }
+        ]
+      }
+    },
+    {
+      "id": "faststart",
+      "pass": true,
+      "measured": {
+        "moovOffset": 32,
+        "mdatOffset": 1475,
+        "fileSize": 74557,
+        "method": "top-level MP4 atom scan"
+      }
+    }
+  ],
+  "inputHash": "b7bde2b6cfb3d0db361278d2a27db2f3deab797e24249851c2516d6bc78cdb6f",
+  "evidence": [
+    {
+      "path": "fixtures/p0a/index.html",
+      "sha256": "7ddaad4792651ed23e4e17d8e6b13bbe377897f3600b94cf4c6ff2ca4568c1da"
+    },
+    {
+      "path": "reports/doctor.json",
+      "sha256": "aa1cf08a7974458b38ba5ad1af877f2c9c35abfb0f5c3c12046e09f2dd2bdf90"
+    },
+    {
+      "path": "out/p0a.mp4",
+      "sha256": "2cfebb16944467ff1e4a8f0172843a1c562d14917cf038199427997b134cf4da"
+    },
+    {
+      "path": "scripts/gate-p0a.mjs",
+      "sha256": "e73e3c605c743c082de16552ae1c81da879e86c0c093648f91a5cff2433bc141"
+    },
+    {
+      "path": "package.json",
+      "sha256": "70a5e13d64c553f9fc02f39b75b3e7c3c682b314227a9f9b9d8ab1e2db0d5660"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "2aa999326653f57cf406d2658533eb701c6f9c5b4ecebd499423efa672c6d3a8"
+    }
+  ],
+  "command": "node /home/seunghyeong/video-factory-poc/scripts/gate-p0a.mjs",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T18:22:33.175Z",
+  "finishedAt": "2026-07-06T18:22:33.196Z"
+}

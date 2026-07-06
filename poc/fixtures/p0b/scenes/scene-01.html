@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0b Scene 01</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #050608;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .p0b-scene-01-bg {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        box-sizing: border-box;
+        background: #123c69;
+      }
+
+      #p0b-scene-01-panel {
+        display: grid;
+        gap: 30px;
+        justify-items: center;
+        max-width: 1320px;
+        padding: 74px 96px;
+        border: 2px solid rgba(255, 255, 255, 0.24);
+        background: rgba(7, 14, 24, 0.48);
+        color: #f7fbff;
+      }
+
+      #p0b-scene-01-title {
+        margin: 0;
+        font-size: 104px;
+        font-weight: 820;
+        line-height: 1.08;
+        letter-spacing: 0;
+        text-align: center;
+      }
+
+      #p0b-scene-01-subtitle {
+        margin: 0;
+        font-size: 38px;
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: 0;
+        color: #d7ecff;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="p0b-scene-01-root"
+      data-composition-id="p0b-scene-01"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5"
+      style="position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden;"
+    >
+      <div id="p0b-scene-01-bg" class="p0b-scene-01-bg">
+        <section id="p0b-scene-01-panel">
+          <h1 id="p0b-scene-01-title">첫 번째 장면</h1>
+          <p id="p0b-scene-01-subtitle">서브컴포지션 마운트 확인</p>
+        </section>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#p0b-scene-01-panel",
+          { opacity: 0, y: 58, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" },
+          0.25,
+        );
+        window.__timelines = window.__timelines || {};
+        window.__timelines["p0b-scene-01"] = tl;
+      })();
+    </script>
+    <template id="p0b-scene-01-template">
+      <style>
+        .p0b-scene-01-bg {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          box-sizing: border-box;
+          background: #123c69;
+        }
+        #p0b-scene-01-panel {
+          display: grid;
+          gap: 30px;
+          justify-items: center;
+          max-width: 1320px;
+          padding: 74px 96px;
+          border: 2px solid rgba(255, 255, 255, 0.24);
+          background: rgba(7, 14, 24, 0.48);
+          color: #f7fbff;
+        }
+        #p0b-scene-01-title {
+          margin: 0;
+          font-size: 104px;
+          font-weight: 820;
+          line-height: 1.08;
+          letter-spacing: 0;
+          text-align: center;
+        }
+        #p0b-scene-01-subtitle {
+          margin: 0;
+          font-size: 38px;
+          font-weight: 600;
+          line-height: 1.35;
+          letter-spacing: 0;
+          color: #d7ecff;
+        }
+      </style>
+      <div
+        id="p0b-scene-01-root"
+        data-composition-id="p0b-scene-01"
+        data-width="1920"
+        data-height="1080"
+        data-start="0"
+        data-duration="5"
+        style="position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden;"
+      >
+        <div id="p0b-scene-01-bg" class="p0b-scene-01-bg">
+          <section id="p0b-scene-01-panel">
+            <h1 id="p0b-scene-01-title">첫 번째 장면</h1>
+            <p id="p0b-scene-01-subtitle">서브컴포지션 마운트 확인</p>
+          </section>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+      <script>
+        (function () {
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo(
+            "#p0b-scene-01-panel",
+            { opacity: 0, y: 58, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "power3.out" },
+            0.25,
+          );
+          window.__timelines = window.__timelines || {};
+          window.__timelines["p0b-scene-01"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

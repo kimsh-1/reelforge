@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0b HyperFrames Fixture</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #050608;
+        color: #f7fafc;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      #root > div[data-composition-src] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="p0b-main"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="15"
+    >
+      <div
+        id="el-p0b-scene-01"
+        data-composition-id="p0b-scene-01"
+        data-composition-src="scenes/scene-01.html"
+        data-start="0"
+        data-duration="5"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+      <div
+        id="el-p0b-scene-02"
+        data-composition-id="p0b-scene-02"
+        data-composition-src="scenes/scene-02.html"
+        data-start="5"
+        data-duration="5"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+      <div
+        id="el-p0b-scene-03"
+        data-composition-id="p0b-scene-03"
+        data-composition-src="scenes/scene-03.html"
+        data-start="10"
+        data-duration="5"
+        data-track-index="1"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["p0b-main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

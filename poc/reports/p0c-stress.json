@@ -1,0 +1,195 @@
+{
+  "provider": "edge-tts",
+  "voice": "ko-KR-SunHiNeural",
+  "boundary": "WordBoundary",
+  "concurrency": 4,
+  "total": 20,
+  "successes": 20,
+  "failures": 0,
+  "http429or403": [],
+  "elapsedSec": 2.265,
+  "peakRssBytes": 41324544,
+  "results": [
+    {
+      "index": 1,
+      "path": "out/p0c-stress/line-01.mp3",
+      "success": true,
+      "bytes": 26064,
+      "durationSec": 4.344,
+      "wordBoundaries": 7,
+      "elapsedSec": 0.415
+    },
+    {
+      "index": 2,
+      "path": "out/p0c-stress/line-02.mp3",
+      "success": true,
+      "bytes": 26352,
+      "durationSec": 4.392,
+      "wordBoundaries": 5,
+      "elapsedSec": 0.421
+    },
+    {
+      "index": 3,
+      "path": "out/p0c-stress/line-03.mp3",
+      "success": true,
+      "bytes": 26928,
+      "durationSec": 4.488,
+      "wordBoundaries": 7,
+      "elapsedSec": 0.408
+    },
+    {
+      "index": 4,
+      "path": "out/p0c-stress/line-04.mp3",
+      "success": true,
+      "bytes": 24480,
+      "durationSec": 4.08,
+      "wordBoundaries": 8,
+      "elapsedSec": 0.425
+    },
+    {
+      "index": 5,
+      "path": "out/p0c-stress/line-05.mp3",
+      "success": true,
+      "bytes": 23616,
+      "durationSec": 3.936,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.45
+    },
+    {
+      "index": 6,
+      "path": "out/p0c-stress/line-06.mp3",
+      "success": true,
+      "bytes": 28944,
+      "durationSec": 4.824,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.52
+    },
+    {
+      "index": 7,
+      "path": "out/p0c-stress/line-07.mp3",
+      "success": true,
+      "bytes": 26640,
+      "durationSec": 4.44,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.412
+    },
+    {
+      "index": 8,
+      "path": "out/p0c-stress/line-08.mp3",
+      "success": true,
+      "bytes": 28656,
+      "durationSec": 4.776,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.426
+    },
+    {
+      "index": 9,
+      "path": "out/p0c-stress/line-09.mp3",
+      "success": true,
+      "bytes": 23040,
+      "durationSec": 3.84,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.42
+    },
+    {
+      "index": 10,
+      "path": "out/p0c-stress/line-10.mp3",
+      "success": true,
+      "bytes": 24480,
+      "durationSec": 4.08,
+      "wordBoundaries": 7,
+      "elapsedSec": 0.46
+    },
+    {
+      "index": 11,
+      "path": "out/p0c-stress/line-11.mp3",
+      "success": true,
+      "bytes": 22608,
+      "durationSec": 3.768,
+      "wordBoundaries": 5,
+      "elapsedSec": 0.45
+    },
+    {
+      "index": 12,
+      "path": "out/p0c-stress/line-12.mp3",
+      "success": true,
+      "bytes": 24480,
+      "durationSec": 4.08,
+      "wordBoundaries": 5,
+      "elapsedSec": 0.529
+    },
+    {
+      "index": 13,
+      "path": "out/p0c-stress/line-13.mp3",
+      "success": true,
+      "bytes": 26928,
+      "durationSec": 4.488,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.445
+    },
+    {
+      "index": 14,
+      "path": "out/p0c-stress/line-14.mp3",
+      "success": true,
+      "bytes": 22320,
+      "durationSec": 3.72,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.385
+    },
+    {
+      "index": 15,
+      "path": "out/p0c-stress/line-15.mp3",
+      "success": true,
+      "bytes": 25200,
+      "durationSec": 4.2,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.43
+    },
+    {
+      "index": 16,
+      "path": "out/p0c-stress/line-16.mp3",
+      "success": true,
+      "bytes": 25056,
+      "durationSec": 4.176,
+      "wordBoundaries": 7,
+      "elapsedSec": 0.386
+    },
+    {
+      "index": 17,
+      "path": "out/p0c-stress/line-17.mp3",
+      "success": true,
+      "bytes": 22752,
+      "durationSec": 3.792,
+      "wordBoundaries": 5,
+      "elapsedSec": 0.465
+    },
+    {
+      "index": 18,
+      "path": "out/p0c-stress/line-18.mp3",
+      "success": true,
+      "bytes": 24480,
+      "durationSec": 4.08,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.404
+    },
+    {
+      "index": 19,
+      "path": "out/p0c-stress/line-19.mp3",
+      "success": true,
+      "bytes": 24192,
+      "durationSec": 4.032,
+      "wordBoundaries": 6,
+      "elapsedSec": 0.471
+    },
+    {
+      "index": 20,
+      "path": "out/p0c-stress/line-20.mp3",
+      "success": true,
+      "bytes": 24336,
+      "durationSec": 4.056,
+      "wordBoundaries": 5,
+      "elapsedSec": 0.414
+    }
+  ],
+  "pass": true
+}

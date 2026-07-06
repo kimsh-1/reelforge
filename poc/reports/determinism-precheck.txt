@@ -1,0 +1,33 @@
+P0a determinism precheck
+=========================
+
+Purpose:
+  Confirm that the same frozen P0a fixture renders byte-identical MP4 output twice
+  under hyperframes 0.7.26 before the PoC evidence is migrated into video-factory.
+
+Render command, run 1:
+  node_modules/.bin/hyperframes render fixtures/p0a --output /home/seunghyeong/video-factory-poc/out/p0a.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000
+
+Run 1 log summary:
+  exitCode: 0
+  output: /home/seunghyeong/video-factory-poc/out/p0a.mp4
+  bytes: 74557
+  sha256: 2cfebb16944467ff1e4a8f0172843a1c562d14917cf038199427997b134cf4da
+
+Render command, run 2:
+  node_modules/.bin/hyperframes render fixtures/p0a --output /home/seunghyeong/video-factory-poc/out/p0a-second.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000
+
+Run 2 log summary:
+  exitCode: 0
+  output: /home/seunghyeong/video-factory-poc/out/p0a-second.mp4
+  bytes: 74557
+  sha256: 2cfebb16944467ff1e4a8f0172843a1c562d14917cf038199427997b134cf4da
+
+Comparison:
+  command parity: same fixture, fps, quality, crf, worker count, browser flags, and timeout flags
+  byte determinism: MATCH
+  sha256 equality: MATCH
+
+T3 migration note:
+  The original precheck file contained only the string "MATCH". E-errata requires the
+  render command and both run logs to be retained with the migrated PoC evidence.

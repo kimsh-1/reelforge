@@ -1,0 +1,19 @@
+| 번호 | 심각도(치명/중대/경미) | 대상 | 결함 | 수정 제안 |
+|---:|---|---|---|---|
+| 1 | 치명 | 게이트 리포트 | `reports/<gate-id>-<입력해시>.json`을 codex가 직접 만들 수 있다. 실패 시나리오: 구현 codex가 깨진 컴파일러를 두고 `pass:true` 리포트와 임의 `inputHash`를 생성하면 fable은 원문을 안 읽는 규칙 때문에 통과시킨다. | 워커가 못 쓰는 supervisor gate runner만 리포트 생성. 리포트에 canonical input Merkle hash, evidence hash, gate script hash, git commit, command, exit code를 넣고 fable이 독립 재해시. |
+| 2 | 치명 | skeptic-hook | 파일 존재만 차단 조건이다. 실패 시나리오: 이전 커밋의 stale report가 남아 있으면 현재 입력이 바뀌어도 “완료” 선언이 통과된다. | `pass === true`, 입력 Merkle hash 일치, evidence 파일 존재·해시 일치, report timestamp가 대상 산출물보다 최신인지 검증. |
+| 3 | 치명 | hooks 5종 | Claude Code hook 기준으로 설계됐지만 생산·테스트 주체는 codex다. 실패 시나리오: codex가 `apply_patch`나 스크립트 생성으로 JSON/HTML을 바꾸면 Claude Code `Write`/`Edit` hook이 전혀 안 돈다. | hook을 신뢰 경계로 쓰지 말고 repo-local `gate` CLI, pre-commit, CI, file watcher를 필수 경로로 둔다. Claude Code hook은 보조 알림으로 격하. |
+| 4 | 치명 | hook 실행 시점 | `schema-guard`/`render-lint`가 “Write 후 반려”로 적혔지만 `PostToolUse`는 이미 파일이 써진 뒤 피드백만 준다. 실패 시나리오: invalid manifest가 디스크에 남고 다음 codex가 그 파일을 입력으로 계속 작업한다. | 사전 차단은 `PreToolUse`에서 경로·내용을 검사하거나, 쓰기는 `vf write` 래퍼만 허용하고 실패 시 원자적 롤백. |
+| 5 | 치명 | P2 종료 조건 | P2가 `L2 전체`를 요구하지만 `L2-9` 워드싱크는 `L1-3` 자막 빌더와 `L1-4` TTS가 P3에 있어 입력 자체가 없다. 실패 시나리오: P2 컴파일러 완료 직전에 whisper 워드 타임스탬프가 없어 Phase가 영구 대기한다. | P2 gate에서 `L2-9`를 제거하거나 `audio_meta + words[]` fixture 계약과 자막 빌더 최소판을 P2 선행 브리프로 이동. |
+| 6 | 치명 | no-credential L3-1 | “전 게이트 통과”와 no-credential이 충돌한다. `L2-8`은 opus 3표, `L2-9`는 whisper 기준이라 순수 mock만으로 완주 불가다. 실패 시나리오: API 키 없는 CI에서 L3-1이 L2-8에서 멈추거나 L2-9를 자기생성 mock으로 허위 통과한다. | `--profile no-credential`의 필수/면제 gate 목록을 명시하고, 워드싱크는 실제 짧은 fixture audio+정답 transcript로 검증. |
+| 7 | 중대 | P2 브리프 분해 | “Phase를 codex 브리프 파일로 분해”만 있고 P2 의존 그래프가 없다. 실패 시나리오: 15개 codex가 schema, render-manifest, compiler adapter, component props를 동시에 바꿔 DOM golden과 타입이 서로 어긋난다. | `briefs/P2-*.md`를 선작성: owner files, inputs, outputs, blocked_by, acceptance gate. 계약/schema 브리프를 단일 선행 작업으로 고정. |
+| 8 | 중대 | P2 병렬성 | 컴파일러 핵심은 shared contract 병목인데 스웜 15를 전제로 한다. 실패 시나리오: transition injector와 scene component worker가 서로 다른 timing model을 가정해 L2-6 총길이 계산이 깨진다. | P2를 `contract -> compiler core -> transition registry -> components -> render gates` 순서의 짧은 wave로 제한하고 wave 간 merge gate를 둔다. |
+| 9 | 중대 | /mnt/d worktree | NTFS/WSL 조합의 symlink, exec bit, case-insensitivity 위험이 반영되지 않았다. 실패 시나리오: hook script 실행 비트가 보존되지 않아 hook이 조용히 실패하거나 `Scene.ts`/`scene.ts` 충돌이 Windows 쪽에서 덮인다. | repo·worktree는 ext4 위치로 강제하거나, NTFS 사용 시 `core.symlinks=false` 금지, case-collision 검사, executable-bit 검사 gate 추가. |
+| 10 | 중대 | worktree 성능 | 15개 worktree가 `/mnt/d`에서 Playwright/ffmpeg/node_modules를 병렬 접근하면 I/O와 파일 락이 병목이 된다. 실패 시나리오: 렌더 gate가 코드 결함이 아니라 EBUSY/timeout으로 flake 처리된다. | worktree root를 ext4 tmp로 두고 pnpm store/browser cache를 공유, worker별 temp/output/profile dir를 분리. |
+| 11 | 중대 | asset-guard | “이미지/오디오 삭제 시도”는 tool-level hook만으로 파일 단위 삭제를 완전히 못 막는다. 실패 시나리오: `node scripts/cleanup.js`가 assets를 삭제하면 hook은 `node` 실행만 보고 개별 삭제 파일을 모른다. | 에셋은 content-addressed immutable store로 두고 삭제 권한 없는 디렉터리 또는 pre/post snapshot diff gate로 강제. |
+| 12 | 중대 | L2-9 검증 | whisper 결과를 기준으로 카라오케 하이라이트를 검증하면 whisper 오차와 렌더 프레임 추출 오차가 섞인다. 실패 시나리오: 실제 싱크가 맞아도 whisper가 한국어 조사를 밀어 100ms 초과로 false fail. | synthetic fixture에는 정답 RTTM/JSON을 쓰고, 실 TTS에는 허용오차·샘플링 규칙·whisper 모델 버전을 고정. |
+| 13 | 중대 | P0/T3 순서 | P0에서 L2-1·L2-2·L3-3 최소형을 요구하지만 hooks·fixture 골격은 T3에서야 설치된다. 실패 시나리오: PoC가 임시 스크립트로 통과하고 레포 생성 후 같은 gate가 재현되지 않는다. | P0 전용 fixture와 gate runner를 먼저 만들고 T3에서 그대로 이관한다. 임시 수기 판정 금지. |
+| 14 | 경미 | L0-4 | `narration_tts` 규칙 위반이 “경고+리포트”라 한국어 TTS 실패를 Phase gate가 막지 못한다. 실패 시나리오: `3kg`가 영문/기호 그대로 TTS에 들어가 발음 품질이 깨져도 L0은 통과한다. | P1 이후에는 경고가 아니라 실패로 승격하고 whitelist 예외만 허용. |
+| 15 | 경미 | opus 배치 | L2-8·U-4를 한 번에 배치 호출하면 실패 장면의 재실행 단위가 불명확하다. 실패 시나리오: 20씬 중 1씬만 시각 결함인데 전체 배치 리포트가 실패해 codex가 수정 범위를 못 찾는다. | 판정 입력·출력을 scene/frame 단위 JSON으로 쪼개고 실패 row만 재판정 가능하게 한다. |
+
+치명 6개, 중대 8개.

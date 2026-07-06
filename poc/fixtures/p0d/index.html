@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>P0d Edit Loop Fixture</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #050608;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #050608;
+      }
+      #root > div[data-composition-src] {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-1y5r" id="root" data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="30.966667">
+      <div data-hf-id="hf-3o7m" id="el-s01" data-composition-id="s01" data-composition-src="scenes/s01.html" data-start="0" data-duration="8.433333" data-track-index="1" data-width="1920" data-height="1080" style="opacity: 1;"></div>
+      <div data-hf-id="hf-ryza" id="el-s02" data-composition-id="s02" data-composition-src="scenes/s02.html" data-start="7.933333" data-duration="17.066667" data-track-index="2" data-width="1920" data-height="1080" style="opacity: 0;"></div>
+      <div data-hf-id="hf-0pd5" id="el-s03" data-composition-id="s03" data-composition-src="scenes/s03.html" data-start="25" data-duration="5.966667" data-track-index="1" data-width="1920" data-height="1080" style="opacity: 1;"></div>
+      <audio data-hf-id="hf-mep6" id="audio-s01" src="audio/s01.mp3" data-start="0" data-duration="8.433333" data-track-index="10" data-volume="1"></audio>
+      <audio data-hf-id="hf-5lbe" id="audio-s02" src="audio/s02.mp3" data-start="7.933333" data-duration="17.066667" data-track-index="11" data-volume="1"></audio>
+      <audio data-hf-id="hf-0jsf" id="audio-s03" src="audio/s03.mp3" data-start="25" data-duration="5.966667" data-track-index="12" data-volume="1"></audio>
+      <audio data-hf-id="hf-ggwx" id="bgm" src="bgm.mp3" data-start="0" data-duration="30.966667" data-track-index="30" data-volume="0.15"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        const tl = gsap.timeline({ paused: true });
+          tl.to("#el-s01", { opacity: 0, duration: 0.5, ease: "none" }, 7.933333);
+          tl.fromTo("#el-s02", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "none" }, 7.933333);
+        tl.to({}, { duration: 30.966667 }, 0);
+        window.__timelines["main"] = tl;
+      })();
+    </script>
+  </body>
+</html>

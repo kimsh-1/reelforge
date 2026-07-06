@@ -1,0 +1,325 @@
+{
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "ko-KR-SunHiNeural",
+    "boundary": "WordBoundary"
+  },
+  "fps": 30,
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "audio/s01.mp3",
+      "sourceHash": "6fc348b49d0c78c2c76c30fd4dec7cd7b6dc91e8effbb24b99d27ea753d30d06",
+      "rawAudioDurationSec": 8.424,
+      "audioDurationSec": 8.433333,
+      "durationFrames": 253,
+      "words": [
+        {
+          "word": "첫",
+          "start": 0.1,
+          "end": 0.325
+        },
+        {
+          "word": "번째",
+          "start": 0.338,
+          "end": 0.663
+        },
+        {
+          "word": "장면은",
+          "start": 0.675,
+          "end": 1.238
+        },
+        {
+          "word": "편집",
+          "start": 1.25,
+          "end": 1.775
+        },
+        {
+          "word": "루프의",
+          "start": 1.788,
+          "end": 2.25
+        },
+        {
+          "word": "기준점입니다",
+          "start": 2.263,
+          "end": 3.325
+        },
+        {
+          "word": "이",
+          "start": 4.188,
+          "end": 4.362
+        },
+        {
+          "word": "구간은",
+          "start": 4.375,
+          "end": 4.838
+        },
+        {
+          "word": "이후",
+          "start": 4.85,
+          "end": 5.262
+        },
+        {
+          "word": "렌더에서도",
+          "start": 5.275,
+          "end": 6.088
+        },
+        {
+          "word": "변하지",
+          "start": 6.1,
+          "end": 6.587
+        },
+        {
+          "word": "않아야",
+          "start": 6.6,
+          "end": 6.987
+        },
+        {
+          "word": "합니다",
+          "start": 7,
+          "end": 7.562
+        }
+      ],
+      "generatedAt": "2026-07-06T18:57:57.381Z"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "audio/s02.mp3",
+      "sourceHash": "77e07ef6dee3f4283801a7b110a8ee2f4b68d4cbf1f3475149882943c2da58cf",
+      "rawAudioDurationSec": 17.04,
+      "audioDurationSec": 17.066667,
+      "durationFrames": 512,
+      "words": [
+        {
+          "word": "두",
+          "start": 0.1,
+          "end": 0.238
+        },
+        {
+          "word": "번째",
+          "start": 0.25,
+          "end": 0.637
+        },
+        {
+          "word": "장면의",
+          "start": 0.65,
+          "end": 1.113
+        },
+        {
+          "word": "나레이션을",
+          "start": 1.125,
+          "end": 1.887
+        },
+        {
+          "word": "더",
+          "start": 1.9,
+          "end": 2.175
+        },
+        {
+          "word": "길게",
+          "start": 2.188,
+          "end": 2.6
+        },
+        {
+          "word": "고칩니다",
+          "start": 2.612,
+          "end": 3.387
+        },
+        {
+          "word": "이",
+          "start": 4.263,
+          "end": 4.438
+        },
+        {
+          "word": "변경은",
+          "start": 4.45,
+          "end": 5.075
+        },
+        {
+          "word": "sourceHash를",
+          "start": 5.088,
+          "end": 5.925
+        },
+        {
+          "word": "바꾸고",
+          "start": 5.938,
+          "end": 6.588
+        },
+        {
+          "word": "두",
+          "start": 6.838,
+          "end": 7.038
+        },
+        {
+          "word": "번째",
+          "start": 7.05,
+          "end": 7.438
+        },
+        {
+          "word": "씬만",
+          "start": 7.45,
+          "end": 7.825
+        },
+        {
+          "word": "다시",
+          "start": 7.838,
+          "end": 8.138
+        },
+        {
+          "word": "합성해야",
+          "start": 8.15,
+          "end": 8.75
+        },
+        {
+          "word": "합니다",
+          "start": 8.762,
+          "end": 9.325
+        },
+        {
+          "word": "전체",
+          "start": 10.188,
+          "end": 10.6
+        },
+        {
+          "word": "컴파일은",
+          "start": 10.613,
+          "end": 11.263
+        },
+        {
+          "word": "뒤따르는",
+          "start": 11.275,
+          "end": 11.938
+        },
+        {
+          "word": "세",
+          "start": 11.95,
+          "end": 12.125
+        },
+        {
+          "word": "번째",
+          "start": 12.137,
+          "end": 12.5
+        },
+        {
+          "word": "씬의",
+          "start": 12.512,
+          "end": 12.837
+        },
+        {
+          "word": "시작",
+          "start": 12.85,
+          "end": 13.2
+        },
+        {
+          "word": "시각을",
+          "start": 13.213,
+          "end": 13.638
+        },
+        {
+          "word": "새",
+          "start": 13.65,
+          "end": 13.825
+        },
+        {
+          "word": "길이에",
+          "start": 13.838,
+          "end": 14.162
+        },
+        {
+          "word": "맞춰",
+          "start": 14.175,
+          "end": 14.6
+        },
+        {
+          "word": "뒤로",
+          "start": 14.613,
+          "end": 15.175
+        },
+        {
+          "word": "이동시킵니다",
+          "start": 15.188,
+          "end": 16.163
+        }
+      ],
+      "generatedAt": "2026-07-06T18:58:46.629Z"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "audio/s03.mp3",
+      "sourceHash": "7b834c9cd4924e2ab7b2dde390a7e45059666d3c41e186f54f3fdca8f34f66d1",
+      "rawAudioDurationSec": 5.952,
+      "audioDurationSec": 5.966667,
+      "durationFrames": 179,
+      "words": [
+        {
+          "word": "세",
+          "start": 0.1,
+          "end": 0.325
+        },
+        {
+          "word": "번째",
+          "start": 0.338,
+          "end": 0.675
+        },
+        {
+          "word": "장면은",
+          "start": 0.688,
+          "end": 1.163
+        },
+        {
+          "word": "내용은",
+          "start": 1.175,
+          "end": 1.6
+        },
+        {
+          "word": "그대로",
+          "start": 1.613,
+          "end": 2.188
+        },
+        {
+          "word": "유지하고",
+          "start": 2.2,
+          "end": 2.788
+        },
+        {
+          "word": "시작",
+          "start": 2.8,
+          "end": 3.15
+        },
+        {
+          "word": "시각만",
+          "start": 3.163,
+          "end": 3.675
+        },
+        {
+          "word": "뒤로",
+          "start": 3.688,
+          "end": 4.037
+        },
+        {
+          "word": "밀려야",
+          "start": 4.05,
+          "end": 4.513
+        },
+        {
+          "word": "합니다",
+          "start": 4.525,
+          "end": 5.075
+        }
+      ],
+      "generatedAt": "2026-07-06T18:57:58.320Z"
+    }
+  ],
+  "lastCompile": {
+    "changedSceneIds": [
+      "s02"
+    ],
+    "reusedSceneIds": [
+      "s01",
+      "s03"
+    ],
+    "totalDurationSec": 30.966667,
+    "totalFrames": 929,
+    "compiledAt": "2026-07-06T18:58:46.631Z"
+  }
+}

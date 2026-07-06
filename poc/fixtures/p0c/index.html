@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0c Korean TTS Fixture</title>
+    <style>
+      @font-face {
+        font-family: "Pretendard";
+        src: url("./fonts/PretendardVariable.woff2") format("woff2");
+        font-weight: 45 920;
+        font-style: normal;
+        font-display: block;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #f7f4ec;
+        color: #121212;
+        font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+
+      #p0c-backdrop {
+        background:
+          linear-gradient(90deg, rgba(27, 94, 32, 0.16) 0 28%, transparent 28% 100%),
+          linear-gradient(180deg, #fffdf8 0%, #efe9da 100%);
+      }
+
+      #p0c-frame {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        align-items: center;
+        padding: 118px 150px 118px 0;
+      }
+
+      #p0c-rail {
+        align-self: stretch;
+        background: #1b5e20;
+        border-right: 16px solid #f2b705;
+      }
+
+      #p0c-copy {
+        display: grid;
+        gap: 58px;
+        padding-left: 122px;
+      }
+
+      #p0c-kicker {
+        width: max-content;
+        padding: 18px 26px;
+        background: #f2b705;
+        color: #121212;
+        font-size: 40px;
+        font-weight: 760;
+        line-height: 1;
+      }
+
+      #p0c-headline {
+        margin: 0;
+        max-width: 1260px;
+        font-size: 154px;
+        font-weight: 860;
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      #p0c-subtitle {
+        margin: 0;
+        max-width: 1220px;
+        color: #263238;
+        font-size: 70px;
+        font-weight: 650;
+        line-height: 1.24;
+        letter-spacing: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="p0c"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="7.344"
+    >
+      <audio
+        id="p0c-narration"
+        src="audio/scene-01.mp3"
+        data-start="0"
+        data-duration="7.344"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+
+      <section id="p0c-backdrop" class="clip" data-start="0" data-duration="7.344" data-track-index="1">
+        <div id="p0c-frame" class="clip">
+          <div id="p0c-rail" aria-hidden="true"></div>
+          <main id="p0c-copy">
+            <div id="p0c-kicker">P0c Korean TTS Gate</div>
+            <h1 id="p0c-headline">영상 공장 가동</h1>
+            <p id="p0c-subtitle">모든 자막은 실제 음성에 맞춰 정렬됩니다</p>
+          </main>
+        </div>
+      </section>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        let currentTime = 0;
+        const durationSeconds = 7.344;
+        const timeline = {
+          duration: () => durationSeconds,
+          time: () => currentTime,
+          seek: (time) => {
+            currentTime = Math.max(0, Math.min(durationSeconds, Number(time) || 0));
+            return timeline;
+          },
+          totalTime: (time) => {
+            if (typeof time === "number") timeline.seek(time);
+            return currentTime;
+          },
+          play: () => timeline,
+          pause: () => timeline,
+          timeScale: () => timeline,
+          getChildren: () => [],
+          kill: () => undefined
+        };
+        window.__timelines["p0c"] = timeline;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+{
+  "method": "easyocr",
+  "pass": true,
+  "measured": {
+    "expected": [
+      "영상공장가동",
+      "모든자막은실제음성에맞춰정렬됩니다"
+    ],
+    "frames": [
+      {
+        "frame": "out/p0c-frames/mid.png",
+        "texts": [
+          "POc Korean TTS Gate",
+          "영상 공장 가동",
+          "모든 자막은 실제 음성에 맛취 정렬되니다"
+        ],
+        "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+        "found": {
+          "영상공장가동": true,
+          "모든자막은실제음성에맞춰정렬됩니다": false,
+          "headlineHead": true,
+          "subtitleHead": true
+        },
+        "pass": true
+      },
+      {
+        "frame": "out/p0c-frames/random-01.png",
+        "texts": [
+          "POc Korean TTS Gate",
+          "영상 공장 가동",
+          "모든 자막은 실제 음성에 맛취 정렬되니다"
+        ],
+        "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+        "found": {
+          "영상공장가동": true,
+          "모든자막은실제음성에맞춰정렬됩니다": false,
+          "headlineHead": true,
+          "subtitleHead": true
+        },
+        "pass": true
+      },
+      {
+        "frame": "out/p0c-frames/random-02.png",
+        "texts": [
+          "POc Korean TTS Gate",
+          "영상 공장 가동",
+          "모든 자막은 실제 음성에 맛취 정렬되니다"
+        ],
+        "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+        "found": {
+          "영상공장가동": true,
+          "모든자막은실제음성에맞춰정렬됩니다": false,
+          "headlineHead": true,
+          "subtitleHead": true
+        },
+        "pass": true
+      }
+    ]
+  }
+}

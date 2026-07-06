@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0d s03</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <style>
+        #s03-root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          color: #fffdf7;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        .s03-stage {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          box-sizing: border-box;
+          background:
+            linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 42%),
+            #4c6b2f;
+        }
+        #s03-panel {
+          width: 1260px;
+          min-height: 410px;
+          display: grid;
+          align-content: center;
+          gap: 42px;
+          padding: 78px 92px;
+          box-sizing: border-box;
+          border-left: 18px solid rgba(255,255,255,0.78);
+          background: rgba(0,0,0,0.26);
+        }
+        #s03-kicker {
+          margin: 0;
+          color: rgba(255,255,255,0.72);
+          font-size: 34px;
+          font-weight: 720;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+        #s03-headline {
+          margin: 0;
+          font-size: 124px;
+          font-weight: 860;
+          line-height: 1.05;
+          letter-spacing: 0;
+        }
+        #s03-subtitle {
+          margin: 0;
+          max-width: 1120px;
+          color: rgba(255,255,255,0.88);
+          font-size: 46px;
+          font-weight: 620;
+          line-height: 1.32;
+          letter-spacing: 0;
+        }
+      </style>
+  </head>
+  <body>
+    <div
+      id="s03-root"
+      data-composition-id="s03"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5.966667"
+      style="position: relative; width: 1920px; height: 1080px; overflow: hidden;"
+    >
+      <audio
+        id="s03-standalone-audio"
+        src="../audio/s03.mp3"
+        data-start="0"
+        data-duration="5.966667"
+        data-track-index="10"
+        data-volume="1"
+      ></audio>
+      <section id="s03-stage" class="s03-stage" data-start="0" data-duration="5.966667" data-track-index="1">
+        <div id="s03-panel">
+          <p id="s03-kicker">P0d Scene S03</p>
+          <h1 id="s03-headline">시프트 확인</h1>
+          <p id="s03-subtitle">세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.</p>
+        </div>
+      </section>
+    </div>
+    <script>
+      (function () {
+        window.__timelines = window.__timelines || {};
+        const tl = gsap.timeline({ paused: true });
+        tl.fromTo(
+          "#s03-panel",
+          { opacity: 0, y: 34, scale: 0.985 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" },
+          0.12
+        );
+        tl.fromTo(
+          "#s03-subtitle",
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
+          0.100
+        );
+        tl.to({}, { duration: 5.966667 }, 0);
+        window.__timelines["s03"] = tl;
+      })();
+    </script>
+    <template id="s03-template">
+
+      <style>
+        #s03-root {
+          position: absolute;
+          inset: 0;
+          width: 1920px;
+          height: 1080px;
+          overflow: hidden;
+          color: #fffdf7;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+        .s03-stage {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          box-sizing: border-box;
+          background:
+            linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0) 42%),
+            #4c6b2f;
+        }
+        #s03-panel {
+          width: 1260px;
+          min-height: 410px;
+          display: grid;
+          align-content: center;
+          gap: 42px;
+          padding: 78px 92px;
+          box-sizing: border-box;
+          border-left: 18px solid rgba(255,255,255,0.78);
+          background: rgba(0,0,0,0.26);
+        }
+        #s03-kicker {
+          margin: 0;
+          color: rgba(255,255,255,0.72);
+          font-size: 34px;
+          font-weight: 720;
+          line-height: 1;
+          letter-spacing: 0;
+        }
+        #s03-headline {
+          margin: 0;
+          font-size: 124px;
+          font-weight: 860;
+          line-height: 1.05;
+          letter-spacing: 0;
+        }
+        #s03-subtitle {
+          margin: 0;
+          max-width: 1120px;
+          color: rgba(255,255,255,0.88);
+          font-size: 46px;
+          font-weight: 620;
+          line-height: 1.32;
+          letter-spacing: 0;
+        }
+      </style>
+
+      <div
+        id="s03-root"
+        data-composition-id="s03"
+        data-width="1920"
+        data-height="1080"
+        data-start="0"
+        data-duration="5.966667"
+      >
+        <section id="s03-stage" class="s03-stage" data-start="0" data-duration="5.966667" data-track-index="1">
+          <div id="s03-panel">
+            <p id="s03-kicker">P0d Scene S03</p>
+            <h1 id="s03-headline">시프트 확인</h1>
+            <p id="s03-subtitle">세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.</p>
+          </div>
+        </section>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+
+      <script>
+        (function () {
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          tl.fromTo(
+            "#s03-panel",
+            { opacity: 0, y: 34, scale: 0.985 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: "power3.out" },
+            0.12
+          );
+          tl.fromTo(
+            "#s03-subtitle",
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
+            0.100
+          );
+          tl.to({}, { duration: 5.966667 }, 0);
+          window.__timelines["s03"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

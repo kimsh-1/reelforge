@@ -1,0 +1,73 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "audio/scene-01.mp3",
+      "audioDurationSec": 7.344,
+      "words": [
+        {
+          "word": "영상",
+          "start": 0.1,
+          "end": 0.5
+        },
+        {
+          "word": "공장이",
+          "start": 0.512,
+          "end": 0.987
+        },
+        {
+          "word": "가동을",
+          "start": 1.0,
+          "end": 1.462
+        },
+        {
+          "word": "시작했습니다",
+          "start": 1.475,
+          "end": 2.425
+        },
+        {
+          "word": "모든",
+          "start": 3.3,
+          "end": 3.688
+        },
+        {
+          "word": "자막은",
+          "start": 3.7,
+          "end": 4.225
+        },
+        {
+          "word": "실제",
+          "start": 4.237,
+          "end": 4.625
+        },
+        {
+          "word": "음성에",
+          "start": 4.638,
+          "end": 5.062
+        },
+        {
+          "word": "맞춰",
+          "start": 5.075,
+          "end": 5.463
+        },
+        {
+          "word": "정렬됩니다",
+          "start": 5.475,
+          "end": 6.462
+        }
+      ],
+      "sourceHash": "08582e651f4f972e615ee4fe42aed444d490c3cf4a934273d21e2c29efc63588"
+    }
+  ],
+  "tts": {
+    "provider": "edge-tts",
+    "voice": "ko-KR-SunHiNeural",
+    "boundary": "WordBoundary",
+    "edgeTtsVersion": "7.2.8"
+  },
+  "validation": {
+    "wordCount": 10,
+    "wordsNonEmpty": true,
+    "wordsMonotonic": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "narration": "첫 번째 장면은 편집 루프의 기준점입니다. 이 구간은 이후 렌더에서도 변하지 않아야 합니다.",
+      "headline": "기준 장면",
+      "bgColor": "#1b4d5c"
+    },
+    {
+      "sceneId": "s02",
+      "narration": "두 번째 장면의 나레이션을 더 길게 고칩니다. 이 변경은 sourceHash를 바꾸고, 두 번째 씬만 다시 합성해야 합니다. 전체 컴파일은 뒤따르는 세 번째 씬의 시작 시각을 새 길이에 맞춰 뒤로 이동시킵니다.",
+      "headline": "편집 대상",
+      "bgColor": "#6d3f8c"
+    },
+    {
+      "sceneId": "s03",
+      "narration": "세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.",
+      "headline": "시프트 확인",
+      "bgColor": "#4c6b2f"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "crossfade",
+      "duration": 0.5
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+## config-tokens
+| CID | 통합 기능명 | 통합 설명(1-2줄) | 출처(repo:원id, 전부) | 채택 | Phase | 검증방법(통합 1줄) |
+|---|---|---|---|---|---|---|
+| config-tokens-C01 | 화면비·해상도·방향 정규화 계약 | aspect 별칭, portrait/landscape/square, 기본 fps와 width/height를 canonical 출력 프로파일로 정규화한다. UI 표기 차이와 방향 충돌도 컴파일 전에 보정한다. | NarratoAI:NAR-004, Pilipili-AutoVideo:PLP-057, hyperframes-engine:HFE-007, react-video-editor:RVE-007, react-video-editor:RVE-025, react-video-editor:RVE-031, short-video-maker:SVM-040, story-flicks:SF-005, story-flicks:SF-030 | P0 매니페스트 필수 | P1 계약스키마 | aspect/alias fixture를 canonical width,height,fps로 정규화하고 충돌 케이스는 실패 검증 |
+| config-tokens-C02 | 워드 타임스탬프 자막 계약 | fromMs/toMs 토큰, frame-ms 변환, active word 강조, 공백 보존, 강조 지속 옵션을 하나의 자막 토큰 계약으로 묶는다. | remotion-skills:RSK-040, template-tiktok:TTK-036, template-tiktok:TTK-037, template-tiktok:TTK-038, react-video-editor:RVE-017 | P0 워드싱크 핵심 | P1 계약스키마 | 프레임별 active token, 경계 ms, 공백 보존, 강조 옵션을 DOM/픽셀 스냅샷으로 검증 |
+| config-tokens-C03 | 스타일·크리에이티브 토큰 계약 | creative direction enum, art preset registry, deep merge, CSS 변수, mood 배경을 HyperFrames 디자인 토큰으로 고정한다. | OpenMontage:OM-054, auto_kairos-frontend:AKF-006, auto_kairos-frontend:AKF-027, auto_kairos-frontend:AKF-028, react-video-editor:RVE-065, motion-canvas:MC-003, auto_kairos-frontend:AKF-035 | P0 디자인 결정론 | P1 계약스키마 | style manifest를 enum 검증 후 preset merge, CSS 변수, DESIGN.md로 생성하는 스냅샷 검증 |
+| config-tokens-C04 | 프레임 기반 모션·전환 토큰 | motion preset, easing, frame range, clamp, slide/wipe 방향 전환을 CSS 임의 애니메이션이 아닌 프레임 결정론 토큰으로 제한한다. | remotion-skills:RSK-023, remotion-skills:RSK-025, auto_kairos-frontend:AKF-030, remotion-packages:RMT-013, remotion-packages:RMT-014 | P0 결정론 모션 | P2 컴파일러 | frame range/clamp/easing을 lint하고 방향별 transform/clipPath 스냅샷 검증 |
+| config-tokens-C05 | 렌더별 오버라이드·부분 재렌더 계약 | 프로젝트 매니페스트와 렌더 요청 override를 분리해 range, size, background, exporter를 렌더 단위로 바꾼다. | revideo:RV-002 | P0 부분재렌더 필수 | P3 파이프라인 | 동일 매니페스트에 range/size override를 적용해 부분 출력 메타데이터와 변경 범위 비교 |
+| config-tokens-C06 | 렌더 프리플라이트·원프레임 하드게이트 | 해상도 호환성, HDR/alpha/supersampling 충돌, still frame 레이아웃 검사를 전체 렌더 전 차단 게이트로 둔다. | hyperframes-engine:HFE-008, remotion-skills:RSK-012 | P0 하드게이트 핵심 | P5 게이트 | 호환성 matrix와 still frame 픽셀/오버랩 검사를 통과한 경우만 전체 렌더 시작 |
+| config-tokens-C07 | 스테이지 버퍼 합성 계약 | previous/current/final 버퍼로 배경, color space, resolution scale, transition 합성을 안정화한다. | motion-canvas:MC-022, revideo:RV-014 | P1 전환합성 중요 | P2 컴파일러 | 전환 fixture의 이전/현재/최종 합성 결과를 픽셀 스냅샷으로 비교 |
+| config-tokens-C08 | 계층형 설정 부트스트랩·병합 | 기본값, 명시 파일, env override, 누락 키 병합, BOM/깨진 JSON fallback을 공통 설정 로더로 통합한다. | Director:DIR-012, NarratoAI:NAR-009, NarratoAI:NAR-010, Pilipili-AutoVideo:PLP-015, fontagent:FA-006 | P1 운영 기본 | P3 파이프라인 | missing/BOM/env/deep merge/invalid JSON fixture로 최종 설정값 검증 |
+| config-tokens-C09 | Provider·Secret 설정 검증 | API key, base URL, model, provider 상태, 런타임 경고, 민감정보 마스킹을 LLM/TTS 운영 기본값으로 묶는다. | MoneyPrinterTurbo:MPT-011, ShortGPT:SG-050, html-video:HV-038, story-flicks:SF-018, NarratoAI:NAR-081, OpenMontage:OM-006 | P1 TTS운영 기본 | P3 파이프라인 | env/db fallback, provider validator, setup warning, error redaction을 통합 테스트 |
+| config-tokens-C10 | 생성·인식 모델 노브 | temperature, top_p, max_tokens, thinking_level, Whisper 모델 선택을 재현 가능한 생성 설정으로 직렬화한다. | NarratoAI:NAR-007, template-tiktok:TTK-048 | P1 재현성 필요 | P3 파이프라인 | 허용 model enum과 generation knob가 매니페스트에 안정적으로 저장되는지 검증 |
+| config-tokens-C11 | 인코더·FFmpeg·Export 프로필 | HDR/SDR, CRF, bitrate, GPU, alpha, ProRes, file type, FPS, FFmpeg path/log를 출력 프로필로 표준화한다. | NarratoAI:NAR-026, hyperframes-engine:HFE-004, hyperframes-engine:HFE-022, motion-canvas:MC-004, react-video-editor:RVE-029, revideo:RV-029 | P1 출력품질 기본 | P6 패키징 | preset matrix가 FFmpeg args, binary path, logLevel로 정확히 변환되는지 검증 |
+| config-tokens-C12 | 입력 소재 해상도·방향 필터 | Pixabay/Pexels 등 외부 소재를 목표 폭, 정확한 세로/가로 해상도 기준으로 선별한다. | MoneyPrinterTurbo:MPT-035, short-video-maker:SVM-026 | P1 입력게이트 필요 | P5 게이트 | 소재 후보 fixture에서 min width와 orientation exact match만 통과시키는지 검증 |
+| config-tokens-C13 | 클립 scale+pad 정규화 | 입력 클립을 타깃 해상도에 등비 맞춤, padding, SAR=1로 정규화해 합성과 전환을 안정화한다. | Pilipili-AutoVideo:PLP-059 | P1 합성안정 필요 | P2 컴파일러 | filtergraph 출력이 target resolution과 SAR=1을 만족하는지 검증 |
+| config-tokens-C14 | 스튜디오 설정 UI 컨트롤 | dropdown, select, popover, toast, 영상 설정 패널을 브라우저 씬 편집 대시보드의 설정 조작 표면으로 묶는다. | OpenCut:OC-039, OpenCut:OC-045, OpenCut:OC-061, OpenCut:OC-069, NarratoAI:NAR-101 | P1 스튜디오 기본 | P4 스튜디오 | Playwright로 옵션 선택, 긴 목록 스크롤, toast 상태, settings params 매핑 검증 |
+| config-tokens-C15 | 재현 렌더 명령·산출물 정책 | 기본값과 다른 옵션만 CLI flag로 만들고 quote/env 정렬/serve URL 정규화와 overwrite 정책을 통합한다. | remotion-packages:RMT-039, template-tiktok:TTK-009 | P1 재현명령 필요 | P6 패키징 | render command snapshot과 동일 경로 반복 렌더 overwrite idempotence 검증 |
+| config-tokens-C16 | Exporter·Bridge API 계약 | exporter lifecycle hook과 Rust bridge options struct 규칙으로 렌더 확장 경계를 명시한다. | motion-canvas:MC-015, opencut-classic:OCC-071 | P1 확장경계 필요 | P2 컴파일러 | mock exporter 호출 순서와 bridge camelCase 변환/positional arg 거부 검증 |
+| config-tokens-C17 | 한국어 HTTP 운영 기본값 | fetch 기본 헤더와 네트워크 오류 메시지를 한국어 우선 운영 환경에 맞춘다. | fontagent:FA-082 | P1 한국어운영 필요 | P3 파이프라인 | Accept-Language와 한국어 오류 메시지 fixture 검증 |
+| config-tokens-C18 | 공급망 지연 설치 정책 | 새로 배포된 패키지를 일정 기간 지연 설치해 빌드 공급망 리스크를 줄인다. | OpenCut:OC-010 | P1 공급망 방어 | P6 패키징 | package manager 설정에서 minimum release age 값을 고정 검증 |
+| config-tokens-C19 | 비용·사용량 계측 토큰 | LLM token, TTS 문자 수, CLI 비용 출력을 기록해 생성 파이프라인 비용 관찰성을 확보한다. | ShortGPT:SG-076, auto_kairos-pipeline:AKP-034 | P2 비용관찰 | P3 파이프라인 | wrapper와 CLI parser fixture가 LLM/TTS 사용량과 비용을 DB에 기록하는지 검증 |
+| config-tokens-C20 | Cloud GPU·렌더 운영 노브 | RunPod/Modal 같은 cloud GPU provider 추상화와 cloud list/get/delete CLI를 운영 확장으로 둔다. | claude-code-video-toolkit:CVT-026, hyperframes-engine:HFE-109 | P2 운영확장 | P3 파이프라인 | mock cloud client로 endpoint/token 해석과 list/get/delete JSON 출력 검증 |
+| config-tokens-C21 | Registry·Reference Pack 카탈로그 | HyperFrames block/component catalog와 장르별 reference pack 학습 옵션을 탐색 가능한 자산 카탈로그로 묶는다. | hyperframes-engine:HFE-039, fontagent:FA-056 | P2 탐색확장 | P4 스튜디오 | catalog JSON schema와 reference pack limit/continue_on_error 동작 검증 |
+| config-tokens-C22 | 리서치 다이제스트 토큰 절감 | 통계, 핵심 문장, source를 dedup digest로 압축해 프롬프트 입력 토큰을 줄인다. | auto_kairos-pipeline:AKP-013 | P2 프롬프트절감 | P3 파이프라인 | digest fixture에서 source 보존, 중복 제거, 토큰 예산 준수 검증 |
+| config-tokens-C23 | 시각 효과·오버레이 프리셋 | CTA chromakey overlay, dynamic blur, code/token animation을 선택형 연출 프리셋으로 분리한다. | ShortGPT:SG-028, opencut-classic:OCC-013, revideo:RV-072 | P2 연출확장 | P2 컴파일러 | chromakey, blur pass count, code token bbox 결과를 스냅샷으로 검증 |
+| config-tokens-C24 | 프로젝트 상태 부분 영속화 | canvasSize, aspectRatio, fps처럼 재개에 필요한 설정만 local persistence 대상으로 제한한다. | react-video-editor:RVE-026 | P2 상태절제 | P4 스튜디오 | hydration test로 허용 필드만 저장되고 나머지는 제외되는지 검증 |
+| config-tokens-C25 | 장르 enum 프롬프트 프리셋 | bedtime, fairy tale, adventure 같은 story genre enum을 프롬프트 템플릿 선택값으로 둔다. | story-flicks:SF-015 | HOLD 장르특화 | P1 계약스키마 | 스토리 모드 채택 시에만 genre-to-prompt mapping 테스트 추가 |
+
+### 도메인 오분류 의심
+OC-039, OC-045, OC-061, OC-069, MC-022, RV-014, RSK-012, OCC-071, AKP-013, SG-076, AKP-034, HFE-109
+
+### 이 도메인 설계 조언
+- 매니페스트는 aspect, style, motion, caption, provider를 enum+버전 스키마로 고정하고 alias는 컴파일 단계에서 canonical 값으로 정규화하라.
+- 대시보드 설정은 원본 매니페스트를 직접 덮지 말고 render override patch로 저장해 부분 재렌더와 재현 명령을 같은 모델로 묶어라.
+- 물리 하드게이트는 렌더 전/후 모두 두어 해상도, fps, 자막 타이밍, 비밀 마스킹, 인코더 호환성을 빠르게 실패시켜라.

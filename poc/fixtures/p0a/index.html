@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>P0a HyperFrames Fixture</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #050814;
+        color: #f8fbff;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+
+      #p0a-card {
+        display: grid;
+        place-items: center;
+        background:
+          linear-gradient(135deg, rgba(12, 94, 128, 0.55), rgba(20, 28, 54, 0.18)),
+          #102a43;
+      }
+
+      #p0a-title {
+        margin: 0;
+        max-width: 1500px;
+        font-size: 112px;
+        font-weight: 800;
+        line-height: 1.12;
+        text-align: center;
+        letter-spacing: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="p0a"
+      data-width="1920"
+      data-height="1080"
+      data-start="0"
+      data-duration="5"
+    >
+      <section id="p0a-card" class="clip" data-start="0" data-duration="5" data-track-index="1">
+        <h1 id="p0a-title">영상 공장 가동</h1>
+      </section>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      (function () {
+        let currentTime = 0;
+        const durationSeconds = 5;
+        const timeline = {
+          duration: () => durationSeconds,
+          time: () => currentTime,
+          seek: (time) => {
+            currentTime = Math.max(0, Math.min(durationSeconds, Number(time) || 0));
+            return timeline;
+          },
+          totalTime: (time) => {
+            if (typeof time === "number") timeline.seek(time);
+            return currentTime;
+          },
+          play: () => timeline,
+          pause: () => timeline,
+          timeScale: () => timeline,
+          getChildren: () => [],
+          kill: () => undefined
+        };
+        window.__timelines["p0a"] = timeline;
+      })();
+    </script>
+  </body>
+</html>

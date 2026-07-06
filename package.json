@@ -1,0 +1,22 @@
+{
+  "name": "video-factory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Deterministic narration video factory built around hyperframes 0.7.26.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "vf": "./bin/vf"
+  },
+  "scripts": {
+    "gate": "node bin/vf gate all --replay",
+    "lint": "node scripts/schema-lint.mjs && node scripts/readme-sync.mjs",
+    "render": "hyperframes render poc/fixtures/p0a --output out/p0a.mp4 --fps=30 --quality=high --workers=1 --no-browser-gpu"
+  },
+  "dependencies": {
+    "hyperframes": "0.7.26"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

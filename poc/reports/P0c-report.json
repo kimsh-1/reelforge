@@ -1,0 +1,224 @@
+{
+  "gate": "P0c",
+  "pass": true,
+  "checks": [
+    {
+      "id": "tts-words-valid",
+      "pass": true,
+      "measured": {
+        "audioPath": "audio/scene-01.mp3",
+        "audioBytes": 44064,
+        "audioDurationSec": 7.344,
+        "wordCount": 10,
+        "firstWord": {
+          "word": "영상",
+          "start": 0.1,
+          "end": 0.5
+        },
+        "lastWord": {
+          "word": "정렬됩니다",
+          "start": 5.475,
+          "end": 6.462
+        },
+        "invalidWords": [],
+        "expectedSourceHash": "08582e651f4f972e615ee4fe42aed444d490c3cf4a934273d21e2c29efc63588",
+        "actualSourceHash": "08582e651f4f972e615ee4fe42aed444d490c3cf4a934273d21e2c29efc63588",
+        "boundary": "WordBoundary",
+        "voice": "ko-KR-SunHiNeural"
+      }
+    },
+    {
+      "id": "font-embedded-render",
+      "pass": true,
+      "measured": {
+        "fontPath": "fixtures/p0c/fonts/PretendardVariable.woff2",
+        "fontBytes": 2057688,
+        "expectedSha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+        "actualSha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
+        "sourceUrl": "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2",
+        "htmlReferencesFont": true,
+        "mp4Bytes": 254812,
+        "frameEvidence": [
+          {
+            "path": "out/p0c-frames/mid.png",
+            "exists": true,
+            "bytes": 193292
+          },
+          {
+            "path": "out/p0c-frames/random-01.png",
+            "exists": true,
+            "bytes": 193291
+          },
+          {
+            "path": "out/p0c-frames/random-02.png",
+            "exists": true,
+            "bytes": 193399
+          }
+        ]
+      }
+    },
+    {
+      "id": "ocr-positive",
+      "pass": true,
+      "measured": {
+        "method": "easyocr",
+        "note": null,
+        "frames": [
+          {
+            "frame": "out/p0c-frames/mid.png",
+            "texts": [
+              "POc Korean TTS Gate",
+              "영상 공장 가동",
+              "모든 자막은 실제 음성에 맛취 정렬되니다"
+            ],
+            "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+            "found": {
+              "영상공장가동": true,
+              "모든자막은실제음성에맞춰정렬됩니다": false,
+              "headlineHead": true,
+              "subtitleHead": true
+            },
+            "pass": true
+          },
+          {
+            "frame": "out/p0c-frames/random-01.png",
+            "texts": [
+              "POc Korean TTS Gate",
+              "영상 공장 가동",
+              "모든 자막은 실제 음성에 맛취 정렬되니다"
+            ],
+            "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+            "found": {
+              "영상공장가동": true,
+              "모든자막은실제음성에맞춰정렬됩니다": false,
+              "headlineHead": true,
+              "subtitleHead": true
+            },
+            "pass": true
+          },
+          {
+            "frame": "out/p0c-frames/random-02.png",
+            "texts": [
+              "POc Korean TTS Gate",
+              "영상 공장 가동",
+              "모든 자막은 실제 음성에 맛취 정렬되니다"
+            ],
+            "normalized": "POcKoreanTTSGate영상공장가동모든자막은실제음성에맛취정렬되니다",
+            "found": {
+              "영상공장가동": true,
+              "모든자막은실제음성에맞춰정렬됩니다": false,
+              "headlineHead": true,
+              "subtitleHead": true
+            },
+            "pass": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "av-duration-match",
+      "pass": true,
+      "measured": {
+        "path": "out/p0c.mp4",
+        "expectedAudioDurationSec": 7.344,
+        "containerDurationSec": 7.381333,
+        "deltaSec": 0.037332999999999394,
+        "durationToleranceSec": 0.3,
+        "hasAudioTrack": true,
+        "audioTrackCount": 1,
+        "videoTrackCount": 1,
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ]
+      }
+    },
+    {
+      "id": "stress-20-lines",
+      "pass": true,
+      "measured": {
+        "provider": "edge-tts",
+        "voice": "ko-KR-SunHiNeural",
+        "boundary": "WordBoundary",
+        "concurrency": 4,
+        "total": 20,
+        "successes": 20,
+        "failures": 0,
+        "http429or403": [],
+        "elapsedSec": 2.265,
+        "peakRssBytes": 41324544
+      }
+    }
+  ],
+  "inputHash": "ef8f464a3fb3893af87fd2cb1e8c427b8e78ccadd221d561e58f9bc650598f0d",
+  "evidence": [
+    {
+      "path": "fixtures/p0c/audio_meta.json",
+      "sha256": "5d7ee66107a9c5360a2d1801ef6c6416b5ce281e52e0726769edd932ff1fa4cc"
+    },
+    {
+      "path": "fixtures/p0c/audio/scene-01.mp3",
+      "sha256": "cd87e0f0c44ec9c992ca2045305d3b494921db539a34903e104836e7d26f52b0"
+    },
+    {
+      "path": "fixtures/p0c/fonts/font-integrity.json",
+      "sha256": "d9c218b2cb30d306855a5e588da18bffa634cc4bbcd36f699e22261355668bf9"
+    },
+    {
+      "path": "fixtures/p0c/fonts/PretendardVariable.woff2",
+      "sha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4"
+    },
+    {
+      "path": "fixtures/p0c/index.html",
+      "sha256": "4b24a4da529be6511094248b56df535e3b124836a14f361ec0e7405034b58aa2"
+    },
+    {
+      "path": "out/p0c-frames/mid.png",
+      "sha256": "44029605c409f4ab301336403fe43fbbe79542898aa332a685d7bc24927e0475"
+    },
+    {
+      "path": "out/p0c-frames/random-01.png",
+      "sha256": "d8b85b5a5f1049095d0fa0be39760ad98fef1b174d581e633d3ba1f12756a0b0"
+    },
+    {
+      "path": "out/p0c-frames/random-02.png",
+      "sha256": "9400fbaeefcb9ee38a66f7108af5260eeb704e32ca3da3ef8811df637ea1223c"
+    },
+    {
+      "path": "out/p0c.mp4",
+      "sha256": "d4a3fc1b444db1457bf2dc5ab68dff2c7b96a9d6a3c01ac5bf3422bf353943d2"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "2aa999326653f57cf406d2658533eb701c6f9c5b4ecebd499423efa672c6d3a8"
+    },
+    {
+      "path": "package.json",
+      "sha256": "70a5e13d64c553f9fc02f39b75b3e7c3c682b314227a9f9b9d8ab1e2db0d5660"
+    },
+    {
+      "path": "reports/p0c-ocr.json",
+      "sha256": "c5fb674dab5a9d5ad0e7310cd4823fae191b83e841747202f6ef317f0025689d"
+    },
+    {
+      "path": "reports/p0c-stress.json",
+      "sha256": "a3ec6ef66a08cc69db98aae81100ab11a20e6a8b03fee68707a644c9519eb71b"
+    },
+    {
+      "path": "scripts/gate-p0c.mjs",
+      "sha256": "c3c3d841a8cb947e16dcdff6f019aab92a17d79c359cd7d82385d3894dd18974"
+    }
+  ],
+  "command": "node /home/seunghyeong/video-factory-poc/scripts/gate-p0c.mjs",
+  "exitCode": 0,
+  "startedAt": "2026-07-06T18:42:26.783Z",
+  "finishedAt": "2026-07-06T18:42:26.836Z"
+}

@@ -1,0 +1,21 @@
+[render]
+engine = "hyperframes"
+hyperframes_version = "0.7.26"
+fps = 30
+workers = 1
+quality = "high"
+
+[tts]
+default_provider = "edge-tts"
+voice = "ko-KR-SunHiNeural"
+boundary = "WordBoundary"
+concurrency = 4
+
+[assets]
+font_policy = "download-official-ofl-builds-only"
+bgm_policy = "cc0-or-cc-by-with-provenance"
+sfx_policy = "reference-hyperframes-package-only"
+
+[studio]
+mode = "adapter-hosted"
+write_routes = "blocked"

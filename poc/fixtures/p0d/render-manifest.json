@@ -1,0 +1,584 @@
+{
+  "meta": {
+    "resolution": {
+      "width": 1920,
+      "height": 1080
+    },
+    "fps": 30,
+    "totalFrames": 929,
+    "totalDurationSec": 30.966667,
+    "transitionOverlapFrames": 15,
+    "transitionOverlapSec": 0.5
+  },
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "compositionPath": "scenes/s01.html",
+      "audioPath": "audio/s01.mp3",
+      "sourceHash": "6fc348b49d0c78c2c76c30fd4dec7cd7b6dc91e8effbb24b99d27ea753d30d06",
+      "startFrame": 0,
+      "startSec": 0,
+      "durationFrames": 253,
+      "audioDurationSec": 8.433333,
+      "headline": "기준 장면",
+      "subtitles": [
+        {
+          "text": "첫 번째 장면은 편집 루프의 기준점입니다. 이 구간은 이후 렌더에서도 변하지 않아야 합니다.",
+          "startSec": 0.1,
+          "endSec": 7.562,
+          "words": [
+            {
+              "word": "첫",
+              "start": 0.1,
+              "end": 0.325
+            },
+            {
+              "word": "번째",
+              "start": 0.338,
+              "end": 0.663
+            },
+            {
+              "word": "장면은",
+              "start": 0.675,
+              "end": 1.238
+            },
+            {
+              "word": "편집",
+              "start": 1.25,
+              "end": 1.775
+            },
+            {
+              "word": "루프의",
+              "start": 1.788,
+              "end": 2.25
+            },
+            {
+              "word": "기준점입니다",
+              "start": 2.263,
+              "end": 3.325
+            },
+            {
+              "word": "이",
+              "start": 4.188,
+              "end": 4.362
+            },
+            {
+              "word": "구간은",
+              "start": 4.375,
+              "end": 4.838
+            },
+            {
+              "word": "이후",
+              "start": 4.85,
+              "end": 5.262
+            },
+            {
+              "word": "렌더에서도",
+              "start": 5.275,
+              "end": 6.088
+            },
+            {
+              "word": "변하지",
+              "start": 6.1,
+              "end": 6.587
+            },
+            {
+              "word": "않아야",
+              "start": 6.6,
+              "end": 6.987
+            },
+            {
+              "word": "합니다",
+              "start": 7,
+              "end": 7.562
+            }
+          ]
+        }
+      ],
+      "vizAnimation": {
+        "itemSyncPoints": [
+          {
+            "label": "첫",
+            "timeSec": 0.1
+          },
+          {
+            "label": "번째",
+            "timeSec": 0.338
+          },
+          {
+            "label": "장면은",
+            "timeSec": 0.675
+          },
+          {
+            "label": "편집",
+            "timeSec": 1.25
+          },
+          {
+            "label": "루프의",
+            "timeSec": 1.788
+          },
+          {
+            "label": "기준점입니다",
+            "timeSec": 2.263
+          },
+          {
+            "label": "이",
+            "timeSec": 4.188
+          },
+          {
+            "label": "구간은",
+            "timeSec": 4.375
+          },
+          {
+            "label": "이후",
+            "timeSec": 4.85
+          },
+          {
+            "label": "렌더에서도",
+            "timeSec": 5.275
+          },
+          {
+            "label": "변하지",
+            "timeSec": 6.1
+          },
+          {
+            "label": "않아야",
+            "timeSec": 6.6
+          },
+          {
+            "label": "합니다",
+            "timeSec": 7
+          }
+        ]
+      }
+    },
+    {
+      "sceneId": "s02",
+      "compositionPath": "scenes/s02.html",
+      "audioPath": "audio/s02.mp3",
+      "sourceHash": "77e07ef6dee3f4283801a7b110a8ee2f4b68d4cbf1f3475149882943c2da58cf",
+      "startFrame": 238,
+      "startSec": 7.933333,
+      "durationFrames": 512,
+      "audioDurationSec": 17.066667,
+      "headline": "편집 대상",
+      "subtitles": [
+        {
+          "text": "두 번째 장면의 나레이션을 더 길게 고칩니다. 이 변경은 sourceHash를 바꾸고, 두 번째 씬만 다시 합성해야 합니다. 전체 컴파일은 뒤따르는 세 번째 씬의 시작 시각을 새 길이에 맞춰 뒤로 이동시킵니다.",
+          "startSec": 0.1,
+          "endSec": 16.163,
+          "words": [
+            {
+              "word": "두",
+              "start": 0.1,
+              "end": 0.238
+            },
+            {
+              "word": "번째",
+              "start": 0.25,
+              "end": 0.637
+            },
+            {
+              "word": "장면의",
+              "start": 0.65,
+              "end": 1.113
+            },
+            {
+              "word": "나레이션을",
+              "start": 1.125,
+              "end": 1.887
+            },
+            {
+              "word": "더",
+              "start": 1.9,
+              "end": 2.175
+            },
+            {
+              "word": "길게",
+              "start": 2.188,
+              "end": 2.6
+            },
+            {
+              "word": "고칩니다",
+              "start": 2.612,
+              "end": 3.387
+            },
+            {
+              "word": "이",
+              "start": 4.263,
+              "end": 4.438
+            },
+            {
+              "word": "변경은",
+              "start": 4.45,
+              "end": 5.075
+            },
+            {
+              "word": "sourceHash를",
+              "start": 5.088,
+              "end": 5.925
+            },
+            {
+              "word": "바꾸고",
+              "start": 5.938,
+              "end": 6.588
+            },
+            {
+              "word": "두",
+              "start": 6.838,
+              "end": 7.038
+            },
+            {
+              "word": "번째",
+              "start": 7.05,
+              "end": 7.438
+            },
+            {
+              "word": "씬만",
+              "start": 7.45,
+              "end": 7.825
+            },
+            {
+              "word": "다시",
+              "start": 7.838,
+              "end": 8.138
+            },
+            {
+              "word": "합성해야",
+              "start": 8.15,
+              "end": 8.75
+            },
+            {
+              "word": "합니다",
+              "start": 8.762,
+              "end": 9.325
+            },
+            {
+              "word": "전체",
+              "start": 10.188,
+              "end": 10.6
+            },
+            {
+              "word": "컴파일은",
+              "start": 10.613,
+              "end": 11.263
+            },
+            {
+              "word": "뒤따르는",
+              "start": 11.275,
+              "end": 11.938
+            },
+            {
+              "word": "세",
+              "start": 11.95,
+              "end": 12.125
+            },
+            {
+              "word": "번째",
+              "start": 12.137,
+              "end": 12.5
+            },
+            {
+              "word": "씬의",
+              "start": 12.512,
+              "end": 12.837
+            },
+            {
+              "word": "시작",
+              "start": 12.85,
+              "end": 13.2
+            },
+            {
+              "word": "시각을",
+              "start": 13.213,
+              "end": 13.638
+            },
+            {
+              "word": "새",
+              "start": 13.65,
+              "end": 13.825
+            },
+            {
+              "word": "길이에",
+              "start": 13.838,
+              "end": 14.162
+            },
+            {
+              "word": "맞춰",
+              "start": 14.175,
+              "end": 14.6
+            },
+            {
+              "word": "뒤로",
+              "start": 14.613,
+              "end": 15.175
+            },
+            {
+              "word": "이동시킵니다",
+              "start": 15.188,
+              "end": 16.163
+            }
+          ]
+        }
+      ],
+      "vizAnimation": {
+        "itemSyncPoints": [
+          {
+            "label": "두",
+            "timeSec": 0.1
+          },
+          {
+            "label": "번째",
+            "timeSec": 0.25
+          },
+          {
+            "label": "장면의",
+            "timeSec": 0.65
+          },
+          {
+            "label": "나레이션을",
+            "timeSec": 1.125
+          },
+          {
+            "label": "더",
+            "timeSec": 1.9
+          },
+          {
+            "label": "길게",
+            "timeSec": 2.188
+          },
+          {
+            "label": "고칩니다",
+            "timeSec": 2.612
+          },
+          {
+            "label": "이",
+            "timeSec": 4.263
+          },
+          {
+            "label": "변경은",
+            "timeSec": 4.45
+          },
+          {
+            "label": "sourceHash를",
+            "timeSec": 5.088
+          },
+          {
+            "label": "바꾸고",
+            "timeSec": 5.938
+          },
+          {
+            "label": "두",
+            "timeSec": 6.838
+          },
+          {
+            "label": "번째",
+            "timeSec": 7.05
+          },
+          {
+            "label": "씬만",
+            "timeSec": 7.45
+          },
+          {
+            "label": "다시",
+            "timeSec": 7.838
+          },
+          {
+            "label": "합성해야",
+            "timeSec": 8.15
+          },
+          {
+            "label": "합니다",
+            "timeSec": 8.762
+          },
+          {
+            "label": "전체",
+            "timeSec": 10.188
+          },
+          {
+            "label": "컴파일은",
+            "timeSec": 10.613
+          },
+          {
+            "label": "뒤따르는",
+            "timeSec": 11.275
+          },
+          {
+            "label": "세",
+            "timeSec": 11.95
+          },
+          {
+            "label": "번째",
+            "timeSec": 12.137
+          },
+          {
+            "label": "씬의",
+            "timeSec": 12.512
+          },
+          {
+            "label": "시작",
+            "timeSec": 12.85
+          },
+          {
+            "label": "시각을",
+            "timeSec": 13.213
+          },
+          {
+            "label": "새",
+            "timeSec": 13.65
+          },
+          {
+            "label": "길이에",
+            "timeSec": 13.838
+          },
+          {
+            "label": "맞춰",
+            "timeSec": 14.175
+          },
+          {
+            "label": "뒤로",
+            "timeSec": 14.613
+          },
+          {
+            "label": "이동시킵니다",
+            "timeSec": 15.188
+          }
+        ]
+      }
+    },
+    {
+      "sceneId": "s03",
+      "compositionPath": "scenes/s03.html",
+      "audioPath": "audio/s03.mp3",
+      "sourceHash": "7b834c9cd4924e2ab7b2dde390a7e45059666d3c41e186f54f3fdca8f34f66d1",
+      "startFrame": 750,
+      "startSec": 25,
+      "durationFrames": 179,
+      "audioDurationSec": 5.966667,
+      "headline": "시프트 확인",
+      "subtitles": [
+        {
+          "text": "세 번째 장면은 내용은 그대로 유지하고 시작 시각만 뒤로 밀려야 합니다.",
+          "startSec": 0.1,
+          "endSec": 5.075,
+          "words": [
+            {
+              "word": "세",
+              "start": 0.1,
+              "end": 0.325
+            },
+            {
+              "word": "번째",
+              "start": 0.338,
+              "end": 0.675
+            },
+            {
+              "word": "장면은",
+              "start": 0.688,
+              "end": 1.163
+            },
+            {
+              "word": "내용은",
+              "start": 1.175,
+              "end": 1.6
+            },
+            {
+              "word": "그대로",
+              "start": 1.613,
+              "end": 2.188
+            },
+            {
+              "word": "유지하고",
+              "start": 2.2,
+              "end": 2.788
+            },
+            {
+              "word": "시작",
+              "start": 2.8,
+              "end": 3.15
+            },
+            {
+              "word": "시각만",
+              "start": 3.163,
+              "end": 3.675
+            },
+            {
+              "word": "뒤로",
+              "start": 3.688,
+              "end": 4.037
+            },
+            {
+              "word": "밀려야",
+              "start": 4.05,
+              "end": 4.513
+            },
+            {
+              "word": "합니다",
+              "start": 4.525,
+              "end": 5.075
+            }
+          ]
+        }
+      ],
+      "vizAnimation": {
+        "itemSyncPoints": [
+          {
+            "label": "세",
+            "timeSec": 0.1
+          },
+          {
+            "label": "번째",
+            "timeSec": 0.338
+          },
+          {
+            "label": "장면은",
+            "timeSec": 0.688
+          },
+          {
+            "label": "내용은",
+            "timeSec": 1.175
+          },
+          {
+            "label": "그대로",
+            "timeSec": 1.613
+          },
+          {
+            "label": "유지하고",
+            "timeSec": 2.2
+          },
+          {
+            "label": "시작",
+            "timeSec": 2.8
+          },
+          {
+            "label": "시각만",
+            "timeSec": 3.163
+          },
+          {
+            "label": "뒤로",
+            "timeSec": 3.688
+          },
+          {
+            "label": "밀려야",
+            "timeSec": 4.05
+          },
+          {
+            "label": "합니다",
+            "timeSec": 4.525
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "crossfade",
+      "duration": 0.5,
+      "durationFrames": 15,
+      "startFrame": 238,
+      "startSec": 7.933333
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+[
+ {
+  "type": "WordBoundary",
+  "text": "안녕하세요",
+  "offset_sec": 0.1,
+  "duration_sec": 0.925
+ },
+ {
+  "type": "WordBoundary",
+  "text": "오늘은",
+  "offset_sec": 1.288,
+  "duration_sec": 0.45
+ },
+ {
+  "type": "WordBoundary",
+  "text": "인공지능이",
+  "offset_sec": 1.75,
+  "duration_sec": 0.688
+ },
+ {
+  "type": "WordBoundary",
+  "text": "바꾸는",
+  "offset_sec": 2.45,
+  "duration_sec": 0.637
+ },
+ {
+  "type": "WordBoundary",
+  "text": "영상",
+  "offset_sec": 3.1,
+  "duration_sec": 0.412
+ },
+ {
+  "type": "WordBoundary",
+  "text": "제작의",
+  "offset_sec": 3.525,
+  "duration_sec": 0.4
+ },
+ {
+  "type": "WordBoundary",
+  "text": "미래를",
+  "offset_sec": 3.938,
+  "duration_sec": 0.438
+ },
+ {
+  "type": "WordBoundary",
+  "text": "살펴보겠습니다",
+  "offset_sec": 4.388,
+  "duration_sec": 1.163
+ },
+ {
+  "type": "WordBoundary",
+  "text": "자막",
+  "offset_sec": 6.412,
+  "duration_sec": 0.375
+ },
+ {
+  "type": "WordBoundary",
+  "text": "싱크를",
+  "offset_sec": 6.8,
+  "duration_sec": 0.438
+ },
+ {
+  "type": "WordBoundary",
+  "text": "위해서는",
+  "offset_sec": 7.25,
+  "duration_sec": 0.575
+ },
+ {
+  "type": "WordBoundary",
+  "text": "단어",
+  "offset_sec": 7.838,
+  "duration_sec": 0.5
+ },
+ {
+  "type": "WordBoundary",
+  "text": "단위",
+  "offset_sec": 8.35,
+  "duration_sec": 0.263
+ },
+ {
+  "type": "WordBoundary",
+  "text": "타임스탬프가",
+  "offset_sec": 8.625,
+  "duration_sec": 0.912
+ },
+ {
+  "type": "WordBoundary",
+  "text": "반드시",
+  "offset_sec": 9.55,
+  "duration_sec": 0.575
+ },
+ {
+  "type": "WordBoundary",
+  "text": "필요합니다",
+  "offset_sec": 10.137,
+  "duration_sec": 0.775
+ }
+]
