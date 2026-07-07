@@ -35,7 +35,7 @@ function compareLabelsForScene(scene) {
   };
 }
 
-export function blockVariablesForScene({ scene, tokens }) {
+export function blockVariablesForScene({ scene, tokens, repeatIndex = 0 }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const compareLabels = compareLabelsForScene(scene);
   return {
@@ -50,7 +50,8 @@ export function blockVariablesForScene({ scene, tokens }) {
     visualKind: scene.visual_kind,
     source: scene.source ?? "",
     leftLabel: compareLabels.leftLabel,
-    rightLabel: compareLabels.rightLabel
+    rightLabel: compareLabels.rightLabel,
+    repeatIndex
   };
 }
 

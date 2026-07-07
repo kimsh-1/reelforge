@@ -404,6 +404,13 @@ function revealTween(scene) {
   return base;
 }
 
+function blockRevealTween() {
+  return {
+    from: "{ opacity: 0, y: 10, scale: 0.996 }",
+    to: "{ opacity: 1, y: 0, scale: 1, duration: 0.24, ease: \"power3.out\" }"
+  };
+}
+
 function needsTitleScrim({ imageAsset, tokens }) {
   return Boolean(imageAsset) || colorLuminance(tokens.colors.background) <= 0.5;
 }
@@ -440,13 +447,13 @@ function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
         </main>`;
 }
 
-function sceneHtml({ scene, timing, tokens, block, renderFormat, fps }) {
+function sceneHtml({ scene, timing, tokens, block, renderFormat, fps, repeatIndex = 0 }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
   const imageAsset = scene.renderImage ?? null;
   const foreground = imageAsset ? "#F8FAFC" : colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
-  const variables = blockVariablesForScene({ scene, tokens });
+  const variables = blockVariablesForScene({ scene, tokens, repeatIndex });
   const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
   const blockHost =
     block.kind === "block"
@@ -455,7 +462,7 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat, fps }) {
   const canvasOverrides = resolveCanvasOverrides(scene, renderFormat.format);
   const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
-  const tween = revealTween(scene);
+  const tween = block.kind === "block" ? blockRevealTween(scene) : revealTween(scene);
   const titleScrim = needsTitleScrim({ imageAsset, tokens });
   const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps });
   const imageSrc = imageAsset ? `../${imageAsset.htmlPath}` : null;
@@ -675,7 +682,7 @@ ${content}
           tl.fromTo("#${scene.sceneId}-bg", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "none" }, 0);
           ${
             block.kind === "block"
-              ? `tl.fromTo("#${scene.sceneId}-block-host", ${tween.from}, ${tween.to}, 0.1);`
+              ? `tl.fromTo("#${scene.sceneId}-block-host", ${tween.from}, ${tween.to}, 0);`
               : `tl.fromTo("#${scene.sceneId}-panel", ${tween.from}, ${tween.to}, 0.1);`
           }
 	          tl.fromTo(
@@ -969,13 +976,28 @@ export function compileProject({
 
     const warnings = [...timing.warnings];
     const blockByScene = new Map();
+    const repeatIndexByScene = new Map();
+    const layoutCounts = new Map();
+    for (const scene of renderScenes) {
+      const count = layoutCounts.get(scene.layout) ?? 0;
+      repeatIndexByScene.set(scene.sceneId, count);
+      layoutCounts.set(scene.layout, count + 1);
+    }
     for (const scene of renderScenes) {
       const block = resolveBlock({ repoRoot, buildDir: tmpDir, layout: scene.layout });
       warnings.push(...block.warnings.map((warning) => ({ sceneId: scene.sceneId, ...warning })));
       blockByScene.set(scene.sceneId, block);
       writeFileEnsured(
 	        path.join(tmpDir, "scenes", `scene-${scene.sceneId}.html`),
-	        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat, fps })
+	        sceneHtml({
+          scene,
+          timing: timing.sceneTimings.get(scene.sceneId),
+          tokens,
+          block,
+          renderFormat: selectedFormat,
+          fps,
+          repeatIndex: repeatIndexByScene.get(scene.sceneId) ?? 0
+        })
 	      );
     }
 

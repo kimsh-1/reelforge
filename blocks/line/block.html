@@ -386,7 +386,9 @@
 
           root.style.setProperty("--line-accent", accent);
           title.textContent = textOf(vars.title) || "라인차트";
-          unitBadge.textContent = unit || "값";
+          unitBadge.textContent = "";
+          unitBadge.hidden = true;
+          unitBadge.style.display = "none";
           kicker.textContent = "";
 
           const svgNode = (name, attrs = {}) => {
@@ -409,8 +411,8 @@
               height: 620,
               left: 132,
               right: 78,
-              top: 52,
-              bottom: 128
+              top: 118,
+              bottom: 78
             };
             const plotWidth = chart.width - chart.left - chart.right;
             const plotHeight = chart.height - chart.top - chart.bottom;
@@ -451,13 +453,15 @@
                   y2: tick.y
                 })
               );
-              const yLabel = svgNode("text", {
-                class: "line-y-label",
-                x: chart.left + 18,
-                y: tick.y + 10
-              });
-              yLabel.textContent = `${fmtTick(tick.value)}${unit}`;
-              row.appendChild(yLabel);
+              if (cleanNumber(tick.value) !== 0) {
+                const yLabel = svgNode("text", {
+                  class: "line-y-label",
+                  x: chart.left + 18,
+                  y: tick.y + 10
+                });
+                yLabel.textContent = `${fmtTick(tick.value)}${unit}`;
+                row.appendChild(yLabel);
+              }
               gridGroup.appendChild(row);
             }
 
@@ -488,20 +492,10 @@
               const isLast = index === points.length - 1;
               let valueAnchor = isFirst ? "start" : isLast ? "end" : "middle";
               let valueX = isFirst ? point.x + 30 : isLast ? point.x - 18 : point.x;
-              let valueY = point.y - chart.top < 78 ? point.y + 54 : point.y - 38;
-              if (axisLabelCollision({ axisRows, valueX, valueY, chart })) {
-                if (isFirst) {
-                  valueX = point.x + 108;
-                  valueAnchor = "start";
-                } else if (isLast) {
-                  valueX = point.x - 72;
-                  valueAnchor = "end";
-                }
-                valueY += valueY < point.y ? -30 : 30;
-                valueY = Math.max(chart.top + 34, Math.min(chart.top + plotHeight - 24, valueY));
-              }
+              const valueY = Math.max(40, point.y - 58);
               const labelAnchor = isFirst ? "start" : isLast ? "end" : "middle";
               const labelX = isFirst ? point.x + 4 : isLast ? point.x - 4 : point.x;
+              const labelY = Math.max(76, point.y - 22);
               const circle = svgNode("circle", {
                 class: "line-point",
                 cx: point.x,
@@ -519,7 +513,7 @@
                 class: "line-label",
                 "data-anchor": labelAnchor,
                 x: labelX,
-                y: chart.top + plotHeight + 62
+                y: labelY
               });
               value.textContent = `${fmtValue(point.value)}${unit}`;
               label.textContent = point.label;

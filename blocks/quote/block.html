@@ -176,12 +176,20 @@
         }
 
         .quote-kicker,
-        .quote-chip,
-        .quote-source-label,
-        .quote-detail-label {
+        .quote-chip {
           color: var(--quote-muted);
           font-size: 1.16rem;
           font-weight: 780;
+          line-height: 1;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+
+        .quote-source-label,
+        .quote-detail-label {
+          color: var(--quote-ink);
+          font-size: 1.16rem;
+          font-weight: 820;
           line-height: 1;
           letter-spacing: 0;
           text-transform: uppercase;
@@ -314,7 +322,7 @@
 
         .quote-details-title {
           margin: 0;
-          color: var(--quote-muted);
+          color: var(--quote-ink);
           font-size: 1.38rem;
           font-weight: 820;
           line-height: 1;
@@ -505,7 +513,7 @@
           const source = stringValue(variables.source, "");
           const quoteText = stringValue(items[1] || items[0], title);
           const context = stringValue(items[0], unit || title);
-          const detailRows = buildDetailRows({ items, values, usedText: [title, quoteText, context] });
+          const detailRows = buildDetailRows({ items, values });
           const duration = blockDuration(root, 5);
           const phases = phaseTimes(duration);
 
@@ -544,8 +552,8 @@
           const typewriter = revealMode.includes("type");
           const spotlight = revealMode.includes("spotlight");
           const beatFlash = revealMode.includes("flash");
-          const charStagger = chars.length > 0 ? Math.min(0.045, Math.max(0.018, 0.58 / chars.length)) : 0.03;
-          const detailStagger = beatFlash ? 0.055 : 0.12;
+          const charStagger = chars.length > 0 ? Math.min(0.012, Math.max(0.004, 0.18 / chars.length)) : 0.01;
+          const detailStagger = beatFlash ? 0.025 : 0.035;
           const glyph = root.querySelector(".quote-glyph");
           const stage = root.querySelector(".quote-stage");
           const frame = root.querySelector(".quote-frame");
@@ -565,22 +573,22 @@
           tl.addLabel("start", 0);
           tl.fromTo(
             frame,
-            { opacity: 0, y: 36, scale: 0.985 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.72, ease: "power4.out" },
+            { opacity: 0, y: 18, scale: 0.992 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "power4.out" },
             0
           );
-          tl.fromTo(glyph, { opacity: 0, scale: 0.82, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.58, ease: "power3.out" }, 0.06);
+          tl.fromTo(glyph, { opacity: 0, scale: 0.88, y: 8 }, { opacity: 1, scale: 1, y: 0, duration: 0.18, ease: "power3.out" }, 0.04);
           tl.fromTo(
             root.querySelector(".quote-details"),
-            { opacity: 0, x: 26 },
-            { opacity: 1, x: 0, duration: 0.46, ease: "power3.out" },
-            0.1
+            { opacity: 0, x: 16 },
+            { opacity: detailRows.length > 0 ? 1 : 0, x: 0, duration: 0.2, ease: "power3.out" },
+            0.08
           );
           tl.fromTo(
             rule,
             { scaleX: 0, opacity: 0 },
-            { scaleX: 1, opacity: 1, duration: 0.58, ease: "power3.inOut" },
-            0.22
+            { scaleX: 1, opacity: 1, duration: 0.18, ease: "power3.inOut" },
+            0.1
           );
           tl.fromTo(
             chars,
@@ -588,29 +596,29 @@
             {
               opacity: 1,
               y: 0,
-              duration: typewriter ? 0.08 : 0.42,
+              duration: typewriter ? 0.045 : 0.16,
               ease: typewriter ? "none" : "power2.out",
-              stagger: typewriter ? charStagger : 0.012
+              stagger: typewriter ? charStagger : 0.006
             },
-            0.36
+            0.13
           );
           tl.fromTo(
             contextEl,
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
-            0.72
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" },
+            0.24
           );
           tl.fromTo(
             details,
-            { opacity: 0, y: 22 },
-            { opacity: 1, y: 0, duration: 0.38, ease: "power3.out", stagger: detailStagger },
-            0.82
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.14, ease: "power3.out", stagger: detailStagger },
+            0.22
           );
           tl.fromTo(
             footer,
-            { opacity: 0, y: 12 },
-            { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-            1.15
+            { opacity: 0, y: 8 },
+            { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" },
+            0.3
           );
           if (beatFlash) {
             addBeatFlashHits();
@@ -623,25 +631,25 @@
           registerTimeline(tl);
 
           function buildSpotlightTimeline() {
-            const hit = Math.min(0.58, Math.max(0.34, duration * 0.16));
+            const hit = Math.min(0.3, Math.max(0.2, duration * 0.08));
             const holdDrift = Math.max(0.8, duration - hit - 0.64);
             tl.addLabel("start", 0);
             tl.set([frame, titleEl, quoteEl, contextEl, rule, footer, glyph, detailsPanel], { opacity: 0 }, 0);
             tl.set(stage, { x: 0, y: 0, scale: 1 }, 0);
-            tl.fromTo(letterboxes, { scaleY: 0 }, { scaleY: 1, duration: 0.42, ease: "power3.inOut" }, 0);
-            tl.to(vignette, { opacity: 0.62, duration: 0.16, ease: "power2.in" }, Math.max(0, hit - 0.22));
+            tl.fromTo(letterboxes, { scaleY: 0 }, { scaleY: 1, duration: 0.18, ease: "power3.inOut" }, 0);
+            tl.to(vignette, { opacity: 0.62, duration: 0.1, ease: "power2.in" }, Math.max(0, hit - 0.12));
             tl.set(flash, { opacity: 1 }, hit);
             tl.set(frame, { opacity: 1, y: 0, scale: 1.12 }, hit);
             tl.set([titleEl, quoteEl], { opacity: 1 }, hit);
             tl.set(glyph, { opacity: 0.72, scale: 1.04, y: 0 }, hit);
             tl.to(flash, { opacity: 0, duration: 0.12, ease: "power3.out" }, hit);
-            tl.to(frame, { scale: 1, duration: 0.5, ease: "power4.out" }, hit);
-            tl.fromTo(stage, { x: 5, y: -3 }, { x: 0, y: 0, duration: 0.2, ease: "power3.out" }, hit);
-            tl.fromTo(rule, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.42, ease: "power3.out" }, hit + 0.16);
-            tl.fromTo(contextEl, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, hit + 0.38);
-            tl.fromTo(footer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, hit + 0.62);
-            tl.to(vignette, { opacity: 0.36, duration: 0.8, ease: "power2.out" }, hit + 0.04);
-            tl.to(titleEl, { scale: 1.018, duration: holdDrift, ease: "sine.inOut" }, hit + 0.52);
+            tl.to(frame, { scale: 1, duration: 0.22, ease: "power4.out" }, hit);
+            tl.fromTo(stage, { x: 5, y: -3 }, { x: 0, y: 0, duration: 0.12, ease: "power3.out" }, hit);
+            tl.fromTo(rule, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.14, ease: "power3.out" }, hit + 0.06);
+            tl.fromTo(contextEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, hit + 0.12);
+            tl.fromTo(footer, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" }, hit + 0.18);
+            tl.to(vignette, { opacity: 0.36, duration: 0.5, ease: "power2.out" }, hit + 0.04);
+            tl.to(titleEl, { scale: 1.018, duration: holdDrift, ease: "sine.inOut" }, hit + 0.24);
             tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
             tl.to(stage, { y: -16, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
             tl.addLabel("final", duration);
@@ -696,19 +704,15 @@
             return String(value).trim();
           }
 
-          function buildDetailRows({ items: itemTexts, values: valueTexts, usedText }) {
+          function buildDetailRows({ items: itemTexts, values: valueTexts }) {
+            if (itemTexts.length === 0) return [];
             const rows = [];
-            const used = new Set(usedText.map(normalizeDetailText).filter(Boolean));
             const max = Math.max(itemTexts.length, valueTexts.length);
             for (let index = 0; index < max; index += 1) {
               const itemText = stringValue(itemTexts[index], "");
               const rawValue = valueTexts[index] || "";
               const displayValue = rawValue || itemText;
               if (!displayValue) continue;
-              if (used.has(normalizeDetailText(displayValue)) && !rawValue) continue;
-              if (itemText && used.has(normalizeDetailText(itemText)) && (!rawValue || normalizeDetailText(rawValue) === normalizeDetailText(itemText))) {
-                continue;
-              }
               rows.push({
                 label: quoteDetailLabel(rows.length),
                 value: displayValue,
