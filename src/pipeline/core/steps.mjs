@@ -11,6 +11,7 @@ import {
 } from "../../gates/registry.mjs";
 import {
   formatSemanticViolations,
+  validateSceneAudioSourceHashes,
   validateSemanticsForWrite
 } from "../../gates/semantic.mjs";
 import { hashPatterns, maxMtimeMs, outputsExist } from "./globs.mjs";
@@ -20,7 +21,7 @@ import {
   readJsonFile,
   sha256File
 } from "./io.mjs";
-import { IMAGE_MANIFEST_FILE, runImagesStep } from "../images/index.mjs";
+import { IMAGE_MANIFEST_FILE, isNonEmptyPngFile, runImagesStep } from "../images/index.mjs";
 import { runTtsStep } from "../tts/index.mjs";
 
 export const PIPELINE_STEP_ORDER = ["tts", "images", "compile", "render", "gate"];
@@ -116,6 +117,38 @@ function validateContract({ repoRoot, projectDir, relPath, schemaName }) {
   };
 }
 
+function validateSceneAudioSourceHashContract({ repoRoot, projectDir }) {
+  const sceneSpecsPath = path.join(projectDir, "scene_specs.json");
+  const audioMetaPath = path.join(projectDir, "audio_meta.json");
+  if (!existsSync(sceneSpecsPath) || !existsSync(audioMetaPath)) {
+    return {
+      id: "l0-12:scene-audio-sourcehash",
+      pass: false,
+      measured: {
+        files: ["scene_specs.json", "audio_meta.json"],
+        error: "missing required contract file"
+      }
+    };
+  }
+
+  const sceneSpecs = readJsonFile(sceneSpecsPath);
+  const audioMeta = readJsonFile(audioMetaPath);
+  const violations = validateSceneAudioSourceHashes({
+    sceneSpecs,
+    audioMeta,
+    sceneSpecsFile: normalizeRelPath(path.relative(repoRoot, sceneSpecsPath)),
+    audioMetaFile: normalizeRelPath(path.relative(repoRoot, audioMetaPath))
+  });
+  return {
+    id: "l0-12:scene-audio-sourcehash",
+    pass: violations.length === 0,
+    measured: {
+      files: ["scene_specs.json", "audio_meta.json"],
+      violations
+    }
+  };
+}
+
 function writeProjectGateReport(ctx, report) {
   const reportPath = path.join(ctx.projectDir, PIPELINE_GATE_REPORT);
   mkdirSync(path.dirname(reportPath), { recursive: true });
@@ -139,13 +172,17 @@ function runGateStep(ctx) {
     "repo:src/pipeline/images/**",
     "repo:src/pipeline/tts/**",
     "repo:src/pipeline/versions-impl/**",
-    "repo:src/compiler/**"
+    "repo:src/compiler/**",
+    "repo:blocks/**",
+    `repo:${DEFAULT_PRESET}`,
+    "repo:package.json"
   ];
   const input = hashPatterns({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, patterns: inputPatterns });
   const renderOutput = path.join(ctx.projectDir, "out", "main.mp4");
   const checks = [
     validateContract({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, relPath: "scene_specs.json", schemaName: "scene-specs" }),
     validateContract({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, relPath: "audio_meta.json", schemaName: "audio-meta" }),
+    validateSceneAudioSourceHashContract({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir }),
     validateContract({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, relPath: "versions.json", schemaName: "versions" }),
     validateContract({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, relPath: "build/render-manifest.json", schemaName: "render-manifest" }),
     {
@@ -170,6 +207,7 @@ function runGateStep(ctx) {
     gitCommit: gitCommit(ctx.repoRoot),
     command: ctx.command,
     exitCode: pass ? 0 : 1,
+    pipelineStepHashes: { ...(ctx.state.stepHashes ?? {}) },
     startedAt,
     finishedAt: new Date().toISOString()
   };
@@ -181,18 +219,27 @@ function runGateStep(ctx) {
   };
 }
 
-export function validPriorGateReport(ctx) {
+export function validPriorGateReport(ctx, step = null, inputHash = null) {
   const reportPath = path.join(ctx.projectDir, PIPELINE_GATE_REPORT);
   if (!existsSync(reportPath)) return false;
   try {
     const report = readJsonFile(reportPath);
     if (!requiredReportFields.every((field) => Object.prototype.hasOwnProperty.call(report, field))) return false;
     if (report.pass !== true || report.exitCode !== 0) return false;
+    if (step && inputHash && report.pipelineStepHashes?.[step.id] !== inputHash) return false;
     const reportMtime = statSync(reportPath).mtimeMs;
     const inputMtime = maxMtimeMs({
       repoRoot: ctx.repoRoot,
       projectDir: ctx.projectDir,
-      patterns: ["scene_specs.json", "audio_meta.json", "versions.json", IMAGE_MANIFEST_FILE, "build/**", "out/main.mp4"]
+      patterns: [
+        "scene_specs.json",
+        "audio_meta.json",
+        "versions.json",
+        IMAGE_MANIFEST_FILE,
+        "build/**",
+        "out/main.mp4",
+        ...(Array.isArray(step?.inputs) ? step.inputs : [])
+      ]
     });
     return reportMtime >= inputMtime;
   } catch {
@@ -207,7 +254,7 @@ export function defaultSkipWhen(ctx, step, inputHash) {
   const completed = ctx.state.completedSteps.includes(step.id);
   const unchanged = ctx.state.stepHashes[step.id] === inputHash;
   if (completed && unchanged) return { skip: true, reason: "resume-state" };
-  if (validPriorGateReport(ctx)) return { skip: true, reason: "validated-prior-gate" };
+  if (validPriorGateReport(ctx, step, inputHash)) return { skip: true, reason: "validated-prior-gate" };
   return { skip: false, reason: completed ? "input-hash-changed" : "not-completed" };
 }
 
@@ -238,7 +285,7 @@ function missingManifestAssets(ctx) {
     .filter(Boolean)
     .filter((assetPath) => {
       const absolute = projectRelToAbs(ctx.projectDir, assetPath);
-      return !existsSync(absolute) || !statSync(absolute).isFile() || statSync(absolute).size === 0;
+      return !isNonEmptyPngFile(absolute);
     })
     .map((assetPath) => normalizeRelPath(assetPath));
 }
@@ -276,9 +323,10 @@ export function createStepRegistry() {
         "audio_meta.json",
         "versions.json",
         "assets/audio/*.mp3",
-        "repo:fixtures/presets/light.json",
+        `repo:${DEFAULT_PRESET}`,
         "repo:src/compiler/**",
-        "repo:blocks/**"
+        "repo:blocks/**",
+        "repo:package.json"
       ],
       outputs: ["build/index.html", "build/render-manifest.json", "build/scenes/*.html"],
       run: runCompileStep,
@@ -293,7 +341,21 @@ export function createStepRegistry() {
     },
     {
       id: "gate",
-      inputs: ["scene_specs.json", "audio_meta.json", "versions.json", "build/**", "out/main.mp4", "repo:src/pipeline/core/**"],
+      inputs: [
+        "scene_specs.json",
+        "audio_meta.json",
+        "versions.json",
+        "build/**",
+        "out/main.mp4",
+        "repo:src/pipeline/core/**",
+        "repo:src/pipeline/images/**",
+        "repo:src/pipeline/tts/**",
+        "repo:src/pipeline/versions-impl/**",
+        "repo:src/compiler/**",
+        "repo:blocks/**",
+        `repo:${DEFAULT_PRESET}`,
+        "repo:package.json"
+      ],
       outputs: [PIPELINE_GATE_REPORT],
       run: runGateStep,
       skipWhen: defaultSkipWhen

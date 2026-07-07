@@ -1,0 +1,204 @@
+{
+  "gate": "U-3-pipeline",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/scenarios/u3-pipeline-suite.mjs --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "U3P-01 broken audio_meta injection rejected on resume",
+      "pass": true,
+      "measured": {
+        "rejected": true,
+        "message": "semantic validation failed: audio-meta\n- tmp/gate-work/p3/u3-pipeline/u3p-01-broken-audio-meta-resume/audio_meta.json/scenes/0/words/0/end: word timing end must be greater than or equal to start {\"start\":1,\"end\":0}"
+      }
+    },
+    {
+      "id": "U3P-02 scene_specs edit during pipeline blocked by dirty guard",
+      "pass": true,
+      "measured": {
+        "rejected": true,
+        "isDirty": true,
+        "message": "versions.json dirty=true; rerun with --force-dirty after reconciling edits"
+      }
+    },
+    {
+      "id": "U3P-03 deleted selected image is regenerated safely",
+      "pass": true,
+      "measured": {
+        "before": {
+          "gen": "gen_01",
+          "path": "./assets/images/s01_gen_01.png",
+          "createdAt": "2026-07-07T02:33:06.130Z",
+          "note": "mock-image prompt=b76b5d5f7174"
+        },
+        "after": {
+          "gen": "gen_02",
+          "path": "./assets/images/s01_gen_02.png",
+          "createdAt": "2026-07-07T02:33:06.723Z",
+          "note": "mock-image prompt=b76b5d5f7174"
+        },
+        "logs": [
+          "pipeline: SKIP tts reason=resume-state inputHash=4729198cd546",
+          "pipeline: RUN images reason=missing-manifest-assets inputHash=eaee81b7447e",
+          "pipeline: DONE images provider=mock-image scenes=1 generated=1 reused=0 manifest=image-manifest.json"
+        ]
+      }
+    },
+    {
+      "id": "U3P-04 runner recovery trash PNG is ignored",
+      "pass": true,
+      "measured": {
+        "firstPending": true,
+        "secondPending": true,
+        "missing": [
+          {
+            "id": "image_s01_gen_01",
+            "sceneId": "s01",
+            "gen": "gen_01",
+            "resultPath": "./assets/images/runner/results/image_s01_gen_01.png",
+            "reason": "missing",
+            "bytes": 0
+          }
+        ],
+        "trash": "tmp/gate-work/p3/u3-pipeline/u3p-04-runner-trash-ignored/assets/images/runner/results/trash.png"
+      }
+    },
+    {
+      "id": "U3P-05 rerun while image runner is pending remains resumable",
+      "pass": true,
+      "measured": {
+        "firstPending": true,
+        "secondPending": true,
+        "completedSteps": [],
+        "manifestStatus": "pending"
+      }
+    },
+    {
+      "id": "U3P-06 pending runner recovers when requested PNG appears",
+      "pass": true,
+      "measured": {
+        "firstPending": true,
+        "secondPass": true,
+        "manifestStatus": "complete",
+        "validationErrors": []
+      }
+    },
+    {
+      "id": "U3P-07 dirty versions rejects blind pipeline run",
+      "pass": true,
+      "measured": {
+        "rejected": true,
+        "message": "versions.json dirty=true; rerun with --force-dirty after reconciling edits"
+      }
+    },
+    {
+      "id": "U3P-08 force-dirty proceeds with explicit warning",
+      "pass": true,
+      "measured": {
+        "pass": true,
+        "warning": "pipeline: WARN versions.json dirty=true; rerun with --force-dirty after reconciling edits",
+        "completedSteps": [
+          "tts"
+        ]
+      }
+    },
+    {
+      "id": "U3P-09 missing completed-step output forces rerun instead of skip",
+      "pass": true,
+      "measured": {
+        "actions": [
+          "tts:run"
+        ],
+        "audioMetaExists": true
+      }
+    },
+    {
+      "id": "U3P-10 corrupt completed-step hash forces rerun",
+      "pass": true,
+      "measured": {
+        "actions": [
+          "tts:run"
+        ],
+        "completedSteps": [
+          "tts"
+        ]
+      }
+    },
+    {
+      "id": "U3P-11 stale audio_meta sourceHash is rejected by gate-only run",
+      "pass": true,
+      "measured": {
+        "rejected": true,
+        "message": "pipeline gate failed: reports/pipeline-gate-report.json",
+        "sourceHashCheck": {
+          "id": "l0-12:scene-audio-sourcehash",
+          "pass": false,
+          "measured": {
+            "files": [
+              "scene_specs.json",
+              "audio_meta.json"
+            ],
+            "violations": [
+              {
+                "file": "tmp/gate-work/p3/u3-pipeline/u3p-11-stale-audio-sourcehash/audio_meta.json",
+                "path": "/scenes/0/sourceHash",
+                "rule": "audio_meta sourceHash must equal SHA-256(scene_specs narration_tts)",
+                "measured": {
+                  "sceneId": "s01",
+                  "sceneSpecsFile": "tmp/gate-work/p3/u3-pipeline/u3p-11-stale-audio-sourcehash/scene_specs.json",
+                  "sceneSpecsPath": "/scenes/0/narration_tts",
+                  "expected": "bb16fd2b885626cab46f06f8a7c4a3c69dd90096cacba2d4ce44f80926825339",
+                  "actual": "c53772c32e58946f719c2b41bfa425e7e4c294e170446cc10c581dee2b6aec45"
+                }
+              }
+            ]
+          }
+        },
+        "logs": [
+          "pipeline: RUN gate reason=missing-outputs inputHash=2d48b8377799",
+          "pipeline: FAIL gate pipeline gate failed: reports/pipeline-gate-report.json"
+        ]
+      }
+    },
+    {
+      "id": "u3-pipeline-suite-complete",
+      "pass": true,
+      "measured": {
+        "cases": 11,
+        "passed": 11
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "src/gates/p3-gates.mjs",
+    "src/gates/semantic.mjs",
+    "src/pipeline/core/orchestrator.mjs",
+    "src/pipeline/core/steps.mjs",
+    "src/pipeline/images/index.mjs",
+    "src/pipeline/versions-impl/index.mjs",
+    "tests/scenarios/u3-pipeline-suite.mjs",
+    "tests/scenarios/u3-pipeline.md"
+  ],
+  "canonicalInputMerkleHash": "a685e4bf048b1b6c49ea1327dd55671c0fd5c287a3aa0d99e5eabcf95f5892c8",
+  "evidenceHash": "63e642cd11eb7ede803927148b5386b9d509c815a6f047cbe99eb47770c40fe4",
+  "gateScriptHash": "ba2285c3a05518bd8a44431af58692813e1e6069b1366fb8c48da8b6d142218f",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:33:03.660Z",
+  "finishedAt": "2026-07-07T02:33:11.717Z"
+}

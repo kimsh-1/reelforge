@@ -1,0 +1,59 @@
+{
+  "gate": "L1-4-tts-contract",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-4-tts-contract --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "mock-audio-request-to-audio-meta",
+      "pass": true,
+      "measured": {
+        "provider": "mock-tts",
+        "audioPath": "./assets/audio/s01.mock.mp3",
+        "audioBytes": 18284,
+        "wordCount": 5,
+        "sourceHashMatches": true,
+        "violations": [],
+        "error": null
+      }
+    },
+    {
+      "id": "edge-tts-real-one-sentence",
+      "pass": true,
+      "measured": {
+        "skipped": true,
+        "reason": "edge-tts live synthesis runs with --profile full"
+      }
+    }
+  ],
+  "inputSet": [
+    "schemas/audio-meta.schema.json",
+    "src/gates/p3-gates.mjs",
+    "src/pipeline/core/mock.mjs",
+    "src/pipeline/tts/edge_synth.py",
+    "src/pipeline/tts/index.mjs",
+    "src/pipeline/tts/providers.mjs",
+    "src/pipeline/tts/real.mjs"
+  ],
+  "canonicalInputMerkleHash": "7580fde1c7b699915a1961b425bd492c841f3df0102a6192c6569dff8f1a18e0",
+  "evidenceHash": "5a2b3559c7f8fa89ad86ee7fe0a11c5d50aa50450ec7d124b222784a11d6cf0c",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:32:37.312Z",
+  "finishedAt": "2026-07-07T02:32:37.537Z"
+}

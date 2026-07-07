@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { setTimeout as sleep } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
@@ -107,15 +107,30 @@ function normalizeWords(words, durationSec) {
 async function mapLimit(items, limit, task) {
   const results = new Array(items.length);
   let nextIndex = 0;
+  let firstError = null;
   async function worker() {
-    while (nextIndex < items.length) {
+    while (nextIndex < items.length && !firstError) {
       const index = nextIndex;
       nextIndex += 1;
-      results[index] = await task(items[index], index);
+      try {
+        results[index] = await task(items[index], index);
+      } catch (error) {
+        firstError = firstError ?? error;
+      }
     }
   }
   await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()));
+  if (firstError) throw firstError;
   return results;
+}
+
+function cleanupTmpAudioFiles(audioDir) {
+  if (!existsSync(audioDir)) return;
+  for (const name of readdirSync(audioDir)) {
+    if (name.includes(".tmp.mp3")) {
+      rmSync(path.join(audioDir, name), { force: true });
+    }
+  }
 }
 
 async function synthesizeWithRetry(provider, payload, config) {
@@ -137,6 +152,7 @@ async function synthesizeOne({ scene, sourceHash, audioDir, config, providers })
     if (!provider?.synthesize) throw new Error(`TTS provider is not registered: ${providerName}`);
     const finalPath = path.join(audioDir, `${baseName}.${providerName}.mp3`);
     const tmpPath = `${finalPath}.${process.pid}.${Date.now()}.tmp.mp3`;
+    let movedToFinal = false;
     try {
       const providerResult = await synthesizeWithRetry(provider, {
         scene,
@@ -147,6 +163,11 @@ async function synthesizeOne({ scene, sourceHash, audioDir, config, providers })
       const durationSec = probeDuration(tmpPath, config.ffprobeBin);
       const words = normalizeWords(providerResult.words, durationSec);
       renameSync(tmpPath, finalPath);
+      movedToFinal = true;
+      if (!existsSync(finalPath) || !statSync(finalPath).isFile() || statSync(finalPath).size === 0) {
+        rmSync(finalPath, { force: true });
+        throw new Error(`TTS provider created an empty final output: ${finalPath}`);
+      }
       return {
         sceneId: scene.sceneId,
         audioPath: `./assets/audio/${path.basename(finalPath)}`,
@@ -156,9 +177,8 @@ async function synthesizeOne({ scene, sourceHash, audioDir, config, providers })
         provider: providerResult.provider ?? providerName,
         voice: providerResult.voice ?? providerName
       };
-    } catch (error) {
-      rmSync(tmpPath, { force: true });
-      throw error;
+    } finally {
+      if (!movedToFinal) rmSync(tmpPath, { force: true });
     }
   }
 
@@ -199,43 +219,48 @@ export async function runRealTtsJob(ctx, options = {}) {
   const audioDir = path.join(ctx.projectDir, "assets", "audio");
   ensureDir(audioDir);
 
-  const planned = (specs.scenes ?? []).map((scene, index) => {
-    const sourceHash = sha256Text(scene.narration_tts);
-    const reuse = config.forceRetts ? null : reusableScene(existingById, scene, sourceHash, ctx.projectDir);
-    return { scene, index, sourceHash, reuse };
-  });
+  try {
+    const planned = (specs.scenes ?? []).map((scene, index) => {
+      const sourceHash = sha256Text(scene.narration_tts);
+      const reuse = config.forceRetts ? null : reusableScene(existingById, scene, sourceHash, ctx.projectDir);
+      return { scene, index, sourceHash, reuse };
+    });
 
-  const generatedItems = planned.filter((item) => !item.reuse);
-  const generated = await mapLimit(generatedItems, config.concurrency, (item) =>
-    synthesizeOne({ ...item, audioDir, config, providers })
-  );
-  const generatedBySceneId = new Map(generated.map((scene) => [scene.sceneId, scene]));
+    const generatedItems = planned.filter((item) => !item.reuse);
+    const generated = await mapLimit(generatedItems, config.concurrency, (item) =>
+      synthesizeOne({ ...item, audioDir, config, providers })
+    );
+    const generatedBySceneId = new Map(generated.map((scene) => [scene.sceneId, scene]));
 
-  const scenes = planned.map((item) => item.reuse ?? generatedBySceneId.get(item.scene.sceneId));
-  for (const [index, scene] of scenes.entries()) {
-    if (!scene) throw new Error(`missing TTS result for scene index ${index}`);
-    if (scene.sourceHash !== planned[index].sourceHash) {
-      throw new Error(`sourceHash mismatch for scene ${scene.sceneId}`);
+    const scenes = planned.map((item) => item.reuse ?? generatedBySceneId.get(item.scene.sceneId));
+    for (const [index, scene] of scenes.entries()) {
+      if (!scene) throw new Error(`missing TTS result for scene index ${index}`);
+      if (scene.sourceHash !== planned[index].sourceHash) {
+        throw new Error(`sourceHash mismatch for scene ${scene.sceneId}`);
+      }
     }
+
+    const audioMeta = { scenes };
+    writeJsonViaVf({
+      repoRoot: ctx.repoRoot,
+      projectDir: ctx.projectDir,
+      filePath: existingMetaPath,
+      schemaName: "audio-meta",
+      data: audioMeta
+    });
+
+    const providersUsed = [...new Set(scenes.map((scene) => scene.provider))].sort((a, b) => a.localeCompare(b));
+    return {
+      provider: providersUsed.length === 1 ? providersUsed[0] : "mixed-tts",
+      scenes: scenes.length,
+      generated: generated.length,
+      reused: planned.length - generated.length,
+      files: scenes.map((scene) => normalizeRelPath(scene.audioPath))
+    };
+  } catch (error) {
+    cleanupTmpAudioFiles(audioDir);
+    throw error;
   }
-
-  const audioMeta = { scenes };
-  writeJsonViaVf({
-    repoRoot: ctx.repoRoot,
-    projectDir: ctx.projectDir,
-    filePath: existingMetaPath,
-    schemaName: "audio-meta",
-    data: audioMeta
-  });
-
-  const providersUsed = [...new Set(scenes.map((scene) => scene.provider))].sort((a, b) => a.localeCompare(b));
-  return {
-    provider: providersUsed.length === 1 ? providersUsed[0] : "mixed-tts",
-    scenes: scenes.length,
-    generated: generated.length,
-    reused: planned.length - generated.length,
-    files: scenes.map((scene) => normalizeRelPath(scene.audioPath))
-  };
 }
 
 export function runRealTtsStep(ctx, options = {}) {

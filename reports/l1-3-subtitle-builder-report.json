@@ -1,0 +1,95 @@
+{
+  "gate": "L1-3-subtitle-builder",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-3-subtitle-builder --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "real-audio-meta-fixture-words",
+      "pass": true,
+      "measured": {
+        "fixture": "poc/fixtures/p0c/audio_meta.json",
+        "provider": "edge-tts",
+        "voice": "ko-KR-SunHiNeural",
+        "wordCount": 10,
+        "audioDurationSec": 7.344,
+        "violations": []
+      }
+    },
+    {
+      "id": "compile:keyword",
+      "pass": true,
+      "measured": {
+        "project": "tmp/gate-work/p3/l1-3-subtitle-builder/keyword",
+        "buildDir": "tmp/gate-work/p3/l1-3-subtitle-builder/keyword/build",
+        "error": null,
+        "warnings": []
+      }
+    },
+    {
+      "id": "subtitle-output:keyword",
+      "pass": true,
+      "measured": {
+        "mode": "keyword",
+        "wordCount": 10,
+        "endSec": 7.366666665666666,
+        "audioDurationSec": 7.366666665666666,
+        "hasMode": true,
+        "hasModeRenderer": true,
+        "violations": []
+      }
+    },
+    {
+      "id": "compile:karaoke",
+      "pass": true,
+      "measured": {
+        "project": "tmp/gate-work/p3/l1-3-subtitle-builder/karaoke",
+        "buildDir": "tmp/gate-work/p3/l1-3-subtitle-builder/karaoke/build",
+        "error": null,
+        "warnings": []
+      }
+    },
+    {
+      "id": "subtitle-output:karaoke",
+      "pass": true,
+      "measured": {
+        "mode": "karaoke",
+        "wordCount": 10,
+        "endSec": 7.366666665666666,
+        "audioDurationSec": 7.366666665666666,
+        "hasMode": true,
+        "hasModeRenderer": true,
+        "violations": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/presets/light.json",
+    "poc/fixtures/p0c/audio_meta.json",
+    "poc/fixtures/p0c/audio/scene-01.mp3",
+    "src/compiler/compiler.mjs",
+    "src/compiler/subtitles.mjs",
+    "src/gates/p3-gates.mjs"
+  ],
+  "canonicalInputMerkleHash": "e43edaa0e56e0b11015d99131133dcf5e8d2cc5553b9c16b2632bf46fd95a57d",
+  "evidenceHash": "922ffa3fb3e4c81458f59404603d97d4d51514c07f6f247866f0cdabcf7894f3",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:32:35.847Z",
+  "finishedAt": "2026-07-07T02:32:37.312Z"
+}

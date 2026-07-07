@@ -1,0 +1,7 @@
+# P3-R Review
+- CRITICAL: 재개 해시가 stale build를 출고함. `/tmp/reelforge-p3r-repo.eVgym4`에서 gate 통과 후 preset accent `#FF00AA`와 `blocks/quote/block.html` 변경, 재실행 로그 `SKIP compile reason=validated-prior-gate inputHash=1f02...`; build manifest hash는 `96649e...` 그대로, build block hash `bcf014...` 그대로, source block hash는 `9b7e6c...`.
+- CRITICAL: dirty/실행중 편집을 gate가 검출하지 못함. `/tmp/reelforge-p3r-stale-project.GJrNnO`의 `scene_specs.narration_tts` 직접 변경 후 `audio_meta.sourceHash=c2f270...`와 기대 hash `a1d65b...`가 불일치했지만 `vf pipeline run --only gate`가 `gate_pass=true`로 PASS.
+- MAJOR: image runner가 0바이트 expected PNG를 완료 처리함. `/tmp/reelforge-p3r-images.BYlOwm`에서 `runner/results/image_s02_gen_01.png`를 0바이트로 둔 재실행이 `DONE images`, manifest `status=complete`, versions selected `gen_01`; 최종 `assets/images/s02_gen_01.png`도 0 bytes.
+- MAJOR: 동일 프로젝트 동시 실행에 generation 유실 경합이 있음. `/tmp/reelforge-p3r-concurrent.mBtv0u`에서 `--only images --force` 2개를 병렬 실행했고 둘 다 `generated=1 PASS`; 최종 versions는 `["gen_01","gen_02"]`뿐이라 한 실행의 `gen_03` 업데이트가 사라짐.
+- MAJOR: 네트워크 차단 TTS 실패는 명시적이지만 오디오 tmp를 남김. `LD_PRELOAD` connect 차단 + MeloTTS 미설치에서 `tts-chain-failed: MeloTTS venv is missing...`로 실패했으나 `/tmp/reelforge-p3r-tts-block.XUFH1n/assets/audio/*.tmp.mp3` 0바이트 2개가 잔존.
+- PASS 참고: 429 주입 provider는 `VF_TTS_BACKOFF_MS=700`에서 elapsed `862ms`, calls `4`로 backoff 재시도 확인; 2000자 실제 edge-tts 합성은 `/tmp/reelforge-p3r-tts-long.bzX26d`에서 14s, mp3 `1,831,968` bytes, duration `305.328s`, words `472`.

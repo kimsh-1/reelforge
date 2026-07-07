@@ -1,0 +1,81 @@
+{
+  "gate": "L3-5-reroll",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l3-5-reroll --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "initial-generation-gen-01",
+      "pass": true,
+      "measured": {
+        "generated": 1,
+        "reused": 0,
+        "assets": [
+          "./assets/images/s01_gen_01.png"
+        ]
+      }
+    },
+    {
+      "id": "reroll-generates-gen-02",
+      "pass": true,
+      "measured": {
+        "generated": 1,
+        "reused": 0,
+        "assets": [
+          "./assets/images/s01_gen_02.png"
+        ]
+      }
+    },
+    {
+      "id": "selected-switches-and-preserves-prior-generation",
+      "pass": true,
+      "measured": {
+        "selected": "gen_02",
+        "entries": [
+          {
+            "gen": "gen_01",
+            "path": "./assets/images/s01_gen_01.png"
+          },
+          {
+            "gen": "gen_02",
+            "path": "./assets/images/s01_gen_02.png"
+          }
+        ],
+        "manifestAssets": [
+          {
+            "sceneId": "s01",
+            "gen": "gen_02",
+            "path": "./assets/images/s01_gen_02.png"
+          }
+        ]
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "src/gates/p3-gates.mjs",
+    "src/pipeline/images/index.mjs",
+    "src/pipeline/versions-impl/index.mjs"
+  ],
+  "canonicalInputMerkleHash": "9386ca980717c8da16a03db4a177420e5a1f0e3606bc7a5062c86c1bf34ca040",
+  "evidenceHash": "00cb0991c980c3ec726e0120698f92677e562d6b13a5ea049dd7ed50e7ac4160",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:26:26.284Z",
+  "finishedAt": "2026-07-07T02:26:26.603Z"
+}

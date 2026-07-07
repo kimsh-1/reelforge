@@ -1,0 +1,128 @@
+{
+  "gate": "L1-5-audio-measure",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-5-audio-measure --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "sample-created:tone-1000.wav",
+      "pass": true,
+      "measured": {
+        "command": "ffmpeg -v error -f lavfi -i sine=frequency=440:sample_rate=48000:duration=1.0 -codec:a pcm_s16le -y /home/seunghyeong/reelforge/tmp/gate-work/p3/l1-5-audio-measure/tone-1000.wav",
+        "ffmpegExitCode": 0,
+        "ffprobeExitCode": 0,
+        "durationSec": 1,
+        "codecNames": [
+          "pcm_s16le"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "sample-created:silence-1750.wav",
+      "pass": true,
+      "measured": {
+        "command": "ffmpeg -v error -f lavfi -i anullsrc=r=24000:cl=mono -t 1.75 -codec:a pcm_s16le -y /home/seunghyeong/reelforge/tmp/gate-work/p3/l1-5-audio-measure/silence-1750.wav",
+        "ffmpegExitCode": 0,
+        "ffprobeExitCode": 0,
+        "durationSec": 1.75,
+        "codecNames": [
+          "pcm_s16le"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "sample-created:tone-1300.mp3",
+      "pass": true,
+      "measured": {
+        "command": "ffmpeg -v error -f lavfi -i sine=frequency=660:sample_rate=24000:duration=1.3 -codec:a libmp3lame -b:a 64k -y /home/seunghyeong/reelforge/tmp/gate-work/p3/l1-5-audio-measure/tone-1300.mp3",
+        "ffmpegExitCode": 0,
+        "ffprobeExitCode": 0,
+        "durationSec": 1.368,
+        "codecNames": [
+          "mp3"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "ffprobe-manifest-match:s01",
+      "pass": true,
+      "measured": {
+        "audioPath": "./tone-1000.wav",
+        "manifestDurationSec": 1,
+        "ffprobeDurationSec": 1,
+        "deltaSec": 0,
+        "toleranceSec": 0.01,
+        "streams": [
+          {
+            "codec_type": "audio",
+            "codec_name": "pcm_s16le",
+            "sample_rate": "48000"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ffprobe-manifest-match:s02",
+      "pass": true,
+      "measured": {
+        "audioPath": "./silence-1750.wav",
+        "manifestDurationSec": 1.75,
+        "ffprobeDurationSec": 1.75,
+        "deltaSec": 0,
+        "toleranceSec": 0.01,
+        "streams": [
+          {
+            "codec_type": "audio",
+            "codec_name": "pcm_s16le",
+            "sample_rate": "24000"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ffprobe-manifest-match:s03",
+      "pass": true,
+      "measured": {
+        "audioPath": "./tone-1300.mp3",
+        "manifestDurationSec": 1.368,
+        "ffprobeDurationSec": 1.368,
+        "deltaSec": 0,
+        "toleranceSec": 0.01,
+        "streams": [
+          {
+            "codec_type": "audio",
+            "codec_name": "mp3",
+            "sample_rate": "24000"
+          }
+        ]
+      }
+    }
+  ],
+  "inputSet": [
+    "src/gates/p3-gates.mjs"
+  ],
+  "canonicalInputMerkleHash": "d89e2418afdc2fdd168d3a65cf136173cf75f7c79956ac5f1c63fd3d0d3107d1",
+  "evidenceHash": "7539998ea998a4fe62630d14ad0a70f9771f7aa06ea7c4466f0b2fdc5185c96f",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:32:37.537Z",
+  "finishedAt": "2026-07-07T02:32:37.667Z"
+}

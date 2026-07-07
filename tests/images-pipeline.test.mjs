@@ -178,3 +178,44 @@ test("runner mode recovers completed PNG results into append-only selected versi
     await rm(projectDir, { recursive: true, force: true });
   }
 });
+
+test("runner mode keeps 0-byte PNG results pending and does not select them", async () => {
+  const projectDir = await makeFull8TypesProject();
+  try {
+    try {
+      runImagesStep(ctx(projectDir, false, "real"));
+    } catch (error) {
+      assert.ok(error instanceof ImagePipelinePendingError);
+    }
+
+    const promptsPath = path.join(projectDir, "assets", "images", "runner", "prompts.jsonl");
+    const lines = readFileSync(promptsPath, "utf8").trim().split("\n").map((line) => JSON.parse(line));
+    const resultsDir = path.join(projectDir, "assets", "images", "runner", "results");
+    await mkdir(resultsDir, { recursive: true });
+    for (const line of lines) {
+      await writeFile(path.join(resultsDir, `${line.id}.png`), Buffer.alloc(0));
+    }
+
+    assert.throws(
+      () => runImagesStep(ctx(projectDir, false, "real")),
+      (error) => {
+        assert.ok(error instanceof ImagePipelinePendingError);
+        assert.equal(error.pending, true);
+        assert.equal(error.missing.length, expectedImageScenes.length);
+        assert.ok(error.missing.every((item) => item.reason === "empty" && item.bytes === 0));
+        assert.equal(error.warnings.length, expectedImageScenes.length);
+        return true;
+      }
+    );
+
+    const manifest = readImageManifest(projectDir);
+    assert.equal(manifest.status, "pending");
+    assert.deepEqual(manifest.assets, []);
+    assert.equal(existsSync(path.join(projectDir, "versions.json")), false);
+    for (const line of lines) {
+      assert.equal(existsSync(path.join(projectDir, line.finalPath.slice(2))), false);
+    }
+  } finally {
+    await rm(projectDir, { recursive: true, force: true });
+  }
+});

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
@@ -23,6 +24,10 @@ function isObject(value) {
 
 function sortedUnique(values) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
+}
+
+function sha256Text(value) {
+  return createHash("sha256").update(String(value ?? ""), "utf8").digest("hex");
 }
 
 function sameStringSet(left, right) {
@@ -295,6 +300,37 @@ export function validateSceneAudioSetMatch({ sceneSpecs, audioMeta, sceneSpecsFi
   ];
 }
 
+export function validateSceneAudioSourceHashes({ sceneSpecs, audioMeta, sceneSpecsFile, audioMetaFile }) {
+  const sceneSpecsScenes = Array.isArray(sceneSpecs?.scenes) ? sceneSpecs.scenes : [];
+  const audioScenes = Array.isArray(audioMeta?.scenes) ? audioMeta.scenes : [];
+  const audioByScene = new Map(
+    audioScenes
+      .map((scene, index) => [scene?.sceneId, { scene, index }])
+      .filter(([sceneId]) => typeof sceneId === "string")
+  );
+  const violations = [];
+
+  sceneSpecsScenes.forEach((scene, index) => {
+    if (typeof scene?.sceneId !== "string") return;
+    const audio = audioByScene.get(scene.sceneId);
+    if (!audio) return;
+    const expected = sha256Text(scene.narration_tts);
+    const actual = audio.scene?.sourceHash;
+    if (actual === expected) return;
+    violations.push(
+      violation(audioMetaFile, `/scenes/${audio.index}/sourceHash`, "audio_meta sourceHash must equal SHA-256(scene_specs narration_tts)", {
+        sceneId: scene.sceneId,
+        sceneSpecsFile,
+        sceneSpecsPath: `/scenes/${index}/narration_tts`,
+        expected,
+        actual: actual ?? null
+      })
+    );
+  });
+
+  return violations;
+}
+
 function findSiblingFile(dir, candidates) {
   return candidates.map((candidate) => path.join(dir, candidate)).find((candidate) => existsSync(candidate)) ?? null;
 }
@@ -318,6 +354,12 @@ export function validateSemanticsForWrite({ repoRoot, schemaName, data, targetPa
     const audioMeta = schemaName === "audio-meta" ? data : readJsonFile(audioMetaPath);
     violations.push(
       ...validateSceneAudioSetMatch({
+        sceneSpecs,
+        audioMeta,
+        sceneSpecsFile: repoRelative(repoRoot, sceneSpecsPath),
+        audioMetaFile: repoRelative(repoRoot, audioMetaPath)
+      }),
+      ...validateSceneAudioSourceHashes({
         sceneSpecs,
         audioMeta,
         sceneSpecsFile: repoRelative(repoRoot, sceneSpecsPath),

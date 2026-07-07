@@ -6,6 +6,7 @@ import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 import {
   validateSceneAudioSetMatch,
+  validateSceneAudioSourceHashes,
   validateSemanticData
 } from "./semantic.mjs";
 
@@ -649,6 +650,12 @@ function runL012({ repoRoot }) {
         audioMeta: parsed.get(audioMetaFile).data,
         sceneSpecsFile: file,
         audioMetaFile
+      }),
+      ...validateSceneAudioSourceHashes({
+        sceneSpecs: entry.data,
+        audioMeta: parsed.get(audioMetaFile).data,
+        sceneSpecsFile: file,
+        audioMetaFile
       })
     );
   }
@@ -665,7 +672,8 @@ function runL012({ repoRoot }) {
           "word timings are monotonic and end >= start",
           "versions selected references entries",
           "render subtitles stay within audio duration and startFrame is monotonic",
-          "scene_specs and audio_meta sceneId sets match when paired"
+          "scene_specs and audio_meta sceneId sets match when paired",
+          "audio_meta sourceHash matches SHA-256(scene_specs narration_tts) when paired"
         ],
         violations
       }
@@ -688,9 +696,9 @@ function tail(value, max = 4000) {
   return value.length > max ? value.slice(value.length - max) : value;
 }
 
-function runWrapperGate(script) {
+function runWrapperGate(script, extraArgs = []) {
   return ({ repoRoot, profile = "fast" }) => {
-    const command = [process.execPath, script, "--profile", profile, "--json"];
+    const command = [process.execPath, script, ...extraArgs, "--profile", profile, "--json"];
     const result = spawnSync(command[0], command.slice(1), {
       cwd: repoRoot,
       encoding: "utf8",
@@ -823,6 +831,51 @@ export const gateRegistry = {
     profiles: ["fast", "full"],
     run: runWrapperGate("tests/gate-wrappers/l1-2-transitions.mjs")
   },
+  "l1-3-subtitle-builder": {
+    gate: "L1-3-subtitle-builder",
+    title: "subtitle builder emits keyword and karaoke outputs from real audio_meta words",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l1-3-subtitle-builder"])
+  },
+  "l1-4-tts-contract": {
+    gate: "L1-4-tts-contract",
+    title: "TTS adapter mock roundtrip and full-profile edge-tts one sentence",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l1-4-tts-contract"])
+  },
+  "l1-5-audio-measure": {
+    gate: "L1-5-audio-measure",
+    title: "ffprobe measured audio duration matches manifest within 10ms",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l1-5-audio-measure"])
+  },
+  "l1-6-versioning": {
+    gate: "L1-6-versioning",
+    title: "version lifecycle wave1 tests wrapped as a gate",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l1-6-versioning"])
+  },
+  "l1-7-resume": {
+    gate: "L1-7-resume",
+    title: "pipeline resume skips completed steps and runs incomplete work",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l1-7-resume"])
+  },
   "l1-8-ducking": {
     gate: "L1-8-ducking",
     title: "BGM ducking keyframes and full-profile RMS render smoke",
@@ -840,6 +893,51 @@ export const gateRegistry = {
     render: false,
     profiles: ["fast", "full"],
     run: runWrapperGate("tests/gate-wrappers/l1-9-blocks.mjs")
+  },
+  "l3-1-mock-e2e": {
+    gate: "L3-1-mock-e2e",
+    title: "new scene_specs project completes mock pipeline to final mp4",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: true,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-1-mock-e2e"])
+  },
+  "l3-2-real-tts-smoke": {
+    gate: "L3-2-real-tts-smoke",
+    title: "full-profile real edge-tts until tts with L2-6 and L2-9 rechecks",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-2-real-tts-smoke"])
+  },
+  "l3-5-reroll": {
+    gate: "L3-5-reroll",
+    title: "full-profile image reroll preserves gen_01 and selects gen_02",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: false,
+    profiles: ["full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-5-reroll"])
+  },
+  "l3-6-kill-resume": {
+    gate: "L3-6-kill-resume",
+    title: "full-profile pipeline kill during render resumes from completed prefix",
+    kind: "native",
+    script: "src/gates/p3-gates.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-6-kill-resume"])
+  },
+  "u3-pipeline": {
+    gate: "U-3-pipeline",
+    title: "pipeline-level misuse suite with eleven clear reject or safe-resume cases",
+    kind: "native",
+    script: "tests/scenarios/u3-pipeline-suite.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/scenarios/u3-pipeline-suite.mjs")
   },
   "l2-2-scene-solo": {
     gate: "L2-2-scene-solo",

@@ -170,11 +170,11 @@
   "canonicalInputMerkleHash": "50befe2e48e87dcb05b383ec859bb6c290db985bc0c7325ec0bccfb6bddf3111",
   "evidenceHash": "68b66b01e7636a982fe5b98ca1d3162431045df51225a79c7e4bd97340e52fb1",
   "gateScriptHash": "c3c3d841a8cb947e16dcdff6f019aab92a17d79c359cd7d82385d3894dd18974",
-  "gitCommit": "2826bb46687154a4f3e55103b46b145e94e91b0f",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T01:35:27.751Z",
-  "finishedAt": "2026-07-07T01:35:27.756Z",
+  "startedAt": "2026-07-07T02:32:13.241Z",
+  "finishedAt": "2026-07-07T02:32:13.246Z",
   "mode": "replay",
   "sourceReport": "poc/reports/P0c-report.json"
 }

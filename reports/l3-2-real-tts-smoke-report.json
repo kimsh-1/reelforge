@@ -1,0 +1,91 @@
+{
+  "gate": "L3-2-real-tts-smoke",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l3-2-real-tts-smoke --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "pipeline-real-until-tts",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p3/l3-2-real-tts-smoke/project --profile real --until tts --force",
+        "exitCode": 0,
+        "stdoutSummary": [
+          "pipeline: START project=tmp/gate-work/p3/l3-2-real-tts-smoke/project profile=real steps=tts",
+          "pipeline: RUN tts reason=force inputHash=2d7012a3b36d",
+          "pipeline: DONE tts provider=edge-tts scenes=1 generated=1 reused=0",
+          "pipeline: PASS completed=tts"
+        ],
+        "stderrTail": ""
+      }
+    },
+    {
+      "id": "actual-edge-audio-meta",
+      "pass": true,
+      "measured": {
+        "provider": "edge-tts",
+        "voice": "ko-KR-SunHiNeural",
+        "audioPath": "./assets/audio/s01.81af26128bfa.edge.mp3",
+        "audioBytes": 26496,
+        "sourceHashMatches": true
+      }
+    },
+    {
+      "id": "l2-6-real-tts-audio-duration-recheck",
+      "pass": true,
+      "measured": {
+        "audioDurationSec": 4.416,
+        "ffprobeDurationSec": 4.416,
+        "deltaSec": 0,
+        "toleranceSec": 0.05
+      }
+    },
+    {
+      "id": "l2-9-real-tts-word-sync-recheck",
+      "pass": true,
+      "measured": {
+        "wordCount": 6,
+        "firstWord": {
+          "word": "실제",
+          "start": 0.1,
+          "end": 0.562
+        },
+        "lastWord": {
+          "word": "검증합니다",
+          "start": 2.55,
+          "end": 3.537
+        },
+        "violations": []
+      }
+    }
+  ],
+  "inputSet": [
+    "bin/vf",
+    "src/gates/p3-gates.mjs",
+    "src/pipeline/core/orchestrator.mjs",
+    "src/pipeline/tts/edge_synth.py",
+    "src/pipeline/tts/providers.mjs",
+    "src/pipeline/tts/real.mjs"
+  ],
+  "canonicalInputMerkleHash": "c573751ceba6f270dbca012b73894af4eb90b2ea9e7c72ad6b909ff8b2b3c0bd",
+  "evidenceHash": "bfe7a9857c568b55dbdc21f107ebc19c107959642e1af8d3c8d8f2556fc1b44c",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:26:25.000Z",
+  "finishedAt": "2026-07-07T02:26:26.284Z"
+}

@@ -4,6 +4,10 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
+import {
+  PipelineLockError,
+  acquirePipelineLock
+} from "../src/pipeline/core/lock.mjs";
 import { resolveSelectedResource } from "../src/pipeline/core/versions.mjs";
 import {
   DirtyPipelineError,
@@ -252,6 +256,28 @@ test("editLock acquisition, release, and conflict detection follow owner semanti
     const versions = loadVersions(projectDir);
     assert.equal(versions.editLock, null);
     assert.equal(versions.dirty, false);
+  } finally {
+    await rm(projectDir, { recursive: true, force: true });
+  }
+});
+
+test("pipeline lock rejects a concurrent project run before state or versions writes", async () => {
+  const projectDir = await makeProject();
+  try {
+    const first = acquirePipelineLock({ projectDir, command: "first pipeline" });
+    try {
+      assert.throws(
+        () => acquirePipelineLock({ projectDir, command: "second pipeline" }),
+        (error) => error instanceof PipelineLockError && error.message === "다른 실행 진행 중"
+      );
+      assert.equal(existsSync(path.join(projectDir, "pipeline_state.json")), false);
+      assert.equal(loadVersions(projectDir).dirty, false);
+    } finally {
+      first.release();
+    }
+
+    const afterRelease = acquirePipelineLock({ projectDir, command: "third pipeline" });
+    afterRelease.release();
   } finally {
     await rm(projectDir, { recursive: true, force: true });
   }

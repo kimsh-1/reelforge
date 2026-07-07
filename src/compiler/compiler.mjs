@@ -1,5 +1,6 @@
+import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { existsSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 import {
   formatAjvErrors,
@@ -10,6 +11,7 @@ import {
   formatSemanticViolations,
   validateSemanticsForWrite
 } from "../gates/semantic.mjs";
+import { hashPatterns } from "../pipeline/core/globs.mjs";
 import {
   DEFAULT_BGM_VOLUME,
   DEFAULT_SPEECH_VOLUME,
@@ -51,6 +53,11 @@ import {
 } from "./utils.mjs";
 
 const DEFAULT_PRESET = "fixtures/presets/light.json";
+const COMPILER_STAMP_INPUTS = ["repo:src/compiler/**", "repo:blocks/**", "repo:package.json"];
+
+function sha256Bytes(bytes) {
+  return createHash("sha256").update(bytes).digest("hex");
+}
 
 function validationError(schemaName, validation) {
   const violations = formatAjvErrors(validation.errors).map((message) => `- ${message}`).join("\n");
@@ -80,6 +87,38 @@ function resolveProjectFile(projectDir, name) {
 function resolvePresetPath(repoRoot, value) {
   const raw = value ?? DEFAULT_PRESET;
   return path.isAbsolute(raw) ? raw : path.resolve(repoRoot, raw);
+}
+
+function isPathInside(parent, child) {
+  const relative = path.relative(parent, child);
+  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
+}
+
+function compilerVersionStamp({ repoRoot, presetPath }) {
+  const packageJson = readJsonFile(path.join(repoRoot, "package.json"));
+  const presetRel = normalizeRelPath(path.relative(repoRoot, presetPath));
+  const presetInsideRepo = isPathInside(repoRoot, presetPath);
+  const repoInputs = [
+    ...COMPILER_STAMP_INPUTS,
+    ...(presetInsideRepo ? [`repo:${presetRel}`] : [])
+  ];
+  const input = hashPatterns({ repoRoot, projectDir: repoRoot, patterns: repoInputs });
+  const externalPreset = presetInsideRepo
+    ? null
+    : {
+        path: normalizeRelPath(presetPath),
+        bytes: readFileSync(presetPath).length,
+        sha256: sha256Bytes(readFileSync(presetPath))
+      };
+
+  return {
+    name: "reelforge-compiler",
+    version: packageJson.version ?? null,
+    sourceHash: input.hash,
+    inputSet: input.entries.map((entry) => entry.path),
+    presetPath: presetInsideRepo ? presetRel : normalizeRelPath(presetPath),
+    externalPreset
+  };
 }
 
 function sceneMapById(list, label) {
@@ -519,14 +558,15 @@ function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
   };
 }
 
-function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm }) {
+function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm, compilerVersion }) {
   return {
     meta: {
       resolution: { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT },
       fps: timing.fps,
       videoTheme: videoTheme(tokens),
       designTokens: tokens,
-      subtitleConfig: tokens.subtitle
+      subtitleConfig: tokens.subtitle,
+      compilerVersion
     },
     scenes: scenes.map((scene) => {
       const sceneTiming = timing.sceneTimings.get(scene.sceneId);
@@ -614,6 +654,7 @@ export function compileProject({
   const specs = validateInput({ repoRoot, filePath: sceneSpecsPath, schemaName: "scene-specs" });
   const audioMeta = validateInput({ repoRoot, filePath: audioMetaPath, schemaName: "audio-meta" });
   const presetTokens = validateInput({ repoRoot, filePath: absolutePresetPath, schemaName: "design-tokens" });
+  const compilerVersion = compilerVersionStamp({ repoRoot, presetPath: absolutePresetPath });
 
   const scenes = specs.scenes ?? [];
   const audioByScene = sceneMapById(audioMeta.scenes ?? [], "audio_meta.scenes");
@@ -670,7 +711,8 @@ export function compileProject({
       timing,
       tokens,
       transitions,
-      bgm
+      bgm,
+      compilerVersion
     });
     const manifestRel = normalizeRelPath(path.relative(repoRoot, path.join(tmpDir, "render-manifest.json")));
     const writeResult = writeManifestViaVf({ repoRoot, manifestPath: manifestRel, manifest });
@@ -685,6 +727,7 @@ export function compileProject({
       projectDir: normalizeRelPath(path.relative(repoRoot, absoluteProjectDir)),
       buildDir: normalizeRelPath(path.relative(repoRoot, buildDir)),
       presetPath: normalizeRelPath(path.relative(repoRoot, absolutePresetPath)),
+      compilerVersion,
       schemaValidation: {
         sceneSpecs: schemaPathForName("scene-specs"),
         audioMeta: schemaPathForName("audio-meta"),

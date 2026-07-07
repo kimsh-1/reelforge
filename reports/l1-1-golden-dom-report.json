@@ -148,12 +148,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l1-1-golden-dom.mjs"
   ],
-  "canonicalInputMerkleHash": "a34cd64ad15fb95bd1685548cf8e76020a28bb8eb0573e92c7d5e801434c7767",
+  "canonicalInputMerkleHash": "e0f03431a43a53aea9c2fd9939c0c93b80ca285809030616913f4a9c5fe777cf",
   "evidenceHash": "dce94dddde42677b4665f1054e7a7be13dcb1676f69c113dc507a5ec7a32b342",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "2826bb46687154a4f3e55103b46b145e94e91b0f",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T01:35:27.760Z",
-  "finishedAt": "2026-07-07T01:35:31.987Z"
+  "startedAt": "2026-07-07T02:32:13.250Z",
+  "finishedAt": "2026-07-07T02:32:17.760Z"
 }

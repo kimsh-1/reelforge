@@ -96,7 +96,7 @@
         "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
         "exitCode": 0,
         "output": "tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
-        "bytes": 10916030,
+        "bytes": 10903547,
         "stderr": "[FrameCapture] Sub-composition timelines not registered after 120000ms: bar, pie, list, numbered, quote. Compositions that load data asynchronously (e.g. fetch) must register window.__timelines[id] after setup completes.\n"
       }
     },
@@ -139,12 +139,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-full-comp.mjs"
   ],
-  "canonicalInputMerkleHash": "d6c5b59c2c9d161b9873e16089b801510d07a7af30ecb6c295fe9e347b910d00",
+  "canonicalInputMerkleHash": "cc59d0c3d0b9097cedad06a81356f095bce7bf727b5c953e27f981845fe32335",
   "evidenceHash": "a4a21dc90cd5ebb81775b038af9440fd63ead50709eddeb73204d19de2bf6b2d",
   "gateScriptHash": "57f17d8706f8c9ca8c3e972790e195dbf1f8c31c1620d36141cb53610d3d3b6f",
-  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
   "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T00:49:45.319Z",
-  "finishedAt": "2026-07-07T00:53:12.862Z"
+  "startedAt": "2026-07-07T02:27:16.632Z",
+  "finishedAt": "2026-07-07T02:30:44.333Z"
 }

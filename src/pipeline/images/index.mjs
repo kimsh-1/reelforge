@@ -50,6 +50,7 @@ export const OPENVERSE_PROVIDER_CONTRACT = {
 const MOCK_PROVIDER = "mock-image";
 const RUNNER_PROVIDER = "codex-imagegen-runner";
 const OPENVERSE_PROVIDER = "openverse";
+const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
 function sha256Text(value) {
   return createHash("sha256").update(String(value), "utf8").digest("hex");
@@ -93,7 +94,23 @@ function absFromProject(projectDir, relPath) {
 
 function fileExists(projectDir, relPath) {
   const abs = absFromProject(projectDir, relPath);
-  return existsSync(abs) && statSync(abs).isFile() && statSync(abs).size > 0;
+  return pngStatus(abs).pass;
+}
+
+function pngStatus(filePath) {
+  if (!existsSync(filePath)) return { pass: false, reason: "missing", bytes: 0 };
+  const stats = statSync(filePath);
+  if (!stats.isFile()) return { pass: false, reason: "not-file", bytes: 0 };
+  if (stats.size <= 0) return { pass: false, reason: "empty", bytes: stats.size };
+  const signature = readFileSync(filePath).subarray(0, PNG_SIGNATURE.length);
+  if (!signature.equals(PNG_SIGNATURE)) {
+    return { pass: false, reason: "invalid-png-signature", bytes: stats.size };
+  }
+  return { pass: true, reason: "ok", bytes: stats.size };
+}
+
+export function isNonEmptyPngFile(filePath) {
+  return pngStatus(filePath).pass;
 }
 
 function dimensionsForPlacement(placement) {
@@ -429,12 +446,13 @@ function writeRunnerFiles(projectDir, lines, missing) {
 }
 
 export class ImagePipelinePendingError extends Error {
-  constructor({ promptsPath, resultsDir, missing }) {
+  constructor({ promptsPath, resultsDir, missing, warnings = [] }) {
     super(`image runner pending: write ${missing.length} PNG result(s) under ${normalizeRelPath(resultsDir)}`);
     this.name = "ImagePipelinePendingError";
     this.promptsPath = promptsPath;
     this.resultsDir = resultsDir;
     this.missing = missing;
+    this.warnings = warnings;
     this.pending = true;
   }
 }
@@ -464,6 +482,7 @@ function runProvider({
 }) {
   const generatedAssets = [];
   const pending = [];
+  const warnings = [];
   const runnerLines = [];
 
   if (provider === OPENVERSE_PROVIDER) runOpenverseStub();
@@ -498,8 +517,21 @@ function runProvider({
       finalPath: plan.relPath
     });
 
-    if (!existsSync(resultAbs)) {
-      pending.push({ id, sceneId: requirement.sceneId, gen: plan.gen, resultPath });
+    const resultStatus = pngStatus(resultAbs);
+    if (!resultStatus.pass) {
+      pending.push({
+        id,
+        sceneId: requirement.sceneId,
+        gen: plan.gen,
+        resultPath,
+        reason: resultStatus.reason,
+        bytes: resultStatus.bytes
+      });
+      if (resultStatus.reason !== "missing") {
+        warnings.push(
+          `runner result ${resultPath} for scene ${requirement.sceneId} is not a non-empty PNG (${resultStatus.reason}, bytes=${resultStatus.bytes}); keeping scene pending`
+        );
+      }
       continue;
     }
 
@@ -509,7 +541,7 @@ function runProvider({
   }
 
   const runner = provider === RUNNER_PROVIDER ? writeRunnerFiles(projectDir, runnerLines, pending) : null;
-  return { generatedAssets, pending, runner };
+  return { generatedAssets, pending, runner, warnings };
 }
 
 export function validateImageManifestContract(manifest, expectedSceneIds = null) {
@@ -583,7 +615,7 @@ export function runImagesStep(ctx, options = {}) {
     }
   }
 
-  const { generatedAssets, pending, runner } = runProvider({
+  const { generatedAssets, pending, runner, warnings } = runProvider({
     provider,
     projectDir: ctx.projectDir,
     requirements,
@@ -613,7 +645,8 @@ export function runImagesStep(ctx, options = {}) {
     throw new ImagePipelinePendingError({
       promptsPath: runner.promptsPath,
       resultsDir: runner.resultsDir,
-      missing: pending
+      missing: pending,
+      warnings
     });
   }
 

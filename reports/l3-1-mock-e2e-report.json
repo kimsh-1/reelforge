@@ -1,0 +1,78 @@
+{
+  "gate": "L3-1-mock-e2e",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l3-1-mock-e2e --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "pipeline-cli-mock-completes",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p3/l3-1-mock-e2e/project --profile mock",
+        "exitCode": 0,
+        "stdoutSummary": [
+          "pipeline: START project=tmp/gate-work/p3/l3-1-mock-e2e/project profile=mock steps=tts,images,compile,render,gate",
+          "pipeline: RUN tts reason=missing-outputs inputHash=a10e2fd80745",
+          "pipeline: DONE tts provider=mock-tts scenes=3",
+          "pipeline: RUN images reason=missing-outputs inputHash=77462d03e69d",
+          "pipeline: DONE images provider=mock-image scenes=0 generated=0 reused=0 manifest=image-manifest.json",
+          "pipeline: RUN compile reason=missing-outputs inputHash=4a5e174121af",
+          "pipeline: DONE compile",
+          "pipeline: RUN render reason=missing-outputs inputHash=e1e0a145e9e9",
+          "pipeline: DONE render output=out/main.mp4 bytes=877606",
+          "pipeline: RUN gate reason=missing-outputs inputHash=3bea0f79c6d2",
+          "pipeline: DONE gate report=reports/pipeline-gate-report.json",
+          "pipeline: PASS completed=tts,images,compile,render,gate"
+        ],
+        "stderrTail": ""
+      }
+    },
+    {
+      "id": "final-mp4-exists",
+      "pass": true,
+      "measured": {
+        "output": "tmp/gate-work/p3/l3-1-mock-e2e/project/out/main.mp4",
+        "bytes": 877606
+      }
+    },
+    {
+      "id": "project-pipeline-gate-report-pass",
+      "pass": true,
+      "measured": {
+        "report": "tmp/gate-work/p3/l3-1-mock-e2e/project/reports/pipeline-gate-report.json",
+        "pass": true,
+        "exitCode": 0,
+        "checks": 6
+      }
+    }
+  ],
+  "inputSet": [
+    "bin/vf",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "src/compiler/compiler.mjs",
+    "src/gates/p3-gates.mjs",
+    "src/pipeline/core/orchestrator.mjs",
+    "src/pipeline/core/steps.mjs"
+  ],
+  "canonicalInputMerkleHash": "2b4e5f9447f6be4abee105ae2887c86563b5a9cdd9f79ec1dd77937d9bdb748e",
+  "evidenceHash": "28f00671fc830edf6f60d3c4eafd4d15f48b6403daed1b2e2e798684effb7efa",
+  "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
+  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T02:32:44.412Z",
+  "finishedAt": "2026-07-07T02:33:03.660Z"
+}

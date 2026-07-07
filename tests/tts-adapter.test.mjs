@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { runTtsStep, runRealTtsJob } from "../src/pipeline/tts/index.mjs";
@@ -128,6 +128,55 @@ function fakeProvider(counter) {
   };
 }
 
+function failingTmpProvider() {
+  return {
+    async synthesize({ outputPath }) {
+      mkdirSync(path.dirname(outputPath), { recursive: true });
+      writeFileSync(outputPath, Buffer.alloc(0));
+      throw new Error("injected provider failure after tmp create");
+    }
+  };
+}
+
+async function testFailureCleansTmpAudio() {
+  const projectDir = makeProject("failure-cleans-tmp", [
+    {
+      sceneId: "s01",
+      text: "첫 번째 실패 합성입니다."
+    },
+    {
+      sceneId: "s02",
+      text: "두 번째 실패 합성입니다."
+    }
+  ]);
+  const ctx = {
+    repoRoot,
+    projectDir,
+    profile: "real",
+    force: false,
+    command: "failure-cleans-tmp"
+  };
+
+  await assert.rejects(
+    () =>
+      runRealTtsJob(ctx, {
+        provider: "edge",
+        concurrency: 2,
+        providers: { edge: failingTmpProvider() }
+      }),
+    /injected provider failure/
+  );
+
+  const audioDir = path.join(projectDir, "assets", "audio");
+  const names = existsSync(audioDir) ? readdirSync(audioDir) : [];
+  assert.deepEqual(names.filter((name) => name.includes(".tmp.mp3")), [], "failed TTS must clean tmp mp3 files");
+  const zeroMp3 = names
+    .filter((name) => name.endsWith(".mp3"))
+    .filter((name) => statSync(path.join(audioDir, name)).size === 0);
+  assert.deepEqual(zeroMp3, [], "failed TTS must not leave 0-byte mp3 outputs");
+  console.log("failure-cleans-tmp: PASS");
+}
+
 async function testLiveEdgeOrSkip() {
   const projectDir = makeProject("live-edge", [
     {
@@ -245,6 +294,7 @@ rmSync(tmpRoot, { recursive: true, force: true });
 mkdirSync(tmpRoot, { recursive: true });
 
 await testLiveEdgeOrSkip();
+await testFailureCleansTmpAudio();
 await testSourceHashSkip();
 testMockProfileDispatch();
 

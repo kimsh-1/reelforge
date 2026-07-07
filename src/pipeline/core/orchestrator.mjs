@@ -2,6 +2,7 @@ import path from "node:path";
 import { DirtyPipelineError, assertPipelineClean } from "../versions-impl/index.mjs";
 import { hashPatterns, outputsExist } from "./globs.mjs";
 import { normalizeRelPath } from "./io.mjs";
+import { acquirePipelineLock } from "./lock.mjs";
 import {
   emptyPipelineState,
   loadPipelineState,
@@ -84,95 +85,102 @@ export function runPipeline({
 }) {
   if (!["mock", "real"].includes(profile)) throw new Error("--profile must be mock or real");
   const absoluteProjectDir = path.resolve(projectDir);
+  const lock = acquirePipelineLock({ projectDir: absoluteProjectDir, command });
   try {
     assertPipelineClean({ projectDir: absoluteProjectDir, forceDirty, log });
   } catch (error) {
+    lock.release();
     if (error instanceof DirtyPipelineError) log(`pipeline: WARN ${error.message}`);
     throw error;
   }
 
-  const steps = createStepRegistry();
-  const planned = selectedSteps({ steps, only, until });
-  const startedAt = new Date().toISOString();
-  const priorState = force ? null : loadPipelineState(absoluteProjectDir);
-  const state = priorState ?? emptyPipelineState(startedAt);
-  if (force) {
-    state.completedSteps = [];
-    state.failedSteps = {};
-    state.stepHashes = {};
-    state.startedAt = startedAt;
-  }
-  state.finishedAt = null;
-
-  const ctx = {
-    repoRoot,
-    projectDir: absoluteProjectDir,
-    profile,
-    force,
-    command,
-    state,
-    resolveSelectedResource: (resourceType, fallbackPath = null) =>
-      resolveSelectedResource({ projectDir: absoluteProjectDir, resourceType, fallbackPath })
-  };
-
-  writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-
-  const events = [];
-  log(`pipeline: START project=${normalizeRelPath(path.relative(repoRoot, absoluteProjectDir) || absoluteProjectDir)} profile=${profile} steps=${planned.map((step) => step.id).join(",")}`);
-
-  for (const step of planned) {
-    const input = hashPatterns({ repoRoot, projectDir: absoluteProjectDir, patterns: step.inputs });
-    const skipDecision = step.skipWhen(ctx, step, input.hash);
-    if (skipDecision.skip) {
-      markStepCompleted(state, step.id, input.hash);
-      writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-      events.push({ step: step.id, action: "skip", reason: skipDecision.reason });
-      log(`pipeline: SKIP ${step.id} reason=${skipDecision.reason} inputHash=${input.hash.slice(0, 12)}`);
-      continue;
+  try {
+    const steps = createStepRegistry();
+    const planned = selectedSteps({ steps, only, until });
+    const startedAt = new Date().toISOString();
+    const priorState = force ? null : loadPipelineState(absoluteProjectDir);
+    const state = priorState ?? emptyPipelineState(startedAt);
+    if (force) {
+      state.completedSteps = [];
+      state.failedSteps = {};
+      state.stepHashes = {};
+      state.startedAt = startedAt;
     }
+    state.finishedAt = null;
 
-    log(`pipeline: RUN ${step.id} reason=${skipDecision.reason} inputHash=${input.hash.slice(0, 12)}`);
-    try {
-      const result = step.run(ctx);
-      assertStepOutputs(ctx, step);
-      markStepCompleted(state, step.id, input.hash);
-      writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-      events.push({ step: step.id, action: "run", result });
-      log(`pipeline: DONE ${step.id}${formatResult(result)}`);
-    } catch (error) {
-      if (isPendingStepError(error)) {
-        state.completedSteps = state.completedSteps.filter((stepId) => stepId !== step.id);
-        delete state.failedSteps[step.id];
+    const ctx = {
+      repoRoot,
+      projectDir: absoluteProjectDir,
+      profile,
+      force,
+      command,
+      state,
+      resolveSelectedResource: (resourceType, fallbackPath = null) =>
+        resolveSelectedResource({ projectDir: absoluteProjectDir, resourceType, fallbackPath })
+    };
+
+    writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+
+    const events = [];
+    log(`pipeline: START project=${normalizeRelPath(path.relative(repoRoot, absoluteProjectDir) || absoluteProjectDir)} profile=${profile} steps=${planned.map((step) => step.id).join(",")}`);
+
+    for (const step of planned) {
+      const input = hashPatterns({ repoRoot, projectDir: absoluteProjectDir, patterns: step.inputs });
+      const skipDecision = step.skipWhen(ctx, step, input.hash);
+      if (skipDecision.skip) {
+        markStepCompleted(state, step.id, input.hash);
         writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-        events.push({ step: step.id, action: "pending", missing: error.missing ?? [] });
-        log(`pipeline: WAIT ${step.id}${formatPendingResult(ctx, error)}`);
-        log(`pipeline: WAIT completed=${state.completedSteps.filter((stepId) => PIPELINE_STEP_ORDER.includes(stepId)).join(",")}`);
-        return {
-          pass: false,
-          pending: true,
-          pendingStep: step.id,
-          projectDir: absoluteProjectDir,
-          profile,
-          steps: events,
-          state
-        };
+        events.push({ step: step.id, action: "skip", reason: skipDecision.reason });
+        log(`pipeline: SKIP ${step.id} reason=${skipDecision.reason} inputHash=${input.hash.slice(0, 12)}`);
+        continue;
       }
-      markStepFailed(state, step.id, error);
-      writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-      log(`pipeline: FAIL ${step.id} ${error instanceof Error ? error.message : String(error)}`);
-      throw error;
+
+      log(`pipeline: RUN ${step.id} reason=${skipDecision.reason} inputHash=${input.hash.slice(0, 12)}`);
+      try {
+        const result = step.run(ctx);
+        assertStepOutputs(ctx, step);
+        markStepCompleted(state, step.id, input.hash);
+        writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+        events.push({ step: step.id, action: "run", result });
+        log(`pipeline: DONE ${step.id}${formatResult(result)}`);
+      } catch (error) {
+        if (isPendingStepError(error)) {
+          state.completedSteps = state.completedSteps.filter((stepId) => stepId !== step.id);
+          delete state.failedSteps[step.id];
+          writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+          events.push({ step: step.id, action: "pending", missing: error.missing ?? [] });
+          for (const warning of error.warnings ?? []) log(`pipeline: WARN ${step.id} ${warning}`);
+          log(`pipeline: WAIT ${step.id}${formatPendingResult(ctx, error)}`);
+          log(`pipeline: WAIT completed=${state.completedSteps.filter((stepId) => PIPELINE_STEP_ORDER.includes(stepId)).join(",")}`);
+          return {
+            pass: false,
+            pending: true,
+            pendingStep: step.id,
+            projectDir: absoluteProjectDir,
+            profile,
+            steps: events,
+            state
+          };
+        }
+        markStepFailed(state, step.id, error);
+        writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+        log(`pipeline: FAIL ${step.id} ${error instanceof Error ? error.message : String(error)}`);
+        throw error;
+      }
     }
+
+    state.finishedAt = new Date().toISOString();
+    writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+    log(`pipeline: PASS completed=${state.completedSteps.filter((stepId) => PIPELINE_STEP_ORDER.includes(stepId)).join(",")}`);
+
+    return {
+      pass: true,
+      projectDir: absoluteProjectDir,
+      profile,
+      steps: events,
+      state
+    };
+  } finally {
+    lock.release();
   }
-
-  state.finishedAt = new Date().toISOString();
-  writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
-  log(`pipeline: PASS completed=${state.completedSteps.filter((stepId) => PIPELINE_STEP_ORDER.includes(stepId)).join(",")}`);
-
-  return {
-    pass: true,
-    projectDir: absoluteProjectDir,
-    profile,
-    steps: events,
-    state
-  };
 }

@@ -78,6 +78,74 @@
           "$ref": "https://video-factory.local/schemas/design-tokens.schema.json#/$defs/subtitle",
           "readOnly": true,
           "$comment": "Resolved subtitle snapshot used for render."
+        },
+        "compilerVersion": {
+          "$ref": "#/$defs/compilerVersion",
+          "readOnly": true,
+          "$comment": "Compiler and repo implementation stamp captured at compile time."
+        }
+      }
+    },
+    "compilerVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "sourceHash", "inputSet", "presetPath", "externalPreset"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "inputSet": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "presetPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "externalPreset": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256"],
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
