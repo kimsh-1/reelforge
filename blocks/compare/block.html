@@ -325,7 +325,8 @@
           overflow-wrap: anywhere;
         }
 
-        .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value {
+        .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value,
+        .compare-item[data-card-mode="hero"][data-value-kind="empty"] .compare-value {
           display: block;
           font-size: 8.2rem;
           line-height: 0.95;
@@ -764,7 +765,8 @@
             overflow-wrap: anywhere;
           }
 
-          .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value {
+          .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value,
+          .compare-item[data-card-mode="hero"][data-value-kind="empty"] .compare-value {
             display: block;
             font-size: 8.2rem;
             line-height: 0.95;
@@ -965,13 +967,13 @@
           root.querySelector("[data-compare-title]").textContent = title;
           root.querySelector("[data-compare-mood]").textContent = "";
           root.querySelector("[data-compare-mood]").setAttribute("aria-hidden", "true");
-          root.querySelector("[data-compare-source]").textContent = source;
-          root.querySelector("[data-compare-source]").style.opacity = source ? "1" : "0";
+          root.querySelector("[data-compare-source]").textContent = "";
+          root.querySelector("[data-compare-source]").style.opacity = "0";
           root.dataset.hasSideTitles = groups.leftTitle || groups.rightTitle ? "true" : "false";
           root.dataset.cardMode = groups.left.length === 1 && groups.right.length === 1 ? "hero" : "list";
           root.querySelector("[data-compare-left-title]").textContent = groups.leftTitle;
           root.querySelector("[data-compare-right-title]").textContent = groups.rightTitle;
-          root.querySelector("[data-compare-footnote]").textContent = source ? source : title;
+          root.querySelector("[data-compare-footnote]").textContent = source;
           root.querySelector("[data-compare-unit]").textContent = unit ? `단위 ${unit}` : "";
           root.setAttribute("aria-label", ariaLabel(title, groups, unit));
 
@@ -1108,26 +1110,27 @@
               }
 
               copy.append(label);
-              if (row.valueKind === "text") {
-                value.textContent = row.description;
-                if (heroMode) {
-                  item.append(value, copy);
+              if (heroMode) {
+                value.textContent = heroDisplayText(row, suffix);
+                if (row.valueKind === "number") value.__rfRow = row;
+                if (row.valueKind === "empty") {
+                  label.hidden = true;
+                  label.style.display = "none";
+                  item.append(value);
                 } else {
-                  description.textContent = row.description;
-                  copy.append(description);
-                  item.append(copy);
+                  item.append(value, copy);
                 }
+              } else if (row.valueKind === "text") {
+                description.textContent = row.description;
+                copy.append(description);
+                item.append(copy);
               } else if (row.valueKind === "number") {
                 fill.style.setProperty("--compare-width", `${Math.max(8, (Math.abs(row.numeric) / maxNumeric) * 100).toFixed(3)}%`);
                 value.textContent = formatDisplayValue(row, suffix);
                 value.__rfRow = row;
                 meter.appendChild(fill);
-                if (heroMode) {
-                  item.append(value, copy);
-                } else {
-                  copy.append(meter);
-                  item.append(copy, value);
-                }
+                copy.append(meter);
+                item.append(copy, value);
               } else {
                 item.append(copy);
               }
@@ -1278,6 +1281,10 @@
             if (row.valueKind === "text") return row.description;
             if (row.valueKind === "empty") return "";
             return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
+          }
+
+          function heroDisplayText(row, suffix) {
+            return formatDisplayValue(row, suffix) || row.label || "항목";
           }
 
           function ariaLabel(compareTitle, groups, suffix) {

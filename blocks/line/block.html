@@ -395,10 +395,11 @@
             return node;
           };
 
-          const fmt = (value) => {
+          const fmtValue = (value) => {
             const rounded = Math.round(value * 10) / 10;
             return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
           };
+          const fmtTick = (value) => String(Math.round(value));
 
           if (count < 2) {
             root.dataset.empty = "true";
@@ -417,9 +418,9 @@
             const usedValues = values.slice(0, count);
             const minValue = Math.min(...usedValues);
             const maxValue = Math.max(...usedValues);
-            const span = Math.max(1, maxValue - minValue);
-            const yMin = Math.floor((minValue - span * 0.18) * 10) / 10;
-            const yMax = Math.ceil((maxValue + span * 0.18) * 10) / 10;
+            const scale = niceScale(minValue, maxValue, 4);
+            const yMin = scale.min;
+            const yMax = scale.max;
             const yRange = Math.max(1, yMax - yMin);
             const xFor = (index) => chart.left + (plotWidth * index) / Math.max(1, count - 1);
             const yFor = (value) => chart.top + plotHeight - ((value - yMin) / yRange) * plotHeight;
@@ -434,28 +435,28 @@
             const lineGroup = svgNode("g", { class: "line-series" });
             const pointGroup = svgNode("g", { class: "line-points" });
             const labelGroup = svgNode("g", { class: "line-labels" });
-            const steps = 4;
+            const axisRows = scale.ticks.map((value) => ({
+              value,
+              y: yFor(value)
+            }));
 
-            for (let index = 0; index <= steps; index += 1) {
-              const ratio = index / steps;
-              const y = chart.top + plotHeight * ratio;
-              const value = yMax - yRange * ratio;
+            for (const tick of axisRows) {
               const row = svgNode("g", { class: "line-grid-row" });
               row.appendChild(
                 svgNode("line", {
                   class: "line-grid",
                   x1: chart.left,
-                  y1: y,
+                  y1: tick.y,
                   x2: chart.width - chart.right,
-                  y2: y
+                  y2: tick.y
                 })
               );
               const yLabel = svgNode("text", {
                 class: "line-y-label",
                 x: chart.left + 18,
-                y: y + 10
+                y: tick.y + 10
               });
-              yLabel.textContent = `${fmt(value)}${unit}`;
+              yLabel.textContent = `${fmtTick(tick.value)}${unit}`;
               row.appendChild(yLabel);
               gridGroup.appendChild(row);
             }
@@ -485,9 +486,20 @@
             points.forEach((point, index) => {
               const isFirst = index === 0;
               const isLast = index === points.length - 1;
-              const valueAnchor = isFirst ? "start" : isLast ? "end" : "middle";
-              const valueX = isFirst ? point.x + 30 : isLast ? point.x - 18 : point.x;
-              const valueY = point.y - chart.top < 78 ? point.y + 54 : point.y - 38;
+              let valueAnchor = isFirst ? "start" : isLast ? "end" : "middle";
+              let valueX = isFirst ? point.x + 30 : isLast ? point.x - 18 : point.x;
+              let valueY = point.y - chart.top < 78 ? point.y + 54 : point.y - 38;
+              if (axisLabelCollision({ axisRows, valueX, valueY, chart })) {
+                if (isFirst) {
+                  valueX = point.x + 108;
+                  valueAnchor = "start";
+                } else if (isLast) {
+                  valueX = point.x - 72;
+                  valueAnchor = "end";
+                }
+                valueY += valueY < point.y ? -30 : 30;
+                valueY = Math.max(chart.top + 34, Math.min(chart.top + plotHeight - 24, valueY));
+              }
               const labelAnchor = isFirst ? "start" : isLast ? "end" : "middle";
               const labelX = isFirst ? point.x + 4 : isLast ? point.x - 4 : point.x;
               const circle = svgNode("circle", {
@@ -509,7 +521,7 @@
                 x: labelX,
                 y: chart.top + plotHeight + 62
               });
-              value.textContent = `${fmt(point.value)}${unit}`;
+              value.textContent = `${fmtValue(point.value)}${unit}`;
               label.textContent = point.label;
               pointGroup.appendChild(circle);
               labelGroup.appendChild(value);
@@ -602,6 +614,40 @@
             const livingStart = Math.min(exitStart - 0.42, Math.max(1.22, total * 0.3));
             const livingDuration = Math.max(0.6, exitStart - livingStart);
             return { exitStart, exitDuration, livingStart, livingDuration };
+          }
+
+          function niceScale(minValue, maxValue, targetSteps) {
+            const startAtZero = minValue >= 0;
+            const minBase = startAtZero ? 0 : minValue;
+            const rawSpan = Math.max(1, maxValue - minBase);
+            const step = Math.max(1, niceStep(rawSpan / Math.max(1, targetSteps)));
+            const min = startAtZero ? 0 : Math.floor(minBase / step) * step;
+            let max = Math.ceil(maxValue / step) * step;
+            if (max <= min) max = min + step * Math.max(1, targetSteps);
+            const ticks = [];
+            for (let value = min; value <= max + step * 0.5; value += step) {
+              ticks.push(cleanNumber(value));
+            }
+            return { min: cleanNumber(min), max: cleanNumber(max), step, ticks };
+          }
+
+          function niceStep(rawStep) {
+            if (!Number.isFinite(rawStep) || rawStep <= 0) return 1;
+            const exponent = Math.floor(Math.log10(rawStep));
+            const base = 10 ** exponent;
+            const fraction = rawStep / base;
+            const niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+            return niceFraction * base;
+          }
+
+          function cleanNumber(value) {
+            return Math.round(value * 1e6) / 1e6;
+          }
+
+          function axisLabelCollision({ axisRows, valueX, valueY, chart }) {
+            const nearAxis = valueX < chart.left + 132 || valueX > chart.width - chart.right - 132;
+            if (!nearAxis) return false;
+            return axisRows.some((row) => Math.abs(row.y + 10 - valueY) < 46);
           }
 
           function displayUnit(value) {

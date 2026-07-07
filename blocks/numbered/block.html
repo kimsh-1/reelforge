@@ -2,7 +2,7 @@
 <html
   lang="ko"
   data-composition-variables='[
-    {"id":"title","type":"string","label":"Title","default":"순위 리스트"},
+    {"id":"title","type":"string","label":"Title","default":"단계 리스트"},
     {"id":"items","type":"json","label":"Items","default":[]},
     {"id":"values","type":"json","label":"Values","default":[]},
     {"id":"unit","type":"string","label":"Unit","default":""},
@@ -321,6 +321,32 @@
         .numbered-block[data-density="compact"] .numbered-meta {
           font-size: 1.12rem;
         }
+
+        .numbered-block[data-semantic="sequence"] .numbered-row {
+          grid-template-columns: 9.6rem minmax(0, 1fr);
+        }
+
+        .numbered-block[data-semantic="sequence"] .numbered-rule {
+          display: none;
+        }
+
+        .numbered-block[data-semantic="sequence"] .numbered-stamp {
+          border-radius: 0.5rem;
+        }
+
+        .numbered-block[data-semantic="sequence"] .numbered-stamp::after {
+          border-radius: 0.35rem;
+          border-style: solid;
+          opacity: 0.46;
+        }
+
+        .numbered-block[data-density="medium"][data-semantic="sequence"] .numbered-row {
+          grid-template-columns: 8.4rem minmax(0, 1fr);
+        }
+
+        .numbered-block[data-density="compact"][data-semantic="sequence"] .numbered-row {
+          grid-template-columns: 7.1rem minmax(0, 1fr);
+        }
       </style>
       <div
         class="numbered-block"
@@ -367,26 +393,29 @@
             root.closest("[data-composition-id]") ||
             root;
           const variables = readVariables(root);
-          const title = textValue(variables.title, "순위 리스트");
+          const title = textValue(variables.title, "단계 리스트");
           const items = arrayValue(variables.items);
           const values = arrayValue(variables.values);
           const unit = displayUnit(variables.unit);
           const source = textValue(variables.source, "");
-          const rows = normalizeRows({ items, values, unit, title });
+          const semantic = numberedSemantic(variables.emphasis);
+          const unitLabel = unit || (semantic === "rank" ? "순위" : "단계");
+          const rows = normalizeRows({ items, values, unit, title, semantic });
           const duration = blockDuration(root, 4);
           const phases = phaseTimes(duration);
 
           root.style.setProperty("--numbered-accent", safeColor(variables.accent));
           root.style.setProperty("--row-count", String(Math.max(1, rows.length)));
           root.dataset.density = rows.length > 6 ? "compact" : rows.length > 4 ? "medium" : "standard";
+          root.dataset.semantic = semantic;
 
           root.querySelector("[data-numbered-title]").textContent = title;
           root.querySelector("[data-numbered-mood]").textContent = "";
           root.querySelector("[data-numbered-mood]").setAttribute("aria-hidden", "true");
-          root.querySelector("[data-numbered-unit]").textContent = unit || "순위";
+          root.querySelector("[data-numbered-unit]").textContent = unitLabel;
           root.querySelector("[data-numbered-source]").textContent = source || "";
           root.querySelector("[data-numbered-count]").textContent = `${rows.length}개 항목`;
-          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+          root.setAttribute("aria-label", ariaLabel(title, rows, unitLabel));
 
           const list = root.querySelector("[data-numbered-list]");
           rows.forEach((row) => {
@@ -411,7 +440,7 @@
             sweep.className = "numbered-sweep";
 
             rank.textContent = row.badge;
-            stampUnit.textContent = unit;
+            stampUnit.textContent = unitLabel;
             label.textContent = row.label;
             meta.textContent = row.meta;
             if (!row.meta) {
@@ -523,7 +552,7 @@
             return text ? text : fallback;
           }
 
-          function normalizeRows({ items, values, unit, title }) {
+          function normalizeRows({ items, values, unit, title, semantic }) {
             const count = Math.max(items.length, values.length);
             if (count === 0) {
               return [
@@ -538,7 +567,7 @@
             for (let index = 0; index < count; index += 1) {
               const raw = values[index];
               const numeric = numericValue(raw);
-              const rank = Number.isFinite(numeric) && numeric > 0 ? Math.round(numeric) : index + 1;
+              const rank = semantic === "rank" && Number.isFinite(numeric) && numeric > 0 ? Math.round(numeric) : index + 1;
               rows.push({
                 label: stripOrdinalEcho(textValue(items[index], `항목 ${index + 1}`), index),
                 badge: formatRank(rank),
@@ -579,6 +608,10 @@
           function isOrdinalEcho(text, index) {
             const normalized = String(text).trim();
             return new RegExp(`^#?0?${index + 1}$`, "u").test(normalized);
+          }
+
+          function numberedSemantic(value) {
+            return String(value ?? "").toLowerCase().includes("rank") ? "rank" : "sequence";
           }
 
           function displayUnit(value) {

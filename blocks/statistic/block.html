@@ -181,6 +181,25 @@
           letter-spacing: 0;
         }
 
+        #root[data-has-unit="false"] .stat-number-line {
+          align-items: center;
+          white-space: normal;
+        }
+
+        #root[data-has-unit="false"] .stat-unit {
+          max-width: 38rem;
+          color: var(--stat-ink);
+          font-size: 3.35rem;
+          line-height: 1.06;
+          white-space: normal;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
+        #root[data-has-unit="false"] .stat-caption {
+          display: none;
+        }
+
         .stat-caption {
           margin: 0;
           max-width: 54rem;
@@ -283,13 +302,11 @@
           color: var(--stat-accent);
         }
 
-        #root[data-row-count="0"] .stat-stage,
-        #root[data-row-count="1"] .stat-stage {
+        #root[data-row-count="0"] .stat-stage {
           grid-template-columns: minmax(0, 1fr);
         }
 
-        #root[data-row-count="0"] .stat-details,
-        #root[data-row-count="1"] .stat-details {
+        #root[data-row-count="0"] .stat-details {
           display: none;
         }
       </style>
@@ -337,7 +354,7 @@
           const source = stringValue(variables.source, "");
           const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
           const main = rows[0];
-          const detailRows = rows.length > 1 ? rows : [];
+          const detailRows = rows.slice(1);
           const duration = blockDuration(root, 4);
           const phases = phaseTimes(duration);
           const enterAt = (time) => Number((time * phases.enterScale).toFixed(4));
@@ -346,12 +363,13 @@
 
           root.style.setProperty("--stat-accent", safeColor(variables.accent));
           root.dataset.rowCount = String(detailRows.length);
+          root.dataset.hasUnit = unit ? "true" : "false";
           titleEl.textContent = title;
           kickerEl.textContent = "";
           kickerEl.setAttribute("aria-hidden", "true");
           numberEl.textContent = formatNumber(0, main.decimals);
-          unitEl.textContent = unit;
-          captionEl.textContent = main.label;
+          unitEl.textContent = unit || main.label;
+          captionEl.textContent = unit ? main.label : "";
           sourceEl.textContent = source;
           sourceEl.style.opacity = source ? "1" : "0";
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));

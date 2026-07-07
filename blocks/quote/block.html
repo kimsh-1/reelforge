@@ -505,7 +505,7 @@
           const source = stringValue(variables.source, "");
           const quoteText = stringValue(items[1] || items[0], title);
           const context = stringValue(items[0], unit || title);
-          const detailRows = buildDetailRows({ items, values, unit, emphasis, reveal });
+          const detailRows = buildDetailRows({ items, values, usedText: [title, quoteText, context] });
           const duration = blockDuration(root, 5);
           const phases = phaseTimes(duration);
 
@@ -696,21 +696,24 @@
             return String(value).trim();
           }
 
-          function buildDetailRows({ items: itemTexts, values: valueTexts, unit: unitText }) {
+          function buildDetailRows({ items: itemTexts, values: valueTexts, usedText }) {
             const rows = [];
+            const used = new Set(usedText.map(normalizeDetailText).filter(Boolean));
             const max = Math.max(itemTexts.length, valueTexts.length);
             for (let index = 0; index < max; index += 1) {
-              const itemText = stringValue(itemTexts[index], index === 0 ? "출처" : `항목 ${index + 1}`);
-              const rawValue = valueTexts[index] || (index === 0 ? unitText : "");
+              const itemText = stringValue(itemTexts[index], "");
+              const rawValue = valueTexts[index] || "";
               const displayValue = rawValue || itemText;
+              if (!displayValue) continue;
+              if (used.has(normalizeDetailText(displayValue)) && !rawValue) continue;
+              if (itemText && used.has(normalizeDetailText(itemText)) && (!rawValue || normalizeDetailText(rawValue) === normalizeDetailText(itemText))) {
+                continue;
+              }
               rows.push({
-                label: quoteDetailLabel(index),
+                label: quoteDetailLabel(rows.length),
                 value: displayValue,
-                note: itemText
+                note: rawValue && itemText && normalizeDetailText(rawValue) !== normalizeDetailText(itemText) ? itemText : ""
               });
-            }
-            if (rows.length === 0 && unitText) {
-              rows.push({ label: "단위", value: unitText, note: "" });
             }
             return rows.slice(0, 4);
           }
@@ -719,6 +722,10 @@
             if (index === 0) return "맥락";
             if (index === 1) return "문장";
             return `근거 ${index + 1}`;
+          }
+
+          function normalizeDetailText(value) {
+            return String(value ?? "").trim().replace(/\s+/g, " ");
           }
 
           function renderMeta(container, entries) {

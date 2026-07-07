@@ -298,6 +298,32 @@ function videoTheme(tokens) {
   return colorLuminance(tokens.colors?.background) > 0.5 ? "white" : "dark";
 }
 
+function contrastRatio(foreground, background) {
+  const fg = colorLuminance(foreground);
+  const bg = colorLuminance(background);
+  const light = Math.max(fg, bg);
+  const dark = Math.min(fg, bg);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+function isHexColor(value) {
+  return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(String(value ?? ""));
+}
+
+function minimumContrast(candidate, backgrounds) {
+  if (!isHexColor(candidate) || backgrounds.length === 0) return 0;
+  return Math.min(...backgrounds.map((background) => contrastRatio(candidate, background)));
+}
+
+function highContrastText(candidate, backgrounds) {
+  const candidates = [candidate, "#F8FAFC", "#0F172A", "#FFFFFF", "#000000"].filter(isHexColor);
+  const ranked = candidates
+    .map((color) => ({ color, contrast: minimumContrast(color, backgrounds) }))
+    .sort((a, b) => b.contrast - a.contrast);
+  const current = ranked.find((entry) => entry.color === candidate);
+  return current && current.contrast >= 4.5 ? current.color : ranked[0]?.color ?? candidate;
+}
+
 function subtitleCss(tokens) {
   const subtitle = tokens.subtitle;
   return `
@@ -335,11 +361,18 @@ function cssVarBlock(vars) {
 
 function blockFrameStyle({ scene, tokens }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
+  const imageBacked = Boolean(scene.renderImage);
+  const surface = imageBacked ? "rgba(15, 23, 42, 0.78)" : tokens.colors?.surface;
+  const panel = imageBacked ? "rgba(15, 23, 42, 0.68)" : tokens.colors?.panel;
+  const textBackgrounds = imageBacked
+    ? ["#0F172A"]
+    : [tokens.colors?.panel, tokens.colors?.surface, tokens.colors?.background].filter(isHexColor);
+  const text = highContrastText(tokens.colors?.text, textBackgrounds);
   return cssVarBlock({
-    "--rf-text": tokens.colors?.text,
-    "--rf-muted-text": tokens.colors?.mutedText,
-    "--rf-surface": tokens.colors?.surface,
-    "--rf-panel": tokens.colors?.panel,
+    "--rf-text": text,
+    "--rf-muted-text": text,
+    "--rf-surface": surface,
+    "--rf-panel": panel,
     "--rf-accent": mood.accent ?? tokens.colors?.accent,
     "--rf-shadow": tokens.colors?.shadow
   });
@@ -410,7 +443,8 @@ function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
 function sceneHtml({ scene, timing, tokens, block, renderFormat, fps }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
-  const foreground = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
+  const imageAsset = scene.renderImage ?? null;
+  const foreground = imageAsset ? "#F8FAFC" : colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
   const variables = blockVariablesForScene({ scene, tokens });
   const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
@@ -422,7 +456,6 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat, fps }) {
   const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
   const tween = revealTween(scene);
-  const imageAsset = scene.renderImage ?? null;
   const titleScrim = needsTitleScrim({ imageAsset, tokens });
   const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps });
   const imageSrc = imageAsset ? `../${imageAsset.htmlPath}` : null;
