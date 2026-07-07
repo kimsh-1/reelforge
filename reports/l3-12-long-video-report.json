@@ -1,0 +1,210 @@
+{
+  "gate": "L3-12-long-video",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p5-l3-12-long-video.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "profile-full-required",
+      "pass": true,
+      "measured": {
+        "profile": "full",
+        "reason": "L3-12 runs the actual long render and is full-profile only"
+      }
+    },
+    {
+      "id": "gate-parameters",
+      "pass": true,
+      "measured": {
+        "sceneCount": 12,
+        "minDurationSec": 120,
+        "reduction": "P5-pre-resume timeout recovery uses 12 scenes and a 2min minimum instead of the prior 20 scenes and 3min minimum",
+        "verdictCriteria": "complete render, peak RSS recorded, no OOM/SIGKILL signature"
+      }
+    },
+    {
+      "id": "generated-scene-specs-12-scenes",
+      "pass": true,
+      "measured": {
+        "project": "tmp/gate-work/p5/l3-12-long-video/project",
+        "sceneSpecs": "tmp/gate-work/p5/l3-12-long-video/project/scene_specs.json",
+        "scenes": 12,
+        "transitions": 11,
+        "gateParameters": {
+          "sceneCount": 12,
+          "minDurationSec": 120,
+          "reduction": "P5-pre-resume timeout recovery uses 12 scenes and a 2min minimum instead of the prior 20 scenes and 3min minimum",
+          "verdictCriteria": "complete render, peak RSS recorded, no OOM/SIGKILL signature"
+        }
+      }
+    },
+    {
+      "id": "mock-pipeline-through-compile",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p5/l3-12-long-video/project --profile mock --force --until compile",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSummary": [
+          "pipeline: START project=tmp/gate-work/p5/l3-12-long-video/project profile=mock steps=tts,images,compile",
+          "pipeline: RUN tts reason=force inputHash=ce498831deb8",
+          "pipeline: DONE tts provider=mock-tts scenes=12",
+          "pipeline: RUN images reason=force inputHash=d9156d567f31",
+          "pipeline: DONE images provider=mock-image scenes=0 generated=0 reused=0 manifest=image-manifest.json",
+          "pipeline: RUN compile reason=force inputHash=1b5941efc5f1",
+          "pipeline: DONE compile",
+          "pipeline: PASS completed=tts,images,compile"
+        ],
+        "stderrTail": ""
+      }
+    },
+    {
+      "id": "long-render-completes",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/time -v /usr/bin/env NODE_OPTIONS=--max-old-space-size=6144 /home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/build --output /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4 --fps=30 --quality=standard --workers=1 --no-browser-gpu --browser-timeout=360 --player-ready-timeout=360000 --protocol-timeout=600000",
+        "exitCode": 0,
+        "signal": null,
+        "output": "tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4",
+        "bytes": 7969112,
+        "stdoutTail": "██░░░░░  80%  Streaming frame 4313/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4314/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4315/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4316/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4317/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4318/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4319/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4320/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4321/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4322/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4323/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4324/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4325/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4326/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4327/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4328/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4329/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4330/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4331/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4332/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4333/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4334/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4335/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4336/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4337/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4338/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4339/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4340/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4341/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4342/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4343/4344\r\u001b[2K  ████████████████████░░░░░  80%  Streaming frame 4344/4344[static-dedup] reused 3984/4344 frame(s) (92%), est. ~553776ms saved (avg 139ms/frame)\n[INFO] [Render:trace] {\"renderJobId\":\"8964dc9a-6bc9-451a-a297-1359506691e5\",\"phase\":\"capture_streaming\",\"status\":\"end\",\"elapsedMs\":146285,\"durationMs\":136010}\n[INFO] [Render:trace] {\"renderJobId\":\"8964dc9a-6bc9-451a-a297-1359506691e5\",\"phase\":\"assemble\",\"status\":\"start\",\"elapsedMs\":146285,\"hasAudio\":true}\n\r\u001b[2K  ██████████████████████░░░  90%  Assembling final video[INFO] [Render:trace] {\"renderJobId\":\"8964dc9a-6bc9-451a-a297-1359506691e5\",\"phase\":\"assemble\",\"status\":\"end\",\"elapsedMs\":146496,\"durationMs\":211}\n\r\u001b[2K  █████████████████████████  100%  Render complete[INFO] [Render:trace] {\"renderJobId\":\"8964dc9a-6bc9-451a-a297-1359506691e5\",\"phase\":\"pipeline\",\"status\":\"checkpoint\",\"elapsedMs\":146497,\"message\":\"completed\",\"totalElapsedMs\":146497}\n\n◇  /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4\n   7.6 MB · 2m 24.8s video · rendered in 2m 26.5s\n",
+        "stderrTail": "\tCommand being timed: \"/usr/bin/env NODE_OPTIONS=--max-old-space-size=6144 /home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/build --output /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4 --fps=30 --quality=standard --workers=1 --no-browser-gpu --browser-timeout=360 --player-ready-timeout=360000 --protocol-timeout=600000\"\n\tUser time (seconds): 252.15\n\tSystem time (seconds): 31.09\n\tPercent of CPU this job got: 192%\n\tElapsed (wall clock) time (h:mm:ss or m:ss): 2:27.30\n\tAverage shared text size (kbytes): 0\n\tAverage unshared data size (kbytes): 0\n\tAverage stack size (kbytes): 0\n\tAverage total size (kbytes): 0\n\tMaximum resident set size (kbytes): 2956824\n\tAverage resident set size (kbytes): 0\n\tMajor (requiring I/O) page faults: 1632\n\tMinor (reclaiming a frame) page faults: 2711274\n\tVoluntary context switches: 288515\n\tInvoluntary context switches: 88736\n\tSwaps: 0\n\tFile system inputs: 2624\n\tFile system outputs: 504232\n\tSocket messages sent: 0\n\tSocket messages received: 0\n\tSignals delivered: 0\n\tPage size (bytes): 4096\n\tExit status: 0\n",
+        "time": {
+          "peakRssKb": 2956824,
+          "elapsed": "27.30",
+          "userSec": 252.15,
+          "systemSec": 31.09
+        }
+      }
+    },
+    {
+      "id": "peak-rss-recorded",
+      "pass": true,
+      "measured": {
+        "method": "/usr/bin/time -v",
+        "peakRssKb": 2956824,
+        "peakRssMb": 2887.5,
+        "elapsed": "27.30",
+        "userSec": 252.15,
+        "systemSec": 31.09
+      }
+    },
+    {
+      "id": "oom-signature-absent",
+      "pass": true,
+      "measured": {
+        "setupExitCode": 0,
+        "renderExitCode": 0,
+        "setupSignal": null,
+        "renderSignal": null,
+        "peakRssKb": 2956824,
+        "scanned": [
+          "stdout",
+          "stderr"
+        ],
+        "oomPattern": "out of memory|heap|ENOMEM|OOM|Killed"
+      }
+    },
+    {
+      "id": "pipeline-gate-completes",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p5/l3-12-long-video/project --profile mock --only gate",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutSummary": [
+          "pipeline: START project=tmp/gate-work/p5/l3-12-long-video/project profile=mock steps=gate",
+          "pipeline: RUN gate reason=missing-outputs inputHash=429edeffe8d5",
+          "pipeline: DONE gate report=reports/pipeline-gate-report.json",
+          "pipeline: PASS completed=tts,images,compile,gate"
+        ],
+        "stderrTail": "",
+        "report": "tmp/gate-work/p5/l3-12-long-video/project/reports/pipeline-gate-report.json",
+        "reportPass": true,
+        "reportExitCode": 0
+      }
+    },
+    {
+      "id": "mock-pipeline-completes",
+      "pass": true,
+      "measured": {
+        "note": "P5 gate runs mock pipeline through compile, renders with an extended browser timeout, then runs the pipeline gate step against the render output.",
+        "setupCommand": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p5/l3-12-long-video/project --profile mock --force --until compile",
+        "renderCommand": "/usr/bin/time -v /usr/bin/env NODE_OPTIONS=--max-old-space-size=6144 /home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/build --output /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4 --fps=30 --quality=standard --workers=1 --no-browser-gpu --browser-timeout=360 --player-ready-timeout=360000 --protocol-timeout=600000",
+        "gateCommand": "/usr/bin/node bin/vf pipeline run tmp/gate-work/p5/l3-12-long-video/project --profile mock --only gate",
+        "setupExitCode": 0,
+        "renderExitCode": 0,
+        "gateExitCode": 0
+      }
+    },
+    {
+      "id": "actual-render-duration-2min-plus",
+      "pass": true,
+      "measured": {
+        "output": "tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4",
+        "bytes": 7969112,
+        "minDurationSec": 120,
+        "actualDurationSec": 144.832,
+        "expectedDurationSec": 144.79999998800002,
+        "ffprobe": {
+          "command": "ffprobe -v error -show_entries stream=index,codec_type,codec_name,pix_fmt -show_entries format=duration -of json /home/seunghyeong/reelforge/tmp/gate-work/p5/l3-12-long-video/project/out/main.mp4",
+          "exitCode": 0,
+          "streams": [
+            {
+              "index": 0,
+              "codec_name": "h264",
+              "codec_type": "video",
+              "pix_fmt": "yuv420p"
+            },
+            {
+              "index": 1,
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "stderrTail": ""
+        }
+      }
+    },
+    {
+      "id": "pipeline-artifacts-complete",
+      "pass": true,
+      "measured": {
+        "sceneSpecsScenes": 12,
+        "audioMetaScenes": 12,
+        "manifestScenes": 12,
+        "pipelineReport": "tmp/gate-work/p5/l3-12-long-video/project/reports/pipeline-gate-report.json",
+        "pipelineReportPass": true,
+        "pipelineReportExitCode": 0
+      }
+    }
+  ],
+  "inputSet": [
+    "research/06-plan/VERIFICATION-PLAN.md",
+    "research/08-audit/RESOLUTION.md",
+    "src/gates/p5-common.mjs",
+    "src/gates/p5-l3-12-long-video.mjs",
+    "tests/scenarios/l3-12-long-video.md"
+  ],
+  "canonicalInputMerkleHash": "d30727c1f03608172201cf30a1b2a4c05f7db004166bde0f4c55595f1ab40d7b",
+  "evidenceHash": "c4439f573c14c37ba1def9938c171cbf67046adf90eca413b6cde444ef7ec841",
+  "gateScriptHash": "dddfc409a8a4441fc4849bb2bdb0383a8eeed23e7afdc36213700d7f17308ba4",
+  "gitCommit": "6e7d957482671c072f8740ee22cfd7077ecfec75",
+  "command": "node bin/vf gate l3-12-long-video --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T03:47:59.884Z",
+  "finishedAt": "2026-07-07T03:50:31.741Z"
+}

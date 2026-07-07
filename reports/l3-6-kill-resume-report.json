@@ -52,8 +52,8 @@
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
           "pipeline: SKIP compile reason=resume-state inputHash=4a5e174121af",
           "pipeline: RUN render reason=missing-outputs inputHash=e1e0a145e9e9",
-          "pipeline: DONE render output=out/main.mp4 bytes=877606",
-          "pipeline: RUN gate reason=missing-outputs inputHash=3bea0f79c6d2",
+          "pipeline: DONE render output=out/main.mp4 bytes=877429",
+          "pipeline: RUN gate reason=missing-outputs inputHash=548b042fc634",
           "pipeline: DONE gate report=reports/pipeline-gate-report.json",
           "pipeline: PASS completed=tts,images,compile,render,gate"
         ],
@@ -65,7 +65,7 @@
       "pass": true,
       "measured": {
         "output": "tmp/gate-work/p3/l3-6-kill-resume/project/out/main.mp4",
-        "bytes": 877606,
+        "bytes": 877429,
         "report": "tmp/gate-work/p3/l3-6-kill-resume/project/reports/pipeline-gate-report.json",
         "completedSteps": [
           "tts",
@@ -88,9 +88,9 @@
   "canonicalInputMerkleHash": "c6742b35e07c11018e6bb870ae11c7095fe55939fd8d3092424d8ef251008767",
   "evidenceHash": "6d88f13fafd8d813919d9d1025a578900868918f3a95b921c296cbab59fddc52",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "273e98e621e34ce624eca9d4ac7513b2d9377244",
   "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:26:26.604Z",
-  "finishedAt": "2026-07-07T02:26:45.547Z"
+  "startedAt": "2026-07-07T02:35:51.037Z",
+  "finishedAt": "2026-07-07T02:36:14.802Z"
 }

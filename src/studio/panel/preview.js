@@ -13,8 +13,13 @@ function timelineDuration(timeline) {
   return Number.isFinite(timeline.duration) ? timeline.duration : 0;
 }
 
-function timelineProgress(timeline) {
+function timelineProgress(timeline, durationOverride = 0) {
   if (!timeline) return 0;
+  const override = Number(durationOverride);
+  if (override > 0 && typeof timeline.time === "function") {
+    const value = timeline.time();
+    return Number.isFinite(value) ? value / override : 0;
+  }
   if (typeof timeline.progress === "function") {
     const value = timeline.progress();
     return Number.isFinite(value) ? value : 0;
@@ -28,10 +33,15 @@ function clamp01(value) {
   return Math.max(0, Math.min(1, Number(value) || 0));
 }
 
-function seekTimeline(timeline, progress) {
+function seekTimeline(timeline, progress, durationOverride = 0) {
   if (!timeline) return;
   const next = clamp01(progress);
   if (typeof timeline.pause === "function") timeline.pause();
+  const override = Number(durationOverride);
+  if (override > 0 && typeof timeline.time === "function") {
+    timeline.time(override * next);
+    return;
+  }
   if (typeof timeline.progress === "function") {
     timeline.progress(next);
     return;
@@ -64,15 +74,35 @@ export function createPreviewController({
   let timeline = null;
   let playing = false;
   let raf = 0;
-  let lastSource = { type: "url", value: "/build/index.html" };
+  let lastSource = { type: "url", value: "/build/index.html", seekProgress: null, duration: null };
+  let pendingSeekProgress = null;
+  let lastProgress = 0;
   let reloadCount = 0;
 
-  function syncControls() {
+  function sourceDuration(currentTimeline) {
+    const override = Number(lastSource.duration);
+    return Number.isFinite(override) && override > 0 ? override : timelineDuration(currentTimeline);
+  }
+
+  function syncControls(forcedProgress = null) {
     timeline = firstTimeline(iframe);
-    const duration = timelineDuration(timeline);
-    const progress = clamp01(timelineProgress(timeline));
+    const duration = sourceDuration(timeline);
+    const progress = forcedProgress === null ? clamp01(timelineProgress(timeline, lastSource.duration)) : clamp01(forcedProgress);
+    lastProgress = progress;
     if (scrub) scrub.value = String(Math.round(progress * Number(scrub.max || 1000)));
     setTimeLabel(timeLabel, progress, duration || 0);
+  }
+
+  function syncAfterLoad() {
+    timeline = firstTimeline(iframe);
+    if (pendingSeekProgress !== null) {
+      const progress = pendingSeekProgress;
+      pendingSeekProgress = null;
+      seekTimeline(timeline, progress, sourceDuration(timeline));
+      syncControls(progress);
+      return;
+    }
+    syncControls();
   }
 
   function loop() {
@@ -96,20 +126,26 @@ export function createPreviewController({
   }
 
   function setSource(source = {}) {
+    const seekProgress = Number.isFinite(Number(source.seekProgress)) ? clamp01(source.seekProgress) : null;
+    const duration = Number.isFinite(Number(source.duration)) && Number(source.duration) > 0 ? Number(source.duration) : null;
+    pendingSeekProgress = seekProgress;
+    if (seekProgress !== null) lastProgress = seekProgress;
     if (source.html) {
-      lastSource = { type: "html", value: source.html };
+      lastSource = { type: "html", value: source.html, seekProgress, duration };
       iframe.removeAttribute?.("src");
       iframe.srcdoc = source.html;
     } else {
-      lastSource = { type: "url", value: source.url ?? "/build/index.html" };
+      lastSource = { type: "url", value: source.url ?? "/build/index.html", seekProgress, duration };
       iframe.removeAttribute?.("srcdoc");
       iframe.src = lastSource.value;
     }
+    if (seekProgress !== null) syncControls(seekProgress);
   }
 
   function reload() {
     reloadCount += 1;
     setPlaying(false);
+    pendingSeekProgress = lastSource.seekProgress ?? lastProgress;
     if (lastSource.type === "html") {
       iframe.srcdoc = lastSource.value;
     } else if (iframe.contentWindow?.location?.reload) {
@@ -119,12 +155,14 @@ export function createPreviewController({
     }
   }
 
-  iframe.addEventListener?.("load", syncControls);
+  iframe.addEventListener?.("load", syncAfterLoad);
   scrub.addEventListener?.("input", () => {
     const max = Number(scrub.max || 1000);
-    seekTimeline(firstTimeline(iframe), max > 0 ? Number(scrub.value) / max : 0);
+    const progress = max > 0 ? Number(scrub.value) / max : 0;
+    seekTimeline(firstTimeline(iframe), progress, sourceDuration(firstTimeline(iframe)));
+    lastProgress = clamp01(progress);
     setPlaying(false);
-    syncControls();
+    syncControls(lastProgress);
   });
   playButton.addEventListener?.("click", () => {
     timeline = firstTimeline(iframe);
@@ -143,8 +181,8 @@ export function createPreviewController({
     reload,
     syncControls,
     seek: (progress) => {
-      seekTimeline(firstTimeline(iframe), progress);
-      syncControls();
+      seekTimeline(firstTimeline(iframe), progress, sourceDuration(firstTimeline(iframe)));
+      syncControls(progress);
     },
     get reloadCount() {
       return reloadCount;

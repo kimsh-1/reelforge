@@ -41,18 +41,18 @@
         "before": {
           "gen": "gen_01",
           "path": "./assets/images/s01_gen_01.png",
-          "createdAt": "2026-07-07T02:33:06.130Z",
+          "createdAt": "2026-07-07T04:36:08.810Z",
           "note": "mock-image prompt=b76b5d5f7174"
         },
         "after": {
           "gen": "gen_02",
           "path": "./assets/images/s01_gen_02.png",
-          "createdAt": "2026-07-07T02:33:06.723Z",
+          "createdAt": "2026-07-07T04:36:09.492Z",
           "note": "mock-image prompt=b76b5d5f7174"
         },
         "logs": [
-          "pipeline: SKIP tts reason=resume-state inputHash=4729198cd546",
-          "pipeline: RUN images reason=missing-manifest-assets inputHash=eaee81b7447e",
+          "pipeline: SKIP tts reason=resume-state inputHash=338ba7d79f8c",
+          "pipeline: RUN images reason=missing-manifest-assets inputHash=5c5881c21287",
           "pipeline: DONE images provider=mock-image scenes=1 generated=1 reused=0 manifest=image-manifest.json"
         ]
       }
@@ -168,7 +168,7 @@
           }
         },
         "logs": [
-          "pipeline: RUN gate reason=missing-outputs inputHash=2d48b8377799",
+          "pipeline: RUN gate reason=missing-outputs inputHash=8695c39d18d8",
           "pipeline: FAIL gate pipeline gate failed: reports/pipeline-gate-report.json"
         ]
       }
@@ -196,9 +196,9 @@
   "canonicalInputMerkleHash": "a685e4bf048b1b6c49ea1327dd55671c0fd5c287a3aa0d99e5eabcf95f5892c8",
   "evidenceHash": "63e642cd11eb7ede803927148b5386b9d509c815a6f047cbe99eb47770c40fe4",
   "gateScriptHash": "ba2285c3a05518bd8a44431af58692813e1e6069b1366fb8c48da8b6d142218f",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:33:03.660Z",
-  "finishedAt": "2026-07-07T02:33:11.717Z"
+  "startedAt": "2026-07-07T04:36:05.931Z",
+  "finishedAt": "2026-07-07T04:36:15.117Z"
 }

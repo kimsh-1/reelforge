@@ -85,9 +85,9 @@
   "canonicalInputMerkleHash": "f1a0910f5d4e1242dc04f75452b0ceede0298195f64ad7f46c436ccd8e1690bb",
   "evidenceHash": "28b4bde36c33363cbb7aa9b6bb1fa68d9af202a528d9c90f978ff5d29fb5530d",
   "gateScriptHash": "fdbbfde5e975ab943a99bfa06d01d3a98a58a6b145a8a1b84bb842422c886bb0",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "2a3b0d883b133f48152622d328a445c5f118eb93",
   "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:30:44.333Z",
-  "finishedAt": "2026-07-07T02:31:24.107Z"
+  "startedAt": "2026-07-07T02:40:26.737Z",
+  "finishedAt": "2026-07-07T02:41:10.488Z"
 }

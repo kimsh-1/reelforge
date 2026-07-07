@@ -3,8 +3,9 @@ import { actionLabel, impactDetails, renderSceneForm } from "./form.js";
 import { loadSceneSpecsSchema } from "./schema-loader.js";
 import { createPreviewController } from "./preview.js";
 
-const PREVIEW_RELOAD_EVENTS = new Set(["compile.completed", "file.changed", "tts.completed"]);
+const PREVIEW_RELOAD_EVENTS = new Set(["compile.completed", "file.changed"]);
 const TERMINAL_JOB_STATUSES = new Set(["succeeded", "failed"]);
+const DEFAULT_SCENE_PREVIEW_PROGRESS = 0.4;
 
 function createElement(documentRef, tagName, attrs = {}, children = []) {
   const node = documentRef.createElement(tagName);
@@ -26,6 +27,26 @@ function createElement(documentRef, tagName, attrs = {}, children = []) {
 
 function currentScene(state) {
   return state.specs?.scenes?.find((scene) => scene.sceneId === state.selectedSceneId) ?? state.specs?.scenes?.[0] ?? null;
+}
+
+function manifestScene(state, sceneId) {
+  return (state.project?.renderManifest?.scenes ?? []).find((scene) => scene?.sceneId === sceneId) ?? null;
+}
+
+function sceneDurationSec(state, sceneId) {
+  const manifest = manifestScene(state, sceneId);
+  const direct = Number(manifest?.audioDurationSec ?? manifest?.durationSec);
+  if (Number.isFinite(direct) && direct > 0) return direct;
+  const frames = Number(manifest?.durationFrames);
+  const fps = Number(state.project?.renderManifest?.meta?.fps);
+  if (Number.isFinite(frames) && frames > 0 && Number.isFinite(fps) && fps > 0) return frames / fps;
+  return null;
+}
+
+function buildScenePreviewUrl(state, sceneId) {
+  const scene = manifestScene(state, sceneId);
+  const relPath = String(scene?.path ?? "").replace(/^\/+/, "");
+  return relPath ? `/build/${relPath}` : "/build/index.html";
 }
 
 function sceneTitle(scene) {
@@ -52,6 +73,11 @@ function buildShell(documentRef, root) {
 
   const previewPane = createElement(documentRef, "main", { className: "preview-pane" });
   const iframe = createElement(documentRef, "iframe", { className: "preview-frame", title: "preview" });
+  const previewOverlay = createElement(documentRef, "div", {
+    className: "preview-update-overlay",
+    hidden: true,
+    textContent: "갱신 중"
+  });
   const scrub = createElement(documentRef, "input", {
     className: "scrub",
     type: "range",
@@ -68,7 +94,7 @@ function buildShell(documentRef, root) {
   for (let index = 0; index < 54; index += 1) {
     waveform.append(createElement(documentRef, "span", { style: `--h:${18 + ((index * 17) % 64)}%` }));
   }
-  previewPane.append(createElement(documentRef, "div", { className: "frame-wrap" }, iframe), controls, waveform);
+  previewPane.append(createElement(documentRef, "div", { className: "frame-wrap" }, [iframe, previewOverlay]), controls, waveform);
 
   const detailPane = createElement(documentRef, "aside", { className: "detail-pane" });
   const tabs = createElement(documentRef, "div", { className: "tabs" });
@@ -88,6 +114,7 @@ function buildShell(documentRef, root) {
     status,
     sceneList,
     iframe,
+    previewOverlay,
     scrub,
     playButton,
     timeLabel,
@@ -163,7 +190,7 @@ function renderSceneList(documentRef, refs, state, selectScene, api) {
   }
 }
 
-function renderImpact(documentRef, refs, state, performAction) {
+function renderImpact(documentRef, refs, state, performAction, reloadProject) {
   refs.impact.replaceChildren();
   const impact = state.lastImpact;
   const details = impactDetails(impact?.class);
@@ -174,6 +201,15 @@ function renderImpact(documentRef, refs, state, performAction) {
   refs.impact.append(badge);
 
   if (impact?.reason) refs.impact.append(createElement(documentRef, "span", { className: "impact-reason", textContent: impact.reason }));
+  if (state.needsReload) {
+    const reload = createElement(documentRef, "button", {
+      type: "button",
+      className: "secondary-button",
+      textContent: "재로드"
+    });
+    reload.addEventListener("click", () => reloadProject?.());
+    refs.impact.append(reload);
+  }
   const rawActions = impact?.actions ?? [];
   const actions = rawActions.includes("pipeline:tts") ? ["pipeline:tts"] : rawActions;
   if (actions.length === 0) return;
@@ -279,7 +315,7 @@ function renderTransitions({ documentRef, refs, state, saveTransitions }) {
   refs.detailBody.append(form);
 }
 
-function renderVersions({ documentRef, refs, state, selectVersion }) {
+function renderVersions({ documentRef, refs, state, selectVersion, rollbackVersion }) {
   refs.detailBody.replaceChildren();
   const resources = state.project?.versions?.resources ?? {};
   const names = Object.keys(resources).sort((a, b) => a.localeCompare(b));
@@ -291,7 +327,18 @@ function renderVersions({ documentRef, refs, state, selectVersion }) {
   for (const resourceType of names) {
     const history = resources[resourceType];
     const section = createElement(documentRef, "section", { className: "version-resource" });
-    section.append(createElement(documentRef, "h3", { textContent: resourceType }));
+    const head = createElement(documentRef, "div", { className: "version-resource-head" });
+    head.append(createElement(documentRef, "h3", { textContent: resourceType }));
+    if ((history.entries ?? []).length > 1) {
+      const rollback = createElement(documentRef, "button", {
+        type: "button",
+        className: "secondary-button",
+        textContent: "롤백"
+      });
+      rollback.addEventListener("click", () => rollbackVersion(resourceType));
+      head.append(rollback);
+    }
+    section.append(head);
     for (const entry of history.entries ?? []) {
       const selected = entry.gen === history.selected;
       const row = createElement(documentRef, "div", { className: `version-row${selected ? " is-selected" : ""}` });
@@ -335,12 +382,17 @@ export async function createStudioPanel({
   const state = {
     project: null,
     specs: null,
+    specsHash: null,
     selectedSceneId: null,
     activeTab: "scene",
     lastImpact: null,
     lastEvent: null,
     lastError: null,
-    previewReloadPending: false,
+    needsReload: false,
+    previewUpdating: false,
+    previewUpdateFailed: false,
+    previewCompileJobId: null,
+    previewSourceVersion: 0,
     renderJobsByScene: {},
     scenePreviews: {}
   };
@@ -352,22 +404,74 @@ export async function createStudioPanel({
       button.classList.toggle("is-active", button.dataset.tab === state.activeTab);
     }
     if (state.activeTab === "transitions") renderTransitions({ documentRef, refs, state, saveTransitions });
-    else if (state.activeTab === "versions") renderVersions({ documentRef, refs, state, selectVersion });
+    else if (state.activeTab === "versions") renderVersions({ documentRef, refs, state, selectVersion, rollbackVersion });
     else renderSceneDetail({ documentRef, refs, state, rootSchema, saveScene });
   }
 
   function render() {
     renderStatus(documentRef, refs, state, api);
     renderSceneList(documentRef, refs, state, selectScene, api);
-    renderImpact(documentRef, refs, state, performAction);
+    renderImpact(documentRef, refs, state, performAction, reloadProject);
     renderRight();
+    renderPreviewOverlay();
   }
 
   async function refreshProject() {
     state.project = await api.getProject();
     state.specs = state.project.specs ?? (await api.getSpecs());
+    state.specsHash = state.project.specsHash ?? null;
     if (!state.selectedSceneId) state.selectedSceneId = state.specs?.scenes?.[0]?.sceneId ?? null;
     for (const job of state.project.status?.jobs ?? []) upsertJob(job);
+  }
+
+  function renderPreviewOverlay() {
+    refs.previewOverlay.hidden = !state.previewUpdating && !state.previewUpdateFailed;
+    refs.previewOverlay.textContent = state.previewUpdateFailed ? "갱신 실패" : "갱신 중";
+  }
+
+  function setPreviewUpdating(job = null) {
+    state.previewUpdating = true;
+    state.previewUpdateFailed = false;
+    if (job?.id) state.previewCompileJobId = job.id;
+    renderPreviewOverlay();
+  }
+
+  function setPreviewSettled({ failed = false } = {}) {
+    state.previewUpdating = false;
+    state.previewUpdateFailed = failed;
+    state.previewCompileJobId = null;
+    renderPreviewOverlay();
+  }
+
+  function setPreviewForSelected({ resetSeek = true } = {}) {
+    const scene = currentScene(state);
+    if (!scene) return;
+    const duration = sceneDurationSec(state, scene.sceneId);
+    const seekProgress = resetSeek ? DEFAULT_SCENE_PREVIEW_PROGRESS : undefined;
+    if (api.isMock && typeof api.mockPreviewHtml === "function") {
+      preview.setSource({
+        html: api.mockPreviewHtml(),
+        seekProgress,
+        duration: duration ?? undefined
+      });
+      return;
+    }
+    state.previewSourceVersion += 1;
+    const url = buildScenePreviewUrl(state, scene.sceneId);
+    preview.setSource({
+      url: `${url}${url.includes("?") ? "&" : "?"}rfv=${state.previewSourceVersion}`,
+      seekProgress,
+      duration: duration ?? undefined
+    });
+  }
+
+  async function reloadProject() {
+    state.needsReload = false;
+    state.lastImpact = null;
+    state.lastError = null;
+    await refreshProject();
+    setPreviewForSelected();
+    render();
   }
 
   function artifactUrl(relPath) {
@@ -378,6 +482,12 @@ export async function createStudioPanel({
 
   function upsertJob(job) {
     if (!job?.id) return;
+    if (job.type === "compile") {
+      if (["queued", "running"].includes(job.status)) setPreviewUpdating(job);
+      else if (job.id === state.previewCompileJobId && job.status === "failed") setPreviewSettled({ failed: true });
+      else if (job.id === state.previewCompileJobId && job.status === "succeeded") setPreviewSettled();
+      return;
+    }
     if (job.type !== "render" || !job.sceneId) return;
     state.renderJobsByScene[job.sceneId] = job;
     if (job.status === "succeeded" && job.output) {
@@ -404,6 +514,17 @@ export async function createStudioPanel({
         const payload = await api.getJob(jobId);
         const job = payload.job ?? payload;
         upsertJob(job);
+        if (job.type === "compile" && TERMINAL_JOB_STATUSES.has(job.status)) {
+          if (job.status === "succeeded") {
+            setPreviewSettled();
+            await refreshProject();
+            setPreviewForSelected();
+          } else {
+            setPreviewSettled({ failed: true });
+          }
+          render();
+          return;
+        }
         renderStatus(documentRef, refs, state, api);
         renderSceneList(documentRef, refs, state, selectScene, api);
         if (TERMINAL_JOB_STATUSES.has(job.status)) return;
@@ -420,6 +541,7 @@ export async function createStudioPanel({
   function selectScene(sceneId) {
     state.selectedSceneId = sceneId;
     state.activeTab = "scene";
+    setPreviewForSelected();
     render();
   }
 
@@ -431,26 +553,48 @@ export async function createStudioPanel({
       return;
     }
     try {
-      const result = await api.patchScene(scene.sceneId, patch);
+      const result = await api.patchScene(scene.sceneId, patch, { ifMatch: state.specsHash });
       state.lastImpact = result;
+      state.needsReload = false;
+      if (result.specsHash) state.specsHash = result.specsHash;
+      if (result.compileJob) {
+        setPreviewUpdating(result.compileJob);
+        pollJob(result.compileJob.id);
+      }
       await refreshProject();
       render();
     } catch (error) {
       state.lastError = error;
-      state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      if (error.status === 409) {
+        state.needsReload = true;
+        state.lastImpact = { class: "E3", actions: [], reason: "다른 곳에서 수정됨" };
+      } else {
+        state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      }
       render();
     }
   }
 
   async function saveTransitions(transitions) {
     try {
-      const result = await api.patchTransitions(transitions);
+      const result = await api.patchTransitions(transitions, { ifMatch: state.specsHash });
       state.lastImpact = result;
+      state.needsReload = false;
+      if (result.specsHash) state.specsHash = result.specsHash;
+      if (result.compileJob) {
+        setPreviewUpdating(result.compileJob);
+        pollJob(result.compileJob.id);
+      }
       await refreshProject();
       render();
     } catch (error) {
       state.lastError = error;
-      state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      if (error.status === 409) {
+        state.needsReload = true;
+        state.lastImpact = { class: "E3", actions: [], reason: "다른 곳에서 수정됨" };
+      } else {
+        state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      }
       render();
     }
   }
@@ -458,11 +602,24 @@ export async function createStudioPanel({
   async function performAction(action) {
     const scene = currentScene(state);
     try {
-      if (action === "compile:scene") await api.compile({ scope: "scene", sceneId: scene?.sceneId ?? null });
-      else if (action === "compile:full") await api.compile({ scope: "full" });
-      else if (action === "pipeline:tts" && scene) {
+      if (action === "compile:scene") {
+        const result = await api.compile({ scope: "scene", sceneId: scene?.sceneId ?? null });
+        if (result.job) {
+          setPreviewUpdating(result.job);
+          pollJob(result.job.id);
+        }
+      } else if (action === "compile:full") {
+        const result = await api.compile({ scope: "full" });
+        if (result.job) {
+          setPreviewUpdating(result.job);
+          pollJob(result.job.id);
+        }
+      } else if (action === "pipeline:tts" && scene) {
         const result = await api.runTts([scene.sceneId]);
-        if (result.compileJob) upsertJob(result.compileJob);
+        if (result.compileJob) {
+          setPreviewUpdating(result.compileJob);
+          pollJob(result.compileJob.id);
+        }
         await refreshProject();
       }
       state.lastEvent = { event: action, data: { status: "queued" } };
@@ -476,7 +633,11 @@ export async function createStudioPanel({
 
   async function selectVersion(resourceType, gen) {
     try {
-      await api.selectVersion(resourceType, gen);
+      const result = await api.selectVersion(resourceType, gen);
+      if (result.compileJob) {
+        setPreviewUpdating(result.compileJob);
+        pollJob(result.compileJob.id);
+      }
       await refreshProject();
       render();
     } catch (error) {
@@ -486,13 +647,20 @@ export async function createStudioPanel({
     }
   }
 
-  function schedulePreviewReload() {
-    if (state.previewReloadPending) return;
-    state.previewReloadPending = true;
-    windowRef.setTimeout?.(() => {
-      preview.reload();
-      state.previewReloadPending = false;
-    }, 60);
+  async function rollbackVersion(resourceType) {
+    try {
+      const result = await api.rollbackVersion(resourceType);
+      if (result.compileJob) {
+        setPreviewUpdating(result.compileJob);
+        pollJob(result.compileJob.id);
+      }
+      await refreshProject();
+      render();
+    } catch (error) {
+      state.lastError = error;
+      state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      render();
+    }
   }
 
   refs.renderButton.addEventListener("click", async () => {
@@ -518,16 +686,35 @@ export async function createStudioPanel({
     });
   }
 
-  const subscription = api.subscribeEvents(({ event, data }) => {
+  async function handleServerEvent({ event, data }) {
     state.lastEvent = { event, data };
     if (event === "render.status") upsertJob(data);
-    if (PREVIEW_RELOAD_EVENTS.has(event)) schedulePreviewReload();
-    renderStatus(documentRef, refs, state, api);
-    if (event === "render.status") renderSceneList(documentRef, refs, state, selectScene, api);
+    if (event === "compile.completed") {
+      setPreviewSettled();
+      await refreshProject();
+      setPreviewForSelected();
+    } else if (event === "compile.failed") {
+      setPreviewSettled({ failed: true });
+      await refreshProject();
+    } else if (event === "file.changed") {
+      await refreshProject();
+      if (data?.path !== "versions.json") setPreviewForSelected({ resetSeek: false });
+    } else if (PREVIEW_RELOAD_EVENTS.has(event)) {
+      await refreshProject();
+    }
+    render();
+  }
+
+  const subscription = api.subscribeEvents((message) => {
+    handleServerEvent(message).catch((error) => {
+      state.lastError = error;
+      state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      render();
+    });
   });
 
   await refreshProject();
-  preview.setSource(api.isMock && typeof api.mockPreviewHtml === "function" ? { html: api.mockPreviewHtml() } : { url: "/build/index.html" });
+  setPreviewForSelected();
   render();
 
   return {

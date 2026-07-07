@@ -18,12 +18,15 @@ import {
   normalizeRelPath,
   readJsonFile
 } from "../../compiler/utils.mjs";
-import { writeJsonViaVf } from "../../pipeline/core/io.mjs";
+import { sha256Json, writeJsonViaVf } from "../../pipeline/core/io.mjs";
 import {
   EditLockConflictError,
+  SCENE_SPECS_RESOURCE,
   acquireEditLock,
   beforeSceneSpecsWrite,
-  loadVersions
+  loadVersions,
+  rollbackGeneration,
+  selectGeneration
 } from "../../pipeline/versions-impl/index.mjs";
 import { compileStudioProject, runStudioTtsStep } from "../loop/index.mjs";
 import { StudioEventHub } from "./events.mjs";
@@ -113,6 +116,15 @@ function resolveStaticPath(rootDir, requestRelPath) {
   return resolved;
 }
 
+function realPathInsideServedRoot(rootDir, filePath) {
+  const rootRealPath = realpathSync(rootDir);
+  const fileRealPath = realpathSync(filePath);
+  if (!isPathInsideRoot(fileRealPath, rootRealPath)) {
+    throw new HttpError(403, "path must stay inside the served root");
+  }
+  return fileRealPath;
+}
+
 function serveFile(req, res, rootDir, requestRelPath, { spaFallback = false } = {}) {
   if (!["GET", "HEAD"].includes(req.method)) throw new HttpError(405, "method not allowed");
   let filePath = resolveStaticPath(rootDir, requestRelPath);
@@ -125,6 +137,7 @@ function serveFile(req, res, rootDir, requestRelPath, { spaFallback = false } = 
   if (!existsSync(filePath) || !statSync(filePath).isFile()) {
     throw new HttpError(404, "file not found");
   }
+  const streamPath = realPathInsideServedRoot(rootDir, filePath);
   res.writeHead(200, {
     "content-type": contentType(filePath),
     "cache-control": "no-store"
@@ -133,7 +146,7 @@ function serveFile(req, res, rootDir, requestRelPath, { spaFallback = false } = 
     res.end();
     return;
   }
-  createReadStream(filePath).pipe(res);
+  createReadStream(streamPath).pipe(res);
 }
 
 function readJsonIfExists(filePath) {
@@ -180,6 +193,38 @@ function publicJob(job) {
   return safe;
 }
 
+function specsHash(specs) {
+  return sha256Json(specs);
+}
+
+function cleanIfMatch(value) {
+  return String(value ?? "")
+    .trim()
+    .replace(/^W\//, "")
+    .replace(/^"|"$/g, "");
+}
+
+function assertSpecsMatch(req, specs) {
+  const raw = req.headers["if-match"];
+  const actual = specsHash(specs);
+  if (typeof raw !== "string" || raw.trim().length === 0) {
+    throw new HttpError(428, "If-Match header with scene_specs hash is required", {
+      code: "IF_MATCH_REQUIRED",
+      actual
+    });
+  }
+  const accepted = raw
+    .split(",")
+    .map(cleanIfMatch)
+    .filter(Boolean);
+  if (accepted.includes("*") || accepted.includes(actual)) return actual;
+  throw new HttpError(409, "scene_specs changed since this panel loaded", {
+    code: "SPEC_HASH_MISMATCH",
+    expected: accepted,
+    actual
+  });
+}
+
 function withProjectRootEnv(projectDir, callback) {
   const previous = process.env.VF_PROJECT_ROOTS;
   process.env.VF_PROJECT_ROOTS = [previous, projectDir].filter(Boolean).join(path.delimiter);
@@ -208,6 +253,7 @@ function scenePathFromManifest(projectDir, sceneId) {
   if (!existsSync(scenePath) || !statSync(scenePath).isFile()) {
     throw new HttpError(404, `compiled scene file is missing: ${scene.path}`);
   }
+  realPathInsideServedRoot(buildDir, scenePath);
   return normalizeRelPath(path.relative(buildDir, scenePath));
 }
 
@@ -236,6 +282,9 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
   const childJobs = new Set();
   let closed = false;
   let lastInternalSceneSpecsWriteAt = 0;
+  let activeCompileJob = null;
+  let queuedCompileJob = null;
+  let compilePumpScheduled = false;
 
   function markInternalSceneSpecsWrite() {
     lastInternalSceneSpecsWriteAt = Date.now();
@@ -325,8 +374,41 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     return job;
   }
 
-  function startCompileJob({ scope = "full", sceneId = null, reason = "manual" } = {}) {
-    const job = createJob("compile", { scope, sceneId, reason });
+  function compileKey({ scope, sceneId }) {
+    return `${scope}:${scope === "scene" ? sceneId ?? "" : "*"}`;
+  }
+
+  function compileCovers(job, { scope, sceneId }) {
+    if (!job || !["queued", "running"].includes(job.status)) return false;
+    if (job.scope === "full") return true;
+    return job.scope === scope && (scope !== "scene" || job.sceneId === sceneId);
+  }
+
+  function promoteQueuedCompileJob(job, reason) {
+    if (!job || job.scope === "full") return job;
+    Object.assign(job, {
+      scope: "full",
+      sceneId: null,
+      reason: `${job.reason}+${reason}`,
+      compileKey: "full:*",
+      coalesced: true,
+      updatedAt: new Date().toISOString()
+    });
+    return job;
+  }
+
+  function scheduleCompilePump() {
+    if (compilePumpScheduled) return;
+    compilePumpScheduled = true;
+    setImmediate(runNextCompileJob);
+  }
+
+  function runNextCompileJob() {
+    compilePumpScheduled = false;
+    if (activeCompileJob || !queuedCompileJob || closed) return;
+    const job = queuedCompileJob;
+    queuedCompileJob = null;
+    activeCompileJob = job;
     setImmediate(() => {
       try {
         updateJob(job, "running");
@@ -335,8 +417,8 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
             repoRoot: absoluteRepoRoot,
             projectDir: absoluteProjectDir,
             presetPath: DEFAULT_PRESET,
-            scope,
-            sceneId
+            scope: job.scope,
+            sceneId: job.sceneId
           })
         );
         updateJob(job, "succeeded", {
@@ -353,8 +435,30 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
           error: error instanceof Error ? error.message : String(error)
         });
         eventHub.emitDebounced(`compile:${job.id}:failed`, "compile.failed", publicJob(job));
+      } finally {
+        activeCompileJob = null;
+        if (queuedCompileJob) scheduleCompilePump();
       }
     });
+  }
+
+  function startCompileJob({ scope = "full", sceneId = null, reason = "manual" } = {}) {
+    const requested = { scope, sceneId: scope === "scene" ? sceneId : null };
+    if (compileCovers(activeCompileJob, requested)) return activeCompileJob;
+    if (compileCovers(queuedCompileJob, requested)) return queuedCompileJob;
+
+    if (queuedCompileJob) {
+      return promoteQueuedCompileJob(queuedCompileJob, reason);
+    }
+
+    const job = createJob("compile", {
+      scope: requested.scope,
+      sceneId: requested.sceneId,
+      reason,
+      compileKey: compileKey(requested)
+    });
+    queuedCompileJob = job;
+    scheduleCompilePump();
     return job;
   }
 
@@ -434,8 +538,10 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     return {
       projectDir: absoluteProjectDir,
       specs,
+      specsHash: specs ? specsHash(specs) : null,
       audio_meta: audioMeta,
       versions,
+      renderManifest,
       status: {
         sceneCount: specs?.scenes?.length ?? 0,
         audioSceneCount: audioMeta?.scenes?.length ?? 0,
@@ -459,6 +565,7 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     assertAllowedSceneFields(patchFields);
 
     const beforeSpecs = readJsonFile(path.join(absoluteProjectDir, "scene_specs.json"));
+    assertSpecsMatch(req, beforeSpecs);
     const { scene, index } = findScene(beforeSpecs, sceneId);
     const afterSpecs = structuredClone(beforeSpecs);
     afterSpecs.scenes[index] = { ...scene, ...patchFields };
@@ -482,6 +589,7 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
       sceneId,
       changedFields,
       scene: afterSpecs.scenes[index],
+      specsHash: specsHash(afterSpecs),
       backup: save.backup,
       compileJob: compileJob ? publicJob(compileJob) : null
     });
@@ -493,6 +601,7 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     if (!Array.isArray(transitions)) throw new HttpError(400, "transitions must be an array");
 
     const beforeSpecs = readJsonFile(path.join(absoluteProjectDir, "scene_specs.json"));
+    assertSpecsMatch(req, beforeSpecs);
     const afterSpecs = { ...structuredClone(beforeSpecs), transitions };
     const impact = classifyStudioImpact({
       beforeSpecs,
@@ -508,6 +617,7 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
       class: impact.class,
       actions: impact.actions,
       reason: impact.reason,
+      specsHash: specsHash(afterSpecs),
       backup: save.backup,
       compileJob: publicJob(compileJob)
     });
@@ -559,6 +669,121 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     });
   }
 
+  function mapVersionEndpointError(error) {
+    if (error instanceof HttpError) throw error;
+    if (error instanceof EditLockConflictError) mapConflict(error);
+    const message = error instanceof Error ? error.message : String(error);
+    if (/^unknown versions resource:/.test(message) || /^unknown generation for /.test(message)) {
+      throw new HttpError(404, message);
+    }
+    if (/^no rollback target /.test(message)) {
+      throw new HttpError(409, message);
+    }
+    throw new HttpError(400, message);
+  }
+
+  function restoreSceneSpecsFromSelected(selected) {
+    if (!selected?.path) throw new HttpError(404, "selected scene_specs generation has no path");
+    const sourcePath = resolveStaticPath(absoluteProjectDir, selected.path.replace(/^\.\//, ""));
+    if (!existsSync(sourcePath) || !statSync(sourcePath).isFile()) {
+      throw new HttpError(404, `selected scene_specs generation is missing: ${selected.path}`);
+    }
+    const realSourcePath = realPathInsideServedRoot(absoluteProjectDir, sourcePath);
+    const sceneSpecs = readJsonFile(realSourcePath);
+    markInternalSceneSpecsWrite();
+    const write = writeSceneSpecsFile(sceneSpecs, { allowStaleAudioMeta: true });
+    markInternalSceneSpecsWrite();
+    return write;
+  }
+
+  async function selectVersionEndpoint(req, res, resourceTypeFromPath = null) {
+    const body = await readJsonBody(req);
+    const resourceType = resourceTypeFromPath ?? body.resourceType;
+    const gen = body.gen ?? body.selected;
+    if (typeof resourceType !== "string" || resourceType.length === 0) {
+      throw new HttpError(400, "resourceType is required");
+    }
+    if (typeof gen !== "string" || gen.length === 0) throw new HttpError(400, "gen is required");
+    try {
+      const selected = selectGeneration({
+        repoRoot: absoluteRepoRoot,
+        projectDir: absoluteProjectDir,
+        resourceType,
+        gen,
+        owner: STUDIO_OWNER
+      });
+      let restore = null;
+      let compileJob = null;
+      if (body.restore === true && resourceType === SCENE_SPECS_RESOURCE) {
+        restore = restoreSceneSpecsFromSelected(selected);
+        compileJob = startCompileJob({ scope: "full", reason: "version-select" });
+        eventHub.emitDebounced("file:scene_specs", "file.changed", {
+          path: "scene_specs.json",
+          projectDir: absoluteProjectDir
+        });
+      }
+      eventHub.emitDebounced("file:versions", "file.changed", {
+        path: "versions.json",
+        resourceType,
+        gen
+      });
+      sendJson(res, 200, {
+        resourceType,
+        selected: gen,
+        entry: selected,
+        restore,
+        compileJob: compileJob ? publicJob(compileJob) : null,
+        versions: loadVersions(absoluteProjectDir)
+      });
+    } catch (error) {
+      mapVersionEndpointError(error);
+    }
+  }
+
+  async function rollbackVersionEndpoint(req, res) {
+    const body = await readJsonBody(req);
+    const resourceType = body.resourceType;
+    if (typeof resourceType !== "string" || resourceType.length === 0) {
+      throw new HttpError(400, "resourceType is required");
+    }
+    try {
+      const selected = rollbackGeneration({
+        repoRoot: absoluteRepoRoot,
+        projectDir: absoluteProjectDir,
+        resourceType,
+        targetGen: body.targetGen ?? body.gen ?? null,
+        owner: STUDIO_OWNER
+      });
+      let restore = null;
+      let compileJob = null;
+      if (body.restore === true && resourceType === SCENE_SPECS_RESOURCE) {
+        restore = restoreSceneSpecsFromSelected(selected);
+        compileJob = startCompileJob({ scope: "full", reason: "version-rollback" });
+      }
+      eventHub.emitDebounced("file:versions", "file.changed", {
+        path: "versions.json",
+        resourceType,
+        gen: selected?.gen ?? null
+      });
+      if (compileJob) {
+        eventHub.emitDebounced("file:scene_specs", "file.changed", {
+          path: "scene_specs.json",
+          projectDir: absoluteProjectDir
+        });
+      }
+      sendJson(res, 200, {
+        resourceType,
+        selected: selected?.gen ?? null,
+        entry: selected,
+        restore,
+        compileJob: compileJob ? publicJob(compileJob) : null,
+        versions: loadVersions(absoluteProjectDir)
+      });
+    } catch (error) {
+      mapVersionEndpointError(error);
+    }
+  }
+
   async function route(req, res) {
     const pathname = safeUrlPathname(req);
     if (pathname === "/") {
@@ -604,6 +829,22 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     if (pathname === "/api/pipeline/tts") {
       if (req.method !== "POST") throw new HttpError(405, "method not allowed");
       await ttsEndpoint(req, res);
+      return;
+    }
+    if (pathname === "/api/versions/select") {
+      if (!["POST", "PATCH"].includes(req.method)) throw new HttpError(405, "method not allowed");
+      await selectVersionEndpoint(req, res);
+      return;
+    }
+    if (pathname === "/api/versions/rollback") {
+      if (!["POST", "PATCH"].includes(req.method)) throw new HttpError(405, "method not allowed");
+      await rollbackVersionEndpoint(req, res);
+      return;
+    }
+    const legacyVersionMatch = /^\/api\/versions\/([^/]+)$/.exec(pathname);
+    if (legacyVersionMatch) {
+      if (req.method !== "PATCH") throw new HttpError(405, "method not allowed");
+      await selectVersionEndpoint(req, res, decodeURIComponent(legacyVersionMatch[1]));
       return;
     }
     const jobMatch = /^\/api\/jobs\/([^/]+)$/.exec(pathname);

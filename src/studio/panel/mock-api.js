@@ -173,15 +173,23 @@ function makeJob(type, patch = {}) {
 }
 
 function projectPayload(state) {
+  const scenes = state.specs.scenes.map((scene) => ({
+    sceneId: scene.sceneId,
+    path: `scenes/scene-${scene.sceneId}.html`,
+    audioDurationSec: 3.2,
+    durationFrames: 96
+  }));
   return {
     projectDir: "/mock/reelforge-studio",
     specs: clone(state.specs),
+    specsHash: String(JSON.stringify(state.specs).length),
     audio_meta: {
       version: "1.0.0",
       projectId: state.specs.projectId,
       scenes: state.specs.scenes.map((scene) => ({ sceneId: scene.sceneId, duration: 3.2, sourceHash: `mock-${scene.sceneId}` }))
     },
     versions: clone(state.versions),
+    renderManifest: { scenes },
     status: {
       sceneCount: state.specs.scenes.length,
       audioSceneCount: state.specs.scenes.length,
@@ -357,6 +365,18 @@ export function createMockApi({ initialSpecs = mockSpecs(), initialVersions = mo
       state.versions.dirty = true;
       emit("file.changed", { path: "versions.json", resourceType, gen });
       return { resourceType, selected: gen, history: clone(history) };
+    },
+    rollbackVersion: async (resourceType, targetGen = null) => {
+      const history = state.versions.resources?.[resourceType];
+      if (!history) throw new Error(`unknown resource: ${resourceType}`);
+      const entries = [...history.entries].sort((a, b) => a.gen.localeCompare(b.gen));
+      const currentIndex = entries.findIndex((entry) => entry.gen === history.selected);
+      const nextGen = targetGen ?? entries[Math.max(0, currentIndex - 1)]?.gen;
+      if (!nextGen) throw new Error(`no rollback target for ${resourceType}`);
+      history.selected = nextGen;
+      state.versions.dirty = true;
+      emit("file.changed", { path: "versions.json", resourceType, gen: nextGen });
+      return { resourceType, selected: nextGen, history: clone(history) };
     },
     subscribeEvents: (callback) => {
       listeners.add(callback);

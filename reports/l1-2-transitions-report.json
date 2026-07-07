@@ -2145,12 +2145,12 @@
     "tests/gate-wrappers/l1-2-transitions.mjs",
     "tests/transitions-matrix.mjs"
   ],
-  "canonicalInputMerkleHash": "7f867c44f11d96f6d0ee45bf4ee8af421f31793a7b46fa5d5bfef373d4504a43",
-  "evidenceHash": "28f26897f92b6ef52b7f2bbb7caf329b27b3cd6ad286d4ec0cee4ba18a2d2d1a",
+  "canonicalInputMerkleHash": "57ca4ad2ac1af941faf70c67bcfdc2bd20eefa438ae0364838ea96be140b3b5b",
+  "evidenceHash": "cc2bfa58ce0b9b22194f9a37bc28e8c715f0c68887b4bcb9fd790938f98cf1f3",
   "gateScriptHash": "1279edd035e277ea30e347e80d5e8e2aedc89d133b0cbe2481ecad3afb137bb1",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:32:17.760Z",
-  "finishedAt": "2026-07-07T02:32:35.846Z"
+  "startedAt": "2026-07-07T04:35:18.075Z",
+  "finishedAt": "2026-07-07T04:35:36.681Z"
 }

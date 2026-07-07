@@ -43,9 +43,101 @@ function runtimeReadyScript() {
     </script>`;
 }
 
+function templateBounds(html) {
+  const openMatch = html.match(/<template\b[^>]*>/i);
+  if (!openMatch || openMatch.index === undefined) return null;
+  const openStart = openMatch.index;
+  const openEnd = openStart + openMatch[0].length;
+  const closeMatch = html.slice(openEnd).match(/<\/template>/i);
+  if (!closeMatch || closeMatch.index === undefined) return null;
+  const closeStart = openEnd + closeMatch.index;
+  const closeEnd = closeStart + closeMatch[0].length;
+  return { openStart, openEnd, closeStart, closeEnd };
+}
+
+function rootBounds(templateContent) {
+  const openMatch = templateContent.match(/<([A-Za-z][\w:-]*)\b(?=[^>]*\bdata-composition-id\s*=)[^>]*>/i);
+  if (!openMatch || openMatch.index === undefined) return null;
+  const tagName = openMatch[1];
+  const openStart = openMatch.index;
+  const openEnd = openStart + openMatch[0].length;
+  const tagPattern = new RegExp(`</?${tagName}\\b[^>]*>`, "gi");
+  tagPattern.lastIndex = openStart;
+  let depth = 0;
+  let match;
+  while ((match = tagPattern.exec(templateContent))) {
+    const tag = match[0];
+    const isClose = /^<\//.test(tag);
+    const isSelfClosing = /\/>$/.test(tag);
+    if (isClose) {
+      depth -= 1;
+      if (depth === 0) {
+        return {
+          tagName,
+          openStart,
+          openEnd,
+          closeStart: match.index,
+          closeEnd: match.index + tag.length
+        };
+      }
+    } else if (!isSelfClosing) {
+      depth += 1;
+    }
+  }
+  return null;
+}
+
+function splitTransportAssets(fragment) {
+  const assets = [];
+  let clean = fragment;
+  while (true) {
+    const match = clean.match(/^\s*<(style|script)\b[^>]*>[\s\S]*?<\/\1>\s*/i);
+    if (!match) break;
+    assets.push(match[0].trim());
+    clean = clean.slice(match[0].length);
+  }
+  return { clean, assets };
+}
+
+function rewriteTemplateRoot(html, rewrite) {
+  const template = templateBounds(html);
+  if (!template) return null;
+  const templateContent = html.slice(template.openEnd, template.closeStart);
+  const root = rootBounds(templateContent);
+  if (!root) return null;
+  const nextContent = rewrite({ templateContent, root });
+  if (typeof nextContent !== "string") return null;
+  return `${html.slice(0, template.openEnd)}${nextContent}${html.slice(template.closeStart)}`;
+}
+
+export function inlineBlockTransportAssets(html) {
+  return (
+    rewriteTemplateRoot(html, ({ templateContent, root }) => {
+      const before = splitTransportAssets(templateContent.slice(0, root.openStart));
+      const after = splitTransportAssets(templateContent.slice(root.closeEnd));
+      if (before.assets.length === 0 && after.assets.length === 0) return templateContent;
+
+      const rootOpen = templateContent.slice(root.openStart, root.openEnd);
+      const rootInner = templateContent.slice(root.openEnd, root.closeStart);
+      const rootClose = templateContent.slice(root.closeStart, root.closeEnd);
+      const beforeAssets = before.assets.length > 0 ? `\n${before.assets.join("\n")}\n` : "";
+      const afterAssets = after.assets.length > 0 ? `\n${after.assets.join("\n")}\n` : "";
+      return `${before.clean}${rootOpen}${beforeAssets}${rootInner}${afterAssets}${rootClose}${after.clean}`;
+    }) ?? html
+  );
+}
+
+function injectIntoTemplateRoot(html, snippet) {
+  return rewriteTemplateRoot(html, ({ templateContent, root }) => {
+    return `${templateContent.slice(0, root.closeStart)}\n${snippet}\n${templateContent.slice(root.closeStart)}`;
+  });
+}
+
 export function injectBlockRuntimeReady(html) {
   if (html.includes(`data-rf-runtime-ready="${BLOCK_RUNTIME_READY_VERSION}"`)) return html;
   const script = `\n${runtimeReadyScript()}\n`;
+  const inTemplate = injectIntoTemplateRoot(html, script);
+  if (inTemplate) return inTemplate;
   if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, `${script}  </body>`);
   if (/<\/html>/i.test(html)) return html.replace(/<\/html>/i, `${script}</html>`);
   return `${html}${script}`;
@@ -88,7 +180,7 @@ export function resolveBlock({ repoRoot, buildDir, layout }) {
   const targetRel = normalizeRelPath(path.join("blocks", layout, "block.html"));
   const targetPath = path.join(buildDir, targetRel);
   mkdirSync(path.dirname(targetPath), { recursive: true });
-  writeFileSync(targetPath, injectBlockRuntimeReady(html));
+  writeFileSync(targetPath, injectBlockRuntimeReady(inlineBlockTransportAssets(html)));
 
   return {
     kind: "block",

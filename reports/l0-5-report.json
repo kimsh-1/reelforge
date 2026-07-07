@@ -7,7 +7,7 @@
       "id": "scene-specs-duration-intrusion",
       "pass": true,
       "measured": {
-        "filesChecked": 4,
+        "filesChecked": 7,
         "allowedDurationPaths": [
           "/transitions/<index>/duration"
         ],
@@ -16,17 +16,20 @@
     }
   ],
   "inputSet": [
+    "demos/d1-usage/scene_specs.json",
+    "demos/d2-engine/scene_specs.json",
+    "demos/d3-intro/scene_specs.json",
     "fixtures/golden-specs/edit-scenario/scene_specs.json",
     "fixtures/golden-specs/full-8types/scene_specs.json",
     "fixtures/golden-specs/minimal-3scene/scene_specs.json",
     "fixtures/golden-specs/stress-edge/scene_specs.json"
   ],
-  "canonicalInputMerkleHash": "33cabea4ab26e65ae143ba16f3ee148c33c0334e86d7e411c73bfddfc7fdb626",
-  "evidenceHash": "b0a900d84b0a250af8e5fee5e34341c227f177b780f2ad2369ad12721d336977",
-  "gateScriptHash": "4471620f9a8bbda9b948b9ca2c5d0188f7cd63f60a490ecaf807dcf97134c7f4",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "canonicalInputMerkleHash": "c6ede858b34bc3b29eacbeaf42f851c31d90c912c160801a6663b1a760347348",
+  "evidenceHash": "d1d834a8dd87c91dc5da8659f023088b45df1d0e6708853dd501ade1d8938c7e",
+  "gateScriptHash": "73e825accff91eed3ce699325934f512b915d16a746b35538c6c343a4fc102b9",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:32:13.193Z",
-  "finishedAt": "2026-07-07T02:32:13.207Z"
+  "startedAt": "2026-07-07T04:35:12.341Z",
+  "finishedAt": "2026-07-07T04:35:12.821Z"
 }

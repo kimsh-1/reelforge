@@ -243,12 +243,12 @@
     "src/compiler/compiler.mjs",
     "tests/gate-wrappers/l1-9-blocks.mjs"
   ],
-  "canonicalInputMerkleHash": "0fb0719f614430d1a47c373e1dab2538d9e78ca2cd5d2e819a321762a7caaf02",
-  "evidenceHash": "f769eb15c8540a0e0a327fe7922dc151d90a9003b3ccd1e8b35ac424ca4e8e5b",
+  "canonicalInputMerkleHash": "f4a238daeefb7ffa7bb231ab13f5eb75e3eadc1b5c3a0d3e4f6d2385cbe9741e",
+  "evidenceHash": "67f11f35c2974b35d8c178b0f23b5a0d65ae91fb21d6a5617835d4f846dca564",
   "gateScriptHash": "ac97f333001aaf2a5dfde89db0c59c35c01a61e5ee6ab99e6196cc9a6b343c23",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:32:43.520Z",
-  "finishedAt": "2026-07-07T02:32:44.411Z"
+  "startedAt": "2026-07-07T04:35:45.228Z",
+  "finishedAt": "2026-07-07T04:35:46.161Z"
 }

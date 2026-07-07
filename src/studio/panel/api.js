@@ -26,10 +26,12 @@ async function readJsonResponse(response) {
   return payload;
 }
 
-async function requestJson(fetchImpl, pathname, { method = "GET", body = null } = {}) {
+async function requestJson(fetchImpl, pathname, { method = "GET", body = null, headers = {} } = {}) {
+  const requestHeaders = { ...headers };
+  if (body !== null) requestHeaders["content-type"] = "application/json";
   const response = await fetchImpl(pathname, {
     method,
-    headers: body === null ? {} : { "content-type": "application/json" },
+    headers: requestHeaders,
     body: body === null ? null : JSON.stringify(body)
   });
   return readJsonResponse(response);
@@ -40,14 +42,16 @@ function createRestApi({ fetchImpl = globalThis.fetch, EventSourceCtor = globalT
     isMock: false,
     getProject: () => requestJson(fetchImpl, "/api/project"),
     getSpecs: () => requestJson(fetchImpl, "/api/specs"),
-    patchScene: (sceneId, fields) =>
+    patchScene: (sceneId, fields, { ifMatch = null } = {}) =>
       requestJson(fetchImpl, `/api/scenes/${encodeURIComponent(sceneId)}`, {
         method: "PATCH",
+        headers: ifMatch ? { "if-match": ifMatch } : {},
         body: { fields }
       }),
-    patchTransitions: (transitions) =>
+    patchTransitions: (transitions, { ifMatch = null } = {}) =>
       requestJson(fetchImpl, "/api/transitions", {
         method: "PATCH",
+        headers: ifMatch ? { "if-match": ifMatch } : {},
         body: { transitions }
       }),
     compile: ({ scope = "full", sceneId = null } = {}) =>
@@ -67,9 +71,14 @@ function createRestApi({ fetchImpl = globalThis.fetch, EventSourceCtor = globalT
         body: { sceneIds, profile: "mock" }
       }),
     selectVersion: (resourceType, gen) =>
-      requestJson(fetchImpl, `/api/versions/${encodeURIComponent(resourceType)}`, {
-        method: "PATCH",
-        body: { selected: gen }
+      requestJson(fetchImpl, "/api/versions/select", {
+        method: "POST",
+        body: { resourceType, gen }
+      }),
+    rollbackVersion: (resourceType, targetGen = null) =>
+      requestJson(fetchImpl, "/api/versions/rollback", {
+        method: "POST",
+        body: { resourceType, targetGen }
       }),
     artifactUrl: (relPath) => `/artifacts/${String(relPath ?? "").replace(/^\/+/, "")}`,
     subscribeEvents: (callback) => {

@@ -1,0 +1,229 @@
+{
+  "gate": "L2-8-anchors",
+  "profile": "fast",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node src/gates/p5-l2-8-anchors.mjs --profile fast --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "fast",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "anchors-json-readable",
+      "pass": true,
+      "measured": {
+        "path": "fixtures/anchors/anchors.json",
+        "error": null
+      }
+    },
+    {
+      "id": "anchors-json-contract",
+      "pass": true,
+      "measured": {
+        "version": "1.0.0",
+        "fixture": "full-8types",
+        "generatedBy": "src/gates/p5-l2-8-anchors.mjs",
+        "sourceRender": "tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4",
+        "representativeFramePolicy": "scene startFrame + floor(durationFrames * 0.52)",
+        "anchorCount": 8,
+        "expectedAnchorCount": 8,
+        "sceneIds": [
+          "s01",
+          "s02",
+          "s03",
+          "s04",
+          "s05",
+          "s06",
+          "s07",
+          "s08"
+        ],
+        "expectedScenes": [
+          "s01",
+          "s02",
+          "s03",
+          "s04",
+          "s05",
+          "s06",
+          "s07",
+          "s08"
+        ]
+      }
+    },
+    {
+      "id": "anchor-image-files-match-json",
+      "pass": true,
+      "measured": {
+        "anchorDir": "fixtures/anchors/full-8types",
+        "duplicateAnchorIds": [],
+        "duplicateSceneIds": [],
+        "rows": [
+          {
+            "index": 0,
+            "anchorId": "full-8types:s01:76",
+            "sceneId": "s01",
+            "frame": 76,
+            "imagePath": "fixtures/anchors/full-8types/s01-frame-000076.png",
+            "expectedName": "s01-frame-000076.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 346797,
+            "actualBytes": 346797,
+            "declaredSha256": "3f50a9989c63a3d6711f1b3fa2bdd12677eeb250569ac069732c573cf7856763",
+            "actualSha256": "3f50a9989c63a3d6711f1b3fa2bdd12677eeb250569ac069732c573cf7856763",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 1,
+            "anchorId": "full-8types:s02:213",
+            "sceneId": "s02",
+            "frame": 213,
+            "imagePath": "fixtures/anchors/full-8types/s02-frame-000213.png",
+            "expectedName": "s02-frame-000213.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 324338,
+            "actualBytes": 324338,
+            "declaredSha256": "815c2dce49e92084b441d56396009c9c1a3394870ebc9d05b08a49b5c809c6fc",
+            "actualSha256": "815c2dce49e92084b441d56396009c9c1a3394870ebc9d05b08a49b5c809c6fc",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 2,
+            "anchorId": "full-8types:s03:342",
+            "sceneId": "s03",
+            "frame": 342,
+            "imagePath": "fixtures/anchors/full-8types/s03-frame-000342.png",
+            "expectedName": "s03-frame-000342.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 698334,
+            "actualBytes": 698334,
+            "declaredSha256": "d2d30800c2e5c2e2de28daf3e3e351895663eb4760fb232b47587ab862c5fc09",
+            "actualSha256": "d2d30800c2e5c2e2de28daf3e3e351895663eb4760fb232b47587ab862c5fc09",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 3,
+            "anchorId": "full-8types:s04:466",
+            "sceneId": "s04",
+            "frame": 466,
+            "imagePath": "fixtures/anchors/full-8types/s04-frame-000466.png",
+            "expectedName": "s04-frame-000466.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 346674,
+            "actualBytes": 346674,
+            "declaredSha256": "13dfec220920ae33013fb85a768908e9d124dd04985f8c3288ec7d6fede929ae",
+            "actualSha256": "13dfec220920ae33013fb85a768908e9d124dd04985f8c3288ec7d6fede929ae",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 4,
+            "anchorId": "full-8types:s05:570",
+            "sceneId": "s05",
+            "frame": 570,
+            "imagePath": "fixtures/anchors/full-8types/s05-frame-000570.png",
+            "expectedName": "s05-frame-000570.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 344196,
+            "actualBytes": 344196,
+            "declaredSha256": "00a6088bed2673856d49b04cb099fb9ebe9b2b939ec02f9ba73230eda17b3438",
+            "actualSha256": "00a6088bed2673856d49b04cb099fb9ebe9b2b939ec02f9ba73230eda17b3438",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 5,
+            "anchorId": "full-8types:s06:679",
+            "sceneId": "s06",
+            "frame": 679,
+            "imagePath": "fixtures/anchors/full-8types/s06-frame-000679.png",
+            "expectedName": "s06-frame-000679.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 485028,
+            "actualBytes": 485028,
+            "declaredSha256": "b7356afd8acc55ec8891c662a8d6e85a583df16c25294d8fb7c3a39dc91d1aef",
+            "actualSha256": "b7356afd8acc55ec8891c662a8d6e85a583df16c25294d8fb7c3a39dc91d1aef",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 6,
+            "anchorId": "full-8types:s07:801",
+            "sceneId": "s07",
+            "frame": 801,
+            "imagePath": "fixtures/anchors/full-8types/s07-frame-000801.png",
+            "expectedName": "s07-frame-000801.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 683358,
+            "actualBytes": 683358,
+            "declaredSha256": "36bd9afd07d4d5b6eb2b690b226eefe6b7ce7299a6a2517d03b02338f64da5fb",
+            "actualSha256": "36bd9afd07d4d5b6eb2b690b226eefe6b7ce7299a6a2517d03b02338f64da5fb",
+            "textMatches": true,
+            "pass": true
+          },
+          {
+            "index": 7,
+            "anchorId": "full-8types:s08:936",
+            "sceneId": "s08",
+            "frame": 936,
+            "imagePath": "fixtures/anchors/full-8types/s08-frame-000936.png",
+            "expectedName": "s08-frame-000936.png",
+            "pathInsideAnchorSet": true,
+            "pathMatchesName": true,
+            "exists": true,
+            "declaredBytes": 365495,
+            "actualBytes": 365495,
+            "declaredSha256": "bcf9b1006e982ee825589cfc2c23751d3cf6d94c4ed5034d77f7574d1303d6da",
+            "actualSha256": "bcf9b1006e982ee825589cfc2c23751d3cf6d94c4ed5034d77f7574d1303d6da",
+            "textMatches": true,
+            "pass": true
+          }
+        ],
+        "failures": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/anchors/anchors.json",
+    "fixtures/anchors/full-8types",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/presets/light.json",
+    "research/06-plan/VERIFICATION-PLAN.md",
+    "research/08-audit/RESOLUTION.md",
+    "src/gates/p5-common.mjs",
+    "src/gates/p5-l2-8-anchors.mjs"
+  ],
+  "canonicalInputMerkleHash": "dcf597ff8aa27e8fba79a17cd312f15a4a94524e0522ea4871daca97f6640a21",
+  "evidenceHash": "2dbe10ef90f2bca014bd3e7f8bb9c606b7518dec628fd15c7925694472b8ed8e",
+  "gateScriptHash": "acae470b50b82d708f730926fc5b25a79ec2e82a1e07a896991c4d85d1dbdc2c",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T04:36:15.117Z",
+  "finishedAt": "2026-07-07T04:36:15.307Z"
+}

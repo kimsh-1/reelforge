@@ -219,6 +219,7 @@ textarea:disabled {
 .frame-wrap {
   min-height: 0;
   padding: 14px;
+  position: relative;
 }
 
 .preview-frame {
@@ -227,6 +228,23 @@ textarea:disabled {
   border: 1px solid #2a3340;
   border-radius: 8px;
   background: #05070a;
+}
+
+.preview-update-overlay {
+  position: absolute;
+  inset: 14px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  background: rgba(5, 7, 10, 0.72);
+  color: #f8fafc;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.preview-update-overlay[hidden] {
+  display: none;
 }
 
 .preview-controls {
@@ -430,6 +448,13 @@ textarea:disabled {
   border: 1px solid #293342;
   border-radius: 8px;
   background: #121a24;
+}
+
+.version-resource-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .version-resource h3 {

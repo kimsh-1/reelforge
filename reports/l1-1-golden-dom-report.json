@@ -90,7 +90,7 @@
             "rule": "inline scene script must parse and pass the compiler VM smoke check",
             "measured": {
               "scriptIndex": 1,
-              "line": 236,
+              "line": 262,
               "error": "Error: p2-review-render-lint-bypass"
             }
           }
@@ -148,12 +148,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l1-1-golden-dom.mjs"
   ],
-  "canonicalInputMerkleHash": "e0f03431a43a53aea9c2fd9939c0c93b80ca285809030616913f4a9c5fe777cf",
-  "evidenceHash": "dce94dddde42677b4665f1054e7a7be13dcb1676f69c113dc507a5ec7a32b342",
+  "canonicalInputMerkleHash": "1b7e3b155bd0e0bea517960c2bd3c021dfa5ee5a7c00c429b59f896751791646",
+  "evidenceHash": "fbf0bae0fbc10e584c7341b3057c6b8a3a7b85294c3c969885b4db22c9e3b091",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "2725d09891e3b32391651e3cddbbdd325939c6b2",
+  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:32:13.250Z",
-  "finishedAt": "2026-07-07T02:32:17.760Z"
+  "startedAt": "2026-07-07T04:35:13.039Z",
+  "finishedAt": "2026-07-07T04:35:18.075Z"
 }
