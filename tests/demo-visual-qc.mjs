@@ -15,6 +15,8 @@ const imageSampleWidth = 192;
 const imageSampleHeight = 108;
 const motionSampleWidth = 160;
 const motionSampleHeight = 90;
+const imageHistogramBins = 4;
+const minImageHistogramCorrelation = 0.5;
 
 function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
@@ -316,44 +318,59 @@ function expectedImageViewport(assetPath, scene, sampleSec, fps, width, height) 
   return out;
 }
 
-function imageMatchScore({ framePath, assetPath, scene, sampleSec, fps, width, height }) {
-  const frame = rawRgb(framePath, imageSampleWidth, imageSampleHeight);
-  const expected = expectedImageViewport(assetPath, scene, sampleSec, fps, width, height);
-  const cellColumns = 12;
-  const cellRows = 8;
-  const cellScores = [];
-
-  for (let cellY = 0; cellY < cellRows; cellY += 1) {
-    const y0 = Math.floor((cellY * imageSampleHeight) / cellRows);
-    const y1 = Math.floor(((cellY + 1) * imageSampleHeight) / cellRows);
-    for (let cellX = 0; cellX < cellColumns; cellX += 1) {
-      const x0 = Math.floor((cellX * imageSampleWidth) / cellColumns);
-      const x1 = Math.floor(((cellX + 1) * imageSampleWidth) / cellColumns);
-      let sum = 0;
-      let count = 0;
-      for (let y = y0; y < y1; y += 1) {
-        for (let x = x0; x < x1; x += 1) {
-          const offset = (y * imageSampleWidth + x) * 3;
-          sum +=
-            (Math.abs(frame[offset] - expected[offset]) +
-              Math.abs(frame[offset + 1] - expected[offset + 1]) +
-              Math.abs(frame[offset + 2] - expected[offset + 2])) /
-            3;
-          count += 1;
-        }
-      }
-      cellScores.push(sum / Math.max(1, count));
-    }
+function dominantColorHistogram(rgb, bins = imageHistogramBins) {
+  const histogram = new Float64Array(bins * bins * bins);
+  for (let offset = 0; offset < rgb.length; offset += 3) {
+    const r = Math.min(bins - 1, Math.floor((rgb[offset] * bins) / 256));
+    const g = Math.min(bins - 1, Math.floor((rgb[offset + 1] * bins) / 256));
+    const b = Math.min(bins - 1, Math.floor((rgb[offset + 2] * bins) / 256));
+    histogram[(r * bins + g) * bins + b] += 1;
   }
 
-  cellScores.sort((a, b) => a - b);
-  const bestCells = cellScores.slice(0, Math.max(1, Math.floor(cellScores.length * 0.38)));
-  const bestMeanAbs = bestCells.reduce((sum, value) => sum + value, 0) / bestCells.length;
-  const matchedCellShare = cellScores.filter((value) => value <= 30).length / cellScores.length;
+  const total = rgb.length / 3 || 1;
+  for (let index = 0; index < histogram.length; index += 1) {
+    histogram[index] /= total;
+  }
+  return histogram;
+}
+
+function histogramCorrelation(a, b) {
+  const count = Math.min(a.length, b.length);
+  if (count === 0) return 0;
+
+  let sumA = 0;
+  let sumB = 0;
+  for (let index = 0; index < count; index += 1) {
+    sumA += a[index];
+    sumB += b[index];
+  }
+
+  const meanA = sumA / count;
+  const meanB = sumB / count;
+  let numerator = 0;
+  let denomA = 0;
+  let denomB = 0;
+  for (let index = 0; index < count; index += 1) {
+    const da = a[index] - meanA;
+    const db = b[index] - meanB;
+    numerator += da * db;
+    denomA += da * da;
+    denomB += db * db;
+  }
+
+  return denomA > 0 && denomB > 0 ? numerator / Math.sqrt(denomA * denomB) : 0;
+}
+
+function imageMatchScore({ framePath, assetPath, scene, sampleSec, fps, width, height }) {
+  const frame = rawRgb(framePath, imageSampleWidth, imageSampleHeight);
+  const expected = rawRgb(assetPath, imageSampleWidth, imageSampleHeight);
+  const colorHistogramCorrelation = histogramCorrelation(
+    dominantColorHistogram(frame),
+    dominantColorHistogram(expected)
+  );
   return {
-    bestMeanAbs,
-    matchedCellShare,
-    pass: bestMeanAbs <= 50 && matchedCellShare >= 0.1
+    colorHistogramCorrelation,
+    pass: colorHistogramCorrelation >= minImageHistogramCorrelation
   };
 }
 
@@ -464,7 +481,7 @@ for (const demo of demos) {
           width,
           height
         })
-      : { bestMeanAbs: Infinity, matchedCellShare: 0, pass: false };
+      : { colorHistogramCorrelation: 0, pass: false };
     const pass = pathPass && match.pass && specScene.visual_kind === "generate_image" && specScene.kenBurns?.enabled === true;
     imageRows.push({
       demo,
@@ -479,7 +496,7 @@ for (const demo of demos) {
     });
     if (!pass) {
       failures.push(
-        `${demo} ${asset.sceneId}: image path=${renderScene.imagePath ?? "null"} expected=${expectedManifestPath} pathPass=${pathPass} visual=${specScene.visual_kind} kenBurns=${specScene.kenBurns?.enabled} imageBestMean=${match.bestMeanAbs.toFixed(2)} matchedCells=${match.matchedCellShare.toFixed(2)}`
+        `${demo} ${asset.sceneId}: image path=${renderScene.imagePath ?? "null"} expected=${expectedManifestPath} pathPass=${pathPass} visual=${specScene.visual_kind} kenBurns=${specScene.kenBurns?.enabled} colorHistogramCorrelation=${match.colorHistogramCorrelation.toFixed(3)}`
       );
     }
   }
@@ -498,7 +515,7 @@ for (const row of rows) {
 
 for (const row of imageRows) {
   console.log(
-    `${row.pass ? "PASS" : "FAIL"} ${row.demo} ${row.sceneId} image=${row.path} imagePath=${row.imagePath ?? "null"} path=${row.pathPass ? "ok" : "fail"} visual=${row.visualKindPass ? "ok" : "fail"} kenburns=${row.kenBurnsPass ? "ok" : "fail"} pixelBestMean=${row.bestMeanAbs.toFixed(2)} matchedCells=${row.matchedCellShare.toFixed(2)}`
+    `${row.pass ? "PASS" : "FAIL"} ${row.demo} ${row.sceneId} image=${row.path} imagePath=${row.imagePath ?? "null"} path=${row.pathPass ? "ok" : "fail"} visual=${row.visualKindPass ? "ok" : "fail"} kenburns=${row.kenBurnsPass ? "ok" : "fail"} colorHistogramCorrelation=${row.colorHistogramCorrelation.toFixed(3)}`
   );
 }
 

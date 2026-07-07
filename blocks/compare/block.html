@@ -768,7 +768,7 @@
           tl.to(leftPanel, { opacity: 0.64, y: 6, duration: 0.52, ease: "power2.inOut" }, phases.livingStart);
           tl.to(rightPanel, { scale: 1.018, y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(vs, { scale: 1.08, duration: 1.4, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.4)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".compare-stage"), { opacity: 0, y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(root.querySelector(".compare-stage"), { y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
           timelineIds(root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
@@ -955,8 +955,9 @@
           }
 
           function timelineIds(rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
             return new Set([
-              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
               rootElement?.getAttribute("data-composition-id") || "",
               rootElement?.getAttribute("data-hf-original-composition-id") || "",
               "compare"

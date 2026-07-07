@@ -275,10 +275,12 @@
       <script>
         (function () {
           const root = document.querySelector(".pie-block") ?? document.querySelector("[data-hf-inner-root]");
+          const runtimeCompositionId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
           const compositionId =
-            typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId
-              ? __hfTimelineCompId
-              : root?.closest("[data-composition-id]")?.getAttribute("data-composition-id") ?? root?.dataset.compositionId ?? "pie";
+            runtimeCompositionId ||
+            root?.closest("[data-composition-id]")?.getAttribute("data-composition-id") ||
+            root?.dataset.compositionId ||
+            "pie";
           if (!root) {
             window.__timelines = window.__timelines || {};
             window.__timelines[compositionId] = gsap.timeline({ paused: true });
@@ -437,10 +439,15 @@
           }
           tl.to(root.querySelector(".pie-visual"), { y: -10, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(root.querySelector(".pie-center-card"), { scale: 1.035, duration: 1.6, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.6)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".pie-frame"), { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(root.querySelector(".pie-frame"), { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
-          new Set([compositionId, "pie"]).forEach((id) => {
+          const timelineIds = runtimeCompositionId ? new Set([runtimeCompositionId]) : new Set([compositionId, "pie"]);
+          timelineIds.forEach((id) => {
             if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds.forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
           });
 
           function numericValue(value) {

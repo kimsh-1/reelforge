@@ -257,7 +257,12 @@
             document.querySelector('#root[data-composition-id="list"], #root[data-hf-original-composition-id="list"]') ||
             document.getElementById("root") ||
             document.querySelector('[data-composition-id="list"], [data-hf-original-composition-id="list"]');
-          const host = root.closest("[data-composition-id]") || root;
+          const host =
+            root.parentElement?.closest("[data-variable-values]") ||
+            root.closest("[data-variable-values]") ||
+            root.parentElement?.closest("[data-composition-id]") ||
+            root.closest("[data-composition-id]") ||
+            root;
           const titleEl = root.querySelector("[data-list-title]");
           const moodEl = root.querySelector("[data-list-mood]");
           const sourceEl = root.querySelector("[data-list-source]");
@@ -349,10 +354,14 @@
             );
           });
           tl.to(icons, { scale: 1.08, duration: 1.2, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.2)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".list-stage"), { opacity: 0, y: -20, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(root.querySelector(".list-stage"), { y: -20, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
-          timelineIds(host).forEach((id) => {
+          timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(host, root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
           });
 
           function arrayValue(value) {
@@ -389,10 +398,14 @@
             return {};
           }
 
-          function timelineIds(hostElement) {
+          function timelineIds(hostElement, rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
             return new Set([
               hostElement?.getAttribute("data-composition-id") || "",
               hostElement?.getAttribute("data-hf-original-composition-id") || "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
               "list"
             ]);
           }

@@ -542,7 +542,7 @@
           tl.to(chartShell, { y: -10, scale: 1.008, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to("#line-root .line-point[data-highlight='true']", { scale: 1.18, duration: 1.35, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.35)), yoyo: true }, phases.livingStart);
           tl.to("#line-root .line-end-label", { y: -6, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to("#line-root .line-stage", { opacity: 0, y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to("#line-root .line-stage", { y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           timelineIds(root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
           });
@@ -553,8 +553,9 @@
           signalRuntimeReady();
 
           function timelineIds(rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
             return new Set([
-              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
               rootElement?.getAttribute("data-composition-id") || "",
               rootElement?.getAttribute("data-hf-original-composition-id") || "",
               "line"

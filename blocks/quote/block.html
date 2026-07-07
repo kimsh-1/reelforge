@@ -365,7 +365,12 @@
             scriptParent.querySelector(':scope > [data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
             document.querySelector('#root[data-composition-id="quote"], #root[data-hf-original-composition-id="quote"]') ||
             document.querySelector('[data-composition-id="quote"], [data-hf-original-composition-id="quote"]');
-          const host = root.closest("[data-composition-id]") || root;
+          const host =
+            root.parentElement?.closest("[data-variable-values]") ||
+            root.closest("[data-variable-values]") ||
+            root.parentElement?.closest("[data-composition-id]") ||
+            root.closest("[data-composition-id]") ||
+            root;
           const variables = readVariables(host);
           const titleEl = root.querySelector("[data-quote-title]");
           const moodEl = root.querySelector("[data-quote-mood]");
@@ -476,10 +481,14 @@
           tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(root.querySelector(".quote-frame"), { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(root.querySelector(".quote-rule"), { scaleX: 0.72, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".quote-stage"), { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(root.querySelector(".quote-stage"), { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
-          timelineIds(host).forEach((id) => {
+          timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(host, root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
           });
 
           function arrayValue(value) {
@@ -578,10 +587,14 @@
             return {};
           }
 
-          function timelineIds(hostElement) {
+          function timelineIds(hostElement, rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
             return new Set([
               hostElement?.getAttribute("data-composition-id") || "",
               hostElement?.getAttribute("data-hf-original-composition-id") || "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
               "quote"
             ]);
           }

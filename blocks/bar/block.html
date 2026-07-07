@@ -239,7 +239,12 @@
           const root =
             document.getElementById("root") ||
             document.querySelector('[data-composition-id="bar"], [data-hf-original-composition-id="bar"]');
-          const host = root.closest("[data-composition-id]") || root;
+          const host =
+            root.parentElement?.closest("[data-variable-values]") ||
+            root.closest("[data-variable-values]") ||
+            root.parentElement?.closest("[data-composition-id]") ||
+            root.closest("[data-composition-id]") ||
+            root;
           const frame = root.querySelector(".bar-frame");
           const chart = root.querySelector("[data-bar-chart]");
           const titleEl = root.querySelector("[data-bar-title]");
@@ -358,11 +363,15 @@
             tl.to(highlight.item, { scale: 1.018, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           }
           tl.to(frame, { y: -8, scale: 1.006, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(frame, { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(frame, { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
 
-          window.__timelines["bar"] = tl;
-          globalThis.__timelines = globalThis.__timelines || {};
-          globalThis.__timelines["bar"] = tl;
+          timelineIds(host, root).forEach((id) => {
+            if (id) window.__timelines[id] = tl;
+          });
+          globalThis.__timelines = window.__timelines;
+          timelineIds(host, root).forEach((id) => {
+            if (id) globalThis.__timelines[id] = tl;
+          });
 
           function arrayValue(value) {
             return Array.isArray(value) ? value : [];
@@ -455,6 +464,18 @@
               livingDuration,
               countDuration: Math.min(2.4, Math.max(1.2, total * 0.56))
             };
+          }
+
+          function timelineIds(hostElement, rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
+            return new Set([
+              hostElement?.getAttribute("data-composition-id") || "",
+              hostElement?.getAttribute("data-hf-original-composition-id") || "",
+              rootElement?.getAttribute("data-composition-id") || "",
+              rootElement?.getAttribute("data-hf-original-composition-id") || "",
+              "bar"
+            ]);
           }
         })();
       </script>

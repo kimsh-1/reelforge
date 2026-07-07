@@ -402,10 +402,12 @@
             0.82
           );
           tl.fromTo(sourceEl, { opacity: 0, y: 12 }, { opacity: source ? 1 : 0, y: 0, duration: 0.3, ease: "power2.out" }, 1.12);
+          tl.to(root.querySelector(".stat-stage"), { x: 96, duration, ease: "none" }, 0);
           tl.to(numberLine, { scale: 1.035, duration: 1.25, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.25)), yoyo: true }, phases.livingStart);
           tl.to(glow, { opacity: 0.68, scale: 1.08, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
-          tl.to(hero, { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(root.querySelector(".stat-stage"), { opacity: 0, y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(hero, { y: -26, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(details, { y: -18, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(root.querySelector(".stat-stage"), { y: -44, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
           timelineIds(root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
@@ -515,8 +517,9 @@
           }
 
           function timelineIds(rootElement) {
+            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+            if (runtimeId) return new Set([runtimeId]);
             return new Set([
-              typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "",
               rootElement?.getAttribute("data-composition-id") || "",
               rootElement?.getAttribute("data-hf-original-composition-id") || "",
               "statistic"
