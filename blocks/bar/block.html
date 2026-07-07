@@ -37,7 +37,7 @@
           --bar-muted: var(--rf-muted-text, color-mix(in srgb, CanvasText 60%, Canvas));
           --bar-shadow: var(--rf-shadow, CanvasText);
           --bar-track: color-mix(in srgb, var(--bar-muted) 18%, transparent);
-          --bar-grid: color-mix(in srgb, var(--bar-muted) 28%, transparent);
+          --bar-grid: color-mix(in srgb, var(--bar-muted) 20%, transparent);
         }
 
         .bar-frame {
@@ -51,6 +51,8 @@
           background: color-mix(in srgb, var(--bar-surface) 92%, transparent);
           border: 0.125rem solid color-mix(in srgb, var(--bar-accent) 32%, transparent);
           box-shadow: 0 1.5rem 4.375rem color-mix(in srgb, var(--bar-shadow) 18%, transparent);
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
         }
 
         .bar-header {
@@ -66,7 +68,7 @@
           font-size: 5.5rem;
           font-weight: 900;
           line-height: 1.04;
-          letter-spacing: 0;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
         }
@@ -105,9 +107,7 @@
           content: "";
           position: absolute;
           inset: 0 0 0 19.5rem;
-          background:
-            linear-gradient(90deg, var(--bar-grid) 0 0.125rem, transparent 0.125rem 100%) 0 0 / 25% 100%,
-            linear-gradient(90deg, transparent 0, transparent 100%);
+          background: none;
           pointer-events: none;
         }
 
@@ -119,6 +119,17 @@
           gap: 1.5rem;
           min-height: 6.375rem;
           opacity: 0;
+          will-change: transform, opacity;
+        }
+
+        .bar-row[data-highlight="false"] .bar-label,
+        .bar-row[data-highlight="false"] .bar-value {
+          color: var(--bar-muted);
+        }
+
+        .bar-row[data-highlight="false"] .bar-fill {
+          background: color-mix(in srgb, var(--bar-muted) 44%, transparent);
+          box-shadow: none;
         }
 
         .bar-label {
@@ -152,6 +163,16 @@
               var(--bar-accent)
             );
           box-shadow: 0 0 1.625rem color-mix(in srgb, var(--bar-accent) 34%, transparent);
+          overflow: hidden;
+        }
+
+        .bar-sweep {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(100deg, transparent 0 36%, rgba(255, 255, 255, 0.42) 50%, transparent 64% 100%);
+          opacity: 0;
+          transform: translateX(-120%);
+          pointer-events: none;
         }
 
         .bar-value {
@@ -241,11 +262,15 @@
           const values = arrayValue(variables.values);
           const rows = normalizeRows(items, values);
           const maxValue = Math.max(1, ...rows.map((row) => Math.abs(row.numeric)));
+          const highlightIndex = rows.reduce((best, row, index) => (row.numeric > rows[best].numeric ? index : best), 0);
+          const duration = blockDuration(root, 5);
+          const phases = phaseTimes(duration);
 
           root.style.setProperty("--rf-accent", safeColor(variables.accent));
           titleEl.textContent = title;
           moodEl.textContent = mood;
-          sourceEl.textContent = source ? source : "source";
+          sourceEl.textContent = source;
+          sourceEl.style.opacity = source ? "1" : "0";
           unitEl.textContent = unit ? `unit: ${unit}` : "";
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));
 
@@ -254,50 +279,54 @@
             const label = document.createElement("div");
             const track = document.createElement("div");
             const fill = document.createElement("div");
+            const sweep = document.createElement("span");
             const value = document.createElement("div");
 
             item.className = "bar-row";
             label.className = "bar-label";
             track.className = "bar-track";
             fill.className = "bar-fill";
+            sweep.className = "bar-sweep";
             value.className = "bar-value";
+            item.dataset.highlight = index === highlightIndex ? "true" : "false";
 
             label.textContent = row.label;
             value.textContent = formatValue(0, row, unit);
             fill.style.setProperty("--bar-width", `${Math.max(4, (Math.abs(row.numeric) / maxValue) * 100).toFixed(3)}%`);
 
+            fill.appendChild(sweep);
             track.appendChild(fill);
             item.append(label, track, value);
             chart.appendChild(item);
 
-            row.elements = { item, fill, value };
+            row.elements = { item, fill, sweep, value };
           });
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
-          tl.fromTo(frame, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.42, ease: "power2.out" }, 0);
+          tl.fromTo(frame, { opacity: 0, y: 36, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 0.72, ease: "power4.out" }, 0);
 
           rows.forEach((row, index) => {
-            const start = 0.42 + index * 0.18;
+            const start = 0.42 + index * 0.14;
             const counter = { value: 0 };
             tl.fromTo(
               row.elements.item,
-              { opacity: 0, y: 26 },
-              { opacity: 1, y: 0, duration: 0.36, ease: "power2.out" },
+              { opacity: 0, y: 30 },
+              { opacity: 1, y: 0, duration: 0.52, ease: "power3.out" },
               start
             );
             tl.fromTo(
               row.elements.fill,
               { scaleX: 0 },
-              { scaleX: 1, duration: 0.92, ease: "power3.out" },
+              { scaleX: 1, duration: Math.min(1.2, phases.enterEnd + 0.28), ease: "expo.out" },
               start + 0.08
             );
             tl.to(
               counter,
               {
                 value: row.numeric,
-                duration: 0.92,
-                ease: "power3.out",
+                duration: phases.countDuration,
+                ease: "power4.out",
                 onStart: function () {
                   row.elements.value.style.opacity = "1";
                 },
@@ -311,6 +340,25 @@
               start + 0.08
             );
           });
+          const highlight = rows[highlightIndex]?.elements;
+          if (highlight) {
+            tl.fromTo(
+              highlight.sweep,
+              { opacity: 0, x: "-120%" },
+              {
+                opacity: 1,
+                x: "120%",
+                duration: 0.72,
+                ease: "power2.inOut",
+                repeat: Math.max(1, Math.floor(phases.livingDuration / 1.15)),
+                repeatDelay: 0.3
+              },
+              phases.livingStart
+            );
+            tl.to(highlight.item, { scale: 1.018, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          }
+          tl.to(frame, { y: -8, scale: 1.006, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(frame, { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
 
           window.__timelines["bar"] = tl;
           globalThis.__timelines = globalThis.__timelines || {};
@@ -380,6 +428,33 @@
           function safeColor(value) {
             const text = stringValue(value, "Highlight");
             return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "Highlight";
+          }
+
+          function blockDuration(element, fallback) {
+            let node = element.parentElement;
+            while (node) {
+              const durationValue = Number(node.getAttribute?.("data-duration"));
+              if (Number.isFinite(durationValue) && durationValue > 0) return durationValue;
+              node = node.parentElement;
+            }
+            const own = Number(element.getAttribute("data-duration"));
+            return Number.isFinite(own) && own > 0 ? own : fallback;
+          }
+
+          function phaseTimes(total) {
+            const exitDuration = Math.min(0.46, Math.max(0.32, total * 0.1));
+            const exitStart = Math.max(1.2, total - exitDuration);
+            const enterEnd = Math.min(1.15, Math.max(0.72, total * 0.18));
+            const livingStart = Math.min(exitStart - 0.4, enterEnd + 0.12);
+            const livingDuration = Math.max(0.6, exitStart - livingStart);
+            return {
+              enterEnd,
+              exitStart,
+              exitDuration,
+              livingStart,
+              livingDuration,
+              countDuration: Math.min(2.4, Math.max(1.2, total * 0.56))
+            };
           }
         })();
       </script>

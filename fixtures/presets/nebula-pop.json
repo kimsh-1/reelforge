@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "presetId": "nebula-pop",
+  "colors": {
+    "background": "#0a0e3f",
+    "surface": "#141b5c",
+    "panel": "#1b246e",
+    "text": "#f4f0e8",
+    "mutedText": "#c9d7ff",
+    "accent": "#ff3fa7",
+    "accentAlt": "#fad53c",
+    "shadow": "#0a0b0e",
+    "primary": "#008cf7",
+    "onPrimary": "#0a0e3f",
+    "secondary": "#6500d7",
+    "cyan": "#00d8fc",
+    "highlight": "#fad53c",
+    "blueDeep": "#0025bf",
+    "blueBright": "#008cf7",
+    "birdWhite": "#f4f0e8"
+  },
+  "moods": {
+    "dramatic": {
+      "accent": "#ff3fa7",
+      "speed": "normal",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(255,63,167,0.42), 0 0 0.45em rgba(255,63,167,0.18)"
+    },
+    "urgent": {
+      "accent": "#fad53c",
+      "speed": "fast",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(250,213,60,0.42), 0 0 0.45em rgba(250,213,60,0.18)"
+    },
+    "somber": {
+      "accent": "#236b8e",
+      "speed": "slow",
+      "glow": "none"
+    },
+    "informative": {
+      "accent": "#008cf7",
+      "speed": "normal",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(0,140,247,0.36), 0 0 0.45em rgba(0,140,247,0.14)"
+    },
+    "contemplative": {
+      "accent": "#6500d7",
+      "speed": "slow",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(101,0,215,0.3), 0 0 0.45em rgba(101,0,215,0.12)"
+    },
+    "suspense": {
+      "accent": "#00d8fc",
+      "speed": "slow",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(0,216,252,0.3), 0 0 0.45em rgba(0,216,252,0.1)"
+    },
+    "triumphant": {
+      "accent": "#fad53c",
+      "speed": "normal",
+      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(250,213,60,0.5), 0 0 0.45em rgba(250,213,60,0.22)"
+    }
+  },
+  "subtitle": {
+    "fontFamily": "Pretendard",
+    "fontSize": 42,
+    "fontWeight": 700,
+    "color": "#f4f0e8",
+    "strokeColor": "#0a0e3f",
+    "strokeWidth": 0.8,
+    "keywordColor": "#fad53c",
+    "keywordStrokeColor": "#0a0e3f",
+    "backgroundColor": "rgba(10,14,63,0.86)",
+    "borderRadius": 12,
+    "boxShadow": "none",
+    "bottomOffset": 96,
+    "maxWidth": 880,
+    "lineHeight": 1.35,
+    "maxCharsPerLine": 18,
+    "visible": true
+  },
+  "fonts": {
+    "body": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 400,
+          "style": "normal"
+        }
+      ]
+    },
+    "headline": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 800,
+          "style": "normal"
+        }
+      ]
+    },
+    "value": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 800,
+          "style": "normal"
+        }
+      ]
+    },
+    "subtitle": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 700,
+          "style": "normal"
+        }
+      ]
+    },
+    "mono": {
+      "family": "Pretendard Mono Fallback",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 400,
+          "style": "normal"
+        }
+      ]
+    }
+  }
+}

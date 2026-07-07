@@ -29,6 +29,8 @@
           align-items: center;
           gap: 4.5rem;
           padding: 6rem 8.5rem 13rem;
+          transform-origin: 50% 50%;
+          will-change: transform, opacity;
         }
 
         .pie-copy {
@@ -60,7 +62,7 @@
           font-size: 5.4rem;
           font-weight: 900;
           line-height: 1.04;
-          letter-spacing: 0;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
@@ -111,6 +113,11 @@
           stroke-linecap: butt;
           transform-box: fill-box;
           transform-origin: center;
+          will-change: transform, opacity;
+        }
+
+        .pie-slice[data-highlight="false"] {
+          stroke: color-mix(in srgb, var(--rf-pie-muted) 46%, transparent);
         }
 
         .pie-center {
@@ -131,6 +138,7 @@
           border-radius: 50%;
           background: var(--rf-pie-panel-strong);
           box-shadow: 0 1.4rem 3.4rem var(--rf-pie-shadow);
+          will-change: transform, opacity;
         }
 
         .pie-center-label {
@@ -159,6 +167,38 @@
           list-style: none;
         }
 
+        .pie-callouts {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .pie-callout {
+          position: absolute;
+          max-width: 11.5rem;
+          box-sizing: border-box;
+          padding: 0.58rem 0.72rem;
+          border: 0.08rem solid var(--rf-pie-hairline);
+          border-radius: 0.4rem;
+          background: color-mix(in srgb, var(--rf-pie-panel-strong) 84%, transparent);
+          color: var(--rf-pie-muted);
+          font-size: 1.16rem;
+          font-weight: 780;
+          line-height: 1.08;
+          letter-spacing: 0;
+          text-align: center;
+          overflow-wrap: anywhere;
+          transform: translate(-50%, -50%);
+          opacity: 0;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .pie-callout[data-highlight="true"] {
+          border-color: var(--rf-pie-accent);
+          color: var(--rf-pie-ink);
+          background: var(--rf-pie-panel-strong);
+        }
+
         .pie-row {
           min-width: 0;
           display: grid;
@@ -171,6 +211,15 @@
           border-radius: 0.5rem;
           background: var(--rf-pie-panel);
           box-shadow: 0 0.75rem 2rem var(--rf-pie-shadow);
+          will-change: transform, opacity;
+        }
+
+        .pie-row[data-highlight="false"] {
+          opacity: 0.72;
+        }
+
+        .pie-row[data-highlight="false"] .pie-dot {
+          background: color-mix(in srgb, var(--rf-pie-muted) 46%, transparent);
         }
 
         .pie-dot {
@@ -253,16 +302,14 @@
           const numericTotal = visibleRows.reduce((sum, row) => sum + Math.max(0, row.numericValue), 0);
           const shareTotal = numericTotal > 0 ? numericTotal : visibleRows.length;
           const totalForDisplay = numericTotal > 0 ? numericTotal : visibleRows.length;
+          const highlightIndex = visibleRows.reduce(
+            (best, row, index) => (row.numericValue > visibleRows[best].numericValue ? index : best),
+            0
+          );
           const circumference = 2 * Math.PI * 168;
           const gap = Math.min(7, circumference * 0.009);
-          const palette = [
-            "var(--rf-pie-accent)",
-            "color-mix(in srgb, var(--rf-pie-accent) 78%, currentColor)",
-            "color-mix(in srgb, var(--rf-pie-accent) 56%, currentColor)",
-            "color-mix(in srgb, var(--rf-pie-accent) 42%, transparent)",
-            "color-mix(in srgb, var(--rf-pie-accent) 66%, transparent)",
-            "color-mix(in srgb, var(--rf-pie-accent) 34%, currentColor)"
-          ];
+          const duration = blockDuration(root, 4);
+          const phases = phaseTimes(duration);
 
           if (accent) root.style.setProperty("--rf-pie-accent", accent);
           root.querySelector("[data-title]").textContent = title;
@@ -274,9 +321,14 @@
           root.querySelector(".pie-svg").setAttribute("aria-label", title ? `${title} 도넛 차트` : "도넛 차트");
           const slicesEl = root.querySelector("[data-slices]");
           const legendEl = root.querySelector("[data-legend]");
+          const calloutsEl = document.createElement("div");
           const sliceElements = [];
           const legendRows = [];
+          const callouts = [];
           let running = 0;
+
+          calloutsEl.className = "pie-callouts";
+          root.querySelector(".pie-visual").appendChild(calloutsEl);
 
           visibleRows.forEach((row, index) => {
             const value = Math.max(0, row.numericValue);
@@ -284,9 +336,15 @@
             const rawArc = circumference * share;
             const arc = Math.max(0.5, rawArc - gap);
             const offset = running + gap / 2;
-            const color = palette[index % palette.length];
+            const color =
+              index === highlightIndex
+                ? "var(--rf-pie-accent)"
+                : `color-mix(in srgb, var(--rf-pie-muted) ${Math.max(32, 58 - index * 6)}%, transparent)`;
+            const midAngle = (running + rawArc / 2) / circumference;
+            const theta = midAngle * Math.PI * 2 - Math.PI / 2;
             const slice = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             slice.setAttribute("class", "pie-slice");
+            slice.dataset.highlight = index === highlightIndex ? "true" : "false";
             slice.setAttribute("cx", "220");
             slice.setAttribute("cy", "220");
             slice.setAttribute("r", "168");
@@ -296,8 +354,18 @@
             slicesEl.appendChild(slice);
             sliceElements.push({ element: slice, arc, rest: Math.max(0, circumference - arc) });
 
+            const callout = document.createElement("span");
+            callout.className = "pie-callout";
+            callout.dataset.highlight = index === highlightIndex ? "true" : "false";
+            callout.textContent = `${row.label} ${formatValue(row.rawValue, unit)}`;
+            callout.style.left = `${50 + Math.cos(theta) * 42}%`;
+            callout.style.top = `${50 + Math.sin(theta) * 42}%`;
+            calloutsEl.appendChild(callout);
+            callouts.push(callout);
+
             const rowEl = document.createElement("li");
             rowEl.className = "pie-row";
+            rowEl.dataset.highlight = index === highlightIndex ? "true" : "false";
             rowEl.style.setProperty("--slice-color", color);
             rowEl.innerHTML = [
               '<span class="pie-dot" aria-hidden="true"></span>',
@@ -317,9 +385,10 @@
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
           tl.addLabel("start", 0);
-          tl.fromTo(root.querySelector(".pie-copy"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.52, ease: "power3.out" }, 0);
-          tl.fromTo(root.querySelector(".pie-track"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0.08);
-          tl.fromTo(root.querySelector(".pie-center-card"), { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.58, ease: "back.out(1.2)" }, 0.28);
+          tl.fromTo(root.querySelector(".pie-frame"), { opacity: 0, y: 30, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 0.74, ease: "power4.out" }, 0);
+          tl.fromTo(root.querySelector(".pie-copy"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.56, ease: "power3.out" }, 0.08);
+          tl.fromTo(root.querySelector(".pie-track"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.48, ease: "power2.out" }, 0.18);
+          tl.fromTo(root.querySelector(".pie-center-card"), { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.58, ease: "back.out(1.2)" }, 0.34);
           sliceElements.forEach((slice, index) => {
             tl.fromTo(
               slice.element,
@@ -327,11 +396,11 @@
               {
                 opacity: 1,
                 strokeDasharray: `${slice.arc} ${slice.rest}`,
-                duration: 0.62,
-                ease: "power2.out",
+                duration: 0.92,
+                ease: "power3.out",
                 immediateRender: false
               },
-              0.28 + index * 0.16
+              0.42 + index * 0.12
             );
           });
           const counter = { value: 0 };
@@ -339,8 +408,8 @@
             counter,
             {
               value: totalForDisplay,
-              duration: 1.04,
-              ease: "power2.out",
+              duration: phases.countDuration,
+              ease: "power4.out",
               onUpdate: () => {
                 totalEl.textContent = formatNumber(counter.value, totalForDisplay, unit);
               },
@@ -348,15 +417,28 @@
                 totalEl.textContent = formatNumber(totalForDisplay, totalForDisplay, unit);
               }
             },
-            0.28
+            0.42
           );
           tl.fromTo(
             legendRows,
             { opacity: 0, x: 28 },
-            { opacity: 1, x: 0, duration: 0.42, ease: "power3.out", stagger: 0.09 },
-            0.68
+            { opacity: 1, x: 0, duration: 0.46, ease: "power3.out", stagger: 0.08 },
+            0.84
           );
-          tl.addLabel("final", 2.25);
+          tl.fromTo(
+            callouts,
+            { opacity: 0, y: 12, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.34, ease: "power2.out", stagger: 0.07 },
+            1.0
+          );
+          const highlightSlice = sliceElements[highlightIndex]?.element;
+          if (highlightSlice) {
+            tl.to(highlightSlice, { scale: 1.025, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          }
+          tl.to(root.querySelector(".pie-visual"), { y: -10, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(root.querySelector(".pie-center-card"), { scale: 1.035, duration: 1.6, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.6)), yoyo: true }, phases.livingStart);
+          tl.to(root.querySelector(".pie-frame"), { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.addLabel("final", duration);
           new Set([compositionId, "pie"]).forEach((id) => {
             if (id) window.__timelines[id] = tl;
           });
@@ -394,6 +476,31 @@
 
           function formatPlainNumber(value) {
             return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 }).format(value);
+          }
+
+          function blockDuration(element, fallback) {
+            let node = element.parentElement;
+            while (node) {
+              const value = Number(node.getAttribute?.("data-duration"));
+              if (Number.isFinite(value) && value > 0) return value;
+              node = node.parentElement;
+            }
+            const own = Number(element.getAttribute("data-duration"));
+            return Number.isFinite(own) && own > 0 ? own : fallback;
+          }
+
+          function phaseTimes(total) {
+            const exitDuration = Math.min(0.44, Math.max(0.32, total * 0.1));
+            const exitStart = Math.max(1.2, total - exitDuration);
+            const livingStart = Math.min(exitStart - 0.42, Math.max(1.05, total * 0.26));
+            const livingDuration = Math.max(0.6, exitStart - livingStart);
+            return {
+              exitStart,
+              exitDuration,
+              livingStart,
+              livingDuration,
+              countDuration: Math.min(2.25, Math.max(1.1, total * 0.54))
+            };
           }
         })();
       </script>

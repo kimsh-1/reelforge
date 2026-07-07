@@ -1,90 +1,78 @@
 {
   "version": "1.0.0",
-  "presetId": "apple",
+  "presetId": "k-variety",
   "colors": {
-    "background": "#fafafa",
-    "surface": "#f5f5f7",
-    "panel": "#28282b",
-    "text": "#1d1d1f",
-    "mutedText": "#333333",
-    "accent": "#0066cc",
-    "accentAlt": "#2997ff",
-    "shadow": "#0a0a0c",
-    "primary": "#0066cc",
-    "primaryFocus": "#0071e3",
-    "primaryOnDark": "#2997ff",
-    "ink": "#1d1d1f",
-    "body": "#1d1d1f",
-    "bodyOnDark": "#f5f5f7",
-    "bodyMuted": "#cccccc",
-    "inkMuted80": "#333333",
-    "inkMuted48": "#7a7a7a",
-    "dividerSoft": "#e3e3e6",
-    "hairline": "#e0e0e0",
-    "canvas": "#fafafa",
-    "canvasParchment": "#f5f5f7",
-    "surfacePearl": "#fafafc",
-    "surfaceTile1": "#232326",
-    "surfaceTile2": "#2c2c30",
-    "surfaceTile3": "#1c1c1f",
-    "surfaceBlack": "#0a0a0c",
-    "surfaceChipTranslucent": "#d2d2d7",
-    "onPrimary": "#ffffff",
-    "onDark": "#f5f5f7"
+    "background": "#0f172a",
+    "surface": "#1e293b",
+    "panel": "#111827",
+    "text": "#f8fafc",
+    "mutedText": "#cbd5e1",
+    "accent": "#ffd400",
+    "accentAlt": "#dc2626",
+    "shadow": "#111111",
+    "primary": "#ffd400",
+    "onPrimary": "#111111",
+    "stroke": "#111111",
+    "shoutYellow": "#ffd400",
+    "deadpanBlue": "#60a5fa",
+    "missionRed": "#dc2626",
+    "missionSilver": "#e5e7eb",
+    "green": "#22c55e",
+    "orange": "#f97316"
   },
   "moods": {
     "dramatic": {
-      "accent": "#0066cc",
-      "speed": "slow",
-      "glow": "0 18px 44px rgba(10,10,12,0.22)"
+      "accent": "#dc2626",
+      "speed": "fast",
+      "glow": "none"
     },
     "urgent": {
-      "accent": "#0071e3",
+      "accent": "#ffd400",
       "speed": "fast",
       "glow": "none"
     },
     "somber": {
-      "accent": "#333333",
+      "accent": "#111827",
       "speed": "slow",
       "glow": "none"
     },
     "informative": {
-      "accent": "#0066cc",
+      "accent": "#60a5fa",
       "speed": "normal",
       "glow": "none"
     },
     "contemplative": {
-      "accent": "#2997ff",
+      "accent": "#22c55e",
       "speed": "slow",
       "glow": "none"
     },
     "suspense": {
-      "accent": "#7a7a7a",
+      "accent": "#1e3a8a",
       "speed": "slow",
       "glow": "none"
     },
     "triumphant": {
-      "accent": "#0066cc",
+      "accent": "#f97316",
       "speed": "fast",
       "glow": "none"
     }
   },
   "subtitle": {
     "fontFamily": "Pretendard",
-    "fontSize": 40,
-    "fontWeight": 600,
-    "color": "#1d1d1f",
-    "strokeColor": "#fafafa",
-    "strokeWidth": 0,
-    "keywordColor": "#0066cc",
-    "keywordStrokeColor": "#fafafa",
-    "backgroundColor": "#f5f5f7",
-    "borderRadius": 18,
-    "boxShadow": "0 0 0 1px #e3e3e6",
-    "bottomOffset": 88,
+    "fontSize": 52,
+    "fontWeight": 800,
+    "color": "#ffffff",
+    "strokeColor": "#111111",
+    "strokeWidth": 4,
+    "keywordColor": "#ffd400",
+    "keywordStrokeColor": "#111111",
+    "backgroundColor": "transparent",
+    "borderRadius": 0,
+    "boxShadow": "0 4px 0 rgba(10,11,14,0.35)",
+    "bottomOffset": 110,
     "maxWidth": 900,
-    "lineHeight": 1.18,
-    "maxCharsPerLine": 24,
+    "lineHeight": 1.22,
+    "maxCharsPerLine": 16,
     "visible": true
   },
   "fonts": {
@@ -93,7 +81,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 400,
+          "weight": 700,
           "style": "normal"
         }
       ]
@@ -103,7 +91,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 600,
+          "weight": 900,
           "style": "normal"
         }
       ]
@@ -113,7 +101,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 600,
+          "weight": 800,
           "style": "normal"
         }
       ]
@@ -123,7 +111,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 400,
+          "weight": 800,
           "style": "normal"
         }
       ]
@@ -133,7 +121,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 400,
+          "weight": 500,
           "style": "normal"
         }
       ]

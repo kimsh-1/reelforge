@@ -83,7 +83,7 @@
           font-size: 5.25rem;
           font-weight: 920;
           line-height: 1.04;
-          letter-spacing: 0;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
@@ -135,6 +135,8 @@
             var(--numbered-surface);
           box-shadow: 0 1rem 2.8rem var(--numbered-shadow);
           overflow: hidden;
+          opacity: 0;
+          will-change: transform, opacity;
         }
 
         .numbered-row::before {
@@ -231,6 +233,15 @@
           height: 74%;
           border-radius: 999rem;
           background: var(--numbered-accent);
+        }
+
+        .numbered-sweep {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(100deg, transparent 0 38%, color-mix(in srgb, var(--numbered-accent) 22%, transparent) 50%, transparent 62% 100%);
+          opacity: 0;
+          transform: translateX(-120%);
+          pointer-events: none;
         }
 
         .numbered-footer {
@@ -353,6 +364,8 @@
           const mood = textValue(variables.mood, "informative");
           const source = textValue(variables.source, "");
           const rows = normalizeRows({ items, values, unit, title });
+          const duration = blockDuration(root, 4);
+          const phases = phaseTimes(duration);
 
           root.style.setProperty("--numbered-accent", safeColor(variables.accent));
           root.style.setProperty("--row-count", String(Math.max(1, rows.length)));
@@ -375,6 +388,7 @@
             const label = document.createElement("h2");
             const meta = document.createElement("p");
             const rule = document.createElement("div");
+            const sweep = document.createElement("span");
 
             item.className = "numbered-row";
             stamp.className = "numbered-stamp";
@@ -384,6 +398,7 @@
             label.className = "numbered-label";
             meta.className = "numbered-meta";
             rule.className = "numbered-rule";
+            sweep.className = "numbered-sweep";
 
             rank.textContent = row.badge;
             stampUnit.textContent = unit;
@@ -393,30 +408,30 @@
 
             stamp.append(rank, stampUnit);
             copy.append(label, meta);
-            item.append(stamp, copy, rule);
+            item.append(sweep, stamp, copy, rule);
             list.appendChild(item);
 
-            row.elements = { item, stamp, copy, rule };
+            row.elements = { item, stamp, copy, rule, sweep };
           });
 
           tl.fromTo(
             root.querySelector(".numbered-header"),
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" },
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.58, ease: "power3.out" },
             0
           );
           rows.forEach((row, index) => {
-            const start = 0.24 + index * 0.18;
+            const start = 0.24 + index * 0.12;
             tl.fromTo(
               row.elements.item,
-              { opacity: 0, x: -58 },
-              { opacity: 1, x: 0, duration: 0.42, ease: "power3.out" },
+              { opacity: 0, x: -58, scale: 0.99 },
+              { opacity: 1, x: 0, scale: 1, duration: 0.54, ease: "power3.out" },
               start
             );
             tl.fromTo(
               row.elements.stamp,
               { opacity: 0, scale: 1.42, rotation: -8 },
-              { opacity: 1, scale: 1, rotation: 0, duration: 0.34, ease: "back.out(1.9)" },
+              { opacity: 1, scale: 1, rotation: 0, duration: 0.34, ease: "back.out(1.4)" },
               start + 0.06
             );
             tl.fromTo(
@@ -431,6 +446,12 @@
               { scaleY: 1, duration: 0.28, ease: "power2.out" },
               start + 0.18
             );
+            tl.fromTo(
+              row.elements.sweep,
+              { opacity: 0, x: "-120%" },
+              { opacity: 1, x: "120%", duration: 0.52, ease: "power2.inOut" },
+              phases.livingStart + index * 0.28
+            );
           });
           tl.fromTo(
             root.querySelector(".numbered-footer"),
@@ -438,6 +459,13 @@
             { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" },
             0.72 + rows.length * 0.16
           );
+          tl.to(root.querySelector(".numbered-list"), { y: -10, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(
+            root.querySelectorAll(".numbered-stamp"),
+            { scale: 1.055, duration: 1.25, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.25)), yoyo: true },
+            phases.livingStart
+          );
+          tl.to(root.querySelector(".numbered-stage"), { opacity: 0, y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
 
           window.__timelines["numbered"] = tl;
 
@@ -529,6 +557,25 @@
           function safeColor(value) {
             const text = textValue(value, "currentColor");
             return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "currentColor";
+          }
+
+          function blockDuration(element, fallback) {
+            let node = element.parentElement;
+            while (node) {
+              const value = Number(node.getAttribute?.("data-duration"));
+              if (Number.isFinite(value) && value > 0) return value;
+              node = node.parentElement;
+            }
+            const own = Number(element.getAttribute("data-duration"));
+            return Number.isFinite(own) && own > 0 ? own : fallback;
+          }
+
+          function phaseTimes(total) {
+            const exitDuration = Math.min(0.42, Math.max(0.3, total * 0.1));
+            const exitStart = Math.max(1.15, total - exitDuration);
+            const livingStart = Math.min(exitStart - 0.42, Math.max(1.0, total * 0.28));
+            const livingDuration = Math.max(0.6, exitStart - livingStart);
+            return { exitStart, exitDuration, livingStart, livingDuration };
           }
         })();
       </script>

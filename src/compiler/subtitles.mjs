@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { applyLivingBackgroundToSceneHtml } from "./motion.mjs";
 
 const DEFAULT_SUBTITLE = {
   fontFamily: "Pretendard",
@@ -34,6 +35,15 @@ function htmlEscape(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function syllableHtml(value) {
+  return Array.from(String(value ?? ""))
+    .map((char, index) => {
+      if (/\s/u.test(char)) return htmlEscape(char);
+      return `<span class="rf-subtitle-syllable" data-rf-syllable-index="${index}">${htmlEscape(char)}</span>`;
+    })
+    .join("");
 }
 
 function cssString(value) {
@@ -140,7 +150,7 @@ function textToken(text) {
   if (!text) return null;
   return {
     text,
-    html: `<span class="rf-subtitle-text">${htmlEscape(text)}</span>`,
+    html: `<span class="rf-subtitle-text">${syllableHtml(text)}</span>`,
     breakBefore: false
   };
 }
@@ -148,7 +158,7 @@ function textToken(text) {
 function wordToken(word, index) {
   return {
     text: word,
-    html: `<span class="rf-subtitle-word is-future" data-rf-word-index="${index}">${htmlEscape(word)}</span>`,
+    html: `<span class="rf-subtitle-word is-future" data-rf-word-index="${index}">${syllableHtml(word)}</span>`,
     breakBefore: true
   };
 }
@@ -183,7 +193,7 @@ function pushSplitWordToken(tokens, rawWord, index) {
 function keywordToken(text) {
   return {
     text,
-    html: `<span class="rf-subtitle-keyword">${htmlEscape(text)}</span>`,
+    html: `<span class="rf-subtitle-keyword">${syllableHtml(text)}</span>`,
     breakBefore: true
   };
 }
@@ -191,7 +201,7 @@ function keywordToken(text) {
 function plainToken(text) {
   return {
     text,
-    html: `<span class="rf-subtitle-text">${htmlEscape(text)}</span>`,
+    html: `<span class="rf-subtitle-text">${syllableHtml(text)}</span>`,
     breakBefore: true
   };
 }
@@ -327,6 +337,14 @@ function enhancedSubtitleCss(style) {
           display: inline;
           transition: color 0.1s linear, opacity 0.1s linear, -webkit-text-stroke-color 0.1s linear;
         }
+        .subtitles.rf-subtitles-enhanced .rf-subtitle-syllable {
+          display: inline-block;
+          transform-origin: 50% 82%;
+          will-change: transform, opacity;
+        }
+        .subtitles.rf-subtitles-enhanced {
+          letter-spacing: -0.02em;
+        }
         .subtitles.rf-subtitles-enhanced .rf-subtitle-word.is-future {
           opacity: 0.5;
         }
@@ -408,7 +426,10 @@ function patchSubtitleRevealTween(html, sceneId, data) {
   const pattern = new RegExp(
     `\\s*tl\\.fromTo\\(\\s*${escapeRegExp(cssString(`#${sceneId}-subtitles`))},[\\s\\S]*?\\n\\s*0\\.36\\s*\\n\\s*\\);`
   );
-  const replacement = `\n          tl.set(${cssString(`#${sceneId}-subtitles`)}, { opacity: ${visible}, y: 0 }, 0);`;
+  const syllables = cssString(`#${sceneId}-subtitles .rf-subtitle-syllable`);
+  const replacement = `
+          tl.set(${cssString(`#${sceneId}-subtitles`)}, { opacity: ${visible}, y: 0 }, 0);
+          tl.fromTo(${syllables}, { opacity: 0, y: 18, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "power2.out", stagger: { each: 0.026, from: "start" } }, 0.05);`;
   return html.replace(pattern, replacement);
 }
 
@@ -426,6 +447,11 @@ function patchSceneHtml({ sceneId, data }) {
       </style>`);
   html = patchClassAndContent(html, sceneId, data);
   html = patchSubtitleRevealTween(html, sceneId, data);
+  html = applyLivingBackgroundToSceneHtml({
+    html,
+    scene: { sceneId },
+    durationSec: data.endSec
+  });
 
   const timelinePattern = new RegExp(`(\\s*)window\\.__timelines\\[${escapeRegExp(cssString(sceneId))}\\]\\s*=\\s*tl;`);
   html = html.replace(timelinePattern, (match, indent) => {

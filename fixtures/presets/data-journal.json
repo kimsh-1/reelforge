@@ -1,90 +1,88 @@
 {
   "version": "1.0.0",
-  "presetId": "apple",
+  "presetId": "data-journal",
   "colors": {
-    "background": "#fafafa",
-    "surface": "#f5f5f7",
-    "panel": "#28282b",
-    "text": "#1d1d1f",
-    "mutedText": "#333333",
-    "accent": "#0066cc",
-    "accentAlt": "#2997ff",
-    "shadow": "#0a0a0c",
-    "primary": "#0066cc",
-    "primaryFocus": "#0071e3",
-    "primaryOnDark": "#2997ff",
-    "ink": "#1d1d1f",
-    "body": "#1d1d1f",
-    "bodyOnDark": "#f5f5f7",
-    "bodyMuted": "#cccccc",
-    "inkMuted80": "#333333",
-    "inkMuted48": "#7a7a7a",
-    "dividerSoft": "#e3e3e6",
-    "hairline": "#e0e0e0",
-    "canvas": "#fafafa",
-    "canvasParchment": "#f5f5f7",
-    "surfacePearl": "#fafafc",
-    "surfaceTile1": "#232326",
-    "surfaceTile2": "#2c2c30",
-    "surfaceTile3": "#1c1c1f",
-    "surfaceBlack": "#0a0a0c",
-    "surfaceChipTranslucent": "#d2d2d7",
+    "background": "#fff1e5",
+    "surface": "#f2dfce",
+    "panel": "#f7e8da",
+    "text": "#0c0c0c",
+    "mutedText": "#66605c",
+    "accent": "#e3120b",
+    "accentAlt": "#0f5499",
+    "shadow": "#262a33",
+    "primary": "#e3120b",
     "onPrimary": "#ffffff",
-    "onDark": "#f5f5f7"
+    "paper": "#fff1e5",
+    "slate": "#262a33",
+    "claret": "#990f3d",
+    "oxford": "#0f5499",
+    "teal": "#0d7680",
+    "wheat": "#f2dfce",
+    "sky": "#cce6ff",
+    "mandarin": "#ff8833",
+    "lemon": "#ffec1a",
+    "seriesBlue": "#006ba2",
+    "seriesTeal": "#0d7680",
+    "seriesCyan": "#3ebcd2",
+    "seriesYellow": "#ebb434",
+    "seriesMauve": "#9a607f",
+    "negative": "#990f3d",
+    "positive": "#00994d",
+    "grid": "#d8c9bd"
   },
   "moods": {
     "dramatic": {
-      "accent": "#0066cc",
+      "accent": "#990f3d",
       "speed": "slow",
-      "glow": "0 18px 44px rgba(10,10,12,0.22)"
+      "glow": "none"
     },
     "urgent": {
-      "accent": "#0071e3",
+      "accent": "#e3120b",
       "speed": "fast",
       "glow": "none"
     },
     "somber": {
-      "accent": "#333333",
+      "accent": "#262a33",
       "speed": "slow",
       "glow": "none"
     },
     "informative": {
-      "accent": "#0066cc",
+      "accent": "#0f5499",
       "speed": "normal",
       "glow": "none"
     },
     "contemplative": {
-      "accent": "#2997ff",
+      "accent": "#0d7680",
       "speed": "slow",
       "glow": "none"
     },
     "suspense": {
-      "accent": "#7a7a7a",
+      "accent": "#593380",
       "speed": "slow",
       "glow": "none"
     },
     "triumphant": {
-      "accent": "#0066cc",
-      "speed": "fast",
+      "accent": "#00994d",
+      "speed": "normal",
       "glow": "none"
     }
   },
   "subtitle": {
     "fontFamily": "Pretendard",
     "fontSize": 40,
-    "fontWeight": 600,
-    "color": "#1d1d1f",
-    "strokeColor": "#fafafa",
+    "fontWeight": 500,
+    "color": "#0c0c0c",
+    "strokeColor": "transparent",
     "strokeWidth": 0,
-    "keywordColor": "#0066cc",
-    "keywordStrokeColor": "#fafafa",
-    "backgroundColor": "#f5f5f7",
-    "borderRadius": 18,
-    "boxShadow": "0 0 0 1px #e3e3e6",
-    "bottomOffset": 88,
-    "maxWidth": 900,
-    "lineHeight": 1.18,
-    "maxCharsPerLine": 24,
+    "keywordColor": "#990f3d",
+    "keywordStrokeColor": "transparent",
+    "backgroundColor": "rgba(255,241,229,0.94)",
+    "borderRadius": 0,
+    "boxShadow": "none",
+    "bottomOffset": 82,
+    "maxWidth": 980,
+    "lineHeight": 1.32,
+    "maxCharsPerLine": 22,
     "visible": true
   },
   "fonts": {
@@ -103,7 +101,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 600,
+          "weight": 700,
           "style": "normal"
         }
       ]
@@ -113,7 +111,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 600,
+          "weight": 800,
           "style": "normal"
         }
       ]
@@ -123,7 +121,7 @@
       "files": [
         {
           "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
-          "weight": 400,
+          "weight": 500,
           "style": "normal"
         }
       ]

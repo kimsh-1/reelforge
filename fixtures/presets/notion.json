@@ -2,26 +2,26 @@
   "version": "1.0.0",
   "presetId": "notion",
   "colors": {
-    "background": "#ffffff",
+    "background": "#fafafa",
     "surface": "#f6f5f4",
-    "panel": "#0a1530",
+    "panel": "#0f1c3d",
     "text": "#1a1a1a",
     "mutedText": "#5d5b54",
     "accent": "#5645d4",
     "accentAlt": "#f9e79f",
-    "shadow": "#0f0f0f",
+    "shadow": "#0a0b0e",
     "primary": "#5645d4",
     "primaryPressed": "#4534b3",
     "primaryDeep": "#3a2a99",
     "onPrimary": "#ffffff",
-    "brandNavy": "#0a1530",
-    "brandNavyDeep": "#070f24",
+    "brandNavy": "#0f1c3d",
+    "brandNavyDeep": "#111f42",
     "brandNavyMid": "#1a2a52",
     "linkBlue": "#0075de",
     "linkBluePressed": "#005bab",
     "brandOrange": "#dd5b00",
     "brandOrangeDeep": "#793400",
-    "brandPink": "#ff64c8",
+    "brandPink": "#f56cbd",
     "brandPinkDeep": "#a02e6d",
     "brandPurple": "#7b3ff2",
     "brandPurple300": "#d6b6f6",
@@ -30,68 +30,68 @@
     "brandGreen": "#1aae39",
     "brandYellow": "#f5d75e",
     "brandBrown": "#523410",
-    "cardTintPeach": "#ffe8d4",
-    "cardTintRose": "#fde0ec",
-    "cardTintMint": "#d9f3e1",
-    "cardTintLavender": "#e6e0f5",
-    "cardTintSky": "#dcecfa",
-    "cardTintYellow": "#fef7d6",
+    "cardTintPeach": "#ffd9b8",
+    "cardTintRose": "#fbcfe0",
+    "cardTintMint": "#c4ecd2",
+    "cardTintLavender": "#d9cfef",
+    "cardTintSky": "#c8e2f7",
+    "cardTintYellow": "#fdf0b4",
     "cardTintYellowBold": "#f9e79f",
     "cardTintCream": "#f8f5e8",
     "cardTintGray": "#f0eeec",
-    "canvas": "#ffffff",
+    "canvas": "#fafafa",
     "surfaceSoft": "#fafaf9",
-    "hairline": "#e5e3df",
-    "hairlineSoft": "#ede9e4",
+    "hairline": "#d8d5cf",
+    "hairlineSoft": "#e2ded8",
     "hairlineStrong": "#c8c4be",
-    "inkDeep": "#000000",
+    "inkDeep": "#0a0b0e",
     "ink": "#1a1a1a",
     "charcoal": "#37352f",
     "slate": "#5d5b54",
     "steel": "#787671",
     "stone": "#a4a097",
     "muted": "#bbb8b1",
-    "onDark": "#ffffff",
+    "onDark": "#f5f7f8",
     "onDarkMuted": "#a4a097",
     "success": "#1aae39",
     "semanticWarning": "#dd5b00",
-    "danger": "#e03131"
+    "danger": "#e5484d"
   },
   "moods": {
     "dramatic": {
       "accent": "#5645d4",
       "speed": "slow",
-      "glow": "0 0 28px #5645d4"
+      "glow": "none"
     },
     "urgent": {
       "accent": "#dd5b00",
       "speed": "fast",
-      "glow": "0 0 24px #dd5b00"
+      "glow": "none"
     },
     "somber": {
-      "accent": "#0a1530",
+      "accent": "#0f1c3d",
       "speed": "slow",
-      "glow": "0 24px 48px #0f0f0f33"
+      "glow": "0 18px 44px rgba(10,11,14,0.2)"
     },
     "informative": {
       "accent": "#0075de",
       "speed": "normal",
-      "glow": "0 0 22px #0075de"
+      "glow": "none"
     },
     "contemplative": {
       "accent": "#2a9d99",
       "speed": "slow",
-      "glow": "0 0 22px #2a9d99"
+      "glow": "none"
     },
     "suspense": {
       "accent": "#7b3ff2",
       "speed": "slow",
-      "glow": "0 0 24px #7b3ff2"
+      "glow": "none"
     },
     "triumphant": {
       "accent": "#1aae39",
       "speed": "fast",
-      "glow": "0 0 24px #1aae39"
+      "glow": "none"
     }
   },
   "subtitle": {
@@ -99,13 +99,13 @@
     "fontSize": 42,
     "fontWeight": 500,
     "color": "#1a1a1a",
-    "strokeColor": "#ffffff",
+    "strokeColor": "#fafafa",
     "strokeWidth": 1,
     "keywordColor": "#5645d4",
-    "keywordStrokeColor": "#ffffff",
+    "keywordStrokeColor": "#fafafa",
     "backgroundColor": "#f6f5f4",
     "borderRadius": 8,
-    "boxShadow": "0 4px 12px #0f0f0f14, 0 0 0 1px #e5e3df",
+    "boxShadow": "0 4px 12px rgba(10,11,14,0.08), 0 0 0 1px #d8d5cf",
     "bottomOffset": 96,
     "maxWidth": 940,
     "lineHeight": 1.2,

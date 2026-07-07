@@ -1,0 +1,129 @@
+{
+  "version": "1.0.0",
+  "presetId": "wrapped-bold",
+  "colors": {
+    "background": "#0a0a0c",
+    "surface": "#faf7f0",
+    "panel": "#111111",
+    "text": "#faf7f0",
+    "mutedText": "#d7d1c8",
+    "accent": "#1db954",
+    "accentAlt": "#ff4438",
+    "shadow": "#0a0a0c",
+    "primary": "#1db954",
+    "onPrimary": "#0a0a0c",
+    "green": "#1db954",
+    "red": "#ff4438",
+    "paper": "#faf7f0",
+    "ink": "#0a0a0c",
+    "yellow": "#ffd400",
+    "scratch": "#2a2a2a"
+  },
+  "moods": {
+    "dramatic": {
+      "accent": "#ff4438",
+      "speed": "fast",
+      "glow": "grain"
+    },
+    "urgent": {
+      "accent": "#ff4438",
+      "speed": "fast",
+      "glow": "grain"
+    },
+    "somber": {
+      "accent": "#faf7f0",
+      "speed": "slow",
+      "glow": "grain"
+    },
+    "informative": {
+      "accent": "#1db954",
+      "speed": "normal",
+      "glow": "grain"
+    },
+    "contemplative": {
+      "accent": "#d7d1c8",
+      "speed": "slow",
+      "glow": "grain"
+    },
+    "suspense": {
+      "accent": "#ff4438",
+      "speed": "normal",
+      "glow": "grain"
+    },
+    "triumphant": {
+      "accent": "#1db954",
+      "speed": "fast",
+      "glow": "grain"
+    }
+  },
+  "subtitle": {
+    "fontFamily": "Pretendard",
+    "fontSize": 50,
+    "fontWeight": 900,
+    "color": "#faf7f0",
+    "strokeColor": "#0a0a0c",
+    "strokeWidth": 2,
+    "keywordColor": "#1db954",
+    "keywordStrokeColor": "#0a0a0c",
+    "backgroundColor": "rgba(10,10,12,0.84)",
+    "borderRadius": 0,
+    "boxShadow": "0 0 0 2px #faf7f0",
+    "bottomOffset": 90,
+    "maxWidth": 920,
+    "lineHeight": 1.05,
+    "maxCharsPerLine": 14,
+    "visible": true
+  },
+  "fonts": {
+    "body": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 700,
+          "style": "normal"
+        }
+      ]
+    },
+    "headline": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 900,
+          "style": "normal"
+        }
+      ]
+    },
+    "value": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 900,
+          "style": "normal"
+        }
+      ]
+    },
+    "subtitle": {
+      "family": "Pretendard",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 900,
+          "style": "normal"
+        }
+      ]
+    },
+    "mono": {
+      "family": "Pretendard Mono Fallback",
+      "files": [
+        {
+          "path": "poc/fixtures/p0c/fonts/PretendardVariable.woff2",
+          "weight": 600,
+          "style": "normal"
+        }
+      ]
+    }
+  }
+}
