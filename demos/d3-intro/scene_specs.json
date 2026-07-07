@@ -192,9 +192,9 @@
       "emphasis": "quote",
       "headline": "하이라이트 몽타주",
       "items": [
-        "카피가 뜨고",
-        "컷이 튀고",
-        "렌더로 닫다"
+        "훅은 카피가",
+        "리듬은 컷이",
+        "마감은 렌더가"
       ],
       "source": "ReelForge",
       "visual_kind": "chart",
@@ -246,12 +246,12 @@
       "mood": "somber",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "톤 프리셋 16",
+      "headline": "톤 프리셋 19",
       "items": [
         "브랜드 프리셋"
       ],
       "values": [
-        16
+        19
       ],
       "unit": "preset",
       "source": "ReelForge",
