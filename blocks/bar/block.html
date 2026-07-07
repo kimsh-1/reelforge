@@ -119,7 +119,8 @@
           gap: 1.5rem;
           min-height: 6.375rem;
           opacity: 0;
-          will-change: transform, opacity;
+          transform-origin: 50% 50%;
+          will-change: transform, filter, opacity;
         }
 
         .bar-row[data-highlight="false"] .bar-label,
@@ -164,6 +165,7 @@
             );
           box-shadow: 0 0 1.625rem color-mix(in srgb, var(--bar-accent) 34%, transparent);
           overflow: hidden;
+          will-change: transform, filter;
         }
 
         .bar-sweep {
@@ -210,6 +212,45 @@
           color: var(--bar-accent);
           font-weight: 820;
           white-space: nowrap;
+        }
+
+        @keyframes bar-row-living {
+          0% {
+            transform: translateY(-0.45rem) scale(1.004);
+            filter: brightness(1.02);
+          }
+          100% {
+            transform: translateY(0.45rem) scale(1.014);
+            filter: brightness(1.12);
+          }
+        }
+
+        @keyframes bar-sweep-living {
+          0% {
+            opacity: 0;
+            transform: translateX(-125%);
+          }
+          28%,
+          62% {
+            opacity: 0.86;
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(125%);
+          }
+        }
+
+        .bar-row {
+          animation: bar-row-living 2.1s ease-in-out 1s infinite alternate;
+        }
+
+        .bar-row:nth-child(2n) {
+          animation-delay: 1.2s;
+          animation-direction: alternate-reverse;
+        }
+
+        .bar-sweep {
+          animation: bar-sweep-living 1.65s ease-in-out 1.1s infinite;
         }
       </style>
       <div
@@ -347,23 +388,55 @@
           });
           const highlight = rows[highlightIndex]?.elements;
           if (highlight) {
-            tl.fromTo(
-              highlight.sweep,
-              { opacity: 0, x: "-120%" },
-              {
-                opacity: 1,
-                x: "120%",
-                duration: 0.72,
-                ease: "power2.inOut",
-                repeat: Math.max(1, Math.floor(phases.livingDuration / 1.15)),
-                repeatDelay: 0.3
-              },
-              phases.livingStart
-            );
-            tl.to(highlight.item, { scale: 1.018, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+            tl.to(highlight.item, {
+              scale: 1.03,
+              y: -14,
+              filter: "brightness(1.16)",
+              duration: 0.78,
+              ease: "sine.inOut",
+              repeat: loopRepeat(0.78, 0.14),
+              repeatDelay: 0.14,
+              yoyo: true
+            }, phases.livingStart);
           }
-          tl.to(frame, { y: -8, scale: 1.006, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          rows.forEach((row, index) => {
+            tl.fromTo(
+              row.elements.sweep,
+              { opacity: 0, x: "-125%" },
+              {
+                opacity: index === highlightIndex ? 0.96 : 0.66,
+                x: "125%",
+                duration: 0.62,
+                ease: "power2.inOut",
+                repeat: loopRepeat(0.62, rows.length * 0.18),
+                repeatDelay: rows.length * 0.18
+              },
+              phases.livingStart + index * 0.18
+            );
+            if (index !== highlightIndex) {
+              const rowStart = phases.livingStart + 0.08 + index * 0.06;
+              tl.to(row.elements.item, {
+                y: index % 2 === 0 ? -10 : 10,
+                scale: 1.014,
+                filter: "brightness(1.1)",
+                duration: 0.72,
+                ease: "sine.inOut",
+                repeat: loopRepeat(0.72, 0.2),
+                repeatDelay: 0.2,
+                yoyo: true
+              }, rowStart);
+            }
+          });
+          tl.to(frame, {
+            y: -8,
+            scale: 1.006,
+            duration: 0.96,
+            ease: "sine.inOut",
+            repeat: loopRepeat(0.96),
+            yoyo: true
+          }, phases.livingStart);
           tl.to(frame, { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.addLabel("final", duration);
 
           timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
@@ -464,6 +537,11 @@
               livingDuration,
               countDuration: Math.min(2.4, Math.max(1.2, total * 0.56))
             };
+          }
+
+          function loopRepeat(cycleDuration, repeatDelay = 0) {
+            const span = Math.max(0.1, cycleDuration + repeatDelay);
+            return Math.max(2, Math.ceil(72 / span));
           }
 
           function timelineIds(hostElement, rootElement) {

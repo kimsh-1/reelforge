@@ -175,6 +175,8 @@
           line-height: 1;
           letter-spacing: 0;
           font-variant-numeric: tabular-nums;
+          transform-origin: 50% 50%;
+          will-change: transform, filter;
         }
 
         .compare-list {
@@ -201,6 +203,8 @@
           border-radius: 0.5rem;
           background: var(--compare-panel);
           opacity: 0;
+          transform-origin: 50% 50%;
+          will-change: transform, filter, opacity;
         }
 
         .compare-copy {
@@ -313,6 +317,44 @@
           letter-spacing: 0;
           opacity: 0;
           transform: scale(0.9);
+          transform-origin: 50% 50%;
+          will-change: transform, filter, opacity;
+        }
+
+        @keyframes compare-row-living {
+          0% {
+            transform: translateY(-0.78rem) scale(1.006);
+            filter: brightness(1.04);
+          }
+          100% {
+            transform: translateY(0.78rem) scale(1.018);
+            filter: brightness(1.18);
+          }
+        }
+
+        @keyframes compare-pill-pulse {
+          0% {
+            transform: translateY(-0.22rem) scale(1.02);
+            filter: brightness(1.06);
+          }
+          100% {
+            transform: translateY(0.18rem) scale(1.16);
+            filter: brightness(1.24);
+          }
+        }
+
+        .compare-item {
+          animation: compare-row-living 2.35s ease-in-out 1.05s infinite alternate;
+        }
+
+        .compare-item:nth-child(2n) {
+          animation-delay: 1.28s;
+          animation-direction: alternate-reverse;
+        }
+
+        .compare-side-tag,
+        .compare-vs {
+          animation: compare-pill-pulse 1.72s ease-in-out 0.88s infinite alternate;
         }
 
         #compare-root[data-has-side-titles="false"] .compare-panel {
@@ -510,6 +552,8 @@
             line-height: 1;
             letter-spacing: 0;
             font-variant-numeric: tabular-nums;
+            transform-origin: 50% 50%;
+            will-change: transform, filter;
           }
 
           .compare-list {
@@ -536,6 +580,8 @@
             border-radius: 0.5rem;
             background: var(--compare-panel);
             opacity: 0;
+            transform-origin: 50% 50%;
+            will-change: transform, filter, opacity;
           }
 
           .compare-copy {
@@ -648,6 +694,44 @@
             letter-spacing: 0;
             opacity: 0;
             transform: scale(0.9);
+            transform-origin: 50% 50%;
+            will-change: transform, filter, opacity;
+          }
+
+          @keyframes compare-row-living {
+            0% {
+              transform: translateY(-0.78rem) scale(1.006);
+              filter: brightness(1.04);
+            }
+            100% {
+              transform: translateY(0.78rem) scale(1.018);
+              filter: brightness(1.18);
+            }
+          }
+
+          @keyframes compare-pill-pulse {
+            0% {
+              transform: translateY(-0.22rem) scale(1.02);
+              filter: brightness(1.06);
+            }
+            100% {
+              transform: translateY(0.18rem) scale(1.16);
+              filter: brightness(1.24);
+            }
+          }
+
+          .compare-item {
+            animation: compare-row-living 2.35s ease-in-out 1.05s infinite alternate;
+          }
+
+          .compare-item:nth-child(2n) {
+            animation-delay: 1.28s;
+            animation-direction: alternate-reverse;
+          }
+
+          .compare-side-tag,
+          .compare-vs {
+            animation: compare-pill-pulse 1.72s ease-in-out 0.88s infinite alternate;
           }
 
           #compare-root[data-has-side-titles="false"] .compare-panel {
@@ -779,6 +863,8 @@
           const fills = gsap.utils.toArray(root.querySelectorAll(".compare-meter-fill"));
           const values = gsap.utils.toArray(root.querySelectorAll(".compare-value"));
           const footer = root.querySelector(".compare-footer");
+          const allRows = leftRows.concat(rightRows);
+          const sideTags = gsap.utils.toArray(root.querySelectorAll(".compare-side-tag"));
 
           tl.fromTo(header, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.58, ease: "power3.out" }, 0);
           tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "none" }, 0.14);
@@ -812,9 +898,45 @@
             );
           });
           tl.fromTo(footer, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 0.96);
-          tl.to(leftPanel, { opacity: 0.64, y: 6, duration: 0.52, ease: "power2.inOut" }, phases.livingStart);
-          tl.to(rightPanel, { scale: 1.018, y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(vs, { scale: 1.08, duration: 1.4, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.4)), yoyo: true }, phases.livingStart);
+          tl.to(leftPanel, {
+            opacity: 0.72,
+            y: 16,
+            scale: 0.99,
+            duration: 0.94,
+            ease: "sine.inOut",
+            repeat: loopRepeat(0.94),
+            yoyo: true
+          }, phases.livingStart);
+          tl.to(rightPanel, {
+            y: -20,
+            scale: 1.034,
+            duration: 1.03,
+            ease: "sine.inOut",
+            repeat: loopRepeat(1.03),
+            yoyo: true
+          }, phases.livingStart + 0.06);
+          tl.to(sideTags.concat(vs), {
+            scale: 1.16,
+            y: -5,
+            filter: "brightness(1.22)",
+            duration: 0.63,
+            ease: "sine.inOut",
+            repeat: loopRepeat(0.63),
+            yoyo: true
+          }, phases.livingStart + 0.03);
+          allRows.forEach((row, index) => {
+            const rowStart = phases.livingStart + index * 0.11;
+            tl.to(row, {
+              y: index % 2 === 0 ? -18 : 18,
+              scale: 1.018,
+              filter: "brightness(1.18)",
+              duration: 0.74,
+              ease: "sine.inOut",
+              repeat: loopRepeat(0.74, 0.16),
+              repeatDelay: 0.16,
+              yoyo: true
+            }, rowStart);
+          });
           tl.to(root.querySelector(".compare-stage"), { y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
           timelineIds(root).forEach((id) => {
@@ -1046,6 +1168,11 @@
               livingDuration,
               countDuration: Math.min(1.8, Math.max(0.9, total * 0.42))
             };
+          }
+
+          function loopRepeat(cycleDuration, repeatDelay = 0) {
+            const span = Math.max(0.1, cycleDuration + repeatDelay);
+            return Math.max(2, Math.ceil(72 / span));
           }
 
           function timelineIds(rootElement) {

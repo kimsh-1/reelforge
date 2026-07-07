@@ -128,6 +128,9 @@
           box-shadow: 0 1.15rem 2.8rem color-mix(in srgb, var(--list-shadow) 12%, transparent);
           opacity: 0;
           counter-increment: list-item-count;
+          overflow: hidden;
+          transform-origin: 50% 50%;
+          will-change: transform, filter, opacity;
         }
 
         .list-icon {
@@ -140,6 +143,8 @@
           border-radius: 0.5rem;
           background: var(--list-panel);
           overflow: hidden;
+          transform-origin: 50% 50%;
+          will-change: transform, filter;
         }
 
         .list-icon::before {
@@ -237,6 +242,60 @@
 
         .list-item[data-has-value="false"] .list-value {
           display: none;
+        }
+
+        @keyframes list-row-living {
+          0% {
+            transform: translateY(-0.72rem) scale(1.006);
+            filter: brightness(1.04);
+          }
+          100% {
+            transform: translateY(0.72rem) scale(1.018);
+            filter: brightness(1.16);
+          }
+        }
+
+        @keyframes list-icon-pulse {
+          0% {
+            transform: scale(1.02);
+            filter: brightness(1.06);
+          }
+          100% {
+            transform: scale(1.16);
+            filter: brightness(1.24);
+          }
+        }
+
+        @keyframes list-sweep-living {
+          0% {
+            opacity: 0;
+            transform: translateX(-120%);
+          }
+          28%,
+          62% {
+            opacity: 0.88;
+          }
+          100% {
+            opacity: 0;
+            transform: translateX(120%);
+          }
+        }
+
+        .list-item {
+          animation: list-row-living 2.18s ease-in-out 1s infinite alternate;
+        }
+
+        .list-item:nth-child(2n) {
+          animation-delay: 1.22s;
+          animation-direction: alternate-reverse;
+        }
+
+        .list-icon {
+          animation: list-icon-pulse 1.64s ease-in-out 0.92s infinite alternate;
+        }
+
+        .list-sweep {
+          animation: list-sweep-living 1.48s ease-in-out 1.05s infinite;
         }
       </style>
       <div
@@ -354,16 +413,49 @@
             0.48
           );
           const sweeps = gsap.utils.toArray(root.querySelectorAll(".list-sweep"));
-          tl.to(root.querySelector(".list-stack"), { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(root.querySelector(".list-stack"), {
+            y: -18,
+            duration: 0.94,
+            ease: "sine.inOut",
+            repeat: loopRepeat(0.94),
+            yoyo: true
+          }, phases.livingStart);
           sweeps.forEach((sweep, index) => {
             tl.fromTo(
               sweep,
               { opacity: 0, x: "-120%" },
-              { opacity: 1, x: "120%", duration: 0.52, ease: "power2.inOut" },
-              phases.livingStart + (index % Math.max(1, rows.length)) * 0.34
+              {
+                opacity: 0.88,
+                x: "120%",
+                duration: 0.56,
+                ease: "power2.inOut",
+                repeat: loopRepeat(0.56, rows.length * 0.2),
+                repeatDelay: rows.length * 0.2
+              },
+              phases.livingStart + index * 0.2
             );
           });
-          tl.to(icons, { scale: 1.08, duration: 1.2, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.2)), yoyo: true }, phases.livingStart);
+          items.forEach((item, index) => {
+            const rowStart = phases.livingStart + index * 0.08;
+            tl.to(item, {
+              y: index % 2 === 0 ? -16 : 16,
+              scale: 1.018,
+              filter: "brightness(1.15)",
+              duration: 0.7,
+              ease: "sine.inOut",
+              repeat: loopRepeat(0.7, 0.18),
+              repeatDelay: 0.18,
+              yoyo: true
+            }, rowStart);
+          });
+          tl.to(icons, {
+            scale: 1.16,
+            filter: "brightness(1.22)",
+            duration: 0.82,
+            ease: "sine.inOut",
+            repeat: loopRepeat(0.82),
+            yoyo: true
+          }, phases.livingStart + 0.06);
           tl.to(root.querySelector(".list-stage"), { y: -20, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
           timelineIds(host, root).forEach((id) => {
@@ -477,6 +569,11 @@
             const livingStart = Math.min(exitStart - 0.42, Math.max(1.0, total * 0.27));
             const livingDuration = Math.max(0.6, exitStart - livingStart);
             return { exitStart, exitDuration, livingStart, livingDuration };
+          }
+
+          function loopRepeat(cycleDuration, repeatDelay = 0) {
+            const span = Math.max(0.1, cycleDuration + repeatDelay);
+            return Math.max(2, Math.ceil(72 / span));
           }
         })();
       </script>
