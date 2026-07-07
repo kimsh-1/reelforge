@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "numbered",
-                    "data-composition-src": "blocks/numbered/block.html",
-                    "data-duration": "3.133333332333333",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;}",
-                    "data-width": "1920",
-                    "id": "s05-block-host"
+                    "class": "block-format-frame",
+                    "id": "s05-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "numbered",
+                        "data-composition-src": "blocks/numbered/block.html",
+                        "data-duration": "3.133333332333333",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;}",
+                        "data-width": "1920",
+                        "id": "s05-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

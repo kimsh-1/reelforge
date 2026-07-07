@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "quote",
-                    "data-composition-src": "blocks/quote/block.html",
-                    "data-duration": "4.899999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;사용자 인용&quot;,&quot;items&quot;:[&quot;사용자 인터뷰&quot;,&quot;설정이 쉬워야 다시 씁니다&quot;],&quot;values&quot;:[&quot;5회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-user-interviews&quot;}",
-                    "data-width": "1920",
-                    "id": "s08-block-host"
+                    "class": "block-format-frame",
+                    "id": "s08-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "quote",
+                        "data-composition-src": "blocks/quote/block.html",
+                        "data-duration": "4.899999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;사용자 인용&quot;,&quot;items&quot;:[&quot;사용자 인터뷰&quot;,&quot;설정이 쉬워야 다시 씁니다&quot;],&quot;values&quot;:[&quot;5회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-user-interviews&quot;}",
+                        "data-width": "1920",
+                        "id": "s08-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

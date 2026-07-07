@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "numbered",
-                    "data-composition-src": "blocks/numbered/block.html",
-                    "data-duration": "29.999999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;30초 설명 구간&quot;,&quot;items&quot;:[&quot;문제 정의&quot;,&quot;사용자 맥락&quot;,&quot;실험 계획&quot;,&quot;예상 리스크&quot;],&quot;values&quot;:[1,2,3,4],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-long-audio&quot;}",
-                    "data-width": "1920",
-                    "id": "s06-block-host"
+                    "class": "block-format-frame",
+                    "id": "s06-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "numbered",
+                        "data-composition-src": "blocks/numbered/block.html",
+                        "data-duration": "29.999999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;30초 설명 구간&quot;,&quot;items&quot;:[&quot;문제 정의&quot;,&quot;사용자 맥락&quot;,&quot;실험 계획&quot;,&quot;예상 리스크&quot;],&quot;values&quot;:[1,2,3,4],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-long-audio&quot;}",
+                        "data-width": "1920",
+                        "id": "s06-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

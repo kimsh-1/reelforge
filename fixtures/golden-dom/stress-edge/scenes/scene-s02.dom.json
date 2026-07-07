@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "bar",
-                    "data-composition-src": "blocks/bar/block.html",
-                    "data-duration": "4.799999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;검색 유입 상승&quot;,&quot;items&quot;:[&quot;검색&quot;,&quot;추천&quot;,&quot;광고&quot;],&quot;values&quot;:[7400,5100,2900],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-growth&quot;}",
-                    "data-width": "1920",
-                    "id": "s02-block-host"
+                    "class": "block-format-frame",
+                    "id": "s02-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "bar",
+                        "data-composition-src": "blocks/bar/block.html",
+                        "data-duration": "4.799999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;검색 유입 상승&quot;,&quot;items&quot;:[&quot;검색&quot;,&quot;추천&quot;,&quot;광고&quot;],&quot;values&quot;:[7400,5100,2900],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-growth&quot;}",
+                        "data-width": "1920",
+                        "id": "s02-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

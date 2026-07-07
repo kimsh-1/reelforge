@@ -12,3 +12,4 @@
 | P2-G | L1-1 골든 DOM diff·L1-2 전환 매트릭스·L1-9 블록 스냅샷·오디오 비의존 L2 렌더 게이트 | 전부 | src/gates/**, fixtures |
 | P2-R | 적대 리뷰 | 전부 | reports/P2-review.md |
 - [ ] P2 결함: vf write repo-루트 경로 가드가 repo 밖 사용자 프로젝트 컴파일을 차단 — 가드 기준을 repo루트가 아니라 (프로젝트루트+빌드루트)로 재정의 필요 (발견: one-block 재현 중)
+- [ ] 정리 백로그: reelforge/.venv-tts(5.1GB, easyocr torch) → P5 완료 후 CPU-only torch 재설치로 ~1GB 다이어트 또는 tesseract 교체 / tmp/gate-work은 완주 후 청소

@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "line",
-                    "data-composition-src": "blocks/line/block.html",
-                    "data-duration": "4.4333333323333335",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;재방문율 4주 추이&quot;,&quot;items&quot;:[&quot;1주차&quot;,&quot;2주차&quot;,&quot;3주차&quot;,&quot;4주차&quot;],&quot;values&quot;:[29,31,34,37],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-retention-weekly&quot;}",
-                    "data-width": "1920",
-                    "id": "s03-block-host"
+                    "class": "block-format-frame",
+                    "id": "s03-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "line",
+                        "data-composition-src": "blocks/line/block.html",
+                        "data-duration": "4.4333333323333335",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;재방문율 4주 추이&quot;,&quot;items&quot;:[&quot;1주차&quot;,&quot;2주차&quot;,&quot;3주차&quot;,&quot;4주차&quot;],&quot;values&quot;:[29,31,34,37],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-retention-weekly&quot;}",
+                        "data-width": "1920",
+                        "id": "s03-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

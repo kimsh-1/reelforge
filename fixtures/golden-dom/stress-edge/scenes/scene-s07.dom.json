@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "list",
-                    "data-composition-src": "blocks/list/block.html",
-                    "data-duration": "4.299999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;앱 흐름 클립&quot;,&quot;items&quot;:[&quot;탐색&quot;,&quot;선택&quot;,&quot;완료&quot;],&quot;values&quot;:[&quot;2초&quot;,&quot;3초&quot;,&quot;1초&quot;],&quot;unit&quot;:&quot;구간&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;video&quot;,&quot;source&quot;:&quot;fixture:stress-edge-video&quot;}",
-                    "data-width": "1920",
-                    "id": "s07-block-host"
+                    "class": "block-format-frame",
+                    "id": "s07-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "list",
+                        "data-composition-src": "blocks/list/block.html",
+                        "data-duration": "4.299999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;앱 흐름 클립&quot;,&quot;items&quot;:[&quot;탐색&quot;,&quot;선택&quot;,&quot;완료&quot;],&quot;values&quot;:[&quot;2초&quot;,&quot;3초&quot;,&quot;1초&quot;],&quot;unit&quot;:&quot;구간&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;video&quot;,&quot;source&quot;:&quot;fixture:stress-edge-video&quot;}",
+                        "data-width": "1920",
+                        "id": "s07-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

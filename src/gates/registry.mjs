@@ -965,6 +965,33 @@ export const gateRegistry = {
     render: true,
     profiles: ["full"],
     run: runWrapperGate("tests/gate-wrappers/l2-1-determinism.mjs")
+  },
+  "l2-8-anchors": {
+    gate: "L2-8-anchors",
+    title: "anchor fixture consistency and full-profile representative frame re-extraction compare",
+    kind: "native",
+    script: "src/gates/p5-l2-8-anchors.mjs",
+    render: true,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("src/gates/p5-l2-8-anchors.mjs")
+  },
+  "l2-dense-visual": {
+    gate: "L2-dense-visual",
+    title: "full-profile dense visual sampling across subtitles, OCR, and background pixels",
+    kind: "native",
+    script: "src/gates/p5-l2-dense-visual.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("src/gates/p5-l2-dense-visual.mjs")
+  },
+  "l3-12-long-video": {
+    gate: "L3-12-long-video",
+    title: "full-profile 12-scene long render completes with peak RSS and no OOM signature",
+    kind: "native",
+    script: "src/gates/p5-l3-12-long-video.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("src/gates/p5-l3-12-long-video.mjs")
   }
 };
 

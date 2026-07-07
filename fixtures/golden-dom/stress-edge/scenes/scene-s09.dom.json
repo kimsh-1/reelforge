@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "statistic",
-                    "data-composition-src": "blocks/statistic/block.html",
-                    "data-duration": "4.499999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;저장률 18.4%&quot;,&quot;items&quot;:[&quot;평균 시청 시간&quot;,&quot;저장률&quot;],&quot;values&quot;:[21.8,18.4],&quot;unit&quot;:&quot;초/%&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-stat&quot;}",
-                    "data-width": "1920",
-                    "id": "s09-block-host"
+                    "class": "block-format-frame",
+                    "id": "s09-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "statistic",
+                        "data-composition-src": "blocks/statistic/block.html",
+                        "data-duration": "4.499999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;저장률 18.4%&quot;,&quot;items&quot;:[&quot;평균 시청 시간&quot;,&quot;저장률&quot;],&quot;values&quot;:[21.8,18.4],&quot;unit&quot;:&quot;초/%&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-stat&quot;}",
+                        "data-width": "1920",
+                        "id": "s09-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

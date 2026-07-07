@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "quote",
-                    "data-composition-src": "blocks/quote/block.html",
-                    "data-duration": "4.699999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;현장 피드백&quot;,&quot;items&quot;:[&quot;매장 인터뷰&quot;,&quot;차분한 안내가 좋았습니다&quot;],&quot;values&quot;:[&quot;6회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;search_image&quot;,&quot;source&quot;:&quot;fixture:stress-edge-search-image&quot;}",
-                    "data-width": "1920",
-                    "id": "s05-block-host"
+                    "class": "block-format-frame",
+                    "id": "s05-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "quote",
+                        "data-composition-src": "blocks/quote/block.html",
+                        "data-duration": "4.699999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;현장 피드백&quot;,&quot;items&quot;:[&quot;매장 인터뷰&quot;,&quot;차분한 안내가 좋았습니다&quot;],&quot;values&quot;:[&quot;6회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;search_image&quot;,&quot;source&quot;:&quot;fixture:stress-edge-search-image&quot;}",
+                        "data-width": "1920",
+                        "id": "s05-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

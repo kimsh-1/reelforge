@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "pie",
-                    "data-composition-src": "blocks/pie/block.html",
-                    "data-duration": "4.166666665666667",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;월간 지출 비중&quot;,&quot;items&quot;:[&quot;인건비&quot;,&quot;인프라&quot;,&quot;마케팅&quot;,&quot;기타&quot;],&quot;values&quot;:[48,27,18,7],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-finance-rollup&quot;}",
-                    "data-width": "1920",
-                    "id": "s02-block-host"
+                    "class": "block-format-frame",
+                    "id": "s02-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "pie",
+                        "data-composition-src": "blocks/pie/block.html",
+                        "data-duration": "4.166666665666667",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;월간 지출 비중&quot;,&quot;items&quot;:[&quot;인건비&quot;,&quot;인프라&quot;,&quot;마케팅&quot;,&quot;기타&quot;],&quot;values&quot;:[48,27,18,7],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-finance-rollup&quot;}",
+                        "data-width": "1920",
+                        "id": "s02-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

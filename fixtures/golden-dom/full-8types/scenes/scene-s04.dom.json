@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "list",
-                    "data-composition-src": "blocks/list/block.html",
-                    "data-duration": "3.8666666656666666",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;이번 주 점검 항목&quot;,&quot;items&quot;:[&quot;온보딩 문서 최신화&quot;,&quot;알림 문구 A/B 테스트&quot;,&quot;결제 안내 오류 점검&quot;],&quot;values&quot;:[&quot;진행&quot;,&quot;대기&quot;,&quot;완료&quot;],&quot;unit&quot;:&quot;상태&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-ops-checklist&quot;}",
-                    "data-width": "1920",
-                    "id": "s04-block-host"
+                    "class": "block-format-frame",
+                    "id": "s04-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "list",
+                        "data-composition-src": "blocks/list/block.html",
+                        "data-duration": "3.8666666656666666",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;이번 주 점검 항목&quot;,&quot;items&quot;:[&quot;온보딩 문서 최신화&quot;,&quot;알림 문구 A/B 테스트&quot;,&quot;결제 안내 오류 점검&quot;],&quot;values&quot;:[&quot;진행&quot;,&quot;대기&quot;,&quot;완료&quot;],&quot;unit&quot;:&quot;상태&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-ops-checklist&quot;}",
+                        "data-width": "1920",
+                        "id": "s04-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

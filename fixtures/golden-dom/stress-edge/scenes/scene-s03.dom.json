@@ -68,7 +68,7 @@
                 {
                   "tag": "main",
                   "attrs": {
-                    "class": "clip scene-content",
+                    "class": "clip scene-content has-headline-override",
                     "data-duration": "4.399999999",
                     "data-start": "0",
                     "data-track-index": "2",

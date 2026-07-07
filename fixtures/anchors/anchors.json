@@ -1,0 +1,268 @@
+{
+  "version": "1.0.0",
+  "fixture": "full-8types",
+  "sourceRender": "tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4",
+  "generatedBy": "src/gates/p5-l2-8-anchors.mjs",
+  "profile": "full",
+  "calibrationUse": "L2-8 opus visual quality judge input; anchor labels are known-pass rows",
+  "representativeFramePolicy": "scene startFrame + floor(durationFrames * 0.52)",
+  "anchors": [
+    {
+      "anchorId": "full-8types:s01:76",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s01",
+      "frame": 76,
+      "timeSec": 2.533,
+      "imagePath": "fixtures/anchors/full-8types/s01-frame-000076.png",
+      "sha256": "3f50a9989c63a3d6711f1b3fa2bdd12677eeb250569ac069732c573cf7856763",
+      "bytes": 346797,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "채널별 신규 가입",
+        "items": [
+          "검색 유입",
+          "추천 유입",
+          "광고 유입"
+        ],
+        "narration": "지난주 신규 가입은 검색 유입이 가장 컸고, 추천 유입이 그 뒤를 이었습니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 2.533333 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s01-frame-000076.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s02:213",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s02",
+      "frame": 213,
+      "timeSec": 7.1,
+      "imagePath": "fixtures/anchors/full-8types/s02-frame-000213.png",
+      "sha256": "815c2dce49e92084b441d56396009c9c1a3394870ebc9d05b08a49b5c809c6fc",
+      "bytes": 324338,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "월간 지출 비중",
+        "items": [
+          "인건비",
+          "인프라",
+          "마케팅",
+          "기타"
+        ],
+        "narration": "월간 지출은 인건비가 절반에 가깝고, 인프라와 마케팅이 나머지를 나눕니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 7.100000 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s02-frame-000213.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s03:342",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s03",
+      "frame": 342,
+      "timeSec": 11.4,
+      "imagePath": "fixtures/anchors/full-8types/s03-frame-000342.png",
+      "sha256": "d2d30800c2e5c2e2de28daf3e3e351895663eb4760fb232b47587ab862c5fc09",
+      "bytes": 698334,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "재방문율 4주 추이",
+        "items": [
+          "1주차",
+          "2주차",
+          "3주차",
+          "4주차"
+        ],
+        "narration": "재방문율은 네 주 연속 상승해 마지막 주에 삼십칠 퍼센트에 도달했습니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 11.400000 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s03-frame-000342.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s04:466",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s04",
+      "frame": 466,
+      "timeSec": 15.533,
+      "imagePath": "fixtures/anchors/full-8types/s04-frame-000466.png",
+      "sha256": "13dfec220920ae33013fb85a768908e9d124dd04985f8c3288ec7d6fede929ae",
+      "bytes": 346674,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "이번 주 점검 항목",
+        "items": [
+          "온보딩 문서 최신화",
+          "알림 문구 A/B 테스트",
+          "결제 안내 오류 점검"
+        ],
+        "narration": "운영팀은 온보딩 문서, 알림 문구, 결제 안내를 우선 점검합니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 15.533333 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s04-frame-000466.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s05:570",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s05",
+      "frame": 570,
+      "timeSec": 19,
+      "imagePath": "fixtures/anchors/full-8types/s05-frame-000570.png",
+      "sha256": "00a6088bed2673856d49b04cb099fb9ebe9b2b939ec02f9ba73230eda17b3438",
+      "bytes": 344196,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "출시 전 세 단계",
+        "items": [
+          "품질 검수",
+          "법무 승인",
+          "점진 배포"
+        ],
+        "narration": "출시 준비는 검수, 승인, 배포 순서로 진행됩니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 19.000000 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s05-frame-000570.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s06:679",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s06",
+      "frame": 679,
+      "timeSec": 22.633,
+      "imagePath": "fixtures/anchors/full-8types/s06-frame-000679.png",
+      "sha256": "b7356afd8acc55ec8891c662a8d6e85a583df16c25294d8fb7c3a39dc91d1aef",
+      "bytes": 485028,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "응답 시간 184ms",
+        "items": [
+          "평균 응답 시간",
+          "목표 대비 개선"
+        ],
+        "narration": "평균 응답 시간은 백팔십사 밀리초로 목표치보다 십육 밀리초 빠릅니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 22.633333 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s06-frame-000679.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s07:801",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s07",
+      "frame": 801,
+      "timeSec": 26.7,
+      "imagePath": "fixtures/anchors/full-8types/s07-frame-000801.png",
+      "sha256": "36bd9afd07d4d5b6eb2b690b226eefe6b7ce7299a6a2517d03b02338f64da5fb",
+      "bytes": 683358,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "추천 모델 비교",
+        "items": [
+          "기존 클릭률",
+          "신규 클릭률",
+          "기존 이탈률",
+          "신규 이탈률"
+        ],
+        "narration": "새 추천 모델은 기존 모델보다 클릭률은 높이고 이탈률은 낮췄습니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 26.700000 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s07-frame-000801.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    },
+    {
+      "anchorId": "full-8types:s08:936",
+      "label": "pass",
+      "fixture": "full-8types",
+      "sceneId": "s08",
+      "frame": 936,
+      "timeSec": 31.2,
+      "imagePath": "fixtures/anchors/full-8types/s08-frame-000936.png",
+      "sha256": "bcf9b1006e982ee825589cfc2c23751d3cf6d94c4ed5034d77f7574d1303d6da",
+      "bytes": 365495,
+      "criteria": {
+        "subtitleSafeZone": "subtitle bbox must stay inside 64px inset safe-zone",
+        "expectedTextPositive": "headline or scene-authored Korean text must OCR positive",
+        "backgroundHex": "visible scene background must retain fixture-light colors.background #F8FAFC",
+        "noUnexpectedText": "OCR residual outside authored scene whitelist must be empty for representative frames",
+        "visualQuality": "human/LLM calibration label is accept/pass for this scene representative"
+      },
+      "expectedText": {
+        "headline": "사용자 인용",
+        "items": [
+          "사용자 인터뷰",
+          "설정이 쉬워야 다시 씁니다"
+        ],
+        "narration": "사용자 인터뷰에서 가장 많이 반복된 문장은 설정이 쉬워야 다시 쓴다는 말이었습니다."
+      },
+      "extraction": {
+        "command": "ffmpeg -v error -ss 31.200000 -i /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 -frames:v 1 -y /home/seunghyeong/reelforge/fixtures/anchors/full-8types/s08-frame-000936.png",
+        "exitCode": 0,
+        "stderrTail": ""
+      }
+    }
+  ]
+}

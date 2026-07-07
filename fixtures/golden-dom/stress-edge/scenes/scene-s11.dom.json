@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "list",
-                    "data-composition-src": "blocks/list/block.html",
-                    "data-duration": "4.199999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;다음 주 실행&quot;,&quot;items&quot;:[&quot;후킹 문구 수정&quot;,&quot;썸네일 교체&quot;,&quot;리텐션 확인&quot;],&quot;values&quot;:[&quot;월&quot;,&quot;수&quot;,&quot;금&quot;],&quot;unit&quot;:&quot;요일&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-next&quot;}",
-                    "data-width": "1920",
-                    "id": "s11-block-host"
+                    "class": "block-format-frame",
+                    "id": "s11-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "list",
+                        "data-composition-src": "blocks/list/block.html",
+                        "data-duration": "4.199999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;다음 주 실행&quot;,&quot;items&quot;:[&quot;후킹 문구 수정&quot;,&quot;썸네일 교체&quot;,&quot;리텐션 확인&quot;],&quot;values&quot;:[&quot;월&quot;,&quot;수&quot;,&quot;금&quot;],&quot;unit&quot;:&quot;요일&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-next&quot;}",
+                        "data-width": "1920",
+                        "id": "s11-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",

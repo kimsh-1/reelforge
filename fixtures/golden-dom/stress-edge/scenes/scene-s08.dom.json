@@ -68,18 +68,27 @@
                 {
                   "tag": "div",
                   "attrs": {
-                    "class": "clip block-host",
-                    "data-composition-id": "pie",
-                    "data-composition-src": "blocks/pie/block.html",
-                    "data-duration": "4.599999999",
-                    "data-height": "1080",
-                    "data-start": "0",
-                    "data-track-index": "3",
-                    "data-variable-values": "{&quot;title&quot;:&quot;비용 구조&quot;,&quot;items&quot;:[&quot;인력&quot;,&quot;인프라&quot;,&quot;콘텐츠&quot;],&quot;values&quot;:[52,31,17],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;spotlight&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-cost&quot;}",
-                    "data-width": "1920",
-                    "id": "s08-block-host"
+                    "class": "block-format-frame",
+                    "id": "s08-block-frame"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "clip block-host",
+                        "data-composition-id": "pie",
+                        "data-composition-src": "blocks/pie/block.html",
+                        "data-duration": "4.599999999",
+                        "data-height": "1080",
+                        "data-start": "0",
+                        "data-track-index": "3",
+                        "data-variable-values": "{&quot;title&quot;:&quot;비용 구조&quot;,&quot;items&quot;:[&quot;인력&quot;,&quot;인프라&quot;,&quot;콘텐츠&quot;],&quot;values&quot;:[52,31,17],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;spotlight&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-cost&quot;}",
+                        "data-width": "1920",
+                        "id": "s08-block-host"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",
