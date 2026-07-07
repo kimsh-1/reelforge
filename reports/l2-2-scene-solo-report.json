@@ -1,14 +1,14 @@
 {
   "gate": "L2-2-scene-solo",
   "profile": "full",
-  "pass": true,
+  "pass": false,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": true,
+      "pass": false,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/l2-2-scene-solo.mjs --profile full --json",
-        "exitCode": 0,
+        "exitCode": 1,
         "signal": null,
         "error": null,
         "profile": "full",
@@ -71,17 +71,80 @@
     },
     {
       "id": "body-frame-match",
-      "pass": true,
+      "pass": false,
       "measured": {
         "comparedWindow": "minimal-3scene scene s02 full-render body frames vs solo scene render body frames",
         "leftFrameCount": 91,
         "rightFrameCount": 91,
         "minComparedFrames": 91,
-        "mismatchedFrameCount": 0,
+        "mismatchedFrameCount": 90,
         "ptsMismatchCount": 0,
         "lengthMismatch": false,
-        "firstMismatch": null,
-        "firstMismatches": []
+        "firstMismatch": {
+          "index": 0,
+          "leftPts": 0,
+          "rightPts": 0,
+          "leftHash": "436590ba7ebb97de005939b9994beb90",
+          "rightHash": "b5d1277f7b236d436d159267f79eca81"
+        },
+        "firstMismatches": [
+          {
+            "index": 0,
+            "leftPts": 0,
+            "rightPts": 0,
+            "leftHash": "436590ba7ebb97de005939b9994beb90",
+            "rightHash": "b5d1277f7b236d436d159267f79eca81"
+          },
+          {
+            "index": 1,
+            "leftPts": 512,
+            "rightPts": 512,
+            "leftHash": "c15b59bf9cc413ebbdc6fdee09b432ff",
+            "rightHash": "01733f06c077f85cb13826fbf46045bc"
+          },
+          {
+            "index": 2,
+            "leftPts": 1024,
+            "rightPts": 1024,
+            "leftHash": "5a267cce7b0f0e018dd51ab939242604",
+            "rightHash": "83be8294700db49f46492d09c5ab6714"
+          },
+          {
+            "index": 3,
+            "leftPts": 1536,
+            "rightPts": 1536,
+            "leftHash": "33c908cf9f1535fd05152f4118ca361d",
+            "rightHash": "3954a0fceac813845203a279ea33627a"
+          },
+          {
+            "index": 4,
+            "leftPts": 2048,
+            "rightPts": 2048,
+            "leftHash": "1011195f5aa37a4caa4b8d177d9f4dfc",
+            "rightHash": "b33d062fa1c194c1ab601ddbbb5e8cb7"
+          },
+          {
+            "index": 5,
+            "leftPts": 2560,
+            "rightPts": 2560,
+            "leftHash": "1fa677527c38414114b509f0d0f78c9c",
+            "rightHash": "e06652bdc608441a6a615bb04131e4bd"
+          },
+          {
+            "index": 6,
+            "leftPts": 3072,
+            "rightPts": 3072,
+            "leftHash": "d8f36fb0e3af6a713db8da4a58433357",
+            "rightHash": "959b45994e79e344a9f72e6c2fe42c96"
+          },
+          {
+            "index": 7,
+            "leftPts": 3584,
+            "rightPts": 3584,
+            "leftHash": "265bbb4f3625bed9107631daef184b95",
+            "rightHash": "72df762e1d37cb22a2488e5d45132d11"
+          }
+        ]
       }
     }
   ],
@@ -93,12 +156,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-2-scene-solo.mjs"
   ],
-  "canonicalInputMerkleHash": "8ad9922eade7d7e416b28a4a61837ef27f96d6362d5f17485dfe08972ee9a770",
-  "evidenceHash": "c5f4d65ca9fdc9ec0f65c3a1083e04da9c3150bf433e15eb5451a0e0fd4808f5",
+  "canonicalInputMerkleHash": "810898c90053968b02172a49992278afa89ba08181ddd3ea5efa174079bb1fb0",
+  "evidenceHash": "4372dae59420c14011d745f4f760e30b3e26e32642c21c2ed13a09eec65dbc12",
   "gateScriptHash": "ddf8495d3e6fb0774c3fca8e91fda7c28377a3a2783f12ba6d32d186b0aa9fd9",
-  "gitCommit": "273e98e621e34ce624eca9d4ac7513b2d9377244",
+  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
   "command": "node bin/vf gate --all --profile full --replay",
-  "exitCode": 0,
-  "startedAt": "2026-07-07T02:36:23.269Z",
-  "finishedAt": "2026-07-07T02:36:50.940Z"
+  "exitCode": 1,
+  "startedAt": "2026-07-07T05:08:22.888Z",
+  "finishedAt": "2026-07-07T05:17:12.442Z"
 }

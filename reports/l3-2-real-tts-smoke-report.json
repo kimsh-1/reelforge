@@ -80,12 +80,12 @@
     "src/pipeline/tts/providers.mjs",
     "src/pipeline/tts/real.mjs"
   ],
-  "canonicalInputMerkleHash": "c573751ceba6f270dbca012b73894af4eb90b2ea9e7c72ad6b909ff8b2b3c0bd",
+  "canonicalInputMerkleHash": "0f4c111e1cdadb0943010243660f24175e8b15d2f595786ace787450a0ed139a",
   "evidenceHash": "bfe7a9857c568b55dbdc21f107ebc19c107959642e1af8d3c8d8f2556fc1b44c",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "273e98e621e34ce624eca9d4ac7513b2d9377244",
+  "gitCommit": "7a35588ba8094d9ddb48569fd9e6fc40acadc64c",
   "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:35:49.257Z",
-  "finishedAt": "2026-07-07T02:35:50.691Z"
+  "startedAt": "2026-07-07T05:06:29.642Z",
+  "finishedAt": "2026-07-07T05:06:31.719Z"
 }

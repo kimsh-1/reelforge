@@ -912,6 +912,24 @@ export const gateRegistry = {
     profiles: ["full"],
     run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-2-real-tts-smoke"])
   },
+  "l3-3-edit-e1": {
+    gate: "L3-3-edit-E1",
+    title: "studio E2E E1 headline edit gate split from the shared browser run",
+    kind: "native",
+    script: "tests/gate-wrappers/l3-3-edit-e1.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l3-3-edit-e1.mjs")
+  },
+  "l3-4-edit-e2": {
+    gate: "L3-4-edit-E2",
+    title: "studio E2E E2 narration edit, selective TTS, and full recompile gate",
+    kind: "native",
+    script: "tests/gate-wrappers/l3-4-edit-e2.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l3-4-edit-e2.mjs")
+  },
   "l3-5-reroll": {
     gate: "L3-5-reroll",
     title: "full-profile image reroll preserves gen_01 and selects gen_02",
@@ -929,6 +947,24 @@ export const gateRegistry = {
     render: true,
     profiles: ["full"],
     run: runWrapperGate("src/gates/p3-gates.mjs", ["--gate", "l3-6-kill-resume"])
+  },
+  "l3-11-concurrent-edit": {
+    gate: "L3-11-concurrent-edit",
+    title: "Studio REST concurrent edit rejects stale If-Match and external editLock conflicts",
+    kind: "native",
+    script: "tests/gate-wrappers/l3-11-concurrent-edit.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l3-11-concurrent-edit.mjs")
+  },
+  "u2-studio-form-sweep": {
+    gate: "U-2-studio-form-sweep",
+    title: "Studio REST form sweep patches every schema-backed editable scene field",
+    kind: "native",
+    script: "tests/gate-wrappers/u2-studio-form-sweep.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/u2-studio-form-sweep.mjs")
   },
   "u3-pipeline": {
     gate: "U-3-pipeline",
@@ -983,6 +1019,15 @@ export const gateRegistry = {
     render: true,
     profiles: ["full"],
     run: runWrapperGate("src/gates/p5-l2-dense-visual.mjs")
+  },
+  "demo-visual-qc": {
+    gate: "demo-visual-qc",
+    title: "full-profile demo visual QC across d1-usage, d2-engine, and d3-intro",
+    kind: "native",
+    script: "tests/gate-wrappers/demo-visual-qc.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("tests/gate-wrappers/demo-visual-qc.mjs")
   },
   "l3-12-long-video": {
     gate: "L3-12-long-video",

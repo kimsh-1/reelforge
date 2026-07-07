@@ -1,0 +1,73 @@
+{
+  "gate": "demo-visual-qc",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/demo-visual-qc.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "demo-visual-qc-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/demo-visual-qc.mjs",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "stderrTail": ""
+      }
+    },
+    {
+      "id": "demo-visual-qc-three-demo-targets",
+      "pass": true,
+      "measured": {
+        "demos": [
+          "demos/d1-usage",
+          "demos/d2-engine",
+          "demos/d3-intro"
+        ],
+        "missingDemos": []
+      }
+    },
+    {
+      "id": "demo-visual-qc-snapshots-produced",
+      "pass": true,
+      "measured": {
+        "snapshotDirs": [
+          "demos/d1-usage/build/snapshots",
+          "demos/d2-engine/build/snapshots",
+          "demos/d3-intro/build/snapshots"
+        ]
+      }
+    }
+  ],
+  "inputSet": [
+    "demos/d1-usage/build/index.html",
+    "demos/d1-usage/build/render-manifest.json",
+    "demos/d2-engine/build/index.html",
+    "demos/d2-engine/build/render-manifest.json",
+    "demos/d3-intro/build/index.html",
+    "demos/d3-intro/build/render-manifest.json",
+    "tests/demo-visual-qc.mjs",
+    "tests/gate-wrappers/demo-visual-qc.mjs"
+  ],
+  "canonicalInputMerkleHash": "0ed67ef5eeed0d109b8456cdd00f614fb035d65d46946df4136c9d803255747e",
+  "evidenceHash": "15554dca2bf4468b25e8c581b39ef6f3da2d6ec611001ff914db4cd281df99f6",
+  "gateScriptHash": "10856428d1c00af7665cd9ada69f7d21c52ab4f2ba29c4a836b547435bd9fd55",
+  "gitCommit": "7a35588ba8094d9ddb48569fd9e6fc40acadc64c",
+  "command": "node bin/vf gate demo-visual-qc --profile full --json",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T04:57:58.999Z",
+  "finishedAt": "2026-07-07T04:58:20.784Z"
+}

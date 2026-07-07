@@ -145,12 +145,12 @@
     "tests/gate-wrappers/l1-8-ducking.mjs",
     "tests/motion-duck.mjs"
   ],
-  "canonicalInputMerkleHash": "2a582ae4bd780368259f52a3ada771ab2c650c72253db3752d9889256b0c9bf0",
-  "evidenceHash": "a075319d54164b8159ec2de416d00bc5cfa17dcfb412d940efc4656675d58dd7",
+  "canonicalInputMerkleHash": "3bf15533eed867bf200a34c6afabd5566b1b09d95f72839b72b73b60ca00759e",
+  "evidenceHash": "92e9efec3900304cdf74ad2acf0698b54a3d9bf38a26450270d48ac98264aef2",
   "gateScriptHash": "b88c7993d2521edb39c30047e386c349a35c499880131b4001067366da7bd5e4",
-  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
+  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T04:35:44.278Z",
-  "finishedAt": "2026-07-07T04:35:45.227Z"
+  "startedAt": "2026-07-07T05:33:18.454Z",
+  "finishedAt": "2026-07-07T05:33:19.409Z"
 }

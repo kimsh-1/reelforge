@@ -29,11 +29,11 @@
           "pipeline: DONE tts provider=mock-tts scenes=3",
           "pipeline: RUN images reason=missing-outputs inputHash=77462d03e69d",
           "pipeline: DONE images provider=mock-image scenes=0 generated=0 reused=0 manifest=image-manifest.json",
-          "pipeline: RUN compile reason=missing-outputs inputHash=dca3db4dd067",
+          "pipeline: RUN compile reason=missing-outputs inputHash=d8998bc12e46",
           "pipeline: DONE compile",
-          "pipeline: RUN render reason=missing-outputs inputHash=80fc146d536b",
+          "pipeline: RUN render reason=missing-outputs inputHash=8b0f44095620",
           "pipeline: DONE render output=out/main.mp4 bytes=877606",
-          "pipeline: RUN gate reason=missing-outputs inputHash=3edc0398632d",
+          "pipeline: RUN gate reason=missing-outputs inputHash=26e4e29850a0",
           "pipeline: DONE gate report=reports/pipeline-gate-report.json",
           "pipeline: PASS completed=tts,images,compile,render,gate"
         ],
@@ -70,9 +70,9 @@
   "canonicalInputMerkleHash": "e7132ca40ea7bef7496bd4e033dd3db57acb435c700cd6076a906d2cf28094f3",
   "evidenceHash": "28f00671fc830edf6f60d3c4eafd4d15f48b6403daed1b2e2e798684effb7efa",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
+  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
   "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T04:35:46.161Z",
-  "finishedAt": "2026-07-07T04:36:05.930Z"
+  "startedAt": "2026-07-07T05:33:20.480Z",
+  "finishedAt": "2026-07-07T05:33:46.203Z"
 }

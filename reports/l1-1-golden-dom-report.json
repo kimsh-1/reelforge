@@ -1,14 +1,14 @@
 {
   "gate": "L1-1-golden-dom",
   "profile": "fast",
-  "pass": true,
+  "pass": false,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": true,
+      "pass": false,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile fast --json",
-        "exitCode": 0,
+        "exitCode": 1,
         "signal": null,
         "error": null,
         "profile": "fast",
@@ -63,7 +63,7 @@
     },
     {
       "id": "golden-dom-snapshots",
-      "pass": true,
+      "pass": false,
       "measured": {
         "fixtures": [
           "minimal-3scene",
@@ -75,7 +75,1594 @@
         "created": [],
         "createdCount": 0,
         "creationLog": "all golden DOM snapshots already existed",
-        "mismatches": []
+        "mismatches": [
+          {
+            "fixtureName": "minimal-3scene",
+            "htmlRel": "scenes/scene-s01.html",
+            "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s01.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 20,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "minimal-3scene",
+            "htmlRel": "scenes/scene-s02.html",
+            "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s02.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 11,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 13,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "minimal-3scene",
+            "htmlRel": "scenes/scene-s03.html",
+            "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s03.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 21,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "edit-scenario",
+            "htmlRel": "scenes/scene-s01.html",
+            "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s01.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[5]",
+                "expected": 0,
+                "actual": 26,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "edit-scenario",
+            "htmlRel": "scenes/scene-s02.html",
+            "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s02.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[14]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[20]",
+                "expected": 0,
+                "actual": 11,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[22]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[23]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[24]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[26]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[29]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[31]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[33]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[35]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "edit-scenario",
+            "htmlRel": "scenes/scene-s03.html",
+            "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s03.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 30,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s01.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s01.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[14]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[19]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[21]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[23]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[24]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s02.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s02.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[9]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s03.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s03.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[19]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[20]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s04.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s04.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[5]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[7]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[9]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[12]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[14]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s05.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s05.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[5]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 9,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s06.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s06.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s07.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s07.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
+            "htmlRel": "scenes/scene-s08.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s08.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[7]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[9]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 10,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s01.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s01.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 16,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s02.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s02.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s03.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s03.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 28,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s04.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s04.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s05.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s05.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 10,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 7,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 10,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s06.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s06.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[12]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[17]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[18]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[19]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[21]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[22]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[23]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[25]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[26]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[28]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[30]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[32]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s07.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s07.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[5]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[7]",
+                "expected": 0,
+                "actual": 12,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s08.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s08.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[7]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[16]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s09.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s09.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[5]",
+                "expected": 0,
+                "actual": 17,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s10.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s10.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[11]",
+                "expected": 0,
+                "actual": 7,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[16]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s11.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s11.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 9,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[1]",
+                "expected": 0,
+                "actual": 5,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[3]",
+                "expected": 0,
+                "actual": 13,
+                "kind": "child-count"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
+            "htmlRel": "scenes/scene-s12.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s12.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[2]",
+                "expected": 0,
+                "actual": 6,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[4]",
+                "expected": 0,
+                "actual": 2,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[6]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[8]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[10]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[13]",
+                "expected": 0,
+                "actual": 3,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[15]",
+                "expected": 0,
+                "actual": 4,
+                "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]/span[16]",
+                "expected": 0,
+                "actual": 1,
+                "kind": "child-count"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -90,7 +1677,7 @@
             "rule": "inline scene script must parse and pass the compiler VM smoke check",
             "measured": {
               "scriptIndex": 1,
-              "line": 262,
+              "line": 324,
               "error": "Error: p2-review-render-lint-bypass"
             }
           }
@@ -148,12 +1735,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l1-1-golden-dom.mjs"
   ],
-  "canonicalInputMerkleHash": "1b7e3b155bd0e0bea517960c2bd3c021dfa5ee5a7c00c429b59f896751791646",
-  "evidenceHash": "fbf0bae0fbc10e584c7341b3057c6b8a3a7b85294c3c969885b4db22c9e3b091",
+  "canonicalInputMerkleHash": "f4c13c85b13d8c5eff34c843d70a241519649e1cd8f006a879f64409f2da217e",
+  "evidenceHash": "0c513f4db9f4e8c1cde95166447426bc55e97ffaf8e12c964973cdf8ead8cc03",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "9b6a3cd2849409892360133f9ef5af1b513f3c29",
+  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
   "command": "node bin/vf gate --all --profile fast --replay",
-  "exitCode": 0,
-  "startedAt": "2026-07-07T04:35:13.039Z",
-  "finishedAt": "2026-07-07T04:35:18.075Z"
+  "exitCode": 1,
+  "startedAt": "2026-07-07T05:32:47.661Z",
+  "finishedAt": "2026-07-07T05:32:52.379Z"
 }

@@ -35,9 +35,9 @@
           "pipeline: DONE tts provider=mock-tts scenes=3",
           "pipeline: RUN images reason=missing-outputs inputHash=77462d03e69d",
           "pipeline: DONE images provider=mock-image scenes=0 generated=0 reused=0 manifest=image-manifest.json",
-          "pipeline: RUN compile reason=missing-outputs inputHash=4a5e174121af",
+          "pipeline: RUN compile reason=missing-outputs inputHash=c2a9be9249ca",
           "pipeline: DONE compile",
-          "pipeline: RUN render reason=missing-outputs inputHash=e1e0a145e9e9"
+          "pipeline: RUN render reason=missing-outputs inputHash=f963314c0a3d"
         ]
       }
     },
@@ -50,10 +50,10 @@
           "pipeline: START project=tmp/gate-work/p3/l3-6-kill-resume/project profile=mock steps=tts,images,compile,render,gate",
           "pipeline: SKIP tts reason=resume-state inputHash=a10e2fd80745",
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
-          "pipeline: SKIP compile reason=resume-state inputHash=4a5e174121af",
-          "pipeline: RUN render reason=missing-outputs inputHash=e1e0a145e9e9",
-          "pipeline: DONE render output=out/main.mp4 bytes=877429",
-          "pipeline: RUN gate reason=missing-outputs inputHash=548b042fc634",
+          "pipeline: SKIP compile reason=resume-state inputHash=c2a9be9249ca",
+          "pipeline: RUN render reason=missing-outputs inputHash=f963314c0a3d",
+          "pipeline: DONE render output=out/main.mp4 bytes=877606",
+          "pipeline: RUN gate reason=missing-outputs inputHash=762c3d008a9a",
           "pipeline: DONE gate report=reports/pipeline-gate-report.json",
           "pipeline: PASS completed=tts,images,compile,render,gate"
         ],
@@ -65,7 +65,7 @@
       "pass": true,
       "measured": {
         "output": "tmp/gate-work/p3/l3-6-kill-resume/project/out/main.mp4",
-        "bytes": 877429,
+        "bytes": 877606,
         "report": "tmp/gate-work/p3/l3-6-kill-resume/project/reports/pipeline-gate-report.json",
         "completedSteps": [
           "tts",
@@ -85,12 +85,12 @@
     "src/pipeline/core/state.mjs",
     "src/pipeline/core/steps.mjs"
   ],
-  "canonicalInputMerkleHash": "c6742b35e07c11018e6bb870ae11c7095fe55939fd8d3092424d8ef251008767",
+  "canonicalInputMerkleHash": "e9089df6ddad9faa10f8698b76c9b96ab8cb19ebab826790b8ed652a324588b1",
   "evidenceHash": "6d88f13fafd8d813919d9d1025a578900868918f3a95b921c296cbab59fddc52",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "273e98e621e34ce624eca9d4ac7513b2d9377244",
+  "gitCommit": "7a35588ba8094d9ddb48569fd9e6fc40acadc64c",
   "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T02:35:51.037Z",
-  "finishedAt": "2026-07-07T02:36:14.802Z"
+  "startedAt": "2026-07-07T05:06:32.295Z",
+  "finishedAt": "2026-07-07T05:07:03.359Z"
 }
