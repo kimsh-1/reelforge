@@ -40,13 +40,15 @@ function usage(exitCode = 0) {
 Commands:
   vf gate --list
   vf gate list
-  vf gate all [--json] [--replay|--execute]
-  vf gate <id> [--json] [--replay|--execute]
+  vf gate --all [--profile fast|full] [--json] [--replay|--execute]
+  vf gate all [--profile fast|full] [--json] [--replay|--execute]
+  vf gate <id> [--profile fast|full] [--json] [--replay|--execute]
   vf verify-report <report.json>
   vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
   vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
+Default gate profile is fast. Full adds render gates.
 `;
   console.log(text.trim());
   process.exit(exitCode);
@@ -146,12 +148,13 @@ function requiredFieldComplete(report) {
   return requiredReportFields.every((field) => Object.prototype.hasOwnProperty.call(report, field));
 }
 
-function reportForGate({ gate, checks, inputSet, evidenceHash, exitCode, startedAt, command }) {
+function reportForGate({ gate, checks, inputSet, evidenceHash, exitCode, startedAt, command, profile }) {
   const input = canonicalInput(inputSet);
   const scriptPath = path.join(repoRoot, gate.script);
   const pass = checks.every((check) => check.pass === true) && exitCode === 0;
   return {
     gate: gate.gate,
+    profile,
     pass,
     checks,
     inputSet,
@@ -184,7 +187,7 @@ function legacyFailureReport(gate, error) {
   };
 }
 
-function runLegacyGate(id, gate, mode, command) {
+function runLegacyGate(id, gate, mode, command, profile) {
   const startedAt = new Date().toISOString();
   let child = null;
   if (mode === "execute") {
@@ -218,7 +221,8 @@ function runLegacyGate(id, gate, mode, command) {
     evidenceHash: legacyEvidenceHash(legacyReport),
     exitCode,
     startedAt,
-    command
+    command,
+    profile
   });
 
   report.pass = exitCode === 0 && legacyReport.pass === true && checks.every((check) => check.pass === true);
@@ -237,11 +241,11 @@ function runLegacyGate(id, gate, mode, command) {
   return { id, report, reportPath };
 }
 
-function runNativeGate(id, gate, command) {
+function runNativeGate(id, gate, command, profile) {
   const startedAt = new Date().toISOString();
   let result;
   try {
-    result = gate.run({ repoRoot });
+    result = gate.run({ repoRoot, profile });
   } catch (error) {
     result = {
       checks: [
@@ -265,7 +269,8 @@ function runNativeGate(id, gate, command) {
     evidenceHash: hashGateEvidence(result.evidence ?? checks),
     exitCode: pass ? 0 : 1,
     startedAt,
-    command
+    command,
+    profile
   });
 
   const reportPath = writeReport(id, report);
@@ -276,10 +281,27 @@ function runGate(id, options) {
   const normalizedId = normalizeGateId(id);
   const gate = gateRegistry[normalizedId];
   if (!gate) throw new Error(`unknown gate: ${id}`);
+  if (!gateSupportsProfile(gate, options.profile)) {
+    throw new Error(`gate ${normalizedId} does not support --profile ${options.profile}; supported profiles: ${supportedProfiles(gate).join(", ")}`);
+  }
 
   const command = options.command;
-  if (gate.kind === "legacy") return runLegacyGate(normalizedId, gate, options.mode, command);
-  return runNativeGate(normalizedId, gate, command);
+  if (gate.kind === "legacy") return runLegacyGate(normalizedId, gate, options.mode, command, options.profile);
+  return runNativeGate(normalizedId, gate, command, options.profile);
+}
+
+function supportedProfiles(gate) {
+  return gate.profiles ?? ["fast", "full"];
+}
+
+function gateSupportsProfile(gate, profile) {
+  return supportedProfiles(gate).includes(profile);
+}
+
+function gatesForProfile(profile) {
+  return Object.entries(gateRegistry)
+    .filter(([, gate]) => gateSupportsProfile(gate, profile))
+    .map(([id]) => id);
 }
 
 function gateForReport(report) {
@@ -364,10 +386,10 @@ function verifyLegacyEvidenceFiles(report, gate, failures) {
   };
 }
 
-function verifyNativeEvidence(gate, failures) {
+function verifyNativeEvidence(gate, failures, profile) {
   let result;
   try {
-    result = gate.run({ repoRoot });
+    result = gate.run({ repoRoot, profile });
   } catch (error) {
     failures.push(`current native gate execution failed: ${error instanceof Error ? error.message : String(error)}`);
     return { evidenceHash: null, freshnessFiles: [] };
@@ -434,7 +456,7 @@ function verifyReportCommand(args) {
     const evidence =
       gate.kind === "legacy"
         ? verifyLegacyEvidenceFiles(report, gate, failures)
-        : verifyNativeEvidence(gate, failures);
+        : verifyNativeEvidence(gate, failures, report.profile ?? "fast");
     if (report.evidenceHash !== evidence.evidenceHash) {
       failures.push("evidenceHash mismatch");
     }
@@ -464,22 +486,39 @@ function listCommand() {
   console.log(JSON.stringify(listGates(), null, 2));
 }
 
+function gatePositionals(args) {
+  const positionals = [];
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === "--profile") {
+      index += 1;
+      continue;
+    }
+    if (arg.startsWith("--")) continue;
+    positionals.push(arg);
+  }
+  return positionals;
+}
+
 function gateCommand(args) {
   const json = args.includes("--json");
   const mode = args.includes("--execute") ? "execute" : "replay";
+  const profile = optionValue(args, "--profile") ?? "fast";
+  if (!["fast", "full"].includes(profile)) throw new Error("--profile must be fast or full");
   const listRequested = args.includes("--list") || args[0] === "list";
   if (listRequested) {
     listCommand();
     return;
   }
 
-  const positional = args.filter((arg) => !arg.startsWith("--"));
+  const positional = gatePositionals(args);
   const target = positional[0];
-  if (!target || target === "help") usage(0);
+  const allRequested = args.includes("--all") || target === "all";
+  if ((!target && !allRequested) || target === "help") usage(0);
 
-  const ids = target === "all" ? Object.keys(gateRegistry) : [target];
+  const ids = allRequested ? gatesForProfile(profile) : [target];
   const command = ["node", "bin/vf", ...process.argv.slice(2)].join(" ");
-  const results = ids.map((id) => runGate(id, { mode, command }));
+  const results = ids.map((id) => runGate(id, { mode, command, profile }));
 
   if (json) {
     const payload = results.length === 1 ? results[0].report : results.map((result) => result.report);

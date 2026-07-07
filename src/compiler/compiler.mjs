@@ -10,6 +10,12 @@ import {
   formatSemanticViolations,
   validateSemanticsForWrite
 } from "../gates/semantic.mjs";
+import {
+  DEFAULT_BGM_VOLUME,
+  DEFAULT_SPEECH_VOLUME,
+  buildDuckingFromAudioMeta,
+  emitDuckingTimeline
+} from "./audio-duck.mjs";
 import { blockHostHtml, blockVariablesForScene, resolveBlock } from "./blocks.mjs";
 import { runRenderLint } from "./render-lint.mjs";
 import { staticSubtitleForScene, subtitleHookData } from "./subtitles.mjs";
@@ -39,7 +45,6 @@ import {
   readJsonFile,
   requireRelativeAsset,
   resetDir,
-  secondsFromFrames,
   sha256Text,
   writeFileEnsured,
   writeSilentWav
@@ -413,7 +418,18 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
   });
 
   const transitionLines = transitions.flatMap((transition) => transition.lines);
+  const duckingLines = bgm ? emitDuckingTimeline({ keyframes: bgm.duckingKeyframes }) : [];
   const bgColor = tokens.colors?.background ?? "#0F172A";
+  const bgmAudio = bgm
+    ? `      <audio
+        id="rf-bgm"
+        src="${bgm.htmlPath}"
+        data-start="0"
+        data-duration="${timing.totalDurationSec}"
+        data-track-index="900"
+        data-volume="${bgm.volume}"
+      ></audio>`
+    : "";
 
   return `<!doctype html>
 <!-- ${GENERATED_COMMENT} -->
@@ -458,20 +474,14 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
     >
 ${slots.join("\n")}
 ${audio.join("\n")}
-      <audio
-        id="rf-bgm"
-        src="${bgm.htmlPath}"
-        data-start="0"
-        data-duration="${timing.totalDurationSec}"
-        data-track-index="900"
-        data-volume="${bgm.volume}"
-      ></audio>
+${bgmAudio}
     </div>
     <script>
       window.__timelines = window.__timelines || {};
       (function () {
         const tl = gsap.timeline({ paused: true });
 ${transitionLines.join("\n")}
+${duckingLines.join("\n")}
         window.__timelines["main"] = tl;
       })();
     </script>
@@ -480,18 +490,33 @@ ${transitionLines.join("\n")}
 `;
 }
 
-function buildDuckingKeyframes({ scenes, timing, baseVolume, duckVolume }) {
-  const keyframes = [{ timeSec: 0, volume: baseVolume }];
-  for (const scene of scenes) {
-    const sceneTiming = timing.sceneTimings.get(scene.sceneId);
-    keyframes.push({ timeSec: sceneTiming.startSec, volume: duckVolume });
-    keyframes.push({
-      timeSec: secondsFromFrames(sceneTiming.startFrame + sceneTiming.durationFrames, timing.fps),
-      volume: baseVolume
-    });
-  }
-  keyframes.push({ timeSec: timing.totalDurationSec, volume: baseVolume });
-  return keyframes;
+function projectHasBgm(specs) {
+  return (specs.scenes ?? []).some((scene) => scene.ost !== undefined && scene.ost !== null && scene.ost !== 0);
+}
+
+function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
+  if (!projectHasBgm(specs)) return null;
+
+  const volume = DEFAULT_BGM_VOLUME;
+  const ducking = buildDuckingFromAudioMeta({
+    scenes,
+    audioMeta,
+    sceneTimings: timing.sceneTimings,
+    totalDurationSec: timing.totalDurationSec,
+    bgmVolume: volume,
+    speechVolume: DEFAULT_SPEECH_VOLUME
+  });
+  const manifestPath = "./assets/audio/bgm-silence.wav";
+  const htmlPath = "assets/audio/bgm-silence.wav";
+  writeSilentWav(path.join(tmpDir, htmlPath), timing.totalDurationSec);
+
+  return {
+    manifestPath,
+    htmlPath,
+    volume,
+    duckingKeyframes: ducking.keyframes,
+    duckingWindows: ducking.windows
+  };
 }
 
 function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm }) {
@@ -532,16 +557,13 @@ function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, token
       sceneTimings: timing.sceneTimings,
       fps: timing.fps
     }),
-    bgm: {
-      path: bgm.manifestPath,
-      volume: bgm.volume,
-      duckingKeyframes: buildDuckingKeyframes({
-        scenes,
-        timing,
-        baseVolume: bgm.volume,
-        duckVolume: bgm.duckVolume
-      })
-    },
+    bgm: bgm
+      ? {
+          path: bgm.manifestPath,
+          volume: bgm.volume,
+          duckingKeyframes: bgm.duckingKeyframes
+        }
+      : null,
     formatOverrides: {}
   };
 }
@@ -605,15 +627,9 @@ export function compileProject({
     const tokens = copiedDesignTokens({ repoRoot, buildDir: tmpDir, presetPath: absolutePresetPath, tokens: presetTokens });
     const audioAssets = copiedAudioAssets({ projectDir: absoluteProjectDir, buildDir: tmpDir, audioScenes: audioMeta.scenes });
     const timing = buildTiming({ scenes, audioByScene, transitions: specs.transitions ?? [], fps });
-    const bgm = {
-      manifestPath: "./assets/audio/bgm-silence.wav",
-      htmlPath: "assets/audio/bgm-silence.wav",
-      volume: 0.15,
-      duckVolume: 0.045
-    };
-    writeSilentWav(path.join(tmpDir, "assets", "audio", "bgm-silence.wav"), timing.totalDurationSec);
+    const bgm = buildBgm({ specs, tmpDir, scenes, audioMeta, timing });
 
-    const warnings = [];
+    const warnings = [...timing.warnings];
     const blockByScene = new Map();
     for (const scene of scenes) {
       const block = resolveBlock({ repoRoot, buildDir: tmpDir, layout: scene.layout });
@@ -628,16 +644,17 @@ export function compileProject({
     const transitions = (specs.transitions ?? []).map((transition) => {
       const durationFrames = timing.transitionFrames.get(`${transition.from}->${transition.to}`) ?? 0;
       const toTiming = timing.sceneTimings.get(transition.to);
+      const startFrame = Math.max(0, toTiming.startFrame - durationFrames);
       const emitted = emitTransition({
         transition,
         fromSlotId: `slot-${transition.from}`,
         toSlotId: `slot-${transition.to}`,
-        startFrame: toTiming.startFrame,
+        startFrame,
         durationFrames,
         fps
       });
       warnings.push(...emitted.warnings);
-      return { ...transition, durationFrames, resolvedType: emitted.resolvedType, lines: emitted.lines };
+      return { ...transition, startFrame, durationFrames, resolvedType: emitted.resolvedType, lines: emitted.lines };
     });
 
     writeFileEnsured(

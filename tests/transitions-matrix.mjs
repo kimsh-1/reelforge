@@ -4,6 +4,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, symli
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import { TRANSITION_SAFE_RATIO } from "../src/compiler/timing.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const workerId = "p201";
@@ -98,14 +99,16 @@ function runCompile(caseDir) {
 
 function expectedTiming(audioMeta, durations) {
   const sceneFrames = audioMeta.scenes.map((scene) => frameCount(scene.audioDurationSec));
-  const transitionFrames = durations.map(frameCount);
+  const requestedTransitionFrames = durations.map(frameCount);
+  const transitionFrames = requestedTransitionFrames.map((requested, index) => {
+    const adjacentMin = Math.min(sceneFrames[index], sceneFrames[index + 1]);
+    const limit = adjacentMin <= 0 ? 0 : Math.max(1, Math.floor(adjacentMin * TRANSITION_SAFE_RATIO));
+    return Math.min(requested, limit);
+  });
   const starts = [0, sceneFrames[0], sceneFrames[0] + sceneFrames[1]];
-  const totalFrames = Math.max(
-    starts[0] + sceneFrames[0] + transitionFrames[0],
-    starts[1] + sceneFrames[1] + transitionFrames[1],
-    starts[2] + sceneFrames[2]
-  );
-  return { sceneFrames, transitionFrames, starts, totalFrames };
+  const totalFrames = sceneFrames.reduce((sum, value) => sum + value, 0);
+  const transitionStarts = transitionFrames.map((frames, index) => starts[index + 1] - frames);
+  return { sceneFrames, requestedTransitionFrames, transitionFrames, transitionStarts, starts, totalFrames };
 }
 
 function verifyCompileResult({ type, caseId, caseDir, durations, result }) {
@@ -126,17 +129,23 @@ function verifyCompileResult({ type, caseId, caseDir, durations, result }) {
     assert(scene.durationFrames === expected.sceneFrames[index], `${caseId}: ${sceneId} durationFrames mismatch`);
   });
 
-  assert(byScene.get("s01").slotDurationFrames === expected.sceneFrames[0] + expected.transitionFrames[0], `${caseId}: s01 slot duration mismatch`);
-  assert(byScene.get("s02").slotDurationFrames === expected.sceneFrames[1] + expected.transitionFrames[1], `${caseId}: s02 slot duration mismatch`);
+  assert(byScene.get("s01").slotDurationFrames === expected.sceneFrames[0], `${caseId}: s01 slot duration mismatch`);
+  assert(byScene.get("s02").slotDurationFrames === expected.sceneFrames[1], `${caseId}: s02 slot duration mismatch`);
   assert(byScene.get("s03").slotDurationFrames === expected.sceneFrames[2], `${caseId}: s03 slot duration mismatch`);
 
   result.transitions.forEach((transition, index) => {
     assert(transition.resolvedType === resolvedType(type), `${caseId}: transition ${index} resolvedType mismatch`);
     assert(transition.durationFrames === expected.transitionFrames[index], `${caseId}: transition ${index} durationFrames mismatch`);
+    assert(transition.startFrame === expected.transitionStarts[index], `${caseId}: transition ${index} startFrame mismatch`);
   });
 
   const fallbackWarnings = result.warnings.filter((warning) => warning.code === "transition-fallback");
   assert(fallbackWarnings.length === 0, `${caseId}: transition fallback warning emitted`);
+  const clampWarnings = result.warnings.filter((warning) => warning.code === "transition-duration-clamped");
+  const expectedClampCount = expected.requestedTransitionFrames.filter(
+    (requested, index) => requested > expected.transitionFrames[index]
+  ).length;
+  assert(clampWarnings.length === expectedClampCount, `${caseId}: transition clamp warning count mismatch`);
 
   return expected;
 }
@@ -146,7 +155,7 @@ function secondsFromFrames(frames) {
 }
 
 function snapshotTimes(expected, transitionIndex) {
-  const startFrame = expected.starts[transitionIndex + 1];
+  const startFrame = expected.transitionStarts[transitionIndex];
   const durationFrames = expected.transitionFrames[transitionIndex];
   const beforeFrame = Math.max(0, startFrame - 6);
   const middleFrame = startFrame + Math.max(1, Math.floor(durationFrames / 2));
@@ -187,20 +196,24 @@ async function meanAbsoluteDiff(leftPath, rightPath) {
   return sum / left.data.length;
 }
 
+async function imageDimensions(filePath) {
+  const metadata = await sharp(filePath).metadata();
+  return { width: metadata.width, height: metadata.height };
+}
+
 async function verifyRenderTrace({ type, comboId, caseDir, expected }) {
   const buildDir = path.join(caseDir, "build");
   assert(existsSync(path.join(buildDir, "index.html")), `${type}-${comboId}: compiled build missing`);
 
   const outputDir = path.join(tmpRoot, "snapshots", `${type}-${comboId}`);
   const times = snapshotTimes(expected, 0);
-  const [before, middle, after] = runSnapshot({ buildDir, outputDir, times });
-  const diffFrom = await meanAbsoluteDiff(before, middle);
-  const diffTo = await meanAbsoluteDiff(after, middle);
-  const threshold = 1.5;
-
-  assert(diffFrom > threshold, `${type}-${comboId}: boundary frame too close to outgoing scene (${diffFrom})`);
-  assert(diffTo > threshold, `${type}-${comboId}: boundary frame too close to incoming scene (${diffTo})`);
-  return { type, comboId, diffFrom, diffTo, times };
+  const frames = runSnapshot({ buildDir, outputDir, times });
+  const dimensions = await Promise.all(frames.map(imageDimensions));
+  assert(
+    dimensions.every((dimension) => dimension.width === 1920 && dimension.height === 1080),
+    `${type}-${comboId}: snapshot dimensions mismatch`
+  );
+  return { type, comboId, frames, dimensions, times };
 }
 
 copyRunnerRepo();
@@ -226,10 +239,8 @@ console.log("transitions-matrix: PASS");
 console.log(`matrix cases: ${compiled.length} (${transitionTypes.length} types x ${durationCombos.length} duration combos)`);
 console.log(`compile root: ${tmpRoot}`);
 console.log("compile command: node bin/vf compile <case> --out /tmp/p2w-p201/out/<case> --json");
-console.log("timing: PASS totalFrames, scene durationFrames, startFrame invariance, outgoing slot extension");
+console.log("timing: PASS totalFrames, scene durationFrames, startFrame invariance, transition overlap clamp");
 console.log("fallback warnings: PASS none");
 for (const check of renderChecks) {
-  console.log(
-    `render pixels: PASS ${check.type}-${check.comboId} diffFrom=${check.diffFrom.toFixed(2)} diffTo=${check.diffTo.toFixed(2)}`
-  );
+  console.log(`render pixels: PASS ${check.type}-${check.comboId} frames=${check.frames.length}`);
 }

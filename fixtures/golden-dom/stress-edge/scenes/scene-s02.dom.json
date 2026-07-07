@@ -1,0 +1,260 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s02",
+                "data-duration": "4.799999999",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "4.799999999",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s02-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip block-host",
+                    "data-composition-id": "bar",
+                    "data-composition-src": "blocks/bar/block.html",
+                    "data-duration": "4.799999999",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "3",
+                    "data-variable-values": "{&quot;title&quot;:&quot;검색 유입 상승&quot;,&quot;items&quot;:[&quot;검색&quot;,&quot;추천&quot;,&quot;광고&quot;],&quot;values&quot;:[7400,5100,2900],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-growth&quot;}",
+                    "data-width": "1920",
+                    "id": "s02-block-host"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "4.799999999",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "karaoke",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;karaoke&quot;,&quot;renderer&quot;:&quot;gsap-karaoke&quot;,&quot;text&quot;:&quot;검색 유입은 예상보다 빠르게 늘었고 추천 유입은 안정적으로 유지됐습니다.&quot;,&quot;keywords&quot;:[],&quot;words&quot;:[{&quot;word&quot;:&quot;검색&quot;,&quot;start&quot;:0.199999999,&quot;end&quot;:0.5333333323333334},{&quot;word&quot;:&quot;유입은&quot;,&quot;start&quot;:0.6333333323333333,&quot;end&quot;:0.999999999},{&quot;word&quot;:&quot;예상보다&quot;,&quot;start&quot;:1.099999999,&quot;end&quot;:1.4666666656666665},{&quot;word&quot;:&quot;빠르게&quot;,&quot;start&quot;:1.5666666656666666,&quot;end&quot;:1.8999999989999998},{&quot;word&quot;:&quot;늘었고&quot;,&quot;start&quot;:1.999999999,&quot;end&quot;:2.3666666656666666},{&quot;word&quot;:&quot;추천&quot;,&quot;start&quot;:2.4666666656666667,&quot;end&quot;:2.8333333323333334},{&quot;word&quot;:&quot;유입은&quot;,&quot;start&quot;:2.899999999,&quot;end&quot;:3.2666666656666665},{&quot;word&quot;:&quot;안정적으로&quot;,&quot;start&quot;:3.3666666656666666,&quot;end&quot;:3.7333333323333333},{&quot;word&quot;:&quot;유지됐습니다&quot;,&quot;start&quot;:3.8333333323333334,&quot;end&quot;:4.199999999}],&quot;startSec&quot;:0,&quot;endSec&quot;:4.799999999,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s02-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "0"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "1"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "2"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "3"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "4"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "5"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "6"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "7"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "8"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

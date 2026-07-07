@@ -9,7 +9,8 @@
     "vf": "./bin/vf"
   },
   "scripts": {
-    "gate": "node bin/vf gate all --replay",
+    "gate": "node bin/vf gate --all --profile fast --replay",
+    "gate:full": "node bin/vf gate --all --profile full --replay",
     "gate:list": "node bin/vf gate --list",
     "lint": "node scripts/schema-lint.mjs && node scripts/readme-sync.mjs",
     "precommit": "node scripts/precommit.mjs",

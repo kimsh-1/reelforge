@@ -1,0 +1,159 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s03",
+                "data-duration": "3.8666666656666666",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "3.8666666656666666",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s03-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "main",
+                  "attrs": {
+                    "class": "clip scene-content",
+                    "data-duration": "3.8666666656666666",
+                    "data-start": "0",
+                    "data-track-index": "2",
+                    "id": "s03-content"
+                  },
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "headline-panel",
+                        "id": "s03-panel"
+                      },
+                      "children": [
+                        {
+                          "tag": "p",
+                          "attrs": {
+                            "class": "mood-label",
+                            "id": "s03-mood"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "h1",
+                          "attrs": {
+                            "id": "s03-headline"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "3.8666666656666666",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "keyword",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;keyword&quot;,&quot;renderer&quot;:&quot;keyword-spans&quot;,&quot;text&quot;:&quot;다음 실험은 가격 안내 문구를 더 명확하게 다듬는 것입니다.&quot;,&quot;keywords&quot;:[&quot;다음 실험&quot;,&quot;다음&quot;,&quot;실험&quot;],&quot;words&quot;:[{&quot;word&quot;:&quot;다음&quot;,&quot;start&quot;:0.13333333233333333,&quot;end&quot;:0.399999999},{&quot;word&quot;:&quot;실험은&quot;,&quot;start&quot;:0.46666666566666665,&quot;end&quot;:0.7666666656666667},{&quot;word&quot;:&quot;가격&quot;,&quot;start&quot;:0.8333333323333334,&quot;end&quot;:1.099999999},{&quot;word&quot;:&quot;안내&quot;,&quot;start&quot;:1.1333333323333332,&quot;end&quot;:1.4333333323333333},{&quot;word&quot;:&quot;문구를&quot;,&quot;start&quot;:1.4666666656666665,&quot;end&quot;:1.799999999},{&quot;word&quot;:&quot;더&quot;,&quot;start&quot;:1.9666666656666665,&quot;end&quot;:2.2333333323333333},{&quot;word&quot;:&quot;명확하게&quot;,&quot;start&quot;:2.2666666656666665,&quot;end&quot;:2.633333332333333},{&quot;word&quot;:&quot;다듬는&quot;,&quot;start&quot;:2.699999999,&quot;end&quot;:2.999999999},{&quot;word&quot;:&quot;것입니다&quot;,&quot;start&quot;:3.066666665666667,&quot;end&quot;:3.433333332333333}],&quot;startSec&quot;:0,&quot;endSec&quot;:3.8666666656666666,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s03-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

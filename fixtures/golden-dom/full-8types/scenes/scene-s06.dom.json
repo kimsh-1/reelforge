@@ -1,0 +1,260 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s06",
+                "data-duration": "4.066666665666666",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "4.066666665666666",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s06-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip block-host",
+                    "data-composition-id": "statistic",
+                    "data-composition-src": "blocks/statistic/block.html",
+                    "data-duration": "4.066666665666666",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "3",
+                    "data-variable-values": "{&quot;title&quot;:&quot;응답 시간 184ms&quot;,&quot;items&quot;:[&quot;평균 응답 시간&quot;,&quot;목표 대비 개선&quot;],&quot;values&quot;:[184,16],&quot;unit&quot;:&quot;ms&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-latency-sli&quot;}",
+                    "data-width": "1920",
+                    "id": "s06-block-host"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "4.066666665666666",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "karaoke",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;karaoke&quot;,&quot;renderer&quot;:&quot;gsap-karaoke&quot;,&quot;text&quot;:&quot;평균 응답 시간은 백팔십사 밀리초로 목표치보다 십육 밀리초 빠릅니다.&quot;,&quot;keywords&quot;:[],&quot;words&quot;:[{&quot;word&quot;:&quot;평균&quot;,&quot;start&quot;:0.13333333233333333,&quot;end&quot;:0.399999999},{&quot;word&quot;:&quot;응답&quot;,&quot;start&quot;:0.46666666566666665,&quot;end&quot;:0.7333333323333333},{&quot;word&quot;:&quot;시간은&quot;,&quot;start&quot;:0.7999999990000001,&quot;end&quot;:1.099999999},{&quot;word&quot;:&quot;백팔십사&quot;,&quot;start&quot;:1.1333333323333332,&quot;end&quot;:1.5333333323333334},{&quot;word&quot;:&quot;밀리초로&quot;,&quot;start&quot;:1.5666666656666666,&quot;end&quot;:1.9333333323333333},{&quot;word&quot;:&quot;목표치보다&quot;,&quot;start&quot;:2.099999999,&quot;end&quot;:2.533333332333333},{&quot;word&quot;:&quot;십육&quot;,&quot;start&quot;:2.599999999,&quot;end&quot;:2.8666666656666666},{&quot;word&quot;:&quot;밀리초&quot;,&quot;start&quot;:2.899999999,&quot;end&quot;:3.2333333323333333},{&quot;word&quot;:&quot;빠릅니다&quot;,&quot;start&quot;:3.2666666656666665,&quot;end&quot;:3.633333332333333}],&quot;startSec&quot;:0,&quot;endSec&quot;:4.066666665666666,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s06-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "0"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "1"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "2"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "3"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "4"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "5"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "6"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "7"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "8"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "gate": "L1-1-golden-dom",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "compile:minimal-3scene",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-1-golden-dom/minimal-3scene --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-1-golden-dom/minimal-3scene/build",
+        "scenes": 3,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "compile:edit-scenario",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-1-golden-dom/edit-scenario --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-1-golden-dom/edit-scenario/build",
+        "scenes": 3,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "compile:full-8types",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-1-golden-dom/full-8types --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-1-golden-dom/full-8types/build",
+        "scenes": 8,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "compile:stress-edge",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-1-golden-dom/stress-edge --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-1-golden-dom/stress-edge/build",
+        "scenes": 12,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "golden-dom-snapshots",
+      "pass": true,
+      "measured": {
+        "fixtures": [
+          "minimal-3scene",
+          "edit-scenario",
+          "full-8types",
+          "stress-edge"
+        ],
+        "compared": 30,
+        "created": [],
+        "createdCount": 0,
+        "creationLog": "all golden DOM snapshots already existed",
+        "mismatches": []
+      }
+    },
+    {
+      "id": "render-lint-runtime-script-error",
+      "pass": true,
+      "measured": {
+        "lintPass": false,
+        "hyperframesExitCode": 0,
+        "violations": [
+          {
+            "file": "tmp/gate-work/l1-1-golden-dom/render-lint-runtime/minimal-3scene/build/scenes/scene-s01.html",
+            "rule": "inline scene script must parse and pass the compiler VM smoke check",
+            "measured": {
+              "scriptIndex": 1,
+              "line": 236,
+              "error": "Error: p2-review-render-lint-bypass"
+            }
+          }
+        ],
+        "caught": true
+      }
+    }
+  ],
+  "inputSet": [
+    "blocks",
+    "fixtures/golden-dom/edit-scenario/index.dom.json",
+    "fixtures/golden-dom/edit-scenario/scenes/scene-s01.dom.json",
+    "fixtures/golden-dom/edit-scenario/scenes/scene-s02.dom.json",
+    "fixtures/golden-dom/edit-scenario/scenes/scene-s03.dom.json",
+    "fixtures/golden-dom/full-8types/index.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s01.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s02.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s03.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s04.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s05.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s06.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s07.dom.json",
+    "fixtures/golden-dom/full-8types/scenes/scene-s08.dom.json",
+    "fixtures/golden-dom/minimal-3scene/index.dom.json",
+    "fixtures/golden-dom/minimal-3scene/scenes/scene-s01.dom.json",
+    "fixtures/golden-dom/minimal-3scene/scenes/scene-s02.dom.json",
+    "fixtures/golden-dom/minimal-3scene/scenes/scene-s03.dom.json",
+    "fixtures/golden-dom/stress-edge/index.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s01.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s02.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s03.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s04.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s05.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s06.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s07.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s08.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s09.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s10.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s11.dom.json",
+    "fixtures/golden-dom/stress-edge/scenes/scene-s12.dom.json",
+    "fixtures/golden-specs/edit-scenario/audio_meta.json",
+    "fixtures/golden-specs/edit-scenario/scene_specs.json",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "fixtures/golden-specs/stress-edge/audio_meta.json",
+    "fixtures/golden-specs/stress-edge/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/blocks.mjs",
+    "src/compiler/compiler.mjs",
+    "src/compiler/render-lint.mjs",
+    "src/compiler/subtitles.mjs",
+    "src/compiler/timing.mjs",
+    "src/compiler/transitions.mjs",
+    "tests/gate-wrappers/l1-1-golden-dom.mjs"
+  ],
+  "canonicalInputMerkleHash": "a34cd64ad15fb95bd1685548cf8e76020a28bb8eb0573e92c7d5e801434c7767",
+  "evidenceHash": "dce94dddde42677b4665f1054e7a7be13dcb1676f69c113dc507a5ec7a32b342",
+  "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:48:09.736Z",
+  "finishedAt": "2026-07-07T00:48:13.920Z"
+}

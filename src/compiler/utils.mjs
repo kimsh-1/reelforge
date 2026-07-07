@@ -85,7 +85,8 @@ export function framesFromDuration(seconds, fps) {
   if (!Number.isFinite(value) || value < 0) {
     throw new Error(`duration must be a non-negative finite number: ${seconds}`);
   }
-  return Math.ceil(value * fps);
+  const { numerator, denominator } = fpsRatio(fps);
+  return Math.ceil((value * numerator) / denominator - 1e-12);
 }
 
 export function framesFromTransition(seconds, fps) {
@@ -93,7 +94,9 @@ export function framesFromTransition(seconds, fps) {
   if (!Number.isFinite(value) || value < 0) {
     throw new Error(`transition duration must be a non-negative finite number: ${seconds}`);
   }
-  return value === 0 ? 0 : Math.ceil(value * fps);
+  if (value === 0) return 0;
+  const { numerator, denominator } = fpsRatio(fps);
+  return Math.ceil((value * numerator) / denominator - 1e-12);
 }
 
 export function secondsFromFrames(frames, fps) {
@@ -101,17 +104,34 @@ export function secondsFromFrames(frames, fps) {
     throw new Error(`frames must be a non-negative integer: ${frames}`);
   }
   if (frames === 0) return 0;
-  return Math.max(0, frames / fps - 1e-9);
+  const { numerator, denominator } = fpsRatio(fps);
+  return Math.max(0, (frames * denominator) / numerator - 1e-9);
 }
 
 export function quantizeStartSec(seconds, fps) {
   const value = Math.max(0, Number(seconds) || 0);
-  return secondsFromFrames(Math.floor(value * fps), fps);
+  const { numerator, denominator } = fpsRatio(fps);
+  return secondsFromFrames(Math.floor((value * numerator) / denominator + 1e-12), fps);
 }
 
 export function quantizeEndSec(seconds, fps, maxFrames) {
   const value = Math.max(0, Number(seconds) || 0);
-  return secondsFromFrames(Math.min(maxFrames, Math.ceil(value * fps)), fps);
+  const { numerator, denominator } = fpsRatio(fps);
+  return secondsFromFrames(Math.min(maxFrames, Math.ceil((value * numerator) / denominator - 1e-12)), fps);
+}
+
+export function fpsRatio(fps) {
+  const value = Number(fps);
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new Error(`fps must be a positive finite number: ${fps}`);
+  }
+
+  // Treat user-facing 29.97 as the NTSC rational frame rate.
+  if (Math.abs(value - 29.97) < 0.001 || Math.abs(value - 30000 / 1001) < 1e-9) {
+    return { numerator: 30000, denominator: 1001 };
+  }
+
+  return { numerator: value, denominator: 1 };
 }
 
 export function requireRelativeAsset(projectDir, assetPath, label) {

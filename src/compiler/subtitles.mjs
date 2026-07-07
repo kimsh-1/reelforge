@@ -153,6 +153,33 @@ function wordToken(word, index) {
   };
 }
 
+function isPunctuation(char) {
+  return /^\p{P}$/u.test(char);
+}
+
+function splitEdgePunctuation(value) {
+  const chars = Array.from(String(value ?? ""));
+  let start = 0;
+  let end = chars.length;
+  while (start < end && isPunctuation(chars[start])) start += 1;
+  while (end > start && isPunctuation(chars[end - 1])) end -= 1;
+  return {
+    leading: chars.slice(0, start).join(""),
+    core: chars.slice(start, end).join(""),
+    trailing: chars.slice(end).join("")
+  };
+}
+
+function pushSplitWordToken(tokens, rawWord, index) {
+  const { leading, core, trailing } = splitEdgePunctuation(rawWord);
+  const leadingToken = textToken(leading);
+  if (leadingToken) tokens.push(leadingToken);
+  if (core) tokens.push(wordToken(core, index));
+  else if (rawWord) tokens.push(wordToken(rawWord, index));
+  const trailingToken = textToken(trailing);
+  if (trailingToken) tokens.push(trailingToken);
+}
+
 function keywordToken(text) {
   return {
     text,
@@ -180,11 +207,11 @@ function karaokeTokens({ text, words }) {
     if (found >= 0) {
       const before = textToken(text.slice(cursor, found));
       if (before) tokens.push(before);
-      tokens.push(wordToken(word, index));
+      pushSplitWordToken(tokens, word, index);
       cursor = found + word.length;
       return;
     }
-    tokens.push(wordToken(word, index));
+    pushSplitWordToken(tokens, word, index);
   });
 
   const after = textToken(text.slice(cursor));
@@ -433,6 +460,7 @@ export const __subtitleTestInternals = {
   enhancedSubtitleCss,
   keywordTokens,
   karaokeTokens,
+  splitEdgePunctuation,
   keywordsForScene,
   renderSubtitleContent,
   subtitleDataForScene

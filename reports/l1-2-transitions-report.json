@@ -1,0 +1,2318 @@
+{
+  "gate": "L1-2-transitions",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l1-2-transitions.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "compile-matrix-cardinality",
+      "pass": true,
+      "measured": {
+        "transitionTypes": [
+          "cut",
+          "fade",
+          "crossfade",
+          "slide_left",
+          "slide_right",
+          "wipe"
+        ],
+        "durationCombos": [
+          "zero",
+          "short-long",
+          "fractional",
+          "tail-extend"
+        ],
+        "cases": 24
+      }
+    },
+    {
+      "id": "compile-matrix:cut-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "cut-zero",
+        "type": "cut",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:cut-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "cut-short-long",
+        "type": "cut",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:cut-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "cut-fractional",
+        "type": "cut",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:cut-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "cut-tail-extend",
+        "type": "cut",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "cut",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "cut"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:fade-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "fade-zero",
+        "type": "fade",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "fade",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "fade",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:fade-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "fade-short-long",
+        "type": "fade",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            6,
+            12
+          ],
+          "transitionFrames": [
+            6,
+            12
+          ],
+          "transitionStarts": [
+            161,
+            522
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "fade",
+              "duration": 0.2,
+              "startFrame": 161,
+              "durationFrames": 6,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "fade",
+              "duration": 0.4,
+              "startFrame": 522,
+              "durationFrames": 12,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:fade-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "fade-fractional",
+        "type": "fade",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            10,
+            21
+          ],
+          "transitionFrames": [
+            10,
+            21
+          ],
+          "transitionStarts": [
+            157,
+            513
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "fade",
+              "duration": 0.333,
+              "startFrame": 157,
+              "durationFrames": 10,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "fade",
+              "duration": 0.667,
+              "startFrame": 513,
+              "durationFrames": 21,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:fade-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "fade-tail-extend",
+        "type": "fade",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            15,
+            150
+          ],
+          "transitionFrames": [
+            15,
+            69
+          ],
+          "transitionStarts": [
+            152,
+            465
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "fade",
+              "duration": 0.5,
+              "startFrame": 152,
+              "durationFrames": 15,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "fade",
+              "duration": 5,
+              "startFrame": 465,
+              "durationFrames": 69,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:crossfade-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "crossfade-zero",
+        "type": "crossfade",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "crossfade",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:crossfade-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "crossfade-short-long",
+        "type": "crossfade",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            6,
+            12
+          ],
+          "transitionFrames": [
+            6,
+            12
+          ],
+          "transitionStarts": [
+            161,
+            522
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 0.2,
+              "startFrame": 161,
+              "durationFrames": 6,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "crossfade",
+              "duration": 0.4,
+              "startFrame": 522,
+              "durationFrames": 12,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:crossfade-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "crossfade-fractional",
+        "type": "crossfade",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            10,
+            21
+          ],
+          "transitionFrames": [
+            10,
+            21
+          ],
+          "transitionStarts": [
+            157,
+            513
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 0.333,
+              "startFrame": 157,
+              "durationFrames": 10,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "crossfade",
+              "duration": 0.667,
+              "startFrame": 513,
+              "durationFrames": 21,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:crossfade-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "crossfade-tail-extend",
+        "type": "crossfade",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            15,
+            150
+          ],
+          "transitionFrames": [
+            15,
+            69
+          ],
+          "transitionStarts": [
+            152,
+            465
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 0.5,
+              "startFrame": 152,
+              "durationFrames": 15,
+              "resolvedType": "crossfade"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "crossfade",
+              "duration": 5,
+              "startFrame": 465,
+              "durationFrames": 69,
+              "resolvedType": "crossfade"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_left-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_left-zero",
+        "type": "slide_left",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_left",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "slide_left"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "slide_left"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_left-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_left-short-long",
+        "type": "slide_left",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            6,
+            12
+          ],
+          "transitionFrames": [
+            6,
+            12
+          ],
+          "transitionStarts": [
+            161,
+            522
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_left",
+              "duration": 0.2,
+              "startFrame": 161,
+              "durationFrames": 6,
+              "resolvedType": "slide_left"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 0.4,
+              "startFrame": 522,
+              "durationFrames": 12,
+              "resolvedType": "slide_left"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_left-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_left-fractional",
+        "type": "slide_left",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            10,
+            21
+          ],
+          "transitionFrames": [
+            10,
+            21
+          ],
+          "transitionStarts": [
+            157,
+            513
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_left",
+              "duration": 0.333,
+              "startFrame": 157,
+              "durationFrames": 10,
+              "resolvedType": "slide_left"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 0.667,
+              "startFrame": 513,
+              "durationFrames": 21,
+              "resolvedType": "slide_left"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_left-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_left-tail-extend",
+        "type": "slide_left",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            15,
+            150
+          ],
+          "transitionFrames": [
+            15,
+            69
+          ],
+          "transitionStarts": [
+            152,
+            465
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_left",
+              "duration": 0.5,
+              "startFrame": 152,
+              "durationFrames": 15,
+              "resolvedType": "slide_left"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 5,
+              "startFrame": 465,
+              "durationFrames": 69,
+              "resolvedType": "slide_left"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_right-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_right-zero",
+        "type": "slide_right",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_right",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "slide_right"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_right",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "slide_right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_right-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_right-short-long",
+        "type": "slide_right",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            6,
+            12
+          ],
+          "transitionFrames": [
+            6,
+            12
+          ],
+          "transitionStarts": [
+            161,
+            522
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_right",
+              "duration": 0.2,
+              "startFrame": 161,
+              "durationFrames": 6,
+              "resolvedType": "slide_right"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_right",
+              "duration": 0.4,
+              "startFrame": 522,
+              "durationFrames": 12,
+              "resolvedType": "slide_right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_right-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_right-fractional",
+        "type": "slide_right",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            10,
+            21
+          ],
+          "transitionFrames": [
+            10,
+            21
+          ],
+          "transitionStarts": [
+            157,
+            513
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_right",
+              "duration": 0.333,
+              "startFrame": 157,
+              "durationFrames": 10,
+              "resolvedType": "slide_right"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_right",
+              "duration": 0.667,
+              "startFrame": 513,
+              "durationFrames": 21,
+              "resolvedType": "slide_right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:slide_right-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "slide_right-tail-extend",
+        "type": "slide_right",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            15,
+            150
+          ],
+          "transitionFrames": [
+            15,
+            69
+          ],
+          "transitionStarts": [
+            152,
+            465
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "slide_right",
+              "duration": 0.5,
+              "startFrame": 152,
+              "durationFrames": 15,
+              "resolvedType": "slide_right"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_right",
+              "duration": 5,
+              "startFrame": 465,
+              "durationFrames": 69,
+              "resolvedType": "slide_right"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:wipe-zero",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-zero",
+        "type": "wipe",
+        "comboId": "zero",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            0,
+            0
+          ],
+          "transitionFrames": [
+            0,
+            0
+          ],
+          "transitionStarts": [
+            167,
+            534
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "wipe",
+              "duration": 0,
+              "startFrame": 167,
+              "durationFrames": 0,
+              "resolvedType": "wipe"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "wipe",
+              "duration": 0,
+              "startFrame": 534,
+              "durationFrames": 0,
+              "resolvedType": "wipe"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:wipe-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-short-long",
+        "type": "wipe",
+        "comboId": "short-long",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            6,
+            12
+          ],
+          "transitionFrames": [
+            6,
+            12
+          ],
+          "transitionStarts": [
+            161,
+            522
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "wipe",
+              "duration": 0.2,
+              "startFrame": 161,
+              "durationFrames": 6,
+              "resolvedType": "wipe"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "wipe",
+              "duration": 0.4,
+              "startFrame": 522,
+              "durationFrames": 12,
+              "resolvedType": "wipe"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:wipe-fractional",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-fractional",
+        "type": "wipe",
+        "comboId": "fractional",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            10,
+            21
+          ],
+          "transitionFrames": [
+            10,
+            21
+          ],
+          "transitionStarts": [
+            157,
+            513
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "wipe",
+              "duration": 0.333,
+              "startFrame": 157,
+              "durationFrames": 10,
+              "resolvedType": "wipe"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "wipe",
+              "duration": 0.667,
+              "startFrame": 513,
+              "durationFrames": 21,
+              "resolvedType": "wipe"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "compile-matrix:wipe-tail-extend",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-tail-extend",
+        "type": "wipe",
+        "comboId": "tail-extend",
+        "failures": [],
+        "expected": {
+          "sceneFrames": [
+            167,
+            367,
+            139
+          ],
+          "requestedTransitionFrames": [
+            15,
+            150
+          ],
+          "transitionFrames": [
+            15,
+            69
+          ],
+          "transitionStarts": [
+            152,
+            465
+          ],
+          "starts": [
+            0,
+            167,
+            534
+          ],
+          "totalFrames": 673
+        },
+        "actual": {
+          "totalFrames": 673,
+          "scenes": [
+            {
+              "sceneId": "s01",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 0,
+              "durationFrames": 167,
+              "slotDurationFrames": 167,
+              "path": "scenes/scene-s01.html"
+            },
+            {
+              "sceneId": "s02",
+              "layout": "list",
+              "block": "block",
+              "startFrame": 167,
+              "durationFrames": 367,
+              "slotDurationFrames": 367,
+              "path": "scenes/scene-s02.html"
+            },
+            {
+              "sceneId": "s03",
+              "layout": "headline_only",
+              "block": "native",
+              "startFrame": 534,
+              "durationFrames": 139,
+              "slotDurationFrames": 139,
+              "path": "scenes/scene-s03.html"
+            }
+          ],
+          "transitions": [
+            {
+              "from": "s01",
+              "to": "s02",
+              "type": "wipe",
+              "duration": 0.5,
+              "startFrame": 152,
+              "durationFrames": 15,
+              "resolvedType": "wipe"
+            },
+            {
+              "from": "s02",
+              "to": "s03",
+              "type": "wipe",
+              "duration": 5,
+              "startFrame": 465,
+              "durationFrames": 69,
+              "resolvedType": "wipe"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "render-transition-pixels:crossfade-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "crossfade-short-long",
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/crossfade-short-long/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long --at 5.166667,5.466667,6.766667 --no-end --describe false",
+        "exitCode": 0,
+        "times": "5.166667,5.466667,6.766667",
+        "frames": [
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-00-at-5.2s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-01-at-5.5s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-02-at-6.8s.png"
+        ],
+        "hashes": [
+          "779ba551ca024cc444d4276b3ba4a925a9a3a54c3b1af82ec73b62cd85b2eaa2",
+          "a04c47226cb474c621bb784d85b86101ecfb40ca028be8d64a94de87bcfbb767",
+          "a30612e48fce98ee112cbb134ef6e6bafc983b2549d7eeab712abfdd9b06039a"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render-transition-pixels:wipe-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-short-long",
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/wipe-short-long/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long --at 5.166667,5.466667,6.766667 --no-end --describe false",
+        "exitCode": 0,
+        "times": "5.166667,5.466667,6.766667",
+        "frames": [
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-00-at-5.2s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-01-at-5.5s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-02-at-6.8s.png"
+        ],
+        "hashes": [
+          "779ba551ca024cc444d4276b3ba4a925a9a3a54c3b1af82ec73b62cd85b2eaa2",
+          "779ba551ca024cc444d4276b3ba4a925a9a3a54c3b1af82ec73b62cd85b2eaa2",
+          "68847f8f2e315bf91ddb01dcd4b7c0324ebd4d143a6efb2e8d07484bab8a3293"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render-transition-pixels:hostile-2997-short-scenes",
+      "pass": true,
+      "measured": {
+        "compileCommand": "/usr/bin/node bin/vf compile tmp/gate-work/l1-2-transitions/cases/hostile-2997-short-scenes --fps 29.97 --preset fixtures/presets/dark.json --json",
+        "snapshotCommand": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/hostile-2997-short-scenes/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes --at 0,0.233567,0.266933,0.3003,0.333667,0.433767,0.467133,0.5005,0.533867,0.9009 --no-end --describe false",
+        "snapshotExitCode": 0,
+        "totalFrames": 28,
+        "transitions": [
+          {
+            "from": "s01",
+            "to": "s02",
+            "type": "crossfade",
+            "duration": 1.0009999989999998,
+            "startFrame": 7,
+            "durationFrames": 3,
+            "resolvedType": "crossfade"
+          },
+          {
+            "from": "s02",
+            "to": "s03",
+            "type": "slide_left",
+            "duration": 0.800799999,
+            "startFrame": 13,
+            "durationFrames": 3,
+            "resolvedType": "slide_left"
+          }
+        ],
+        "clampWarnings": [
+          {
+            "code": "transition-duration-clamped",
+            "message": "transition s01->s02 was clamped from 30f to 3f",
+            "transition": {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 1.0009999989999998
+            },
+            "requestedFrames": 30,
+            "durationFrames": 3,
+            "maxFrames": 3,
+            "safeRatio": 0.5
+          },
+          {
+            "code": "transition-duration-clamped",
+            "message": "transition s02->s03 was clamped from 24f to 3f",
+            "transition": {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 0.800799999
+            },
+            "requestedFrames": 24,
+            "durationFrames": 3,
+            "maxFrames": 3,
+            "safeRatio": 0.5
+          }
+        ],
+        "sampleFrames": [
+          0,
+          7,
+          8,
+          9,
+          10,
+          13,
+          14,
+          15,
+          16,
+          27
+        ],
+        "times": [
+          0,
+          0.233567,
+          0.266933,
+          0.3003,
+          0.333667,
+          0.433767,
+          0.467133,
+          0.5005,
+          0.533867,
+          0.9009
+        ],
+        "ratios": [
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-00-at-0.0s.png",
+            "nearWhiteRatio": 0.004952739197530864
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-01-at-0.2s.png",
+            "nearWhiteRatio": 0.004952739197530864
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-02-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-03-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-04-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-05-at-0.4s.png",
+            "nearWhiteRatio": 0.00560667438271605
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-06-at-0.5s.png",
+            "nearWhiteRatio": 0.00560667438271605
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-07-at-0.5s.png",
+            "nearWhiteRatio": 0.00560667438271605
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-08-at-0.5s.png",
+            "nearWhiteRatio": 0.00560667438271605
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-09-at-0.9s.png",
+            "nearWhiteRatio": 0.005601851851851852
+          }
+        ],
+        "blankFrames": [],
+        "stderr": ""
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/edit-scenario/audio_meta.json",
+    "fixtures/golden-specs/edit-scenario/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/compiler.mjs",
+    "src/compiler/timing.mjs",
+    "src/compiler/transitions.mjs",
+    "tests/gate-wrappers/l1-2-transitions.mjs",
+    "tests/transitions-matrix.mjs"
+  ],
+  "canonicalInputMerkleHash": "9e720a84c5d55ea3dfd3b2de46dc1ed1889395229fd60780725c05412bbef139",
+  "evidenceHash": "f69f4413cf00cb7c56df336c797d93cb10d0f21c7f80702347bb5c08d510c8f4",
+  "gateScriptHash": "1279edd035e277ea30e347e80d5e8e2aedc89d133b0cbe2481ecad3afb137bb1",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:48:13.920Z",
+  "finishedAt": "2026-07-07T00:48:45.149Z"
+}

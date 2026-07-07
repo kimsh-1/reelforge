@@ -1,5 +1,6 @@
 {
   "gate": "P0b",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
@@ -313,11 +314,11 @@
   "canonicalInputMerkleHash": "6509d561ea69a69c54debcb2ddc45aafd15c254f4dca63a63904cac27c7c4cea",
   "evidenceHash": "11a516ab7d5df8a21e6ea0e8be0cdee47f3055bfcdd52de86665ba6faeb2d243",
   "gateScriptHash": "5b2b2e34c45fb3d88c7197ddcf330378d14b950511ed06fb6a64b1d6c0bd48d2",
-  "gitCommit": "7392c0420417f2b829fbfa485a65571a45ce7ab5",
-  "command": "node bin/vf gate all --replay",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-06T21:13:14.532Z",
-  "finishedAt": "2026-07-06T21:13:14.535Z",
+  "startedAt": "2026-07-07T00:48:09.723Z",
+  "finishedAt": "2026-07-07T00:48:09.726Z",
   "mode": "replay",
   "sourceReport": "poc/reports/P0b-report.json"
 }

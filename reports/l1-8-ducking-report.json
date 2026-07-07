@@ -1,0 +1,158 @@
+{
+  "gate": "L1-8-ducking",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l1-8-ducking.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "ducking-keyframes-contract",
+      "pass": true,
+      "measured": {
+        "keyframes": [
+          {
+            "timeSec": 0,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 0.7,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 1,
+            "volume": 0.15
+          },
+          {
+            "timeSec": 2.6,
+            "volume": 0.15
+          },
+          {
+            "timeSec": 2.9,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 4,
+            "volume": 0.35
+          }
+        ],
+        "sorted": true,
+        "hasSpeechDip": true,
+        "restored": true
+      }
+    },
+    {
+      "id": "ducking-html-timeline-injection",
+      "pass": true,
+      "measured": {
+        "timelineLines": [
+          "        tl.set(\"#rf-bgm\", { volume: 0.35 }, 0);",
+          "        tl.to(\"#rf-bgm\", { volume: 0.35, duration: 0.7, ease: \"none\" }, 0);",
+          "        tl.to(\"#rf-bgm\", { volume: 0.15, duration: 0.3, ease: \"none\" }, 0.7);",
+          "        tl.to(\"#rf-bgm\", { volume: 0.15, duration: 1.6, ease: \"none\" }, 1);",
+          "        tl.to(\"#rf-bgm\", { volume: 0.35, duration: 0.3, ease: \"none\" }, 2.6);",
+          "        tl.to(\"#rf-bgm\", { volume: 0.35, duration: 1.1, ease: \"none\" }, 2.9);"
+        ],
+        "hasTimelineTween": true,
+        "dataVolumePatched": true
+      }
+    },
+    {
+      "id": "ducking-manifest-contract",
+      "pass": true,
+      "measured": {
+        "path": "./assets/audio/bgm.wav",
+        "volume": 0.35,
+        "duckingKeyframes": [
+          {
+            "timeSec": 0,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 0.7,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 1,
+            "volume": 0.15
+          },
+          {
+            "timeSec": 2.6,
+            "volume": 0.15
+          },
+          {
+            "timeSec": 2.9,
+            "volume": 0.35
+          },
+          {
+            "timeSec": 4,
+            "volume": 0.35
+          }
+        ]
+      }
+    },
+    {
+      "id": "kenburns-motion-contract",
+      "pass": true,
+      "measured": {
+        "lines": [
+          "          tl.fromTo(\"#s01-bg\", {\"scale\":1,\"x\":0,\"y\":0,\"transformOrigin\":\"50% 50%\"}, {\"scale\":1.18,\"x\":172.8,\"y\":0,\"transformOrigin\":\"50% 50%\",\"duration\":3.2,\"ease\":\"none\"}, 0);"
+        ]
+      }
+    },
+    {
+      "id": "compile-edge:no-bgm-no-words",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-8-ducking/duck-edge-no-bgm-no-words --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-8-ducking/duck-edge-no-bgm-no-words/build",
+        "bgm": null,
+        "hasBgmAudio": false,
+        "hasBgmTween": false,
+        "warnings": [],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "existing-motion-duck-render-test",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/motion-duck.mjs",
+        "exitCode": 0,
+        "stdoutTail": "motion-duck: PASS\ntmp: /tmp/p2w-p203-wLU30d\ncompile: PASS tmp/p2w-p203-30993-1783385325917/edit-scenario/build (copied to /tmp/p2w-p203-wLU30d/kenburns-build)\ncompile-out: unavailable in current vf; no shared fixture build was written\nkenburns: PASS hashes=0.8s:1e0d56e4,2.783s:27fab218,4.867s:1ef58d7e\nducking-keyframes: PASS [{\"timeSec\":0,\"volume\":0.35},{\"timeSec\":0.7,\"volume\":0.35},{\"timeSec\":1,\"volume\":0.15},{\"timeSec\":2.6,\"volume\":0.15},{\"timeSec\":2.9,\"volume\":0.35},{\"timeSec\":4,\"volume\":0.35}]\nducking-rms: PASS nonSpeech=-33.43dB speech=-40.23dB delta=6.79dB\n",
+        "stderrTail": ""
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/edit-scenario/audio_meta.json",
+    "fixtures/golden-specs/edit-scenario/scene_specs.json",
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "src/compiler/audio-duck.mjs",
+    "src/compiler/compiler.mjs",
+    "src/compiler/motion.mjs",
+    "tests/gate-wrappers/l1-8-ducking.mjs",
+    "tests/motion-duck.mjs"
+  ],
+  "canonicalInputMerkleHash": "d7b46e1fb6cd67a1725d4880441dd7acd914068a05ccddcfdfd60700d64013d2",
+  "evidenceHash": "e0721f08aca5f7b28cc2e5b62720a4f628e81ebcad627c1fb113a3febbd70dca",
+  "gateScriptHash": "b88c7993d2521edb39c30047e386c349a35c499880131b4001067366da7bd5e4",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:48:45.149Z",
+  "finishedAt": "2026-07-07T00:49:11.576Z"
+}

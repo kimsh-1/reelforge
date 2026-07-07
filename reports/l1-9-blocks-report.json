@@ -1,0 +1,415 @@
+{
+  "gate": "L1-9-blocks",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l1-9-blocks.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "compile:full-8types",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l1-9-blocks/full-8types --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l1-9-blocks/full-8types/build",
+        "sceneCount": 8,
+        "stderr": ""
+      }
+    },
+    {
+      "id": "block-layout-cardinality",
+      "pass": true,
+      "measured": {
+        "expected": [
+          "bar",
+          "pie",
+          "line",
+          "list",
+          "numbered",
+          "statistic",
+          "compare",
+          "quote"
+        ],
+        "actual": [
+          "bar",
+          "compare",
+          "line",
+          "list",
+          "numbered",
+          "pie",
+          "quote",
+          "statistic"
+        ],
+        "scenes": [
+          {
+            "sceneId": "s01",
+            "layout": "bar",
+            "block": "block"
+          },
+          {
+            "sceneId": "s02",
+            "layout": "pie",
+            "block": "block"
+          },
+          {
+            "sceneId": "s03",
+            "layout": "line",
+            "block": "block"
+          },
+          {
+            "sceneId": "s04",
+            "layout": "list",
+            "block": "block"
+          },
+          {
+            "sceneId": "s05",
+            "layout": "numbered",
+            "block": "block"
+          },
+          {
+            "sceneId": "s06",
+            "layout": "statistic",
+            "block": "block"
+          },
+          {
+            "sceneId": "s07",
+            "layout": "compare",
+            "block": "block"
+          },
+          {
+            "sceneId": "s08",
+            "layout": "quote",
+            "block": "block"
+          }
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "id": "block-contract:bar",
+      "pass": true,
+      "measured": {
+        "sceneId": "s01",
+        "layout": "bar",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/bar/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s01.html",
+        "compositionId": "bar",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:pie",
+      "pass": true,
+      "measured": {
+        "sceneId": "s02",
+        "layout": "pie",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/pie/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s02.html",
+        "compositionId": "pie",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:line",
+      "pass": true,
+      "measured": {
+        "sceneId": "s03",
+        "layout": "line",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/line/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s03.html",
+        "compositionId": "line",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:list",
+      "pass": true,
+      "measured": {
+        "sceneId": "s04",
+        "layout": "list",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/list/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s04.html",
+        "compositionId": "list",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:numbered",
+      "pass": true,
+      "measured": {
+        "sceneId": "s05",
+        "layout": "numbered",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/numbered/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s05.html",
+        "compositionId": "numbered",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:statistic",
+      "pass": true,
+      "measured": {
+        "sceneId": "s06",
+        "layout": "statistic",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/statistic/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s06.html",
+        "compositionId": "statistic",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:compare",
+      "pass": true,
+      "measured": {
+        "sceneId": "s07",
+        "layout": "compare",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/compare/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s07.html",
+        "compositionId": "compare",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-contract:quote",
+      "pass": true,
+      "measured": {
+        "sceneId": "s08",
+        "layout": "quote",
+        "blockPath": "tmp/gate-work/l1-9-blocks/full-8types/build/blocks/quote/block.html",
+        "sceneHtmlPath": "tmp/gate-work/l1-9-blocks/full-8types/build/scenes/scene-s08.html",
+        "compositionId": "quote",
+        "hasHost": true,
+        "hasVariables": true,
+        "timelineRegistered": true,
+        "runtimeReadyInjected": true,
+        "pausedTimeline": true
+      }
+    },
+    {
+      "id": "block-snapshots-and-animation",
+      "pass": true,
+      "measured": {
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-9-blocks/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-9-blocks/snapshots --at 0.05,2.466667,1.2,4.983333,7.016667,6.133333,9.15,11.316667,10.3,13.583333,15.466667,14.733333,17.45,18.966667,18.6,20.583333,22.566667,21.733333,24.65,26.633333,25.8,28.716667,31.116667,29.866667 --no-end --describe false",
+        "exitCode": 0,
+        "expectedPngCount": 24,
+        "actualPngCount": 24,
+        "times": [
+          0.05,
+          2.466667,
+          1.2,
+          4.983333,
+          7.016667,
+          6.133333,
+          9.15,
+          11.316667,
+          10.3,
+          13.583333,
+          15.466667,
+          14.733333,
+          17.45,
+          18.966667,
+          18.6,
+          20.583333,
+          22.566667,
+          21.733333,
+          24.65,
+          26.633333,
+          25.8,
+          28.716667,
+          31.116667,
+          29.866667
+        ],
+        "triples": [
+          {
+            "sceneId": "s01",
+            "layout": "bar",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-00-at-0.1s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-01-at-2.5s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-02-at-1.2s.png",
+            "earlyHash": "3ddbc8ed14eed5733dbb91f47451e2cbe4a0125de98f57966823842a0692f3fe",
+            "midHash": "751fc31d6da5609a1c44f143a6f9f007c76f5abb87b5f273a4bf2a2b5a516b4e",
+            "lateHash": "f00fbbbce6421c88230a3f1e7d04a06a36dbfb06adae987142a7ca169a91c57d",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.5790321180555555
+            }
+          },
+          {
+            "sceneId": "s02",
+            "layout": "pie",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-03-at-5.0s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-04-at-7.0s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-05-at-6.1s.png",
+            "earlyHash": "a8e815da5d8ccf89be5403a1c63204d0022a94a5a0700bf62d64398dc2024a86",
+            "midHash": "21f9b830c28611e30129ae6fb7bcbfb61b5cb7f9103ed68f8243db072db18dbf",
+            "lateHash": "6415263971fced3e55c5fb5483b35b3e7c4b62737d726a6da1933596a9b69e9e",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.24725212191358026
+            }
+          },
+          {
+            "sceneId": "s03",
+            "layout": "line",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-06-at-9.2s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-07-at-11.3s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-08-at-10.3s.png",
+            "earlyHash": "95928a7089d92c6bad57a1fe19562454f8d34a1f717598ca98295f72972e61f5",
+            "midHash": "002f25e045d5dc5573682e45d0feef9c05cf3a0f522bb3fda3cbae37300fd5ca",
+            "lateHash": "4ff09fc49dde230fcf502f287489134f6fc273aafc523848314bb0d093fb846b",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.2305372299382716
+            }
+          },
+          {
+            "sceneId": "s04",
+            "layout": "list",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-09-at-13.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-10-at-15.5s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-11-at-14.7s.png",
+            "earlyHash": "7b434d68eb6465a265fcd418068fff735c977f6ed1a14c25c9177d7f40aac56f",
+            "midHash": "e31ffc194add7b27e8852ee95b67f1ee48a71e7284f6536091cfafbcadb6e40a",
+            "lateHash": "e31ffc194add7b27e8852ee95b67f1ee48a71e7284f6536091cfafbcadb6e40a",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.5796262538580247
+            }
+          },
+          {
+            "sceneId": "s05",
+            "layout": "numbered",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-12-at-17.4s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-13-at-19.0s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-14-at-18.6s.png",
+            "earlyHash": "2f25c49fcb41fa27076bfb4f4ec321cce8ba376e04227795427a58e2bd171494",
+            "midHash": "1f7d37776577d38e94de62f3666f6c489239e501ab25960ce100edaf4c0bc37d",
+            "lateHash": "1f7d37776577d38e94de62f3666f6c489239e501ab25960ce100edaf4c0bc37d",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.5893277391975309
+            }
+          },
+          {
+            "sceneId": "s06",
+            "layout": "statistic",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-15-at-20.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-16-at-22.6s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-17-at-21.7s.png",
+            "earlyHash": "791b801c4bd79f539c02bf22068779284e1b5fd3d5aa8cb006c8274d76dba0c5",
+            "midHash": "ac1ad0686b5efc3047254734103f85d5b525da455f5541a253b00540ab318a7d",
+            "lateHash": "98f7c8ee6f67acb6fe8f6c1b8b2df952c5abf7e87570e9962cb54af610ded448",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.5899498456790123
+            }
+          },
+          {
+            "sceneId": "s07",
+            "layout": "compare",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-18-at-24.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-19-at-26.6s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-20-at-25.8s.png",
+            "earlyHash": "8f10011b246d42d74a6561bd608aae1db0524dadccc04a1e7b9d1161fa6411c6",
+            "midHash": "2c5b49e84a747ac51602a3894fed69fad50076be3d4700ed8e30944ea357513c",
+            "lateHash": "5917e8526302e9d6a21ff9ee9a796fa71356fb3878a408f732b3c4b58bc6e2c5",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.2763329475308642
+            }
+          },
+          {
+            "sceneId": "s08",
+            "layout": "quote",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-21-at-28.7s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-22-at-31.1s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-23-at-29.9s.png",
+            "earlyHash": "41d96ded3c685b529dbcbf725f972fecb7911261b8ef00a4c9243f9aa275ef2d",
+            "midHash": "1b9d2c05aadf8c23ee21686d5819ead4eff54dff24d4829d9d91f55c335f89be",
+            "lateHash": "1b9d2c05aadf8c23ee21686d5819ead4eff54dff24d4829d9d91f55c335f89be",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.574083236882716
+            }
+          }
+        ],
+        "animated": true,
+        "midSceneVisible": true,
+        "stderr": ""
+      }
+    }
+  ],
+  "inputSet": [
+    "blocks",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/blocks.mjs",
+    "src/compiler/compiler.mjs",
+    "tests/gate-wrappers/l1-9-blocks.mjs"
+  ],
+  "canonicalInputMerkleHash": "a1474de693e2f6300f2a2ec28f28300583816d9ee7c1d800af26e0cc47ca1221",
+  "evidenceHash": "7888ec0f37f7df2889d2323083393ef9d42b7881637af8d78ab947a5715ca6b1",
+  "gateScriptHash": "ac97f333001aaf2a5dfde89db0c59c35c01a61e5ee6ab99e6196cc9a6b343c23",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:49:11.577Z",
+  "finishedAt": "2026-07-07T00:49:22.074Z"
+}

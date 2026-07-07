@@ -1,0 +1,93 @@
+{
+  "gate": "L2-1-determinism",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l2-1-determinism.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "compile:minimal-3scene",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l2-1-determinism/minimal-3scene --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l2-1-determinism/minimal-3scene/build",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render-twice:same-build",
+      "pass": true,
+      "measured": {
+        "first": {
+          "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/minimal-3scene/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/videos/minimal-run-a.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
+          "exitCode": 0,
+          "stderr": ""
+        },
+        "second": {
+          "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/minimal-3scene/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/videos/minimal-run-b.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
+          "exitCode": 0,
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "id": "framemd5-extract",
+      "pass": true,
+      "measured": {
+        "first": {
+          "command": "ffmpeg -v error -i /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/videos/minimal-run-a.mp4 -an -vf format=rgb24 -f framemd5 /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/framemd5/minimal-run-a.framemd5",
+          "exitCode": 0,
+          "stderr": ""
+        },
+        "second": {
+          "command": "ffmpeg -v error -i /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/videos/minimal-run-b.mp4 -an -vf format=rgb24 -f framemd5 /home/seunghyeong/reelforge/tmp/gate-work/l2-1-determinism/framemd5/minimal-run-b.framemd5",
+          "exitCode": 0,
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "id": "framemd5-identical",
+      "pass": true,
+      "measured": {
+        "leftFrameCount": 314,
+        "rightFrameCount": 314,
+        "minComparedFrames": 314,
+        "mismatchedFrameCount": 0,
+        "ptsMismatchCount": 0,
+        "lengthMismatch": false,
+        "firstMismatch": null,
+        "firstMismatches": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/compiler.mjs",
+    "src/compiler/transitions.mjs",
+    "tests/gate-wrappers/l2-1-determinism.mjs"
+  ],
+  "canonicalInputMerkleHash": "861e8a417affc913a66e1d021ff358a690f5c1c2a777b927c74df48ae8445308",
+  "evidenceHash": "28b4bde36c33363cbb7aa9b6bb1fa68d9af202a528d9c90f978ff5d29fb5530d",
+  "gateScriptHash": "fdbbfde5e975ab943a99bfa06d01d3a98a58a6b145a8a1b84bb842422c886bb0",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:53:12.862Z",
+  "finishedAt": "2026-07-07T00:53:49.852Z"
+}

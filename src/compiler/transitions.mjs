@@ -21,7 +21,7 @@ export function transitionHookSignature() {
       transition: "{ from, to, type, duration }",
       fromSlotId: "DOM id for outgoing scene host in index.html",
       toSlotId: "DOM id for incoming scene host in index.html",
-      startFrame: "incoming scene start frame; incoming start is never moved",
+      startFrame: "transition overlap start frame; adjacent scene start frames are not moved",
       durationFrames: "transition overlap frames",
       fps: "render fps"
     },

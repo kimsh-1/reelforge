@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
+import vm from "node:vm";
 import { normalizeRelPath } from "./utils.mjs";
 
 function htmlFilesUnder(dir) {
@@ -31,6 +32,140 @@ function pushViolation(violations, file, rule, measured = {}) {
   violations.push({ file, rule, measured });
 }
 
+function inlineScripts(html) {
+  const scripts = [];
+  const pattern = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = pattern.exec(html))) {
+    const attrs = match[1] ?? "";
+    if (/\bsrc\s*=/i.test(attrs)) continue;
+    scripts.push({
+      code: match[2] ?? "",
+      line: lineForOffset(html, match.index + match[0].indexOf(">") + 1)
+    });
+  }
+  return scripts;
+}
+
+function createChainableTimeline() {
+  const timeline = {};
+  for (const method of [
+    "add",
+    "addLabel",
+    "call",
+    "from",
+    "fromTo",
+    "pause",
+    "seek",
+    "set",
+    "to"
+  ]) {
+    timeline[method] = () => timeline;
+  }
+  return timeline;
+}
+
+function createElementStub() {
+  const style = { setProperty() {} };
+  const element = {
+    append() {},
+    appendChild(child) {
+      return child;
+    },
+    classList: { add() {}, remove() {}, toggle() {} },
+    dataset: {},
+    getAttribute() {
+      return null;
+    },
+    hasAttribute() {
+      return false;
+    },
+    parentElement: null,
+    querySelector() {
+      return element;
+    },
+    querySelectorAll() {
+      return [];
+    },
+    removeAttribute() {},
+    setAttribute() {},
+    style,
+    textContent: ""
+  };
+  return element;
+}
+
+function scriptSandbox() {
+  const element = createElementStub();
+  const document = {
+    createElement() {
+      return createElementStub();
+    },
+    fonts: { ready: Promise.resolve() },
+    getElementById() {
+      return element;
+    },
+    querySelector() {
+      return element;
+    },
+    querySelectorAll() {
+      return [];
+    }
+  };
+  const gsap = {
+    set() {},
+    timeline() {
+      return createChainableTimeline();
+    },
+    utils: {
+      toArray(value) {
+        return Array.isArray(value) ? value : [];
+      }
+    }
+  };
+  const sandbox = {
+    console,
+    document,
+    gsap,
+    Intl,
+    JSON,
+    Math,
+    Number,
+    Promise,
+    Set,
+    String,
+    __hfTimelineCompId: "",
+    __hyperframes: { getVariables: () => ({}) },
+    clearTimeout() {},
+    setTimeout(callback) {
+      if (typeof callback === "function") callback();
+      return 0;
+    }
+  };
+  sandbox.window = sandbox;
+  sandbox.globalThis = sandbox;
+  return sandbox;
+}
+
+function checkInlineScripts({ rel, html, violations }) {
+  const scripts = inlineScripts(html);
+  scripts.forEach((script, index) => {
+    if (!script.code.trim()) return;
+    try {
+      vm.runInNewContext(script.code, scriptSandbox(), {
+        filename: `${rel}:inline-script-${index + 1}`,
+        timeout: 1000
+      });
+    } catch (error) {
+      pushViolation(violations, rel, "inline scene script must parse and pass the compiler VM smoke check", {
+        scriptIndex: index,
+        line: script.line,
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  });
+}
+
 function checkNoFetch({ rel, html, violations }) {
   const match = html.match(/\bfetch\s*\(/);
   if (match) {
@@ -53,6 +188,7 @@ function checkSceneFile({ repoRoot, buildDir, file, expectedSceneIds, violations
   const html = readFileSync(file, "utf8");
   checkNoFetch({ rel, html, violations });
   checkPausedTimelines({ rel, html, violations });
+  checkInlineScripts({ rel, html, violations });
 
   // body-root 계약: 벤더 htmlCompiler는 <template>/<body> 양쪽을 허용하지만,
   // 단독 --composition 렌더의 정적 메타 파싱(querySelector)은 root가 template 밖
@@ -105,6 +241,7 @@ function checkIndex({ repoRoot, buildDir, scenes, violations }) {
   const html = readFileSync(indexPath, "utf8");
   checkNoFetch({ rel, html, violations });
   checkPausedTimelines({ rel, html, violations });
+  checkInlineScripts({ rel, html, violations });
 
   if (!extractCompositionIds(html).includes("main") || !extractTimelineKeys(html).includes("main")) {
     pushViolation(violations, rel, "index root composition id and timeline key must be main");

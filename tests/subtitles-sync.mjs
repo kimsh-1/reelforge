@@ -458,8 +458,35 @@ function assertKeywordMode() {
   return { keywords: data.keywords, keywordSpanCount };
 }
 
+function assertKaraokePunctuationMode() {
+  const data = {
+    mode: "karaoke",
+    text: "나 Supercalifragilisticexpialidocious끝, 응?",
+    words: [
+      { word: "나", start: 0, end: 0.2 },
+      { word: "Supercalifragilisticexpialidocious끝,", start: 0.25, end: 1.2 },
+      { word: "응?", start: 1.25, end: 1.5 }
+    ],
+    style: { maxCharsPerLine: 80 }
+  };
+  const html = __subtitleTestInternals.renderSubtitleContent(data);
+  assert(!html.includes('data-rf-word-index="2">응?</span>'), "karaoke mode included trailing punctuation in current word span", {
+    html
+  });
+  assert(html.includes('data-rf-word-index="2">응</span><span class="rf-subtitle-text">?</span>'), "karaoke mode did not split trailing punctuation", {
+    html
+  });
+  assert(
+    html.includes('data-rf-word-index="1">Supercalifragilisticexpialidocious끝</span><span class="rf-subtitle-text">,</span>'),
+    "karaoke mode did not keep Korean text in the core word while splitting comma punctuation",
+    { html }
+  );
+  return { html };
+}
+
 try {
   const keywordCheck = assertKeywordMode();
+  assertKaraokePunctuationMode();
   prepareTempRepo();
   const compile = compileFixture();
   const scenePath = path.join(buildDir, "scenes", `scene-${sceneId}.html`);

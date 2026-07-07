@@ -1,0 +1,387 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s06",
+                "data-duration": "29.999999999",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "29.999999999",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s06-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip block-host",
+                    "data-composition-id": "numbered",
+                    "data-composition-src": "blocks/numbered/block.html",
+                    "data-duration": "29.999999999",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "3",
+                    "data-variable-values": "{&quot;title&quot;:&quot;30초 설명 구간&quot;,&quot;items&quot;:[&quot;문제 정의&quot;,&quot;사용자 맥락&quot;,&quot;실험 계획&quot;,&quot;예상 리스크&quot;],&quot;values&quot;:[1,2,3,4],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-long-audio&quot;}",
+                    "data-width": "1920",
+                    "id": "s06-block-host"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "29.999999999",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "karaoke",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;karaoke&quot;,&quot;renderer&quot;:&quot;gsap-karaoke&quot;,&quot;text&quot;:&quot;긴 설명 장면은 삼십 초 오디오를 사용해 문제 정의, 사용자 맥락, 실험 계획, 예상 리스크를 순서대로 설명합니다.&quot;,&quot;keywords&quot;:[],&quot;words&quot;:[{&quot;word&quot;:&quot;긴&quot;,&quot;start&quot;:0.199999999,&quot;end&quot;:0.6666666656666667},{&quot;word&quot;:&quot;설명&quot;,&quot;start&quot;:1.8999999989999998,&quot;end&quot;:2.399999999},{&quot;word&quot;:&quot;장면은&quot;,&quot;start&quot;:3.633333332333333,&quot;end&quot;:4.099999999},{&quot;word&quot;:&quot;삼십&quot;,&quot;start&quot;:5.366666665666666,&quot;end&quot;:5.833333332333333},{&quot;word&quot;:&quot;초&quot;,&quot;start&quot;:7.066666665666666,&quot;end&quot;:7.566666665666666},{&quot;word&quot;:&quot;오디오를&quot;,&quot;start&quot;:8.799999999,&quot;end&quot;:9.299999999},{&quot;word&quot;:&quot;사용해&quot;,&quot;start&quot;:10.533333332333333,&quot;end&quot;:10.999999999},{&quot;word&quot;:&quot;문제&quot;,&quot;start&quot;:12.233333332333332,&quot;end&quot;:12.733333332333332},{&quot;word&quot;:&quot;정의&quot;,&quot;start&quot;:13.966666665666667,&quot;end&quot;:14.466666665666667},{&quot;word&quot;:&quot;사용자&quot;,&quot;start&quot;:15.699999999,&quot;end&quot;:16.166666665666668},{&quot;word&quot;:&quot;맥락&quot;,&quot;start&quot;:17.433333332333333,&quot;end&quot;:17.899999999},{&quot;word&quot;:&quot;실험&quot;,&quot;start&quot;:19.133333332333333,&quot;end&quot;:19.633333332333333},{&quot;word&quot;:&quot;계획&quot;,&quot;start&quot;:20.866666665666667,&quot;end&quot;:21.333333332333332},{&quot;word&quot;:&quot;예상&quot;,&quot;start&quot;:22.599999999,&quot;end&quot;:23.066666665666666},{&quot;word&quot;:&quot;리스크를&quot;,&quot;start&quot;:24.299999999,&quot;end&quot;:24.799999999},{&quot;word&quot;:&quot;순서대로&quot;,&quot;start&quot;:26.033333332333335,&quot;end&quot;:26.533333332333335},{&quot;word&quot;:&quot;설명합니다&quot;,&quot;start&quot;:27.766666665666666,&quot;end&quot;:28.233333332333334}],&quot;startSec&quot;:0,&quot;endSec&quot;:29.999999999,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s06-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "0"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "1"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "2"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "3"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "4"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "5"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "6"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "7"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "8"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "9"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "10"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "11"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "12"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "13"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "14"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "15"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-word is-future",
+                        "data-rf-word-index": "16"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

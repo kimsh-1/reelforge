@@ -1,0 +1,167 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s05",
+                "data-duration": "4.699999999",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "4.699999999",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s05-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip block-host",
+                    "data-composition-id": "quote",
+                    "data-composition-src": "blocks/quote/block.html",
+                    "data-duration": "4.699999999",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "3",
+                    "data-variable-values": "{&quot;title&quot;:&quot;현장 피드백&quot;,&quot;items&quot;:[&quot;매장 인터뷰&quot;,&quot;차분한 안내가 좋았습니다&quot;],&quot;values&quot;:[&quot;6회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;search_image&quot;,&quot;source&quot;:&quot;fixture:stress-edge-search-image&quot;}",
+                    "data-width": "1920",
+                    "id": "s05-block-host"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "4.699999999",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "keyword",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;keyword&quot;,&quot;renderer&quot;:&quot;keyword-spans&quot;,&quot;text&quot;:&quot;검색 이미지 장면은 실제 매장 분위기를 참고해 차분한 배경으로 배치합니다.&quot;,&quot;keywords&quot;:[&quot;차분한&quot;,&quot;매장&quot;],&quot;words&quot;:[{&quot;word&quot;:&quot;검색&quot;,&quot;start&quot;:0.199999999,&quot;end&quot;:0.499999999},{&quot;word&quot;:&quot;이미지&quot;,&quot;start&quot;:0.599999999,&quot;end&quot;:0.899999999},{&quot;word&quot;:&quot;장면은&quot;,&quot;start&quot;:0.999999999,&quot;end&quot;:1.299999999},{&quot;word&quot;:&quot;실제&quot;,&quot;start&quot;:1.3999999989999998,&quot;end&quot;:1.6999999989999999},{&quot;word&quot;:&quot;매장&quot;,&quot;start&quot;:1.799999999,&quot;end&quot;:2.099999999},{&quot;word&quot;:&quot;분위기를&quot;,&quot;start&quot;:2.199999999,&quot;end&quot;:2.499999999},{&quot;word&quot;:&quot;참고해&quot;,&quot;start&quot;:2.599999999,&quot;end&quot;:2.899999999},{&quot;word&quot;:&quot;차분한&quot;,&quot;start&quot;:2.999999999,&quot;end&quot;:3.2999999989999997},{&quot;word&quot;:&quot;배경으로&quot;,&quot;start&quot;:3.399999999,&quot;end&quot;:3.699999999},{&quot;word&quot;:&quot;배치합니다&quot;,&quot;start&quot;:3.7999999989999997,&quot;end&quot;:4.099999999}],&quot;startSec&quot;:0,&quot;endSec&quot;:4.699999999,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s05-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "gate": "L2-2-scene-solo",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l2-2-scene-solo.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "compile:minimal-3scene",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l2-2-scene-solo/minimal-3scene --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l2-2-scene-solo/minimal-3scene/build",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render:full-and-scene2",
+      "pass": true,
+      "measured": {
+        "full": {
+          "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/minimal-3scene/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/videos/minimal-full.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
+          "exitCode": 0,
+          "stderr": ""
+        },
+        "solo": {
+          "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/minimal-3scene/build --composition scenes/scene-s02.html --output /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/videos/minimal-scene-s02.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
+          "exitCode": 0,
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "id": "framemd5-extract:scene2-body",
+      "pass": true,
+      "measured": {
+        "full": {
+          "command": "ffmpeg -v error -i /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/videos/minimal-full.mp4 -an -vf select=between(n\\,105\\,195),setpts=N/FRAME_RATE/TB,format=rgb24 -f framemd5 /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/framemd5/full-scene2-body.framemd5",
+          "exitCode": 0,
+          "stderr": ""
+        },
+        "solo": {
+          "command": "ffmpeg -v error -i /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/videos/minimal-scene-s02.mp4 -an -vf select=between(n\\,10\\,100),setpts=N/FRAME_RATE/TB,format=rgb24 -f framemd5 /home/seunghyeong/reelforge/tmp/gate-work/l2-2-scene-solo/framemd5/solo-scene2-body.framemd5",
+          "exitCode": 0,
+          "stderr": ""
+        },
+        "bodyWindow": {
+          "sceneId": "s02",
+          "incomingTransitionFrames": 8,
+          "outgoingTransitionFrames": 0,
+          "bodyStartFrame": 10,
+          "bodyEndFrameExclusive": 101,
+          "fullStartFrame": 105,
+          "fullEndFrameExclusive": 196,
+          "fps": 30
+        }
+      }
+    },
+    {
+      "id": "body-frame-match",
+      "pass": true,
+      "measured": {
+        "comparedWindow": "minimal-3scene scene s02 full-render body frames vs solo scene render body frames",
+        "leftFrameCount": 91,
+        "rightFrameCount": 91,
+        "minComparedFrames": 91,
+        "mismatchedFrameCount": 0,
+        "ptsMismatchCount": 0,
+        "lengthMismatch": false,
+        "firstMismatch": null,
+        "firstMismatches": []
+      }
+    }
+  ],
+  "inputSet": [
+    "fixtures/golden-specs/minimal-3scene/audio_meta.json",
+    "fixtures/golden-specs/minimal-3scene/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/compiler.mjs",
+    "src/compiler/transitions.mjs",
+    "tests/gate-wrappers/l2-2-scene-solo.mjs"
+  ],
+  "canonicalInputMerkleHash": "5bd2af9e7e012f9a69f336937a5ca759e08b1d2b8dd606b90838deb7afa8d344",
+  "evidenceHash": "c5f4d65ca9fdc9ec0f65c3a1083e04da9c3150bf433e15eb5451a0e0fd4808f5",
+  "gateScriptHash": "ddf8495d3e6fb0774c3fca8e91fda7c28377a3a2783f12ba6d32d186b0aa9fd9",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:49:22.074Z",
+  "finishedAt": "2026-07-07T00:49:45.319Z"
+}

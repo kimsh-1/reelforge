@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { existsSync, lstatSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import Ajv2020 from "ajv/dist/2020.js";
@@ -675,6 +676,56 @@ function runL012({ repoRoot }) {
   };
 }
 
+function uniqueSorted(values) {
+  return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function tail(value, max = 4000) {
+  if (!value) return "";
+  return value.length > max ? value.slice(value.length - max) : value;
+}
+
+function runWrapperGate(script) {
+  return ({ repoRoot, profile = "fast" }) => {
+    const command = [process.execPath, script, "--profile", profile, "--json"];
+    const result = spawnSync(command[0], command.slice(1), {
+      cwd: repoRoot,
+      encoding: "utf8",
+      maxBuffer: 512 * 1024 * 1024
+    });
+    const exitCode = result.status ?? (result.signal ? 128 : 1);
+    let payload = null;
+    let parseError = null;
+    try {
+      payload = JSON.parse(result.stdout);
+    } catch (error) {
+      parseError = error instanceof Error ? error.message : String(error);
+    }
+
+    const processCheck = {
+      id: "gate-wrapper-process",
+      pass: exitCode === 0 && payload !== null,
+      measured: {
+        command: command.join(" "),
+        exitCode,
+        signal: result.signal ?? null,
+        error: result.error?.message ?? null,
+        profile,
+        parseError,
+        stderrTail: tail(result.stderr),
+        stdoutTail: payload === null ? tail(result.stdout) : ""
+      }
+    };
+
+    const checks = [processCheck, ...(Array.isArray(payload?.checks) ? payload.checks : [])];
+    return {
+      checks,
+      inputSet: uniqueSorted([script, ...(Array.isArray(payload?.inputSet) ? payload.inputSet : [])]),
+      evidence: Array.isArray(payload?.evidence) ? payload.evidence : []
+    };
+  };
+}
+
 export const gateRegistry = {
   "l0-1": {
     gate: "L0-1",
@@ -750,6 +801,69 @@ export const gateRegistry = {
     legacyReport: "poc/reports/P0d-report.json",
     render: true,
     inputSet: ["poc/fixtures/p0d", "poc/scripts/compile-p0d.mjs", "poc/scripts/gate-p0d.mjs"]
+  },
+  "l1-1-golden-dom": {
+    gate: "L1-1-golden-dom",
+    title: "golden fixture compile to scene HTML DOM snapshot diff",
+    kind: "native",
+    script: "tests/gate-wrappers/l1-1-golden-dom.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l1-1-golden-dom.mjs")
+  },
+  "l1-2-transitions": {
+    gate: "L1-2-transitions",
+    title: "transition timing matrix with full-profile render traces",
+    kind: "native",
+    script: "tests/gate-wrappers/l1-2-transitions.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l1-2-transitions.mjs")
+  },
+  "l1-8-ducking": {
+    gate: "L1-8-ducking",
+    title: "BGM ducking keyframes and full-profile RMS render smoke",
+    kind: "native",
+    script: "tests/gate-wrappers/l1-8-ducking.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l1-8-ducking.mjs")
+  },
+  "l1-9-blocks": {
+    gate: "L1-9-blocks",
+    title: "eight scene block contracts with full-profile PNG animation snapshots",
+    kind: "native",
+    script: "tests/gate-wrappers/l1-9-blocks.mjs",
+    render: false,
+    profiles: ["fast", "full"],
+    run: runWrapperGate("tests/gate-wrappers/l1-9-blocks.mjs")
+  },
+  "l2-2-scene-solo": {
+    gate: "L2-2-scene-solo",
+    title: "minimal-3scene scene 2 solo render body frames match full render",
+    kind: "native",
+    script: "tests/gate-wrappers/l2-2-scene-solo.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("tests/gate-wrappers/l2-2-scene-solo.mjs")
+  },
+  "l2-full-comp": {
+    gate: "L2-full-comp",
+    title: "full-8types clean compile, complete render, and ffprobe duration integration gate",
+    kind: "native",
+    script: "tests/gate-wrappers/l2-full-comp.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("tests/gate-wrappers/l2-full-comp.mjs")
+  },
+  "l2-1-determinism": {
+    gate: "L2-1-determinism",
+    title: "same build rendered twice has identical framemd5",
+    kind: "native",
+    script: "tests/gate-wrappers/l2-1-determinism.mjs",
+    render: true,
+    profiles: ["full"],
+    run: runWrapperGate("tests/gate-wrappers/l2-1-determinism.mjs")
   }
 };
 
@@ -764,6 +878,7 @@ export function listGates() {
     title: gate.title,
     kind: gate.kind,
     render: gate.render,
+    profiles: gate.profiles ?? ["fast", "full"],
     script: gate.script,
     ...(gate.legacyReport ? { legacyReport: gate.legacyReport } : {})
   }));

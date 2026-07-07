@@ -1,0 +1,150 @@
+{
+  "gate": "L2-full-comp",
+  "profile": "full",
+  "pass": true,
+  "checks": [
+    {
+      "id": "gate-wrapper-process",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node tests/gate-wrappers/l2-full-comp.mjs --profile full --json",
+        "exitCode": 0,
+        "signal": null,
+        "error": null,
+        "profile": "full",
+        "parseError": null,
+        "stderrTail": "",
+        "stdoutTail": ""
+      }
+    },
+    {
+      "id": "clean-compile:full-8types",
+      "pass": true,
+      "measured": {
+        "command": "/usr/bin/node bin/vf compile tmp/gate-work/l2-full-comp/full-8types --json",
+        "exitCode": 0,
+        "buildDir": "tmp/gate-work/l2-full-comp/full-8types/build",
+        "sceneCount": 8,
+        "warnings": [],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "integrated-block-surface",
+      "pass": true,
+      "measured": {
+        "layouts": [
+          "bar",
+          "pie",
+          "line",
+          "list",
+          "numbered",
+          "statistic",
+          "compare",
+          "quote"
+        ],
+        "scenes": [
+          {
+            "sceneId": "s01",
+            "layout": "bar",
+            "block": "block"
+          },
+          {
+            "sceneId": "s02",
+            "layout": "pie",
+            "block": "block"
+          },
+          {
+            "sceneId": "s03",
+            "layout": "line",
+            "block": "block"
+          },
+          {
+            "sceneId": "s04",
+            "layout": "list",
+            "block": "block"
+          },
+          {
+            "sceneId": "s05",
+            "layout": "numbered",
+            "block": "block"
+          },
+          {
+            "sceneId": "s06",
+            "layout": "statistic",
+            "block": "block"
+          },
+          {
+            "sceneId": "s07",
+            "layout": "compare",
+            "block": "block"
+          },
+          {
+            "sceneId": "s08",
+            "layout": "quote",
+            "block": "block"
+          }
+        ],
+        "warnings": [],
+        "purpose": "merge gate for defects that per-worker block checks can miss after compiler integration"
+      }
+    },
+    {
+      "id": "render:full-8types",
+      "pass": true,
+      "measured": {
+        "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
+        "exitCode": 0,
+        "output": "tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
+        "bytes": 10916030,
+        "stderr": "[FrameCapture] Sub-composition timelines not registered after 120000ms: bar, pie, list, numbered, quote. Compositions that load data asynchronously (e.g. fetch) must register window.__timelines[id] after setup completes.\n"
+      }
+    },
+    {
+      "id": "ffprobe-duration-ceil-sum",
+      "pass": true,
+      "measured": {
+        "command": "ffprobe -v error -show_entries stream=index,codec_type,codec_name,pix_fmt -show_entries format=duration -of json /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
+        "exitCode": 0,
+        "expectedFrames": 1007,
+        "expectedDurationSec": 33.56666666666667,
+        "actualDurationSec": 33.6,
+        "deltaSec": 0.03333333333333144,
+        "durationToleranceSec": 0.2,
+        "fps": 30,
+        "stderr": "",
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "pix_fmt": "yuv420p"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ]
+      }
+    }
+  ],
+  "inputSet": [
+    "blocks",
+    "fixtures/golden-specs/full-8types/audio_meta.json",
+    "fixtures/golden-specs/full-8types/scene_specs.json",
+    "fixtures/presets/light.json",
+    "src/compiler/blocks.mjs",
+    "src/compiler/compiler.mjs",
+    "src/compiler/transitions.mjs",
+    "tests/gate-wrappers/l2-full-comp.mjs"
+  ],
+  "canonicalInputMerkleHash": "d6c5b59c2c9d161b9873e16089b801510d07a7af30ecb6c295fe9e347b910d00",
+  "evidenceHash": "a4a21dc90cd5ebb81775b038af9440fd63ead50709eddeb73204d19de2bf6b2d",
+  "gateScriptHash": "57f17d8706f8c9ca8c3e972790e195dbf1f8c31c1620d36141cb53610d3d3b6f",
+  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
+  "command": "node bin/vf gate --all --profile full --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-07T00:49:45.319Z",
+  "finishedAt": "2026-07-07T00:53:12.862Z"
+}

@@ -1,0 +1,180 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s01",
+                "data-duration": "5.566666665666666",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "5.566666665666666",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s01-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "main",
+                  "attrs": {
+                    "class": "clip scene-content",
+                    "data-duration": "5.566666665666666",
+                    "data-start": "0",
+                    "data-track-index": "2",
+                    "id": "s01-content"
+                  },
+                  "children": [
+                    {
+                      "tag": "div",
+                      "attrs": {
+                        "class": "headline-panel",
+                        "id": "s01-panel"
+                      },
+                      "children": [
+                        {
+                          "tag": "p",
+                          "attrs": {
+                            "class": "mood-label",
+                            "id": "s01-mood"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "h1",
+                          "attrs": {
+                            "id": "s01-headline"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "5.566666665666666",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "keyword",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;keyword&quot;,&quot;renderer&quot;:&quot;keyword-spans&quot;,&quot;text&quot;:&quot;첫 번째 장면은 편집 루프의 기준점입니다. 이 구간은 이후 렌더에서도 변하지 않아야 합니다.&quot;,&quot;keywords&quot;:[&quot;기준&quot;,&quot;장면&quot;],&quot;words&quot;:[{&quot;word&quot;:&quot;첫&quot;,&quot;start&quot;:0.13333333233333333,&quot;end&quot;:0.399999999},{&quot;word&quot;:&quot;번째&quot;,&quot;start&quot;:0.46666666566666665,&quot;end&quot;:0.7333333323333333},{&quot;word&quot;:&quot;장면은&quot;,&quot;start&quot;:0.7999999990000001,&quot;end&quot;:1.099999999},{&quot;word&quot;:&quot;편집&quot;,&quot;start&quot;:1.1333333323333332,&quot;end&quot;:1.4333333323333333},{&quot;word&quot;:&quot;루프의&quot;,&quot;start&quot;:1.4666666656666665,&quot;end&quot;:1.799999999},{&quot;word&quot;:&quot;기준점입니다&quot;,&quot;start&quot;:1.9666666656666665,&quot;end&quot;:2.433333332333333},{&quot;word&quot;:&quot;이&quot;,&quot;start&quot;:2.499999999,&quot;end&quot;:2.7666666656666665},{&quot;word&quot;:&quot;구간은&quot;,&quot;start&quot;:2.7999999989999997,&quot;end&quot;:3.133333332333333},{&quot;word&quot;:&quot;이후&quot;,&quot;start&quot;:3.1666666656666664,&quot;end&quot;:3.433333332333333},{&quot;word&quot;:&quot;렌더에서도&quot;,&quot;start&quot;:3.499999999,&quot;end&quot;:3.899999999},{&quot;word&quot;:&quot;변하지&quot;,&quot;start&quot;:4.099999999,&quot;end&quot;:4.399999999},{&quot;word&quot;:&quot;않아야&quot;,&quot;start&quot;:4.4333333323333335,&quot;end&quot;:4.7666666656666665},{&quot;word&quot;:&quot;합니다&quot;,&quot;start&quot;:4.799999999,&quot;end&quot;:5.133333332333334}],&quot;startSec&quot;:0,&quot;endSec&quot;:5.566666665666666,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s01-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

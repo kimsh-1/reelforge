@@ -1,0 +1,146 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "s11",
+                "data-duration": "4.199999999",
+                "data-height": "1080",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "section",
+                  "attrs": {
+                    "aria-hidden": "true",
+                    "class": "clip scene-bg",
+                    "data-duration": "4.199999999",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "id": "s11-bg"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip block-host",
+                    "data-composition-id": "list",
+                    "data-composition-src": "blocks/list/block.html",
+                    "data-duration": "4.199999999",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "3",
+                    "data-variable-values": "{&quot;title&quot;:&quot;다음 주 실행&quot;,&quot;items&quot;:[&quot;후킹 문구 수정&quot;,&quot;썸네일 교체&quot;,&quot;리텐션 확인&quot;],&quot;values&quot;:[&quot;월&quot;,&quot;수&quot;,&quot;금&quot;],&quot;unit&quot;:&quot;요일&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-next&quot;}",
+                    "data-width": "1920",
+                    "id": "s11-block-host"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip subtitles rf-subtitles-enhanced",
+                    "data-duration": "4.199999999",
+                    "data-rf-subtitle-renderer": "p2-02-subtitles",
+                    "data-start": "0",
+                    "data-subtitle-mode": "keyword",
+                    "data-subtitles": "{&quot;mode&quot;:&quot;keyword&quot;,&quot;renderer&quot;:&quot;keyword-spans&quot;,&quot;text&quot;:&quot;마지막 전 단계에서는 다음 주 실행 항목을 세 가지로 압축합니다.&quot;,&quot;keywords&quot;:[&quot;다음 주 실행&quot;,&quot;다음&quot;,&quot;실행&quot;,&quot;주&quot;],&quot;words&quot;:[{&quot;word&quot;:&quot;마지막&quot;,&quot;start&quot;:0.199999999,&quot;end&quot;:0.46666666566666665},{&quot;word&quot;:&quot;전&quot;,&quot;start&quot;:0.5333333323333334,&quot;end&quot;:0.8333333323333334},{&quot;word&quot;:&quot;단계에서는&quot;,&quot;start&quot;:0.899999999,&quot;end&quot;:1.1666666656666667},{&quot;word&quot;:&quot;다음&quot;,&quot;start&quot;:1.2333333323333333,&quot;end&quot;:1.5333333323333334},{&quot;word&quot;:&quot;주&quot;,&quot;start&quot;:1.599999999,&quot;end&quot;:1.8666666656666666},{&quot;word&quot;:&quot;실행&quot;,&quot;start&quot;:1.9333333323333333,&quot;end&quot;:2.2333333323333333},{&quot;word&quot;:&quot;항목을&quot;,&quot;start&quot;:2.2999999989999997,&quot;end&quot;:2.566666665666667},{&quot;word&quot;:&quot;세&quot;,&quot;start&quot;:2.633333332333333,&quot;end&quot;:2.933333332333333},{&quot;word&quot;:&quot;가지로&quot;,&quot;start&quot;:2.999999999,&quot;end&quot;:3.2666666656666665},{&quot;word&quot;:&quot;압축합니다&quot;,&quot;start&quot;:3.3333333323333334,&quot;end&quot;:3.633333332333333}],&quot;startSec&quot;:0,&quot;endSec&quot;:4.199999999,&quot;style&quot;:{&quot;fontFamily&quot;:&quot;Pretendard&quot;,&quot;fontSize&quot;:46,&quot;fontWeight&quot;:800,&quot;color&quot;:&quot;#111827&quot;,&quot;strokeColor&quot;:&quot;#FFFFFF&quot;,&quot;strokeWidth&quot;:3,&quot;keywordColor&quot;:&quot;#1D4ED8&quot;,&quot;keywordStrokeColor&quot;:&quot;#FFFFFF&quot;,&quot;backgroundColor&quot;:&quot;#FFFFFF&quot;,&quot;borderRadius&quot;:8,&quot;boxShadow&quot;:&quot;0 10px 30px #CBD5E1&quot;,&quot;bottomOffset&quot;:96,&quot;maxWidth&quot;:920,&quot;lineHeight&quot;:1.18,&quot;maxCharsPerLine&quot;:22,&quot;visible&quot;:true}}",
+                    "data-track-index": "20",
+                    "id": "s11-subtitles"
+                  },
+                  "children": [
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-keyword"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "br",
+                      "attrs": {
+                        "data-rf-wrap": "maxCharsPerLine"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "class": "rf-subtitle-text"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

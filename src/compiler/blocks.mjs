@@ -1,8 +1,9 @@
-import { existsSync, mkdirSync, readFileSync, copyFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { jsonAttr, normalizeRelPath } from "./utils.mjs";
 
 const HEADLINE_LAYOUT = "headline_only";
+export const BLOCK_RUNTIME_READY_VERSION = "P2-08.block-runtime-ready.v1";
 
 export function blockVariablesForScene({ scene, tokens }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
@@ -22,6 +23,32 @@ export function blockVariablesForScene({ scene, tokens }) {
 
 function extractCompositionId(html) {
   return html.match(/data-composition-id=["']([^"']+)["']/)?.[1] ?? null;
+}
+
+function runtimeReadyScript() {
+  return `    <script data-rf-runtime-ready="${BLOCK_RUNTIME_READY_VERSION}">
+      (function () {
+        const target = typeof window !== "undefined" ? window : globalThis;
+        target.__timelines = target.__timelines || {};
+        globalThis.__timelines = target.__timelines;
+        if (typeof target.__hfForceTimelineRebind === "function") {
+          target.__hfForceTimelineRebind();
+        }
+        if (typeof target.__hfFlushSync === "function") {
+          target.__hfFlushSync();
+        }
+        target.__playerReady = true;
+        target.__renderReady = true;
+      })();
+    </script>`;
+}
+
+export function injectBlockRuntimeReady(html) {
+  if (html.includes(`data-rf-runtime-ready="${BLOCK_RUNTIME_READY_VERSION}"`)) return html;
+  const script = `\n${runtimeReadyScript()}\n`;
+  if (/<\/body>/i.test(html)) return html.replace(/<\/body>/i, `${script}  </body>`);
+  if (/<\/html>/i.test(html)) return html.replace(/<\/html>/i, `${script}</html>`);
+  return `${html}${script}`;
 }
 
 export function resolveBlock({ repoRoot, buildDir, layout }) {
@@ -61,7 +88,7 @@ export function resolveBlock({ repoRoot, buildDir, layout }) {
   const targetRel = normalizeRelPath(path.join("blocks", layout, "block.html"));
   const targetPath = path.join(buildDir, targetRel);
   mkdirSync(path.dirname(targetPath), { recursive: true });
-  copyFileSync(sourcePath, targetPath);
+  writeFileSync(targetPath, injectBlockRuntimeReady(html));
 
   return {
     kind: "block",

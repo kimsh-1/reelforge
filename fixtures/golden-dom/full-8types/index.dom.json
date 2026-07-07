@@ -1,0 +1,292 @@
+{
+  "tag": "#document",
+  "attrs": {},
+  "children": [
+    {
+      "tag": "html",
+      "attrs": {
+        "lang": "ko"
+      },
+      "children": [
+        {
+          "tag": "head",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "charset": "UTF-8"
+              },
+              "children": []
+            },
+            {
+              "tag": "meta",
+              "attrs": {
+                "content": "width=1920, height=1080",
+                "name": "viewport"
+              },
+              "children": []
+            },
+            {
+              "tag": "title",
+              "attrs": {},
+              "children": []
+            },
+            {
+              "tag": "script",
+              "attrs": {
+                "src": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"
+              },
+              "children": []
+            },
+            {
+              "tag": "style",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "body",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "div",
+              "attrs": {
+                "data-composition-id": "main",
+                "data-duration": "33.56666666566667",
+                "data-height": "1080",
+                "data-start": "0",
+                "data-width": "1920",
+                "id": "root"
+              },
+              "children": [
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s01",
+                    "data-composition-src": "scenes/scene-s01.html",
+                    "data-duration": "4.9333333323333335",
+                    "data-height": "1080",
+                    "data-start": "0",
+                    "data-track-index": "1",
+                    "data-width": "1920",
+                    "id": "slot-s01"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s02",
+                    "data-composition-src": "scenes/scene-s02.html",
+                    "data-duration": "4.166666665666667",
+                    "data-height": "1080",
+                    "data-start": "4.9333333323333335",
+                    "data-track-index": "2",
+                    "data-width": "1920",
+                    "id": "slot-s02"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s03",
+                    "data-composition-src": "scenes/scene-s03.html",
+                    "data-duration": "4.4333333323333335",
+                    "data-height": "1080",
+                    "data-start": "9.099999999",
+                    "data-track-index": "3",
+                    "data-width": "1920",
+                    "id": "slot-s03"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s04",
+                    "data-composition-src": "scenes/scene-s04.html",
+                    "data-duration": "3.8666666656666666",
+                    "data-height": "1080",
+                    "data-start": "13.533333332333333",
+                    "data-track-index": "4",
+                    "data-width": "1920",
+                    "id": "slot-s04"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s05",
+                    "data-composition-src": "scenes/scene-s05.html",
+                    "data-duration": "3.133333332333333",
+                    "data-height": "1080",
+                    "data-start": "17.399999999",
+                    "data-track-index": "5",
+                    "data-width": "1920",
+                    "id": "slot-s05"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s06",
+                    "data-composition-src": "scenes/scene-s06.html",
+                    "data-duration": "4.066666665666666",
+                    "data-height": "1080",
+                    "data-start": "20.533333332333335",
+                    "data-track-index": "6",
+                    "data-width": "1920",
+                    "id": "slot-s06"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s07",
+                    "data-composition-src": "scenes/scene-s07.html",
+                    "data-duration": "4.066666665666666",
+                    "data-height": "1080",
+                    "data-start": "24.599999999",
+                    "data-track-index": "7",
+                    "data-width": "1920",
+                    "id": "slot-s07"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "clip scene-slot",
+                    "data-composition-id": "s08",
+                    "data-composition-src": "scenes/scene-s08.html",
+                    "data-duration": "4.899999999",
+                    "data-height": "1080",
+                    "data-start": "28.666666665666668",
+                    "data-track-index": "8",
+                    "data-width": "1920",
+                    "id": "slot-s08"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.9333333323333335",
+                    "data-start": "0",
+                    "data-track-index": "100",
+                    "data-volume": "1",
+                    "id": "audio-s01",
+                    "src": "assets/audio/s01.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.166666665666667",
+                    "data-start": "4.9333333323333335",
+                    "data-track-index": "101",
+                    "data-volume": "1",
+                    "id": "audio-s02",
+                    "src": "assets/audio/s02.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.4333333323333335",
+                    "data-start": "9.099999999",
+                    "data-track-index": "102",
+                    "data-volume": "1",
+                    "id": "audio-s03",
+                    "src": "assets/audio/s03.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "3.8666666656666666",
+                    "data-start": "13.533333332333333",
+                    "data-track-index": "103",
+                    "data-volume": "1",
+                    "id": "audio-s04",
+                    "src": "assets/audio/s04.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "3.133333332333333",
+                    "data-start": "17.399999999",
+                    "data-track-index": "104",
+                    "data-volume": "1",
+                    "id": "audio-s05",
+                    "src": "assets/audio/s05.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.066666665666666",
+                    "data-start": "20.533333332333335",
+                    "data-track-index": "105",
+                    "data-volume": "1",
+                    "id": "audio-s06",
+                    "src": "assets/audio/s06.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.066666665666666",
+                    "data-start": "24.599999999",
+                    "data-track-index": "106",
+                    "data-volume": "1",
+                    "id": "audio-s07",
+                    "src": "assets/audio/s07.mp3"
+                  },
+                  "children": []
+                },
+                {
+                  "tag": "audio",
+                  "attrs": {
+                    "data-duration": "4.899999999",
+                    "data-start": "28.666666665666668",
+                    "data-track-index": "107",
+                    "data-volume": "1",
+                    "id": "audio-s08",
+                    "src": "assets/audio/s08.mp3"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "tag": "script",
+              "attrs": {},
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
