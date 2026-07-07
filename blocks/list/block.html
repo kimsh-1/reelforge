@@ -61,13 +61,13 @@
 
         .list-kicker {
           margin: 0;
-          width: fit-content;
-          max-width: 100%;
+          width: 5.5rem;
+          height: 0.35rem;
           box-sizing: border-box;
-          padding: 0.7rem 0.9rem;
-          border: 0.1rem solid var(--list-line);
-          border-radius: 0.5rem;
-          background: var(--list-accent-soft);
+          padding: 0;
+          border: 0;
+          border-radius: 0.1rem;
+          background: var(--list-accent);
           color: var(--list-muted);
           font-size: 1.45rem;
           font-weight: 780;
@@ -265,7 +265,6 @@
           const variables = readVariables(host);
 
           const title = stringValue(variables.title, "목록");
-          const mood = stringValue(variables.mood, "informative");
           const source = stringValue(variables.source, "");
           const unit = stringValue(variables.unit, "");
           const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
@@ -275,7 +274,8 @@
           root.style.setProperty("--list-accent", safeColor(variables.accent));
           root.dataset.hasValues = rows.some((row) => row.value.length > 0) ? "true" : "false";
           titleEl.textContent = title;
-          moodEl.textContent = mood;
+          moodEl.textContent = "";
+          moodEl.setAttribute("aria-hidden", "true");
           sourceEl.textContent = source;
           sourceEl.style.opacity = source ? "1" : "0";
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));

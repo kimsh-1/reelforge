@@ -41,13 +41,13 @@
 
         .pie-kicker {
           margin: 0;
-          width: fit-content;
-          max-width: 100%;
+          width: 5.5rem;
+          height: 0.35rem;
           box-sizing: border-box;
-          padding: 0.65rem 0.9rem;
-          border: 0.09rem solid var(--rf-pie-hairline);
-          border-radius: 0.5rem;
-          background: var(--rf-pie-panel);
+          padding: 0;
+          border: 0;
+          border-radius: 0.1rem;
+          background: var(--rf-pie-accent);
           color: var(--rf-pie-muted);
           font-size: 1.45rem;
           font-weight: 760;
@@ -290,7 +290,6 @@
           const rawValues = Array.isArray(variables.values) ? variables.values : [];
           const unit = String(variables.unit ?? "");
           const title = String(variables.title ?? "");
-          const mood = String(variables.mood ?? "");
           const source = String(variables.source ?? "");
           const accent = String(variables.accent ?? "").trim();
           const rows = items.map((label, index) => ({
@@ -313,7 +312,8 @@
 
           if (accent) root.style.setProperty("--rf-pie-accent", accent);
           root.querySelector("[data-title]").textContent = title;
-          root.querySelector("[data-mood]").textContent = mood;
+          root.querySelector("[data-mood]").textContent = "";
+          root.querySelector("[data-mood]").setAttribute("aria-hidden", "true");
           const sourceEl = root.querySelector("[data-source]");
           sourceEl.textContent = source;
           sourceEl.style.opacity = source ? "1" : "0";

@@ -256,7 +256,6 @@
           };
           const title = stringValue(variables.title, "가로 막대차트");
           const unit = stringValue(variables.unit, "");
-          const mood = stringValue(variables.mood, "informative");
           const source = stringValue(variables.source, "");
           const items = arrayValue(variables.items);
           const values = arrayValue(variables.values);
@@ -268,13 +267,14 @@
 
           root.style.setProperty("--rf-accent", safeColor(variables.accent));
           titleEl.textContent = title;
-          moodEl.textContent = mood;
+          moodEl.textContent = "";
+          moodEl.setAttribute("aria-hidden", "true");
           sourceEl.textContent = source;
           sourceEl.style.opacity = source ? "1" : "0";
-          unitEl.textContent = unit ? `unit: ${unit}` : "";
+          unitEl.textContent = unit ? `단위 ${unit}` : "";
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));
 
-          rows.forEach((row) => {
+          rows.forEach((row, index) => {
             const item = document.createElement("div");
             const label = document.createElement("div");
             const track = document.createElement("div");

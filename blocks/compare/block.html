@@ -11,7 +11,9 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"contrast"},
     {"id":"reveal","type":"string","label":"Reveal","default":"split_reveal"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"chart"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"leftLabel","type":"string","label":"Left label","default":""},
+    {"id":"rightLabel","type":"string","label":"Right label","default":""}
   ]'
 >
   <head>
@@ -78,14 +80,14 @@
         }
 
         .compare-kicker {
-          width: fit-content;
-          max-width: 100%;
+          width: 5.5rem;
+          height: 0.35rem;
           box-sizing: border-box;
-          padding: 0.66rem 0.9rem;
-          border: 0.1rem solid var(--compare-line);
-          border-radius: 0.5rem;
-          background: var(--compare-accent-soft);
-          text-transform: uppercase;
+          padding: 0;
+          border: 0;
+          border-radius: 0.1rem;
+          background: var(--compare-accent);
+          overflow: hidden;
         }
 
         .compare-title {
@@ -277,7 +279,9 @@
           box-sizing: border-box;
           border: 0.14rem solid var(--compare-line);
           border-radius: 50%;
-          background: var(--compare-surface);
+          background:
+            radial-gradient(circle, var(--compare-accent) 0 0.58rem, transparent 0.62rem),
+            var(--compare-surface);
           color: var(--compare-accent);
           box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
           font-size: 2rem;
@@ -286,6 +290,14 @@
           letter-spacing: 0;
           opacity: 0;
           transform: scale(0.9);
+        }
+
+        #compare-root[data-has-side-titles="false"] .compare-panel {
+          grid-template-rows: minmax(0, 1fr);
+        }
+
+        #compare-root[data-has-side-titles="false"] .compare-panel-head {
+          display: none;
         }
 
         .compare-footer {
@@ -380,14 +392,14 @@
           }
 
           .compare-kicker {
-            width: fit-content;
-            max-width: 100%;
+            width: 5.5rem;
+            height: 0.35rem;
             box-sizing: border-box;
-            padding: 0.66rem 0.9rem;
-            border: 0.1rem solid var(--compare-line);
-            border-radius: 0.5rem;
-            background: var(--compare-accent-soft);
-            text-transform: uppercase;
+            padding: 0;
+            border: 0;
+            border-radius: 0.1rem;
+            background: var(--compare-accent);
+            overflow: hidden;
           }
 
           .compare-title {
@@ -579,7 +591,9 @@
             box-sizing: border-box;
             border: 0.14rem solid var(--compare-line);
             border-radius: 50%;
-            background: var(--compare-surface);
+            background:
+              radial-gradient(circle, var(--compare-accent) 0 0.58rem, transparent 0.62rem),
+              var(--compare-surface);
             color: var(--compare-accent);
             box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
             font-size: 2rem;
@@ -588,6 +602,14 @@
             letter-spacing: 0;
             opacity: 0;
             transform: scale(0.9);
+          }
+
+          #compare-root[data-has-side-titles="false"] .compare-panel {
+            grid-template-rows: minmax(0, 1fr);
+          }
+
+          #compare-root[data-has-side-titles="false"] .compare-panel-head {
+            display: none;
           }
 
           .compare-footer {
@@ -634,7 +656,7 @@
             </article>
             <div class="compare-divider" aria-hidden="true">
               <span class="compare-divider-line"></span>
-              <span class="compare-vs">VS</span>
+              <span class="compare-vs" aria-hidden="true"></span>
             </div>
             <article class="compare-panel" data-side="right">
               <header class="compare-panel-head">
@@ -670,23 +692,28 @@
           };
 
           const title = stringValue(variables.title, "비교");
-          const mood = stringValue(variables.mood, "informative");
           const source = stringValue(variables.source, "");
           const unit = stringValue(variables.unit, "");
-          const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title);
+          const sideLabels = {
+            left: stringValue(variables.leftLabel, ""),
+            right: stringValue(variables.rightLabel, "")
+          };
+          const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title, sideLabels);
           const maxValue = Math.max(1, ...groups.left.concat(groups.right).map((row) => Math.abs(row.numeric)));
           const duration = blockDuration(root, 5);
           const phases = phaseTimes(duration);
 
           root.style.setProperty("--compare-accent", safeColor(variables.accent));
           root.querySelector("[data-compare-title]").textContent = title;
-          root.querySelector("[data-compare-mood]").textContent = mood;
+          root.querySelector("[data-compare-mood]").textContent = "";
+          root.querySelector("[data-compare-mood]").setAttribute("aria-hidden", "true");
           root.querySelector("[data-compare-source]").textContent = source;
           root.querySelector("[data-compare-source]").style.opacity = source ? "1" : "0";
+          root.dataset.hasSideTitles = groups.leftTitle || groups.rightTitle ? "true" : "false";
           root.querySelector("[data-compare-left-title]").textContent = groups.leftTitle;
           root.querySelector("[data-compare-right-title]").textContent = groups.rightTitle;
           root.querySelector("[data-compare-footnote]").textContent = source ? source : title;
-          root.querySelector("[data-compare-unit]").textContent = unit ? `unit: ${unit}` : "";
+          root.querySelector("[data-compare-unit]").textContent = unit ? `단위 ${unit}` : "";
           root.setAttribute("aria-label", ariaLabel(title, groups, unit));
 
           renderRows(root.querySelector("[data-compare-left-list]"), groups.left, unit, maxValue);
@@ -780,7 +807,7 @@
             });
           }
 
-          function groupRows(labels, rawValues, fallbackTitle) {
+          function groupRows(labels, rawValues, fallbackTitle, sideLabels) {
             const rows = normalizeRows(labels, rawValues, fallbackTitle);
             const left = [];
             const right = [];
@@ -800,11 +827,13 @@
             }
 
             const midpoint = Math.max(1, Math.ceil(rows.length / 2));
+            const splitLeft = rows.slice(0, midpoint);
+            const splitRight = rows.slice(midpoint);
             return {
-              left: rows.slice(0, midpoint),
-              right: rows.slice(midpoint),
-              leftTitle: "비교 A",
-              rightTitle: "비교 B"
+              left: splitLeft,
+              right: splitRight,
+              leftTitle: stringValue(sideLabels.left, stringValue(labels[0], "")),
+              rightTitle: stringValue(sideLabels.right, stringValue(labels[midpoint], ""))
             };
           }
 

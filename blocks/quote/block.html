@@ -127,13 +127,13 @@
         }
 
         .quote-kicker {
-          width: fit-content;
-          max-width: 100%;
+          width: 5.5rem;
+          height: 0.35rem;
           box-sizing: border-box;
-          padding: 0.68rem 0.88rem;
-          border: 0.1rem solid var(--quote-line);
-          border-radius: 0.5rem;
-          background: var(--quote-accent-soft);
+          padding: 0;
+          border: 0;
+          border-radius: 0.1rem;
+          background: var(--quote-accent);
           overflow-wrap: anywhere;
         }
 
@@ -345,12 +345,12 @@
               <p class="quote-context" data-quote-context></p>
             </div>
             <footer class="quote-footer">
-              <span class="quote-source-label">source</span>
+              <span class="quote-source-label">출처</span>
               <span class="quote-source" data-quote-source></span>
             </footer>
           </article>
           <aside class="quote-details" aria-label="인용 세부 정보">
-            <p class="quote-details-title">quote data</p>
+            <p class="quote-details-title">인용 정보</p>
             <ol class="quote-detail-list" data-quote-details></ol>
           </aside>
         </section>
@@ -379,12 +379,11 @@
           const items = arrayValue(variables.items).map((item) => stringValue(item, ""));
           const values = arrayValue(variables.values).map((value) => valueText(value));
           const unit = stringValue(variables.unit, "");
-          const mood = stringValue(variables.mood, "contemplative");
           const emphasis = stringValue(variables.emphasis, "quote");
           const reveal = stringValue(variables.reveal, "typewriter");
           const source = stringValue(variables.source, "");
           const quoteText = stringValue(items[1] || items[0], title);
-          const context = stringValue(items[0], unit || mood);
+          const context = stringValue(items[0], unit || title);
           const detailRows = buildDetailRows({ items, values, unit, emphasis, reveal });
           const duration = blockDuration(root, 5);
           const phases = phaseTimes(duration);
@@ -392,8 +391,9 @@
           root.style.setProperty("--quote-accent", safeColor(variables.accent));
           root.dataset.detailCount = String(detailRows.length);
           titleEl.textContent = title;
-          moodEl.textContent = mood;
-          renderMeta(metaEl, [unit, emphasis, reveal]);
+          moodEl.textContent = "";
+          moodEl.setAttribute("aria-hidden", "true");
+          renderMeta(metaEl, []);
           renderQuoteText(quoteEl, quoteText);
           contextEl.textContent = context;
           sourceEl.textContent = source ? `${source} · ${context}` : context;
@@ -497,7 +497,7 @@
             return String(value).trim();
           }
 
-          function buildDetailRows({ items: itemTexts, values: valueTexts, unit: unitText, emphasis: emphasisText, reveal: revealText }) {
+          function buildDetailRows({ items: itemTexts, values: valueTexts, unit: unitText }) {
             const rows = [];
             const max = Math.max(itemTexts.length, valueTexts.length);
             for (let index = 0; index < max; index += 1) {
@@ -505,15 +505,21 @@
               const rawValue = valueTexts[index] || (index === 0 ? unitText : "");
               const displayValue = rawValue || itemText;
               rows.push({
-                label: index === 0 ? "context" : `quote ${index + 1}`,
+                label: quoteDetailLabel(index),
                 value: displayValue,
                 note: itemText
               });
             }
-            if (rows.length === 0) {
-              rows.push({ label: "unit", value: unitText || emphasisText, note: revealText });
+            if (rows.length === 0 && unitText) {
+              rows.push({ label: "단위", value: unitText, note: "" });
             }
             return rows.slice(0, 4);
+          }
+
+          function quoteDetailLabel(index) {
+            if (index === 0) return "맥락";
+            if (index === 1) return "문장";
+            return `근거 ${index + 1}`;
           }
 
           function renderMeta(container, entries) {

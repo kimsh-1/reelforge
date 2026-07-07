@@ -68,6 +68,9 @@
 
         .numbered-eyebrow {
           margin: 0 0 0.7rem;
+          width: 5.5rem;
+          height: 0.35rem;
+          background: var(--numbered-accent);
           color: var(--numbered-muted);
           font-size: 1.45rem;
           font-weight: 760;
@@ -361,7 +364,6 @@
           const items = arrayValue(variables.items);
           const values = arrayValue(variables.values);
           const unit = textValue(variables.unit, "");
-          const mood = textValue(variables.mood, "informative");
           const source = textValue(variables.source, "");
           const rows = normalizeRows({ items, values, unit, title });
           const duration = blockDuration(root, 4);
@@ -372,7 +374,8 @@
           root.dataset.density = rows.length > 6 ? "compact" : rows.length > 4 ? "medium" : "standard";
 
           root.querySelector("[data-numbered-title]").textContent = title;
-          root.querySelector("[data-numbered-mood]").textContent = mood;
+          root.querySelector("[data-numbered-mood]").textContent = "";
+          root.querySelector("[data-numbered-mood]").setAttribute("aria-hidden", "true");
           root.querySelector("[data-numbered-unit]").textContent = unit || "순위";
           root.querySelector("[data-numbered-source]").textContent = source || "";
           root.querySelector("[data-numbered-count]").textContent = `${rows.length}개 항목`;

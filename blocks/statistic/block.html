@@ -102,13 +102,13 @@
 
         .stat-kicker {
           margin: 0;
-          width: fit-content;
-          max-width: 100%;
+          width: 5.5rem;
+          height: 0.35rem;
           box-sizing: border-box;
-          padding: 0.68rem 0.9rem;
-          border: 0.1rem solid var(--stat-line);
-          border-radius: 0.5rem;
-          background: var(--stat-accent-soft);
+          padding: 0;
+          border: 0;
+          border-radius: 0.1rem;
+          background: var(--stat-accent);
           color: var(--stat-muted);
           font-size: 1.35rem;
           font-weight: 780;
@@ -326,7 +326,6 @@
 
           const title = stringValue(variables.title, "핵심 지표");
           const unit = stringValue(variables.unit, "");
-          const mood = stringValue(variables.mood, "informative");
           const source = stringValue(variables.source, "");
           const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
           const main = rows[0];
@@ -336,7 +335,8 @@
           root.style.setProperty("--stat-accent", safeColor(variables.accent));
           root.dataset.rowCount = String(rows.length);
           titleEl.textContent = title;
-          kickerEl.textContent = mood;
+          kickerEl.textContent = "";
+          kickerEl.setAttribute("aria-hidden", "true");
           numberEl.textContent = formatNumber(0, main.decimals);
           unitEl.textContent = unit;
           captionEl.textContent = main.label;

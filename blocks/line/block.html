@@ -67,6 +67,9 @@
 
         .line-kicker {
           margin: 0 0 0.75rem;
+          width: 5.5rem;
+          height: 0.35rem;
+          background: var(--line-accent);
           color: var(--line-muted);
           font-size: 1.625rem;
           font-weight: 760;
@@ -252,7 +255,7 @@
         <section class="line-stage" aria-label="라인차트">
           <header class="line-heading">
             <div>
-              <p id="line-kicker" class="line-kicker">LINE CHART</p>
+              <p id="line-kicker" class="line-kicker" aria-hidden="true"></p>
               <h1 id="line-title" class="line-title"></h1>
             </div>
             <div id="line-unit" class="line-unit"></div>
@@ -366,14 +369,13 @@
           const unit = textOf(vars.unit);
           const source = textOf(vars.source);
           const accent = textOf(vars.accent).trim() || "currentColor";
-          const mood = textOf(vars.mood).trim();
           const duration = blockDuration(root, 4);
           const phases = phaseTimes(duration);
 
           root.style.setProperty("--line-accent", accent);
           title.textContent = textOf(vars.title) || "라인차트";
           unitBadge.textContent = unit || "값";
-          kicker.textContent = mood ? `${mood} · LINE CHART` : "LINE CHART";
+          kicker.textContent = "";
 
           const svgNode = (name, attrs = {}) => {
             const node = document.createElementNS("http://www.w3.org/2000/svg", name);

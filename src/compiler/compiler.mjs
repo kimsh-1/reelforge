@@ -271,15 +271,16 @@ function revealTween(scene) {
 }
 
 function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
+  const imageClass = scene.imageAsset ? " has-image-asset" : "";
   return `        <main
           id="${scene.sceneId}-content"
-          class="clip scene-content${classForCanvasOverrides(canvasOverrides)}"
+          class="clip scene-content${classForCanvasOverrides(canvasOverrides)}${imageClass}"
           data-start="0"
           data-duration="${timing.durationSec}"
           data-track-index="2"
         >
           <div id="${scene.sceneId}-panel" class="headline-panel">
-            <p id="${scene.sceneId}-mood" class="mood-label">${htmlEscape(scene.mood)}</p>
+            <div class="headline-accent" aria-hidden="true"></div>
             <h1 id="${scene.sceneId}-headline">${htmlEscape(scene.headline)}</h1>
           </div>
         </main>`;
@@ -289,7 +290,6 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
   const foreground = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
-  const muted = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.mutedText : "#CBD5E1";
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
   const variables = blockVariablesForScene({ scene, tokens });
   const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
@@ -333,6 +333,17 @@ ${fontFaceCss(tokens)}
           inset: 42px;
           border: 2px solid color-mix(in srgb, ${accent} 42%, transparent);
           border-radius: 0;
+          z-index: 3;
+        }
+        .scene-bg[data-has-image-asset="true"]::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          background:
+            linear-gradient(0deg, rgba(2, 6, 23, 0.76) 0%, rgba(2, 6, 23, 0.44) 38%, rgba(2, 6, 23, 0.28) 100%),
+            rgba(2, 6, 23, 0.36);
+          pointer-events: none;
         }
         .scene-content,
         .block-host {
@@ -346,6 +357,16 @@ ${fontFaceCss(tokens)}
           display: grid;
           place-items: center;
           padding: var(--rf-scene-padding-top) var(--rf-scene-padding-x) var(--rf-scene-padding-bottom);
+        }
+        .scene-content.has-image-asset::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 44%;
+          background: linear-gradient(0deg, rgba(2, 6, 23, 0.82) 0%, rgba(2, 6, 23, 0.54) 54%, rgba(2, 6, 23, 0) 100%);
+          pointer-events: none;
         }
         .block-format-frame {
           position: absolute;
@@ -363,6 +384,8 @@ ${fontFaceCss(tokens)}
           height: 100%;
         }
         .headline-panel {
+          position: relative;
+          z-index: 1;
           width: min(1420px, 100%);
           min-height: 360px;
           display: grid;
@@ -374,14 +397,15 @@ ${fontFaceCss(tokens)}
           background: ${panel};
           box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
         }
-        .mood-label {
+        .scene-content.has-image-asset .headline-panel {
+          background: rgba(2, 6, 23, 0.78);
+          box-shadow: 0 26px 82px rgba(2, 6, 23, 0.44);
+        }
+        .headline-accent {
           margin: 0;
-          color: ${muted};
-          font-size: 31px;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
+          width: min(180px, 28%);
+          height: 9px;
+          background: ${accent};
         }
         h1 {
           margin: 0;
@@ -394,6 +418,12 @@ ${fontFaceCss(tokens)}
           letter-spacing: 0;
           word-break: keep-all;
           overflow-wrap: anywhere;
+        }
+        .scene-content.has-image-asset h1 {
+          color: #F8FAFC;
+          text-shadow:
+            0 3px 18px rgba(0, 0, 0, 0.78),
+            0 0 2px rgba(0, 0, 0, 0.92);
         }
 ${subtitleCss(tokens)}
 ${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
@@ -410,6 +440,7 @@ ${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
         <section
           id="${scene.sceneId}-bg"
           class="clip scene-bg"
+          data-has-image-asset="${scene.imageAsset ? "true" : "false"}"
           data-start="0"
           data-duration="${timing.durationSec}"
           data-track-index="1"

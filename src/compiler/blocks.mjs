@@ -5,8 +5,31 @@ import { jsonAttr, normalizeRelPath } from "./utils.mjs";
 const HEADLINE_LAYOUT = "headline_only";
 export const BLOCK_RUNTIME_READY_VERSION = "P2-08.block-runtime-ready.v1";
 
+function cleanLabel(value) {
+  if (value === undefined || value === null) return "";
+  return String(value).trim();
+}
+
+function compareSideLabel(value) {
+  const text = cleanLabel(value);
+  if (!text) return "";
+  if (/(기존|이전|현재|전|old|previous|before|baseline)/i.test(text)) return "기존";
+  if (/(신규|새|개선|후|new|after|target|next)/i.test(text)) return "신규";
+  return text;
+}
+
+function compareLabelsForScene(scene) {
+  if (scene.layout !== "compare") return { leftLabel: "", rightLabel: "" };
+  const items = Array.isArray(scene.items) ? scene.items : [];
+  return {
+    leftLabel: compareSideLabel(items[0]),
+    rightLabel: compareSideLabel(items[1])
+  };
+}
+
 export function blockVariablesForScene({ scene, tokens }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
+  const compareLabels = compareLabelsForScene(scene);
   return {
     title: scene.headline,
     items: scene.items ?? [],
@@ -17,7 +40,9 @@ export function blockVariablesForScene({ scene, tokens }) {
     emphasis: scene.emphasis,
     reveal: scene.reveal,
     visualKind: scene.visual_kind,
-    source: scene.source ?? ""
+    source: scene.source ?? "",
+    leftLabel: compareLabels.leftLabel,
+    rightLabel: compareLabels.rightLabel
   };
 }
 
