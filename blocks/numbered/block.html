@@ -54,9 +54,9 @@
           inset: 0;
           display: grid;
           grid-template-rows: auto minmax(0, 1fr) auto;
-          gap: 2.2rem;
+          gap: 1.55rem;
           box-sizing: border-box;
-          padding: 5.25rem 8.25rem 12.25rem;
+          padding: 4.65rem 6.25rem 8.45rem;
         }
 
         .numbered-header {
@@ -81,9 +81,9 @@
 
         .numbered-title {
           margin: 0;
-          max-width: 66rem;
+          max-width: 80rem;
           color: var(--numbered-text);
-          font-size: 5.25rem;
+          font-size: 5.55rem;
           font-weight: 920;
           line-height: 1.04;
           letter-spacing: -0.03em;
@@ -126,11 +126,11 @@
           min-width: 0;
           min-height: 0;
           display: grid;
-          grid-template-columns: 8.8rem minmax(0, 1fr) 0.55rem;
+          grid-template-columns: 9.6rem minmax(0, 1fr) 0.55rem;
           align-items: center;
-          gap: 1.55rem;
+          gap: 1.35rem;
           box-sizing: border-box;
-          padding: 1.1rem 1.35rem 1.1rem 1.1rem;
+          padding: 1.05rem 1.35rem 1.05rem 1.05rem;
           border: 0.1rem solid var(--numbered-line);
           border-radius: 0.5rem;
           background:
@@ -153,7 +153,7 @@
         .numbered-stamp {
           position: relative;
           z-index: 1;
-          width: 7.2rem;
+          width: 8rem;
           aspect-ratio: 1;
           display: grid;
           align-content: center;
@@ -212,7 +212,7 @@
         .numbered-label {
           margin: 0;
           color: var(--numbered-text);
-          font-size: 3.45rem;
+          font-size: 3.72rem;
           font-weight: 880;
           line-height: 1.08;
           letter-spacing: 0;
@@ -278,17 +278,17 @@
         }
 
         .numbered-block[data-density="medium"] .numbered-row {
-          grid-template-columns: 7.8rem minmax(0, 1fr) 0.45rem;
+          grid-template-columns: 8.4rem minmax(0, 1fr) 0.45rem;
           gap: 1.25rem;
           padding-block: 0.85rem;
         }
 
         .numbered-block[data-density="medium"] .numbered-stamp {
-          width: 6.4rem;
+          width: 7rem;
         }
 
         .numbered-block[data-density="medium"] .numbered-label {
-          font-size: 2.85rem;
+          font-size: 3.05rem;
         }
 
         .numbered-block[data-density="compact"] .numbered-stage {
@@ -296,13 +296,13 @@
         }
 
         .numbered-block[data-density="compact"] .numbered-row {
-          grid-template-columns: 6.6rem minmax(0, 1fr) 0.38rem;
+          grid-template-columns: 7.1rem minmax(0, 1fr) 0.38rem;
           gap: 1rem;
           padding-block: 0.65rem;
         }
 
         .numbered-block[data-density="compact"] .numbered-stamp {
-          width: 5.35rem;
+          width: 5.85rem;
         }
 
         .numbered-block[data-density="compact"] .numbered-rank {
@@ -430,30 +430,30 @@
             0
           );
           rows.forEach((row, index) => {
-            const start = 0.24 + index * 0.12;
+            const start = 0.16 + index * 0.08;
             tl.fromTo(
               row.elements.item,
               { opacity: 0, x: -58, scale: 0.99 },
-              { opacity: 1, x: 0, scale: 1, duration: 0.54, ease: "power3.out" },
+              { opacity: 1, x: 0, scale: 1, duration: 0.42, ease: "power3.out" },
               start
             );
             tl.fromTo(
               row.elements.stamp,
               { opacity: 0, scale: 1.42, rotation: -8 },
-              { opacity: 1, scale: 1, rotation: 0, duration: 0.34, ease: "back.out(1.4)" },
-              start + 0.06
+              { opacity: 1, scale: 1, rotation: 0, duration: 0.3, ease: "back.out(1.4)" },
+              start + 0.04
             );
             tl.fromTo(
               row.elements.copy,
               { opacity: 0, x: 38 },
-              { opacity: 1, x: 0, duration: 0.36, ease: "power2.out" },
-              start + 0.1
+              { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" },
+              start + 0.07
             );
             tl.fromTo(
               row.elements.rule,
               { scaleY: 0, transformOrigin: "center bottom" },
-              { scaleY: 1, duration: 0.28, ease: "power2.out" },
-              start + 0.18
+              { scaleY: 1, duration: 0.24, ease: "power2.out" },
+              start + 0.12
             );
             tl.fromTo(
               row.elements.sweep,
@@ -466,9 +466,9 @@
             root.querySelector(".numbered-footer"),
             { opacity: 0, y: 12 },
             { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" },
-            0.72 + rows.length * 0.16
+            0.52 + rows.length * 0.1
           );
-          tl.to(root.querySelector(".numbered-stage"), { x: 96, duration, ease: "none" }, 0);
+          tl.to(root.querySelector(".numbered-stage"), { x: 28, duration, ease: "none" }, 0);
           tl.to(root.querySelector(".numbered-list"), { y: -28, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(
             root.querySelectorAll(".numbered-stamp"),

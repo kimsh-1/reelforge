@@ -53,6 +53,7 @@ function outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }) {
 function crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec }) {
   return [
     ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    ...outgoingContentFadeLines({ fromSlotId, startSec, durationSec }),
     `        tl.to("#${fromSlotId}", { opacity: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`,
     `        tl.fromTo("#${toSlotId}", { opacity: 0 }, { opacity: 1, duration: ${durationSec}, ease: "none" }, ${startSec});`
   ];
@@ -63,6 +64,7 @@ function slideLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direc
   return [
     ...outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }),
     `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
+    ...outgoingContentFadeLines({ fromSlotId, startSec, durationSec }),
     `        tl.to("#${fromSlotId}", { xPercent: ${xPercent}, duration: ${durationSec}, ease: "none" }, ${startSec});`,
     `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "transform" }, ${endSec});`,
     `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
@@ -78,9 +80,17 @@ function wipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, type }
   return [
     ...outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }),
     `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
+    ...outgoingContentFadeLines({ fromSlotId, startSec, durationSec }),
     `        tl.fromTo("#${fromSlotId}", { clipPath: "inset(0 0 0 0)" }, { clipPath: "${outgoingWipeInsetForType(type)}", duration: ${durationSec}, ease: "none" }, ${startSec});`,
     `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "clipPath" }, ${endSec});`,
     `        tl.set("#${toSlotId}", { clearProps: "clipPath" }, ${endSec});`
+  ];
+}
+
+function outgoingContentFadeLines({ fromSlotId, startSec, durationSec }) {
+  const selector = `#${fromSlotId} .scene-content, #${fromSlotId} .block-format-frame, #${fromSlotId} .block-host, #${fromSlotId} .subtitles`;
+  return [
+    `        tl.to(${JSON.stringify(selector)}, { opacity: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`
   ];
 }
 

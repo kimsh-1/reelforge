@@ -57,6 +57,7 @@ import {
   readJsonFile,
   requireRelativeAsset,
   resetDir,
+  secondsFromFrames,
   sha256Text,
   writeFileEnsured,
   writeSilentWav
@@ -370,6 +371,26 @@ function revealTween(scene) {
   return base;
 }
 
+function needsTitleScrim({ imageAsset, tokens }) {
+  return Boolean(imageAsset) || colorLuminance(tokens.colors.background) <= 0.5;
+}
+
+function outgoingContentFadeTimeline({ scene, timing, block, fps }) {
+  const outgoingFrames = timing.outgoingTransitionFrames ?? 0;
+  if (outgoingFrames <= 0) return "";
+
+  const overlapSec = secondsFromFrames(outgoingFrames, fps);
+  const fadeDuration = Number(Math.max(1 / fps, Math.min(0.28, overlapSec, timing.durationSec * 0.18)).toFixed(6));
+  const startSec = Number(Math.max(0, timing.durationSec - fadeDuration).toFixed(6));
+  const target =
+    block.kind === "block"
+      ? `#${scene.sceneId}-block-frame, #${scene.sceneId}-subtitles`
+      : `#${scene.sceneId}-content, #${scene.sceneId}-subtitles`;
+
+  return `	          tl.to(${cssString(target)}, { opacity: 0, duration: ${fadeDuration}, ease: "power2.in" }, ${startSec});
+	          tl.set(${cssString(target)}, { opacity: 0 }, ${timing.durationSec});`;
+}
+
 function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
   const imageClass = scene.renderImage ? " has-image-asset" : "";
   return `        <main
@@ -386,7 +407,7 @@ function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
         </main>`;
 }
 
-function sceneHtml({ scene, timing, tokens, block, renderFormat }) {
+function sceneHtml({ scene, timing, tokens, block, renderFormat, fps }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
   const foreground = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
@@ -402,6 +423,8 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat }) {
   const subtitleData = subtitleHookData({ scene, timing });
   const tween = revealTween(scene);
   const imageAsset = scene.renderImage ?? null;
+  const titleScrim = needsTitleScrim({ imageAsset, tokens });
+  const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps });
   const imageSrc = imageAsset ? `../${imageAsset.htmlPath}` : null;
   const imageLayer = imageAsset
     ? `          <img id="${scene.sceneId}-image" class="rf-scene-image" src="${htmlAttr(imageSrc)}" alt="" aria-hidden="true" />`
@@ -447,13 +470,25 @@ ${fontFaceCss(tokens)}
           width: ${renderFormat.width}px;
           height: ${renderFormat.height}px;
           overflow: hidden;
+          isolation: isolate;
           color: ${foreground};
           font-family: ${cssString(tokens.fonts.body.family)}, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
           ${cssVarsForFormat(renderFormat)}
         }
+        #root[data-title-scrim="true"]::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background:
+            radial-gradient(ellipse 74% 58% at 50% 34%, rgba(2, 6, 23, 0.1), rgba(2, 6, 23, 0.42) 72%, rgba(2, 6, 23, 0.68) 100%),
+            linear-gradient(0deg, rgba(2, 6, 23, 0.72) 0%, rgba(2, 6, 23, 0.38) 38%, rgba(2, 6, 23, 0.24) 100%);
+          pointer-events: none;
+        }
         .scene-bg {
           position: absolute;
           inset: 0;
+          z-index: 0;
           box-sizing: border-box;
           background:
             linear-gradient(125deg, ${accent} 0%, transparent 34%),
@@ -490,6 +525,7 @@ ${fontFaceCss(tokens)}
           display: grid;
           place-items: center;
           padding: var(--rf-scene-padding-top) var(--rf-scene-padding-x) var(--rf-scene-padding-bottom);
+          z-index: 2;
         }
         .scene-content.has-image-asset::before {
           content: "";
@@ -510,6 +546,7 @@ ${fontFaceCss(tokens)}
           transform: translate(-50%, -50%) scale(var(--rf-block-scale));
           transform-origin: center center;
           overflow: visible;
+          z-index: 2;
         }
         .block-format-frame > .block-host {
           inset: 0;
@@ -559,6 +596,9 @@ ${fontFaceCss(tokens)}
             0 0 2px rgba(0, 0, 0, 0.92);
         }
 	${subtitleCss(tokens)}
+        .subtitles {
+          z-index: 5;
+        }
 	${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
 ${imageCss}
       </style>
@@ -570,6 +610,7 @@ ${imageCss}
         data-width="${renderFormat.width}"
         data-height="${renderFormat.height}"
         data-duration="${timing.durationSec}"
+        data-title-scrim="${titleScrim ? "true" : "false"}"
       >
         <section
           id="${scene.sceneId}-bg"
@@ -611,6 +652,7 @@ ${content}
 	            0.36
 	          );
 ${imageTimeline}
+${outgoingFadeTimeline}
 	          window.__timelines[${cssString(scene.sceneId)}] = tl;
         })();
       </script>
@@ -900,7 +942,7 @@ export function compileProject({
       blockByScene.set(scene.sceneId, block);
       writeFileEnsured(
 	        path.join(tmpDir, "scenes", `scene-${scene.sceneId}.html`),
-	        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat })
+	        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat, fps })
 	      );
     }
 

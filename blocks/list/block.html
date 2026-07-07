@@ -227,7 +227,15 @@
           grid-template-columns: 4.75rem minmax(0, 1fr);
         }
 
+        .list-item[data-has-value="false"] {
+          grid-template-columns: 4.75rem minmax(0, 1fr);
+        }
+
         #root[data-has-values="false"] .list-value {
+          display: none;
+        }
+
+        .list-item[data-has-value="false"] .list-value {
           display: none;
         }
       </style>
@@ -302,6 +310,7 @@
             value.className = "list-value";
             sweep.className = "list-sweep";
             item.dataset.hot = index === 0 ? "true" : "false";
+            item.dataset.hasValue = row.value.length > 0 ? "true" : "false";
 
             icon.setAttribute("aria-hidden", "true");
             label.textContent = row.label;
@@ -309,7 +318,8 @@
             value.textContent = row.value;
 
             copy.append(label, meta);
-            item.append(sweep, icon, copy, value);
+            item.append(sweep, icon, copy);
+            if (row.value.length > 0) item.append(value);
             listEl.appendChild(item);
           });
 
@@ -425,15 +435,17 @@
             for (let index = 0; index < count; index += 1) {
               rows.push({
                 label: stringValue(labels[index], `항목 ${index + 1}`),
-                value: valueText(rawValues[index])
+                value: valueText(rawValues[index], labels[index])
               });
             }
             return rows;
           }
 
-          function valueText(value) {
+          function valueText(value, label) {
             if (value === undefined || value === null) return "";
-            return String(value).trim();
+            const text = String(value).trim();
+            if (!text) return "";
+            return text === String(label ?? "").trim() ? "" : text;
           }
 
           function ariaLabel(listTitle, rows, unitText) {

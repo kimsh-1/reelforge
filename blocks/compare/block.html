@@ -220,6 +220,17 @@
           overflow-wrap: anywhere;
         }
 
+        .compare-description {
+          min-width: 0;
+          color: var(--compare-muted);
+          font-size: 1.54rem;
+          font-weight: 780;
+          line-height: 1.18;
+          letter-spacing: 0;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
+        }
+
         .compare-meter {
           position: relative;
           width: 100%;
@@ -248,6 +259,18 @@
           white-space: nowrap;
           font-variant-numeric: tabular-nums;
           opacity: 0;
+        }
+
+        .compare-item[data-value-kind="text"],
+        .compare-item[data-value-kind="empty"] {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .compare-item[data-value-kind="text"] .compare-meter,
+        .compare-item[data-value-kind="empty"] .compare-meter,
+        .compare-item[data-value-kind="text"] .compare-value,
+        .compare-item[data-value-kind="empty"] .compare-value {
+          display: none;
         }
 
         .compare-divider {
@@ -532,6 +555,17 @@
             overflow-wrap: anywhere;
           }
 
+          .compare-description {
+            min-width: 0;
+            color: var(--compare-muted);
+            font-size: 1.54rem;
+            font-weight: 780;
+            line-height: 1.18;
+            letter-spacing: 0;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
           .compare-meter {
             position: relative;
             width: 100%;
@@ -560,6 +594,18 @@
             white-space: nowrap;
             font-variant-numeric: tabular-nums;
             opacity: 0;
+          }
+
+          .compare-item[data-value-kind="text"],
+          .compare-item[data-value-kind="empty"] {
+            grid-template-columns: minmax(0, 1fr);
+          }
+
+          .compare-item[data-value-kind="text"] .compare-meter,
+          .compare-item[data-value-kind="empty"] .compare-meter,
+          .compare-item[data-value-kind="text"] .compare-value,
+          .compare-item[data-value-kind="empty"] .compare-value {
+            display: none;
           }
 
           .compare-divider {
@@ -699,7 +745,8 @@
             right: stringValue(variables.rightLabel, "")
           };
           const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title, sideLabels);
-          const maxValue = Math.max(1, ...groups.left.concat(groups.right).map((row) => Math.abs(row.numeric)));
+          const numericRows = groups.left.concat(groups.right).filter((row) => row.valueKind === "number");
+          const maxValue = Math.max(1, ...numericRows.map((row) => Math.abs(row.numeric)));
           const duration = blockDuration(root, 5);
           const phases = phaseTimes(duration);
 
@@ -716,8 +763,8 @@
           root.querySelector("[data-compare-unit]").textContent = unit ? `단위 ${unit}` : "";
           root.setAttribute("aria-label", ariaLabel(title, groups, unit));
 
-          renderRows(root.querySelector("[data-compare-left-list]"), groups.left, unit, maxValue);
-          renderRows(root.querySelector("[data-compare-right-list]"), groups.right, unit, maxValue);
+          renderRows(root.querySelector("[data-compare-left-list]"), groups.left, unit, maxValue, groups.leftTitle);
+          renderRows(root.querySelector("[data-compare-right-list]"), groups.right, unit, maxValue, groups.rightTitle);
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
@@ -734,15 +781,15 @@
           const footer = root.querySelector(".compare-footer");
 
           tl.fromTo(header, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.58, ease: "power3.out" }, 0);
-          tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: 0.28, ease: "none" }, 0.2);
-          tl.fromTo(dividerLine, { scaleY: 0 }, { scaleY: 1, duration: 0.58, ease: "expo.inOut" }, 0.22);
-          tl.fromTo(vs, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.36, ease: "back.out(1.4)" }, 0.46);
-          tl.fromTo(leftPanel, { opacity: 0, x: -42 }, { opacity: 1, x: 0, duration: 0.68, ease: "power3.out" }, 0.36);
-          tl.fromTo(leftRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.12 }, 0.58);
-          tl.fromTo(rightPanel, { opacity: 0, x: 42 }, { opacity: 1, x: 0, duration: 0.68, ease: "power3.out" }, 0.9);
-          tl.fromTo(rightRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.38, ease: "power2.out", stagger: 0.12 }, 1.12);
-          tl.fromTo(fills, { scaleX: 0 }, { scaleX: 1, duration: 0.82, ease: "power3.out", stagger: 0.08 }, 1.18);
-          tl.fromTo(values, { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 0.32, ease: "power2.out", stagger: 0.08 }, 1.24);
+          tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: 0.24, ease: "none" }, 0.14);
+          tl.fromTo(dividerLine, { scaleY: 0 }, { scaleY: 1, duration: 0.48, ease: "expo.inOut" }, 0.16);
+          tl.fromTo(vs, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.4)" }, 0.32);
+          tl.fromTo(leftPanel, { opacity: 0, x: -42 }, { opacity: 1, x: 0, duration: 0.54, ease: "power3.out" }, 0.24);
+          tl.fromTo(leftRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.32, ease: "power2.out", stagger: 0.08 }, 0.38);
+          tl.fromTo(rightPanel, { opacity: 0, x: 42 }, { opacity: 1, x: 0, duration: 0.54, ease: "power3.out" }, 0.46);
+          tl.fromTo(rightRows, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.32, ease: "power2.out", stagger: 0.08 }, 0.6);
+          tl.fromTo(fills, { scaleX: 0 }, { scaleX: 1, duration: 0.62, ease: "power3.out", stagger: 0.06 }, 0.66);
+          tl.fromTo(values, { opacity: 0, x: 14 }, { opacity: 1, x: 0, duration: 0.28, ease: "power2.out", stagger: 0.06 }, 0.7);
           values.forEach((valueEl) => {
             const row = valueEl.__rfRow;
             if (!row) return;
@@ -761,10 +808,10 @@
                   valueEl.textContent = formatDisplayValue(row, unit);
                 }
               },
-              1.24
+              0.7
             );
           });
-          tl.fromTo(footer, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.32, ease: "power2.out" }, 1.62);
+          tl.fromTo(footer, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, 0.96);
           tl.to(leftPanel, { opacity: 0.64, y: 6, duration: 0.52, ease: "power2.inOut" }, phases.livingStart);
           tl.to(rightPanel, { scale: 1.018, y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
           tl.to(vs, { scale: 1.08, duration: 1.4, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.4)), yoyo: true }, phases.livingStart);
@@ -779,30 +826,46 @@
           });
           signalRuntimeReady();
 
-          function renderRows(list, rows, suffix, maxNumeric) {
+          function renderRows(list, rows, suffix, maxNumeric, panelTitle) {
             rows.forEach((row) => {
               const item = document.createElement("li");
               const copy = document.createElement("span");
               const label = document.createElement("span");
+              const description = document.createElement("span");
               const meter = document.createElement("span");
               const fill = document.createElement("span");
               const value = document.createElement("span");
+              const showLabel =
+                row.valueKind === "empty" || !(rows.length === 1 && normalizedText(row.label) === normalizedText(panelTitle));
 
               item.className = "compare-item";
               copy.className = "compare-copy";
               label.className = "compare-label";
+              description.className = "compare-description";
               meter.className = "compare-meter";
               fill.className = "compare-meter-fill";
               value.className = "compare-value";
+              item.dataset.valueKind = row.valueKind;
 
               label.textContent = row.label;
-              fill.style.setProperty("--compare-width", `${Math.max(8, (Math.abs(row.numeric) / maxNumeric) * 100).toFixed(3)}%`);
-              value.textContent = formatDisplayValue(row, suffix);
-              value.__rfRow = row;
+              if (!showLabel) {
+                label.hidden = true;
+                label.style.display = "none";
+              }
 
-              meter.appendChild(fill);
-              copy.append(label, meter);
-              item.append(copy, value);
+              copy.append(label);
+              if (row.valueKind === "text") {
+                description.textContent = row.description;
+                copy.append(description);
+              } else if (row.valueKind === "number") {
+                fill.style.setProperty("--compare-width", `${Math.max(8, (Math.abs(row.numeric) / maxNumeric) * 100).toFixed(3)}%`);
+                value.textContent = formatDisplayValue(row, suffix);
+                value.__rfRow = row;
+                meter.appendChild(fill);
+                copy.append(meter);
+              }
+              item.append(copy);
+              if (row.valueKind === "number") item.append(value);
               list.appendChild(item);
             });
           }
@@ -840,16 +903,19 @@
           function normalizeRows(labels, rawValues, fallbackTitle) {
             const count = Math.max(labels.length, rawValues.length);
             if (count === 0) {
-              return [{ label: fallbackTitle, raw: 0, numeric: 0, decimals: 0 }];
+              return [{ label: fallbackTitle, raw: "", description: "", valueKind: "empty", numeric: 0, decimals: 0 }];
             }
             const rows = [];
             for (let index = 0; index < count; index += 1) {
-              const raw = rawValues[index] ?? 0;
+              const raw = rawValues[index];
+              const value = valueMeta(raw, labels[index]);
               rows.push({
                 label: stringValue(labels[index], `항목 ${index + 1}`),
                 raw,
-                numeric: numericValue(raw),
-                decimals: decimalPlaces(raw)
+                description: value.description,
+                valueKind: value.kind,
+                numeric: value.numeric,
+                decimals: value.decimals
               });
             }
             return rows;
@@ -890,6 +956,28 @@
             return text.length > 0 ? text : fallback;
           }
 
+          function normalizedText(value) {
+            return String(value ?? "").trim();
+          }
+
+          function valueMeta(value, label) {
+            if (value === undefined || value === null) {
+              return { kind: "empty", description: "", numeric: 0, decimals: 0 };
+            }
+            const text = String(value).trim();
+            if (!text || text === normalizedText(label)) {
+              return { kind: "empty", description: "", numeric: 0, decimals: 0 };
+            }
+            if (typeof value === "number" && Number.isFinite(value)) {
+              return { kind: "number", description: "", numeric: value, decimals: decimalPlaces(value) };
+            }
+            const numericMatch = text.replace(/,/g, "").match(/^-?\d+(?:\.\d+)?$/);
+            if (numericMatch) {
+              return { kind: "number", description: "", numeric: Number(numericMatch[0]), decimals: decimalPlaces(text) };
+            }
+            return { kind: "text", description: text, numeric: 0, decimals: 0 };
+          }
+
           function numericValue(value) {
             if (typeof value === "number" && Number.isFinite(value)) return value;
             const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
@@ -913,12 +1001,18 @@
           }
 
           function formatDisplayValue(row, suffix) {
+            if (row.valueKind === "text") return row.description;
+            if (row.valueKind === "empty") return "";
             return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
           }
 
           function ariaLabel(compareTitle, groups, suffix) {
-            const leftText = groups.left.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
-            const rightText = groups.right.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
+            const rowText = (row) => {
+              const value = formatDisplayValue(row, suffix);
+              return value ? `${row.label} ${value}` : row.label;
+            };
+            const leftText = groups.left.map(rowText).join(", ");
+            const rightText = groups.right.map(rowText).join(", ");
             return `${compareTitle}: ${groups.leftTitle} ${leftText}; ${groups.rightTitle} ${rightText}`;
           }
 

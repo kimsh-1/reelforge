@@ -507,12 +507,14 @@
             const exitStart = Math.max(1.2, total - exitDuration);
             const livingStart = Math.min(exitStart - 0.42, Math.max(1.05, total * 0.28));
             const livingDuration = Math.max(0.6, exitStart - livingStart);
+            const countStart = 0.38;
+            const countDeadline = Math.max(countStart + 0.32, total * 0.4);
             return {
               exitStart,
               exitDuration,
               livingStart,
               livingDuration,
-              countDuration: Math.min(2.35, Math.max(1.15, total * 0.58))
+              countDuration: Math.max(0.32, Math.min(1.2, countDeadline - countStart))
             };
           }
 
