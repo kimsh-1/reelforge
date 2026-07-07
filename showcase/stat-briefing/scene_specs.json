@@ -1,0 +1,343 @@
+{
+  "version": "1.0.0",
+  "projectId": "showcase-stat-briefing",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "한국인의 수면 시간이 줄었다는 데이터 브리핑 오프닝 장면.",
+      "layout": "quote",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "잠은 줄었다",
+      "items": [
+        "2024 생활시간",
+        "첫 감소"
+      ],
+      "values": [
+        "수면",
+        "1999 이후"
+      ],
+      "unit": "survey",
+      "source": "KOSTAT 2024 Time Use",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.06,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Quiet Korean city apartment windows at night blended with a paper-toned time-use dashboard, data journalism opener, no readable text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "2024년 평균 수면 시간 8시간 4분이 큰 숫자로 나타나는 장면.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "8시간 4분",
+      "items": [
+        "전 국민 10세+",
+        "하루 수면"
+      ],
+      "values": [
+        8,
+        4
+      ],
+      "unit": "h:min",
+      "source": "KOSTAT sleep 2024",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "2019년과 2024년 수면 시간이 선 그래프로 내려가는 장면.",
+      "layout": "line",
+      "mood": "urgent",
+      "reveal": "build_up",
+      "emphasis": "contrast",
+      "headline": "5년 새 -8분",
+      "items": [
+        "2019 수면",
+        "2024 수면"
+      ],
+      "values": [
+        492,
+        484
+      ],
+      "unit": "min",
+      "source": "KOSTAT 2019-2024",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "잠 못 이룬 사람 비율 11.9%와 증가폭이 표시되는 장면.",
+      "layout": "statistic",
+      "mood": "somber",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "불면 11.9%",
+      "items": [
+        "잠 못 이룸",
+        "5년 전 대비"
+      ],
+      "values": [
+        11.9,
+        4.6
+      ],
+      "unit": "%/%p",
+      "source": "Korea policy briefing 2025",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "수면 시간이 가장 많은 10대와 가장 적은 50대가 비교되는 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "50대가 최저",
+      "items": [
+        "10대 수면",
+        "50대 수면"
+      ],
+      "values": [
+        "가장 많음",
+        "가장 적음"
+      ],
+      "unit": "age",
+      "source": "Korea policy briefing 2025",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "미디어 이용 시간이 수면 통계 옆에서 커지는 데이터 장면.",
+      "layout": "bar",
+      "mood": "dramatic",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "미디어가 잠식",
+      "items": [
+        "미디어 여가",
+        "ICT 사용"
+      ],
+      "values": [
+        163,
+        68
+      ],
+      "unit": "min",
+      "source": "KOSTAT media time 2024",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "A dark bedroom and soft phone glow merging into abstract paper data bars, media time pressing into night hours, no readable interface, no text, no numbers",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "ICT 사용 시간이 36분에서 68분으로 커지는 비교 장면.",
+      "layout": "compare",
+      "mood": "urgent",
+      "reveal": "parallel",
+      "emphasis": "contrast",
+      "headline": "ICT 두 배",
+      "items": [
+        "5년 전 ICT",
+        "2024 ICT"
+      ],
+      "values": [
+        36,
+        68
+      ],
+      "unit": "min",
+      "source": "Korea policy briefing 2025",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "모든 연령층에서 수면 시간이 감소했다는 요약 리스트 장면.",
+      "layout": "list",
+      "mood": "contemplative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "모두가 덜 잔다",
+      "items": [
+        "10대도 감소",
+        "30대도 감소",
+        "60대도 감소"
+      ],
+      "values": [
+        "전 연령",
+        "전 연령",
+        "전 연령"
+      ],
+      "unit": "group",
+      "source": "Korea policy briefing 2025",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "하루 24시간 안에서 늘어난 활동과 줄어든 수면을 한 원으로 보여 주는 엔딩 장면.",
+      "layout": "quote",
+      "mood": "triumphant",
+      "reveal": "dramatic_pause",
+      "emphasis": "keyword",
+      "headline": "하루는 24시간",
+      "items": [
+        "미디어 +17분",
+        "개인유지 +7분",
+        "수면 -8분"
+      ],
+      "values": [
+        17,
+        7,
+        -8
+      ],
+      "unit": "min",
+      "source": "KOSTAT time balance",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.06,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke",
+      "imageAsset": {
+        "prompt": "A 24-hour circular path made of abstract colored segments for sleep, media, and personal time, elegant data journalism paper texture, no labels, no readable text, no numbers",
+        "placement": "background"
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.22
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "wipe_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "crossfade",
+      "duration": 0.22
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.22
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_left",
+      "duration": 0.24
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "wipe",
+      "duration": 0.24
+    }
+  ]
+}

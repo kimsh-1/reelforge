@@ -1,0 +1,345 @@
+{
+  "version": "1.0.0",
+  "projectId": "showcase-quote-wisdom",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "노자의 작은 시작 메시지를 흑백의 첫 걸음 이미지로 여는 장면.",
+      "layout": "quote",
+      "mood": "dramatic",
+      "reveal": "spotlight",
+      "emphasis": "quote",
+      "headline": "작게 시작",
+      "items": [
+        "노자",
+        "작은 한 걸음"
+      ],
+      "values": [
+        "시작",
+        "길"
+      ],
+      "unit": "theme",
+      "source": "Laozi paraphrase",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.06,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "A single small stone step beginning a long minimalist path, warm monochrome, hard shadow, one restrained red thread accent, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "큰 일을 작은 실행 단위로 쪼개는 흑백 리스트 장면.",
+      "layout": "list",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "일은 작게",
+      "items": [
+        "큰 일 보기",
+        "작은 조각",
+        "오늘 실행"
+      ],
+      "values": [
+        "분해",
+        "축소",
+        "시작"
+      ],
+      "unit": "act",
+      "source": "Classical wisdom paraphrase",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "오늘 할 일 하나와 미룰 핑계 0이 대비되는 장면.",
+      "layout": "statistic",
+      "mood": "triumphant",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "첫 걸음만",
+      "items": [
+        "오늘 할 일",
+        "미룰 핑계"
+      ],
+      "values": [
+        1,
+        0
+      ],
+      "unit": "step",
+      "source": "Execution maxim",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "반응을 선택한다는 스토아 메시지를 손과 그림자로 표현한 장면.",
+      "layout": "quote",
+      "mood": "suspense",
+      "reveal": "dramatic_pause",
+      "emphasis": "person",
+      "headline": "반응은 내 몫",
+      "items": [
+        "에픽테토스",
+        "판단의 힘"
+      ],
+      "values": [
+        "통제",
+        "선택"
+      ],
+      "unit": "theme",
+      "source": "Epictetus paraphrase",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "A calm hand paused above a split shadow line, choice and reaction shown through hard monochrome light, restrained red accent, no visible text, no symbols, no watermark",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "밖의 일과 나의 판단을 좌우로 나눈 흑백 비교 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "상황 말고 선택",
+      "items": [
+        "밖의 일",
+        "나의 판단"
+      ],
+      "values": [
+        "변수",
+        "권한"
+      ],
+      "unit": "control",
+      "source": "Stoic control theme",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "멈춤과 호흡과 대답의 세 박자가 차례로 나타나는 장면.",
+      "layout": "numbered",
+      "mood": "contemplative",
+      "reveal": "stagger",
+      "emphasis": "sequence",
+      "headline": "마음에 틈을",
+      "items": [
+        "멈춤",
+        "호흡",
+        "대답"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "beat",
+      "source": "Stoic practice synthesis",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "오늘을 붙잡으라는 메시지를 아침 책상 이미지로 여는 장면.",
+      "layout": "quote",
+      "mood": "dramatic",
+      "reveal": "spotlight",
+      "emphasis": "quote",
+      "headline": "오늘을 붙잡아",
+      "items": [
+        "호라티우스",
+        "지금의 몫"
+      ],
+      "values": [
+        "현재",
+        "행동"
+      ],
+      "unit": "theme",
+      "source": "Horace paraphrase",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Morning light on an empty desk ready for action, warm monochrome editorial still life, subtle red accent object, no visible writing, no readable text, no logos",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "내일 계획과 오늘 행동이 힘의 차이로 비교되는 장면.",
+      "layout": "compare",
+      "mood": "urgent",
+      "reveal": "parallel",
+      "emphasis": "contrast",
+      "headline": "미루면 작아져",
+      "items": [
+        "내일의 계획",
+        "오늘의 행동"
+      ],
+      "values": [
+        "불확실",
+        "실제"
+      ],
+      "unit": "choice",
+      "source": "Carpe diem theme",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "세 명언의 핵심이 실행이라는 단어로 모이는 엔딩 장면.",
+      "layout": "quote",
+      "mood": "triumphant",
+      "reveal": "stagger_then_flash",
+      "emphasis": "keyword",
+      "headline": "남는 건 실행",
+      "items": [
+        "작게",
+        "고르게",
+        "오늘"
+      ],
+      "values": [
+        "시작",
+        "선택",
+        "실행"
+      ],
+      "unit": "final",
+      "source": "Wisdom series synthesis",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.22
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "wipe_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "crossfade",
+      "duration": 0.22
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.22
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_left",
+      "duration": 0.24
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "wipe",
+      "duration": 0.24
+    }
+  ]
+}

@@ -65,6 +65,8 @@ Allowed `imageAsset.placement`: `fullscreen`, `background`, `center`, `left`, `r
 
 Use `kenBurns.enabled=true` only when an image or visual plate benefits from slow motion. Keep `zoomFactor >= 1`; use `panDirection` from `none`, `left`, `right`, `up`, `down`.
 
+Image-aware blocks apply their own readability scrim and living Ken Burns-style motion. Author the prompt, placement, `kenBurns`, and `altText`; do not add non-schema scrim fields or edit generated HTML for image contrast.
+
 ## Mood And Reveal Pairing
 
 | Intent | Mood | Reveal | Emphasis |
@@ -116,3 +118,12 @@ Write `altText` as visual description:
 Good: `막대 차트가 검색 유입 6200명, 추천 유입 4800명, 광고 유입 3100명을 비교한다.`
 
 Weak: `지난주 신규 가입은 검색 유입이 가장 컸다.`
+
+## Round 1-3 Traps
+
+These failures produced valid-looking renders but poor viewer results. Check them before every handoff:
+
+- **Empty copy makes empty scenes**: schema-valid `headline`, `items`, or `values` can still be lifeless if they are placeholders, raw brief fragments, or English fixture labels. Run the copy polish step first; visible copy must be short, Korean-first when the video is Korean, and strong enough to sell the beat without narration.
+- **Generated images are not enough**: an image prompt or runner result does not matter unless the scene actually wires `visual_kind: "generate_image"` or `search_image`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText`. Never paste selected asset paths into `scene_specs`; the manifest and versions files own selection.
+- **Hardcoded labels leak implementation**: do not let layout names, schema field names, fixture labels, or renderer defaults become on-screen text. Author the displayed labels in `headline`, `items`, `values`, `unit`, and `source`; keep internal labels out of the frame.
+- **Motion is already in the block**: do not compensate for a dull scene by inventing extra JSON fields or editing HTML. Pick a better `mood`, `reveal`, `emphasis`, transition, or shorter copy so the block's built-in entrance, living motion, and exit can work.

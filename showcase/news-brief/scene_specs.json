@@ -1,0 +1,345 @@
+{
+  "version": "1.0.0",
+  "projectId": "showcase-news-brief",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "커피 가격 상승 이슈가 뉴스룸 대형 화면에 뜨는 오프닝 장면.",
+      "layout": "quote",
+      "mood": "urgent",
+      "reveal": "spotlight",
+      "emphasis": "keyword",
+      "headline": "커피값 왜 뛰나",
+      "items": [
+        "가격 상승",
+        "산지 날씨"
+      ],
+      "values": [
+        "커피",
+        "기후"
+      ],
+      "unit": "issue",
+      "source": "FAO coffee market note 2025",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Global broadcast newsroom opener for a coffee price explainer, coffee beans and commodity-market light panels, urgent editorial mood, no readable text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "2024년 세계 커피 가격 상승률이 큰 숫자로 카운트업되는 장면.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "2024 +38.8%",
+      "items": [
+        "세계 가격",
+        "전년 평균"
+      ],
+      "values": [
+        38.8,
+        2024
+      ],
+      "unit": "%",
+      "source": "FAO coffee prices 2025",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "아라비카 가격 상승 폭이 막대 그래프로 강조되는 장면.",
+      "layout": "bar",
+      "mood": "informative",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "아라비카 +58%",
+      "items": [
+        "아라비카",
+        "1년 전 대비"
+      ],
+      "values": [
+        58,
+        12
+      ],
+      "unit": "%/mo",
+      "source": "FAO Dec 2024 arabica",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "out",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "로부스타 가격 상승 폭이 두 번째 막대로 치고 올라오는 장면.",
+      "layout": "bar",
+      "mood": "urgent",
+      "reveal": "stagger",
+      "emphasis": "number",
+      "headline": "로부스타 +70%",
+      "items": [
+        "로부스타",
+        "실질 가격"
+      ],
+      "values": [
+        70,
+        2024
+      ],
+      "unit": "%",
+      "source": "FAO Dec 2024 robusta",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "더위와 건조가 커피 산지를 압박하는 다큐멘터리형 장면.",
+      "layout": "list",
+      "mood": "somber",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "산지는 더 덥다",
+      "items": [
+        "브라질 가뭄",
+        "베트남 건조",
+        "수확 불안"
+      ],
+      "values": [
+        "아라비카",
+        "로부스타",
+        "공급"
+      ],
+      "unit": "risk",
+      "source": "FAO supply disruption",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Coffee-growing hills under heat stress, dry soil, distant storm line, documentary news realism, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "가뭄 우려와 브라질 강우 소식이 좌우 비교로 바뀌는 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "비 오면 꺾인다",
+      "items": [
+        "건조 우려",
+        "브라질 강우"
+      ],
+      "values": [
+        "상승 압력",
+        "완화 신호"
+      ],
+      "unit": "driver",
+      "source": "ICO CMR Jan 2026",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "ICO 2026년 1월 복합지표 가격이 숫자로 고정되는 장면.",
+      "layout": "statistic",
+      "mood": "informative",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "296.89센트",
+      "items": [
+        "ICO 지표",
+        "2026년 1월"
+      ],
+      "values": [
+        "296.89 c/lb",
+        "-2.6%"
+      ],
+      "unit": "I-CIP",
+      "source": "ICO I-CIP Jan 2026",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "커피 그룹별 수출 증감이 방향이 다른 막대로 나뉘는 장면.",
+      "layout": "bar",
+      "mood": "dramatic",
+      "reveal": "build_up",
+      "emphasis": "contrast",
+      "headline": "수출도 갈렸다",
+      "items": [
+        "로부스타",
+        "브라질 내추럴",
+        "남미"
+      ],
+      "values": [
+        26.5,
+        -11.9,
+        -15
+      ],
+      "unit": "%",
+      "source": "ICO exports Dec 2025",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "out",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "커피 한 잔과 산지 공급망이 하나의 뉴스 그래픽으로 연결되는 엔딩 장면.",
+      "layout": "quote",
+      "mood": "triumphant",
+      "reveal": "dramatic_pause",
+      "emphasis": "keyword",
+      "headline": "한 잔은 농장표",
+      "items": [
+        "날씨",
+        "통화",
+        "재고"
+      ],
+      "values": [
+        "가격",
+        "환율",
+        "공급"
+      ],
+      "unit": "driver",
+      "source": "FAO+ICO synthesis",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "karaoke",
+      "imageAsset": {
+        "prompt": "A coffee cup linked to farms, shipping routes, and market lights through abstract supply-chain lines, premium broadcast-news close, no readable text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.22
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "wipe_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "crossfade",
+      "duration": 0.22
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.22
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_left",
+      "duration": 0.24
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "wipe",
+      "duration": 0.24
+    }
+  ]
+}

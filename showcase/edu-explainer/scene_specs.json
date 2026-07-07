@@ -1,0 +1,347 @@
+{
+  "version": "1.0.0",
+  "projectId": "showcase-edu-explainer",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "작은 원금에서 이자가 붙고 다음 원금이 되는 복리 오프닝 장면.",
+      "layout": "quote",
+      "mood": "triumphant",
+      "reveal": "zoom_in",
+      "emphasis": "keyword",
+      "headline": "돈이 돈을 낳아",
+      "items": [
+        "원금",
+        "이자",
+        "다음 원금"
+      ],
+      "values": [
+        100,
+        5,
+        105
+      ],
+      "unit": "만원",
+      "source": "Compound interest concept",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Small glowing coin-like orb spawning a second orbiting orb in a friendly science explainer universe, nebula navy, neon cyan and yellow accents, no text, no numbers, no logos",
+        "placement": "background"
+      },
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "단리가 원금 기준으로만 직선처럼 늘어나는 비교 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "원금만 볼 때",
+      "items": [
+        "단리",
+        "원금 기준"
+      ],
+      "values": [
+        "매번 5",
+        "직선"
+      ],
+      "unit": "model",
+      "source": "Simple interest concept",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "이자가 다시 이자를 만드는 숫자가 카운트업되는 장면.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "이자도 일한다",
+      "items": [
+        "1년 뒤",
+        "2년 뒤"
+      ],
+      "values": [
+        105,
+        110.25
+      ],
+      "unit": "만원",
+      "source": "100 at 5pct compound",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "복리 성장 곡선이 시간이 지날수록 휘어 올라가는 장면.",
+      "layout": "line",
+      "mood": "triumphant",
+      "reveal": "build_up",
+      "emphasis": "sequence",
+      "headline": "시간이 키운다",
+      "items": [
+        "0년",
+        "10년",
+        "20년",
+        "30년"
+      ],
+      "values": [
+        100,
+        163,
+        265,
+        432
+      ],
+      "unit": "만원",
+      "source": "5pct annual compound",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "A smooth exponential growth curve made of glowing beads rising through a nebula space classroom, optimistic science explainer, no labels, no text, no numbers",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "72법칙으로 두 배 시간을 빠르게 추정하는 장면.",
+      "layout": "statistic",
+      "mood": "informative",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "72법칙 한 줄",
+      "items": [
+        "72 ÷ 수익률",
+        "두 배 시간"
+      ],
+      "values": [
+        72,
+        14.4
+      ],
+      "unit": "년",
+      "source": "Rule of 72 approximation",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "out",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "수익률 1% 차이가 30년 뒤 결과 차이로 커지는 장면.",
+      "layout": "compare",
+      "mood": "urgent",
+      "reveal": "parallel",
+      "emphasis": "contrast",
+      "headline": "수수료도 복리",
+      "items": [
+        "연 5% 결과",
+        "연 4% 결과"
+      ],
+      "values": [
+        432,
+        324
+      ],
+      "unit": "30년",
+      "source": "100 compound 30 years",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "in",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "복리가 투자와 부채 양쪽에 작동한다는 비교 장면.",
+      "layout": "compare",
+      "mood": "somber",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "빚도 복리다",
+      "items": [
+        "투자 이자",
+        "대출 이자"
+      ],
+      "values": [
+        "내 편",
+        "상대 편"
+      ],
+      "unit": "direction",
+      "source": "Compound applies both ways",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "일찍 시작할수록 굴러가는 시간이 길어진다는 막대 장면.",
+      "layout": "bar",
+      "mood": "dramatic",
+      "reveal": "stagger",
+      "emphasis": "number",
+      "headline": "일찍 넣을수록",
+      "items": [
+        "25세 시작",
+        "35세 시작"
+      ],
+      "values": [
+        40,
+        30
+      ],
+      "unit": "year",
+      "source": "Time horizon example",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "원금 수익률 시간 세 요소가 하나의 복리 결과로 모이는 엔딩 장면.",
+      "layout": "numbered",
+      "mood": "triumphant",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "원리는 하나",
+      "items": [
+        "원금",
+        "수익률",
+        "시간"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "input",
+      "source": "Compound formula inputs",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke",
+      "imageAsset": {
+        "prompt": "Three clean abstract controls for principal, rate, and time orbiting into one bright result sphere, nebula-pop science explainer style, no text, no letters, no numbers, no logos",
+        "placement": "background"
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.22
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "wipe_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "crossfade",
+      "duration": 0.22
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.22
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_left",
+      "duration": 0.24
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "wipe",
+      "duration": 0.24
+    }
+  ]
+}

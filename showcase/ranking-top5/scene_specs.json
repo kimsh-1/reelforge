@@ -1,0 +1,355 @@
+{
+  "version": "1.0.0",
+  "projectId": "showcase-ranking-top5",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "2026 언어 학습 Top5 기준이 예능 순위판처럼 열리는 장면.",
+      "layout": "numbered",
+      "mood": "triumphant",
+      "reveal": "stagger_then_flash",
+      "emphasis": "sequence",
+      "headline": "2026 시작순",
+      "items": [
+        "시작 난도",
+        "문자 부담",
+        "자료 접근"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "rule",
+      "source": "General criteria 2026",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "A colorful Korean variety ranking stage with five blank podium shapes, language-learning props, high-energy studio lighting, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "일본어가 첫 순위로 크게 튀어나오는 K-예능 스타일 장면.",
+      "layout": "numbered",
+      "mood": "dramatic",
+      "reveal": "zoom_in",
+      "emphasis": "number",
+      "headline": "1위 일본어",
+      "items": [
+        "어순 친숙",
+        "한자어 공유",
+        "콘텐츠 많음"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "reason",
+      "source": "Korean learner heuristic",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword",
+      "imageAsset": {
+        "prompt": "Playful language study desk with travel objects and blank speech bubbles suggesting Japanese learning, no visible characters, no readable writing, no logos",
+        "placement": "background"
+      }
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "인도네시아어의 쉬운 시작 요인이 세 줄로 터지는 장면.",
+      "layout": "numbered",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "2위 인니어",
+      "items": [
+        "알파벳 사용",
+        "성수변화 적음",
+        "발음 단순"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "reason",
+      "source": "Indonesian grammar basics",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "out",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "스페인어의 발음 규칙성과 자료 접근성이 순위 카드로 나타나는 장면.",
+      "layout": "numbered",
+      "mood": "urgent",
+      "reveal": "stagger",
+      "emphasis": "count",
+      "headline": "3위 스페인어",
+      "items": [
+        "규칙 발음",
+        "학습 자료 많음",
+        "사용권 넓음"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "reason",
+      "source": "FSI category context",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "이탈리아어 순위 카드가 밝은 리듬으로 올라오는 장면.",
+      "layout": "numbered",
+      "mood": "informative",
+      "reveal": "build_up",
+      "emphasis": "sequence",
+      "headline": "4위 이탈리아어",
+      "items": [
+        "읽기 쉬움",
+        "발음 규칙",
+        "문화 동기"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "reason",
+      "source": "FSI category context",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "포르투갈어가 다섯 번째 순위로 스포트라이트를 받는 장면.",
+      "layout": "numbered",
+      "mood": "suspense",
+      "reveal": "spotlight",
+      "emphasis": "number",
+      "headline": "5위 포르투갈어",
+      "items": [
+        "로망스어 계열",
+        "콘텐츠 동기",
+        "자료 충분"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "unit": "reason",
+      "source": "FSI category context",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "문자 체계 부담이 순위 판단의 변수로 비교되는 장면.",
+      "layout": "compare",
+      "mood": "dramatic",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "문자는 변수",
+      "items": [
+        "일본어 문자",
+        "로망스어 문자"
+      ],
+      "values": [
+        "부담 있음",
+        "알파벳"
+      ],
+      "unit": "script",
+      "source": "Learning load caveat",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "학습 목적에 따라 쉬운 언어 순위가 달라진다는 장면.",
+      "layout": "list",
+      "mood": "contemplative",
+      "reveal": "parallel",
+      "emphasis": "keyword",
+      "headline": "목표가 순위다",
+      "items": [
+        "여행 회화",
+        "시험 독해",
+        "업무 연결"
+      ],
+      "values": [
+        "말하기",
+        "읽기",
+        "커리어"
+      ],
+      "unit": "goal",
+      "source": "General learning caveat",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "쉬운 언어도 계속해야 한다는 메시지가 예능 엔딩처럼 터지는 장면.",
+      "layout": "quote",
+      "mood": "triumphant",
+      "reveal": "stagger_then_flash",
+      "emphasis": "keyword",
+      "headline": "쉬운 건 계속",
+      "items": [
+        "매일 10분",
+        "쉬운 자료",
+        "말하기 루틴"
+      ],
+      "values": [
+        "습관",
+        "입력",
+        "출력"
+      ],
+      "unit": "habit",
+      "source": "Learning habit synthesis",
+      "visual_kind": "generate_image",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.07,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke",
+      "imageAsset": {
+        "prompt": "Bright Korean variety finale with daily habit blocks, microphone, blank notebook, and blank calendar shapes, energetic lights, no readable text, no numbers, no logos",
+        "placement": "background"
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.22
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "wipe_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "crossfade",
+      "duration": 0.22
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.24
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "fade",
+      "duration": 0.22
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_left",
+      "duration": 0.24
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "wipe",
+      "duration": 0.24
+    }
+  ]
+}

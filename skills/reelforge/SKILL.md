@@ -7,6 +7,8 @@ description: Author and run ReelForge narration-video projects from a brief, scr
 
 Use this skill to turn a brief into a valid ReelForge `scene_specs.json`, run the pipeline, check gates, and guide Studio edits. ReelForge's authoring boundary is `scene_specs.json`; generated composition HTML is a read-only build artifact.
 
+For production work, follow **Brief Interview -> Authoring Workflow -> Pipeline And Gate -> Studio Edit Loop**. Quick Start is only a fixture smoke path.
+
 ## Quick Start
 
 1. Create or choose a project directory under an ext4 path and seed it from the full eight-layout fixture:
@@ -72,10 +74,13 @@ When the brief is underspecified, propose defaults and ask for confirmation. For
 
 ## Authoring Workflow
 
-Separate writing into two passes:
+Work in this order; do not jump straight from brief to JSON:
 
-1. **Step 1 content**: produce the narrative arc, scene count, `sceneId`, `sceneNumber`, `headline`, `narration`, `narration_tts`, `items`, `values`, `unit`, and `source`.
-2. **Step 2 visuals**: assign `layout`, `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, `altText`, and `transitions`.
+1. **Copy polish**: rewrite all on-screen copy with a gn-voice-style pass before visual authoring. No empty placeholders, raw English labels, fixture text, or dummy copy. Target sellable Korean headlines of 12 characters or fewer; prefer concrete nouns, numbers, contrast, and a payoff. Good model lines: `한 줄만 던져`, `빈 칸만 되묻기`, `누르면 렌더`, `키도 0, 돈도 0`, `말 대신 렌더`.
+2. **Design selection**: choose one preset from the 16 preset catalog, then keep it stable for the project. Read `references/design-direction.md` for the brief-type selection tree and consult `docs/design-presets.md` for the full preset catalog and contrast constraints. Do not invent a custom look when a catalog preset fits.
+3. **Step 1 content**: produce the narrative arc, scene count, `sceneId`, `sceneNumber`, polished `headline`, `narration`, `narration_tts`, `items`, `values`, `unit`, and `source`.
+4. **Step 2 visuals**: assign `layout`, `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, authored `altText`, and `transitions`.
+5. **Viewer QC**: after render, run machine checks and inspect frames as a viewer. Reject if any 1.5s stretch feels frozen, generated images are absent from the actual frame, headline contrast is weak, or the first three seconds would not stop a feed scroll.
 
 Every scene must include authored `altText`. Do not infer it from narration and do not leave it for a later pass.
 
@@ -109,10 +114,13 @@ Hard prohibitions:
 - Do not use extra fields. Contracts are closed and reject unknown keys.
 - Do not make `mood.speed` or visual pacing imply audio duration changes.
 - Do not edit schemas as part of video authoring.
+- Do not author per-scene motion timelines, mood badges, chrome, or scrim overlays in `scene_specs`. The renderer blocks already own the three-stage motion: entrance, living/develop motion, and exit/hand-off. For living motion itself, authors choose only `mood` and `reveal`; use `layout`, `emphasis`, image fields, and transitions only for content structure and scene wiring.
 
 Use `narration_tts` to control speech. Keep `narration` as display/editor copy when different. For Korean TTS, spell out symbols and compact numbers when needed: `37%` -> `삼십칠 퍼센트`, `184ms` -> `백팔십사 밀리초`.
 
 Estimate scene duration only as an authoring sense check: one short Korean sentence is usually a compact scene; two clauses are medium; three or more clauses should usually split. Never persist that estimate as a scene field.
+
+For image scenes, set `visual_kind`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText` so the asset is actually used. Image scrims are automatically applied by image-aware blocks; do not add extra schema fields or hand-edit HTML to darken images.
 
 ## Pipeline And Gate
 
@@ -139,6 +147,14 @@ node bin/vf gate list
 
 For broader regression evidence use `npm run gate`; for expensive PoC execution use an explicit gate command with `--execute`.
 
+For demo/showcase visual quality, run the full-profile visual QC gate:
+
+```bash
+node bin/vf gate demo-visual-qc --profile full
+```
+
+Then inspect snapshot grids or rendered frames manually. The viewer standard is stricter than gate pass: no static holds, generated/search images must appear in-frame, small labels must remain readable, and contrast must work at mobile feed size.
+
 ## Studio Edit Loop
 
 Start Studio with:
@@ -158,4 +174,5 @@ Warn users that preview is for local visual checks; final export quality comes f
 ## References
 
 - Read `references/scene-authoring.md` when authoring or repairing `scene_specs.json`.
+- Read `references/design-direction.md` before choosing a preset, motion strength, reveal palette, or scene emphasis.
 - Read `references/codex-runner.md` for batch jobs, parallel brief-to-spec production, or real image runner handoff.
