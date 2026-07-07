@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "status": "complete",
+  "provider": "codex-imagegen",
+  "generatedAt": "2026-07-07T03:55:49Z",
+  "runner": null,
+  "assets": [
+    {
+      "id": "image_s01_gen_01",
+      "sceneId": "s01",
+      "path": "./assets/images/s01_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: stylized-concept. Asset type: ReelForge demo scene background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Abstract DOM layers transforming into a clean video frame grid inside a technical render lab, deterministic and precise. Scene/backdrop: dark neutral deterministic render laboratory, modular HTML layers represented only as translucent geometric panes and nested rectangles. Subject: floating unlabeled layer stack morphing into an empty frame grid, precise alignment, no code syntax anywhere. Style/medium: premium cinematic 3D technical render, clean agency-grade polish, realistic materials with abstract data-light accents. Composition/framing: wide 16:9 frame, layer stack on left transitioning to grid on right, center kept visually clean for later HTML overlay. Lighting/mood: crisp dark studio lighting, signal-green traces, warm amber checkpoints, shallow depth. Color palette: matte charcoal, graphite, black glass, signal green, subtle amber, cool steel. Constraints: no visible text; no letters; no numbers; no readable UI; no glyphs; no labels; no logos; no watermarks; no browser chrome labels; no code; all text belongs to later HTML layers. Avoid: typography, source code, pseudo-code, fake UI words, alphabetic shapes, numerals, signage, watermarks, brand marks, icons with letters, tiny interface labels.",
+      "width": 1536,
+      "height": 864
+    },
+    {
+      "id": "image_s03_gen_01",
+      "sceneId": "s03",
+      "path": "./assets/images/s03_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: stylized-concept. Asset type: ReelForge demo scene background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Modular scene blocks docking into one long timeline rail, subcomposition architecture visualized as physical precision modules. Scene/backdrop: deterministic render laboratory, dark matte workbench, technical timeline instrument with no labels. Subject: several unlabeled rectangular scene modules sliding into a single glowing horizontal rail, precise physical alignment, abstract connectors only. Style/medium: cinematic high-end 3D technical render, premium agency production mood, clean mechanical detail. Composition/framing: wide 16:9 frame, timeline rail spans horizontally, modules staggered in depth, room for later HTML overlay. Lighting/mood: controlled dark studio light, signal-green traces along the rail, warm amber checkpoint glows, crisp depth. Color palette: matte charcoal, graphite, black glass, signal green, warm amber, brushed steel. Constraints: no visible text; no letters; no numbers; no readable UI; no glyphs; no labels; no logos; no watermarks; no timeline tick numbers; all words will be HTML layers later. Avoid: typography, alphabetic symbols, numerals, fake labels, code, filenames, signage, watermarks, brand marks, icons containing letters.",
+      "width": 1536,
+      "height": 864
+    }
+  ],
+  "pending": [],
+  "filters": {
+    "ocr": [
+      {
+        "sceneId": "s01",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      },
+      {
+        "sceneId": "s03",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      }
+    ],
+    "composition": [
+      {
+        "sceneId": "s01",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      },
+      {
+        "sceneId": "s03",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      }
+    ]
+  }
+}

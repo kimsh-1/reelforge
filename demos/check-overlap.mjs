@@ -17,13 +17,9 @@ function normalizeSentence(value) {
     .trim();
 }
 
-function sentencesFromNarration(text) {
-  const compact = normalizeSentence(text);
-  if (!compact) return [];
-  return compact
-    .split(/(?<=[.!?。！？])\s+/u)
-    .map(normalizeSentence)
-    .filter(Boolean);
+function headlineFromScene(scene) {
+  const headline = normalizeSentence(scene.headline);
+  return headline ? [headline] : [];
 }
 
 const byFile = new Map();
@@ -32,32 +28,32 @@ const owners = new Map();
 for (const specPath of specs) {
   const data = JSON.parse(readFileSync(specPath, "utf8"));
   const rel = path.relative(process.cwd(), specPath).split(path.sep).join("/");
-  const sentences = [];
+  const headlines = [];
   for (const scene of data.scenes ?? []) {
-    sentences.push(...sentencesFromNarration(scene.narration_tts ?? scene.narration));
+    headlines.push(...headlineFromScene(scene));
   }
-  byFile.set(rel, sentences);
-  for (const sentence of sentences) {
-    if (!owners.has(sentence)) owners.set(sentence, new Set());
-    owners.get(sentence).add(rel);
+  byFile.set(rel, headlines);
+  for (const headline of headlines) {
+    if (!owners.has(headline)) owners.set(headline, new Set());
+    owners.get(headline).add(rel);
   }
 }
 
 const overlaps = [...owners.entries()]
   .filter(([, files]) => files.size > 1)
-  .map(([sentence, files]) => ({
-    sentence,
+  .map(([headline, files]) => ({
+    headline,
     files: [...files].sort((a, b) => a.localeCompare(b))
   }));
 
-const totalSentences = [...byFile.values()].reduce((sum, sentences) => sum + sentences.length, 0);
-const counts = Object.fromEntries([...byFile.entries()].map(([file, sentences]) => [file, sentences.length]));
+const totalHeadlines = [...byFile.values()].reduce((sum, headlines) => sum + headlines.length, 0);
+const counts = Object.fromEntries([...byFile.entries()].map(([file, headlines]) => [file, headlines.length]));
 
 if (overlaps.length > 0) {
-  console.log("overlap: FAIL");
-  console.log(JSON.stringify({ files: specs.length, totalSentences, counts, overlaps }, null, 2));
+  console.log("headline-overlap: FAIL");
+  console.log(JSON.stringify({ files: specs.length, totalHeadlines, counts, overlaps }, null, 2));
   process.exit(1);
 }
 
-console.log("overlap: PASS");
-console.log(JSON.stringify({ files: specs.length, totalSentences, counts, duplicateSentences: 0 }, null, 2));
+console.log("headline-overlap: PASS");
+console.log(JSON.stringify({ files: specs.length, totalHeadlines, counts, duplicateHeadlines: 0 }, null, 2));

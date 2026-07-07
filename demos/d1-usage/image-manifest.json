@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "status": "complete",
+  "provider": "codex-imagegen",
+  "generatedAt": "2026-07-07T03:55:49Z",
+  "runner": null,
+  "assets": [
+    {
+      "id": "image_s02_gen_01",
+      "sceneId": "s02",
+      "path": "./assets/images/s02_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: productivity-visual. Asset type: ReelForge demo scene background, 16:9 landscape PNG, 1536x864 or larger. Primary request: A minimal empty prompt-entry surface in a premium dark production room, shown as one blank luminous card and smooth abstract panels only. Scene/backdrop: quiet agency-grade control room made of clean matte charcoal planes, no detailed console controls. Subject: one empty glowing rectangular card with a simple vertical signal-green light bar, surrounded by large blank dark panels. Style/medium: cinematic high-end 3D editorial render, premium dark mood, very clean surfaces. Composition/framing: wide 16:9, centered blank card, generous negative space for later HTML text overlays, simple symmetrical composition. Lighting/mood: soft controlled studio lighting, signal-green edge glow, warm amber ambient review lights. Color palette: matte charcoal, graphite, restrained signal green, warm amber. Constraints: completely text-free image; no visible text; no letters; no numbers; no glyphs; no readable UI; no tiny markings; no panel labels; no button labels; no tick marks; no logos; no watermarks; no code; all copy will be added later as HTML layers. Avoid: typography, pseudo-text, alphabetic shapes, numerals, knobs with labels, console button labels, micro markings, signage, watermark, brand marks, icons containing letters.",
+      "width": 1536,
+      "height": 864
+    },
+    {
+      "id": "image_s05_gen_01",
+      "sceneId": "s05",
+      "path": "./assets/images/s05_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: productivity-visual. Asset type: ReelForge demo scene background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Deterministic progress rails lighting up across a clean production dashboard, completion implied only by abstract lamps. Scene/backdrop: premium dark control-room surface, extremely simplified, no console labels and no detailed buttons. Subject: five smooth horizontal signal-green rails with small unlabeled amber completion lamps at the far end, all elements abstract and blank. Style/medium: cinematic high-end 3D render, polished agency production design, minimal mechanical rhythm. Composition/framing: wide 16:9 frame, rails across a single smooth dark panel, generous negative space for later HTML overlays. Lighting/mood: dark studio lighting, signal-green rail glow, warm amber checkpoint lamps, controlled reflections. Color palette: matte charcoal, graphite, restrained signal green, warm amber, subtle black glass. Constraints: completely text-free image; no visible text; no letters; no numbers; no glyphs; no labels; no readable UI; no tiny markings; no tick marks; no button labels; no logos; no watermarks; no code; all copy will be added later as HTML layers. Avoid: typography, pseudo-text, alphabetic shapes, numerals, console micro markings, labeled controls, fake status words, signage, watermark, brand marks, icons containing letters.",
+      "width": 1536,
+      "height": 864
+    }
+  ],
+  "pending": [],
+  "filters": {
+    "ocr": [
+      {
+        "sceneId": "s02",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      },
+      {
+        "sceneId": "s05",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      }
+    ],
+    "composition": [
+      {
+        "sceneId": "s02",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      },
+      {
+        "sceneId": "s05",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      }
+    ]
+  }
+}

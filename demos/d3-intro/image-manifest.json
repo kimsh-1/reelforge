@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "status": "complete",
+  "provider": "codex-imagegen",
+  "generatedAt": "2026-07-07T03:55:49Z",
+  "runner": null,
+  "assets": [
+    {
+      "id": "image_s01_gen_01",
+      "sceneId": "s01",
+      "path": "./assets/images/s01_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: ads-marketing. Asset type: ReelForge demo intro background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Brand-intro reveal in a premium video production control room, glowing review rails opening like a stage, confident agency-grade mood, no readable branding. Scene/backdrop: high-end agency editing suite, cinematic control room with matte dark walls, abstract review rails and polished production surfaces. Subject: luminous rails opening from center like a stage reveal, abstract blank hero area, no brand name or symbols. Style/medium: premium cinematic 3D render, luxury production design, high contrast editorial polish. Composition/framing: wide 16:9 first-frame hero, central opening rails, strong depth, hint of next layer at bottom, generous negative space for later HTML title. Lighting/mood: crisp dramatic spotlight, signal-green rail glow, warm amber review lights, confident launch energy. Color palette: matte charcoal, graphite, black glass, restrained signal green, warm amber, subtle metallic highlights. Constraints: no visible text; no letters; no numbers; no readable UI; no glyphs; no labels; no logos; no watermarks; no branding; no signage; all copy and brand text will be added later as HTML layers. Avoid: typography, alphabetic marks, numerals, fake UI text, title cards, logo shapes, watermark, signage, readable screens, interface labels.",
+      "width": 1536,
+      "height": 864
+    },
+    {
+      "id": "image_s05_gen_01",
+      "sceneId": "s05",
+      "path": "./assets/images/s05_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Use case: productivity-visual. Asset type: ReelForge demo quality gate background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Quality review gate before delivery, abstract variance bands aligning into clean blank frames under warm inspection lights. Scene/backdrop: premium agency review bay made of smooth dark panels, simplified surfaces with no controls or labels. Subject: unlabeled translucent bands entering from both sides and converging into one perfectly aligned blank central frame, signal-green alignment rails, amber inspection lights. Style/medium: cinematic high-end 3D technical render, elegant premium QA visual, minimal abstract geometry. Composition/framing: wide 16:9, central clean frame alignment, side bands symmetrical, open space for later HTML overlays. Lighting/mood: warm amber inspection light, signal-green final alignment glow, dark suspense resolving into confidence. Color palette: matte charcoal, graphite, black glass, signal green, amber, subtle steel. Constraints: completely text-free image; no visible text; no letters; no numbers; no glyphs; no labels; no readable UI; no tiny markings; no tick marks; no buttons with labels; no logos; no watermarks; no code; all copy will be added later as HTML layers. Avoid: typography, pseudo-text, alphabetic shapes, numerals, QA words, console micro markings, fake labels, signage, watermark, brand marks, icons containing letters.",
+      "width": 1536,
+      "height": 864
+    }
+  ],
+  "pending": [],
+  "filters": {
+    "ocr": [
+      {
+        "sceneId": "s01",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      },
+      {
+        "sceneId": "s05",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "visual-text-check-pass"
+      }
+    ],
+    "composition": [
+      {
+        "sceneId": "s01",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      },
+      {
+        "sceneId": "s05",
+        "pass": true,
+        "status": "manual-pass",
+        "message": "1536x864-16x9-pass"
+      }
+    ]
+  }
+}

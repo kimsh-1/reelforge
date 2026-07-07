@@ -5,18 +5,18 @@
     {
       "sceneId": "s01",
       "sceneNumber": 1,
-      "narration": "[DRAFT] 엔진은 HTML 문서를 영상 프레임의 원본 상태로 다룹니다.",
-      "narration_tts": "[DRAFT] 엔진은 HTML 문서를 영상 프레임의 원본 상태로 다룹니다.",
-      "altText": "HTML 상태와 렌더 프레임이 좌우로 연결되어 비교되는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "HTML DOM 레이어가 영상 프레임 그리드로 변환되는 기술 쇼케이스 장면.",
       "layout": "compare",
       "mood": "informative",
       "reveal": "split_reveal",
       "emphasis": "contrast",
       "headline": "HTML = 프레임 원본",
-      "items": ["HTML DOM", "렌더 프레임"],
-      "values": ["상태 원본", "캡처 결과"],
-      "unit": "관계",
-      "source": "briefs/T-demo-videos.md#D2",
+      "items": ["DOM 상태", "렌더 프레임"],
+      "values": [1, 1],
+      "unit": "frame",
+      "source": "docs/compiler.md#architecture",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, abstract browser DOM layers transforming into a clean video frame grid, deterministic rendering lab, matte charcoal with signal green and amber accents, no visible text, no letters, no numbers, no logos, no watermark",
@@ -24,31 +24,32 @@
       },
       "kenBurns": {
         "enabled": true,
-        "zoomFactor": 1.05,
+        "zoomFactor": 1.07,
         "zoomDirection": "in",
         "panDirection": "right"
       },
-      "subtitleMode": "karaoke"
+      "subtitleMode": "karaoke",
+      "ost": 1
     },
     {
       "sceneId": "s02",
       "sceneNumber": 2,
-      "narration": "[DRAFT] 같은 입력과 같은 시각을 주면 seek 결과는 동일한 프레임으로 돌아옵니다.",
-      "narration_tts": "[DRAFT] 같은 입력과 같은 시각을 주면 seek 결과는 동일한 프레임으로 돌아옵니다.",
-      "altText": "하나의 시각 표시가 동일한 프레임 결과 두 개로 반복 확인되는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "동일한 입력과 동일한 시각이 동일한 프레임 결과로 잠기는 장면.",
       "layout": "statistic",
       "mood": "dramatic",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "Seek 결정론",
+      "headline": "Seek 결과 1:1",
       "items": ["입력 세트", "프레임 결과"],
       "values": [1, 1],
-      "unit": "일치",
-      "source": "briefs/T-demo-videos.md#D2",
-      "visual_kind": "none",
+      "unit": "match",
+      "source": "docs/compiler.md#timing",
+      "visual_kind": "chart",
       "kenBurns": {
-        "enabled": false,
-        "zoomFactor": 1,
+        "enabled": true,
+        "zoomFactor": 1.06,
         "zoomDirection": "in",
         "panDirection": "none"
       },
@@ -57,18 +58,18 @@
     {
       "sceneId": "s03",
       "sceneNumber": 3,
-      "narration": "[DRAFT] 각 씬은 서브컴포지션으로 분리되어 전체 타임라인에 안정적으로 꽂힙니다.",
-      "narration_tts": "[DRAFT] 각 씬은 서브컴포지션으로 분리되어 전체 타임라인에 안정적으로 꽂힙니다.",
-      "altText": "여러 서브컴포지션 블록이 하나의 긴 타임라인에 정렬되는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "분리된 서브컴포지션 블록들이 하나의 메인 타임라인에 꽂히는 장면.",
       "layout": "compare",
       "mood": "suspense",
       "reveal": "parallel",
       "emphasis": "sequence",
       "headline": "씬 = 서브컴포지션",
-      "items": ["개별 씬", "전체 타임라인"],
-      "values": ["독립 렌더", "순서 결합"],
-      "unit": "구조",
-      "source": "briefs/T-demo-videos.md#D2",
+      "items": ["개별 scene", "main timeline"],
+      "values": [1, 1],
+      "unit": "slot",
+      "source": "docs/compiler.md#block-interface",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, modular scene blocks docking into a single precise timeline rail, technical animation blueprint feel, no visible text, no letters, no numbers, no logos, no watermark",
@@ -76,7 +77,7 @@
       },
       "kenBurns": {
         "enabled": true,
-        "zoomFactor": 1.04,
+        "zoomFactor": 1.05,
         "zoomDirection": "in",
         "panDirection": "left"
       },
@@ -85,70 +86,166 @@
     {
       "sceneId": "s04",
       "sceneNumber": 4,
-      "narration": "[DRAFT] 음성 길이와 단어 위치는 장면 길이를 계산하는 기준 데이터가 됩니다.",
-      "narration_tts": "[DRAFT] 음성 길이와 단어 위치는 장면 길이를 계산하는 기준 데이터가 됩니다.",
-      "altText": "단어 위치가 시간축 위에서 시작, 진행, 종료 지점으로 이어지는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "오디오 duration 값이 누적되어 컷 시작점과 전체 길이를 만드는 장면.",
       "layout": "line",
       "mood": "contemplative",
       "reveal": "build_up",
       "emphasis": "sequence",
-      "headline": "단어 타이밍 기준선",
-      "items": ["시작", "단어 진행", "장면 종료"],
-      "values": [0, 50, 100],
-      "unit": "%",
-      "source": "briefs/T-demo-videos.md#D2",
+      "headline": "타이밍은 오디오 권위",
+      "items": ["s01", "s02", "s03", "total"],
+      "values": [3, 6, 9, 30],
+      "unit": "sec",
+      "source": "docs/compiler.md#timing",
       "visual_kind": "chart",
       "kenBurns": {
-        "enabled": false,
-        "zoomFactor": 1,
-        "zoomDirection": "in",
-        "panDirection": "none"
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "out",
+        "panDirection": "down"
       },
       "subtitleMode": "keyword"
     },
     {
       "sceneId": "s05",
       "sceneNumber": 5,
-      "narration": "[DRAFT] 계약 파일은 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 갈라집니다.",
-      "narration_tts": "[DRAFT] 계약 파일은 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 갈라집니다.",
-      "altText": "계약 파일이 컴파일러를 통과해 두 개의 산출 흐름으로 분기되는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "작성 계약이 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 분기되는 장면.",
       "layout": "compare",
       "mood": "informative",
       "reveal": "cascade",
       "emphasis": "contrast",
       "headline": "계약에서 렌더로",
-      "items": ["scene_specs", "render-manifest", "HTML build"],
-      "values": ["작성 계약", "렌더 계약", "읽기 전용"],
-      "unit": "계층",
-      "source": "briefs/T-demo-videos.md#D2",
+      "items": ["작성 계약", "렌더 산출물"],
+      "values": [1, 2],
+      "unit": "stage",
+      "source": "docs/compiler.md#architecture",
       "visual_kind": "none",
       "kenBurns": {
-        "enabled": false,
-        "zoomFactor": 1,
+        "enabled": true,
+        "zoomFactor": 1.03,
         "zoomDirection": "in",
-        "panDirection": "none"
+        "panDirection": "right"
       },
       "subtitleMode": "karaoke"
     },
     {
       "sceneId": "s06",
       "sceneNumber": 6,
-      "narration": "[DRAFT] 게이트는 스키마, 해시, 프레임 검사를 묶어 재현성을 확인합니다.",
-      "narration_tts": "[DRAFT] 게이트는 스키마, 해시, 프레임 검사를 묶어 재현성을 확인합니다.",
-      "altText": "세 개의 검증 레일이 하나의 재현성 표시로 합쳐지는 장면.",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "스키마, 해시, 프레임 검증 레일이 동시에 켜지며 통과 수치가 커지는 장면.",
       "layout": "statistic",
       "mood": "triumphant",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
       "headline": "검증 레일 3개",
-      "items": ["스키마", "해시", "프레임"],
+      "items": ["schema", "hash", "frame"],
       "values": [1, 1, 1],
-      "unit": "검사",
-      "source": "briefs/T-demo-videos.md#D2",
+      "unit": "rail",
+      "source": "docs/compiler.md#render-lint",
       "visual_kind": "chart",
       "kenBurns": {
-        "enabled": false,
-        "zoomFactor": 1,
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "여덟 가지 장면 블록이 막대 그래프처럼 빠르게 차오르는 장면.",
+      "layout": "bar",
+      "mood": "urgent",
+      "reveal": "stagger",
+      "emphasis": "number",
+      "headline": "블록 8종 준비",
+      "items": ["chart", "text", "compare", "quote"],
+      "values": [3, 2, 2, 1],
+      "unit": "type",
+      "source": "docs/compiler.md#block-interface",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "out",
+        "panDirection": "left"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "컴파일 입력의 역할 비중이 원형 차트로 분리되어 보이는 장면.",
+      "layout": "pie",
+      "mood": "somber",
+      "reveal": "cascade",
+      "emphasis": "contrast",
+      "headline": "입력 계약 3분할",
+      "items": ["scene", "audio", "tokens"],
+      "values": [45, 35, 20],
+      "unit": "%",
+      "source": "docs/compiler.md#architecture",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s09",
+      "sceneNumber": 9,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "컴파일 단계가 번호 카드 세 장으로 정렬되고 마지막 카드가 점등되는 장면.",
+      "layout": "numbered",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "컴파일 3단",
+      "items": ["validate", "emit HTML", "lint"],
+      "values": [1, 2, 3],
+      "unit": "phase",
+      "source": "docs/compiler.md#render-lint",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "down"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s10",
+      "sceneNumber": 10,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "머클 해시와 evidence hash가 고정값으로 잠기며 결정론 배지가 뜨는 장면.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "해시로 잠그는 결과",
+      "items": ["sourceHash", "evidenceHash"],
+      "values": [64, 64],
+      "unit": "hex",
+      "source": "AGENTS.md#Gate-Rules",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.09,
         "zoomDirection": "in",
         "panDirection": "none"
       },
@@ -160,19 +257,19 @@
       "from": "s01",
       "to": "s02",
       "type": "crossfade",
-      "duration": 0.25
+      "duration": 0.22
     },
     {
       "from": "s02",
       "to": "s03",
       "type": "slide_left",
-      "duration": 0.25
+      "duration": 0.24
     },
     {
       "from": "s03",
       "to": "s04",
       "type": "wipe_left",
-      "duration": 0.2
+      "duration": 0.22
     },
     {
       "from": "s04",
@@ -184,7 +281,31 @@
       "from": "s05",
       "to": "s06",
       "type": "slide_right",
-      "duration": 0.25
+      "duration": 0.24
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "wipe_right",
+      "duration": 0.22
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "cut",
+      "duration": 0
+    },
+    {
+      "from": "s08",
+      "to": "s09",
+      "type": "slide",
+      "duration": 0.24
+    },
+    {
+      "from": "s09",
+      "to": "s10",
+      "type": "wipe",
+      "duration": 0.22
     }
   ]
 }
