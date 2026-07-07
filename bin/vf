@@ -31,6 +31,7 @@ import {
 import { DEFAULT_PRESET, compileProject } from "../src/compiler/compiler.mjs";
 import { isPathInsideAnyRoot } from "../src/compiler/utils.mjs";
 import { runPipeline } from "../src/pipeline/core/orchestrator.mjs";
+import { DEFAULT_HOST, DEFAULT_PORT, startStudioServer } from "../src/studio/server/index.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const projectRootsEnv = "VF_PROJECT_ROOTS";
@@ -48,6 +49,7 @@ Commands:
   vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest|pipeline-state>
   vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
   vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--force-dirty] [--profile mock|real]
+  vf studio <projectDir> [--port <number>]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
 Default gate profile is fast. Full adds render gates.
@@ -742,7 +744,33 @@ function pipelineCommand(args) {
   });
 }
 
-try {
+async function studioCommand(args) {
+  const projectDir = args.find((arg, index) => index === 0 && !arg.startsWith("--"));
+  if (!projectDir) throw new Error("vf studio requires <projectDir>");
+  const portArg = optionValue(args, "--port");
+  const port = portArg === null ? DEFAULT_PORT : Number(portArg);
+  if (!Number.isInteger(port) || port < 0 || port > 65535) {
+    throw new Error("--port must be an integer from 0 to 65535");
+  }
+  const absoluteProjectDir = path.resolve(process.cwd(), projectDir);
+  const studio = await startStudioServer({
+    repoRoot,
+    projectDir: absoluteProjectDir,
+    port,
+    host: DEFAULT_HOST,
+    log: (line) => console.log(line)
+  });
+  process.on("SIGINT", () => {
+    studio.close();
+    process.exit(0);
+  });
+  process.on("SIGTERM", () => {
+    studio.close();
+    process.exit(0);
+  });
+}
+
+async function main() {
   const [command, ...args] = process.argv.slice(2);
   if (!command) usage(0);
   if (command === "gate") gateCommand(args);
@@ -750,8 +778,11 @@ try {
   else if (command === "write") writeCommand(args);
   else if (command === "compile") compileCommand(args);
   else if (command === "pipeline") pipelineCommand(args);
+  else if (command === "studio") await studioCommand(args);
   else usage(1);
-} catch (error) {
+}
+
+main().catch((error) => {
   console.error(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
-}
+});
