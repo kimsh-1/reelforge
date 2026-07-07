@@ -1,0 +1,190 @@
+{
+  "version": "1.0.0",
+  "projectId": "demo-d3-intro",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "[DRAFT] 시간 잡아먹는 편집은 줄이고, 품질 리뷰는 프리미엄으로 남깁니다.",
+      "narration_tts": "[DRAFT] 시간 잡아먹는 편집은 줄이고, 품질 리뷰는 프리미엄으로 남깁니다.",
+      "altText": "브랜드 인트로처럼 어두운 제작 공간에 빛나는 리뷰 레일이 열리는 장면.",
+      "layout": "quote",
+      "mood": "dramatic",
+      "reveal": "spotlight",
+      "emphasis": "quote",
+      "headline": "ReelForge 인트로",
+      "items": ["편집 시간 절감", "프리미엄 리뷰"],
+      "values": ["시장 소구", "품질 유지"],
+      "unit": "메시지",
+      "source": "research/11-market-signals/README.md",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand intro mood, premium agency editing suite, dark cinematic control room, glowing review rails, confident product reveal without readable branding, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "fullscreen"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.08,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "[DRAFT] ReelForge 스킬은 브랜드 톤, 장면 계약, 검증 루프를 하나의 제작 흐름으로 묶습니다.",
+      "narration_tts": "[DRAFT] ReelForge 스킬은 브랜드 톤, 장면 계약, 검증 루프를 하나의 제작 흐름으로 묶습니다.",
+      "altText": "브랜드 톤, 장면 계약, 검증 루프가 하나의 제작 흐름으로 연결된 장면.",
+      "layout": "list",
+      "mood": "informative",
+      "reveal": "stagger",
+      "emphasis": "count",
+      "headline": "어떤 스킬인가",
+      "items": ["브랜드 톤", "장면 계약", "검증 루프"],
+      "values": ["고정", "작성", "확인"],
+      "unit": "구성",
+      "source": "briefs/T-demo-videos.md#D3",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "[DRAFT] 하이라이트는 카피, 자막, 이미지, 컴파일 결과가 한 화면 리듬으로 이어지는 장면입니다.",
+      "narration_tts": "[DRAFT] 하이라이트는 카피, 자막, 이미지, 컴파일 결과가 한 화면 리듬으로 이어지는 장면입니다.",
+      "altText": "네 개의 하이라이트 패널이 몽타주처럼 같은 박자로 전환되는 장면.",
+      "layout": "pie",
+      "mood": "urgent",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "하이라이트 몽타주",
+      "items": ["카피", "자막", "이미지", "컴파일"],
+      "values": [25, 25, 25, 25],
+      "unit": "%",
+      "source": "briefs/T-demo-videos.md#D3",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": "[DRAFT] 같은 브랜드 토큰으로 여러 편을 묶어 만들면 에이전시 납품 속도가 올라갑니다.",
+      "narration_tts": "[DRAFT] 같은 브랜드 토큰으로 여러 편을 묶어 만들면 에이전시 납품 속도가 올라갑니다.",
+      "altText": "같은 브랜드 토큰에서 여러 영상 카드가 배치로 생성되는 장면.",
+      "layout": "bar",
+      "mood": "triumphant",
+      "reveal": "cascade",
+      "emphasis": "number",
+      "headline": "대량 납품 각도",
+      "items": ["단건 제작", "배치 제작"],
+      "values": [1, 12],
+      "unit": "편",
+      "source": "research/11-market-signals/README.md",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": "[DRAFT] 검수 게이트는 납품 전 편차를 드러내고 리뷰 시간을 품질 판단에 쓰게 합니다.",
+      "narration_tts": "[DRAFT] 검수 게이트는 납품 전 편차를 드러내고 리뷰 시간을 품질 판단에 쓰게 합니다.",
+      "altText": "납품 전 품질 편차가 검수 레일에서 선명하게 표시되는 장면.",
+      "layout": "compare",
+      "mood": "suspense",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "프리미엄 유지",
+      "items": ["반복 편집", "품질 판단"],
+      "values": ["자동화 대상", "사람의 리뷰"],
+      "unit": "역할",
+      "source": "research/11-market-signals/README.md",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand mood, premium quality review gate before delivery, abstract variance bands becoming clean aligned frames, agency-grade polish, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "in",
+        "panDirection": "up"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": "[DRAFT] 데모는 스킬의 첫인상, 대표 장면, 납품 메시지를 짧게 각인시킵니다.",
+      "narration_tts": "[DRAFT] 데모는 스킬의 첫인상, 대표 장면, 납품 메시지를 짧게 각인시킵니다.",
+      "altText": "인트로, 몽타주, 납품 메시지가 세 장의 카드로 정리되는 마무리 장면.",
+      "layout": "numbered",
+      "mood": "triumphant",
+      "reveal": "dramatic_pause",
+      "emphasis": "sequence",
+      "headline": "짧은 각인",
+      "items": ["첫인상", "대표 장면", "납품 메시지"],
+      "values": [1, 2, 3],
+      "unit": "박자",
+      "source": "briefs/T-demo-videos.md#D3",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "fade",
+      "duration": 0.25
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "slide_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "wipe_right",
+      "duration": 0.25
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "crossfade",
+      "duration": 0.25
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "slide_right",
+      "duration": 0.2
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "policy": "OFL fonts only; keep RFN fonts as official upstream builds or pinned upstream webfont release files, unmodified.",
+  "records": [
+    {
+      "id": "pretendard-variable",
+      "file": "assets/fonts/PretendardVariable.woff2",
+      "kind": "font",
+      "family": "Pretendard Variable",
+      "version": "1.3.9",
+      "license": "OFL-1.1",
+      "sourceUrl": "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2",
+      "provenance": "Official Pretendard npm CDN build; redistributed unmodified.",
+      "bytes": 2057688,
+      "sha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4"
+    },
+    {
+      "id": "pretendard-ofl",
+      "file": "assets/fonts/Pretendard-OFL.txt",
+      "kind": "license",
+      "family": "Pretendard Variable",
+      "version": "1.3.9",
+      "license": "OFL-1.1",
+      "sourceUrl": "https://raw.githubusercontent.com/orioncactus/pretendard/v1.3.9/LICENSE",
+      "provenance": "Pretendard upstream license with RFN declarations.",
+      "bytes": 4418,
+      "sha256": "d31ddd9f2bed32fd7e302a205cf2380ba0de6529152d239ef99cfb6f261bfc04"
+    },
+    {
+      "id": "d2coding-regular",
+      "file": "assets/fonts/D2Coding.woff2",
+      "kind": "font",
+      "family": "D2Coding",
+      "version": "1.3.2",
+      "license": "OFL-1.1",
+      "sourceUrl": "https://cdn.jsdelivr.net/gh/Joungkyun/font-d2coding@1.3.2/D2Coding.woff2",
+      "provenance": "Version-pinned D2Coding webfont package generated from NAVER D2Coding 1.3.2; redistributed unmodified from this webfont release.",
+      "bytes": 1486740,
+      "sha256": "5066dd00cb1d53cb5aed7880d5b8c513412359085d6d0c67d032347d0471ca8b"
+    },
+    {
+      "id": "d2coding-ofl",
+      "file": "assets/fonts/D2Coding-OFL.txt",
+      "kind": "license",
+      "family": "D2Coding",
+      "version": "1.3.2",
+      "license": "OFL-1.1",
+      "sourceUrl": "https://cdn.jsdelivr.net/gh/Joungkyun/font-d2coding@1.3.2/License",
+      "provenance": "D2Coding webfont package OFL text.",
+      "bytes": 4006,
+      "sha256": "5755b8a0eefddc5e728b1d1090a08fbfef9656baed3104644cca7f86d112530e"
+    },
+    {
+      "id": "d2coding-notice",
+      "file": "assets/fonts/D2Coding-NOTICE.md",
+      "kind": "notice",
+      "family": "D2Coding",
+      "version": "1.3.2",
+      "license": "OFL-1.1",
+      "sourceUrl": "https://cdn.jsdelivr.net/gh/Joungkyun/font-d2coding@1.3.2/README.md",
+      "provenance": "D2Coding webfont README with NAVER copyright notice and webfont provenance.",
+      "bytes": 3832,
+      "sha256": "5c02303dadbca3490bd65edc94863be64667de6a4985f836b6c7e7365fc42dbd"
+    }
+  ]
+}

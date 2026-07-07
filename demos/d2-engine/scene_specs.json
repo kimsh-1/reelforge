@@ -1,0 +1,190 @@
+{
+  "version": "1.0.0",
+  "projectId": "demo-d2-engine",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "[DRAFT] 엔진은 HTML 문서를 영상 프레임의 원본 상태로 다룹니다.",
+      "narration_tts": "[DRAFT] 엔진은 HTML 문서를 영상 프레임의 원본 상태로 다룹니다.",
+      "altText": "HTML 상태와 렌더 프레임이 좌우로 연결되어 비교되는 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "HTML = 프레임 원본",
+      "items": ["HTML DOM", "렌더 프레임"],
+      "values": ["상태 원본", "캡처 결과"],
+      "unit": "관계",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand mood, abstract browser DOM layers transforming into a clean video frame grid, deterministic rendering lab, matte charcoal with signal green and amber accents, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.05,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "[DRAFT] 같은 입력과 같은 시각을 주면 seek 결과는 동일한 프레임으로 돌아옵니다.",
+      "narration_tts": "[DRAFT] 같은 입력과 같은 시각을 주면 seek 결과는 동일한 프레임으로 돌아옵니다.",
+      "altText": "하나의 시각 표시가 동일한 프레임 결과 두 개로 반복 확인되는 장면.",
+      "layout": "statistic",
+      "mood": "dramatic",
+      "reveal": "count_up",
+      "emphasis": "number",
+      "headline": "Seek 결정론",
+      "items": ["입력 세트", "프레임 결과"],
+      "values": [1, 1],
+      "unit": "일치",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "[DRAFT] 각 씬은 서브컴포지션으로 분리되어 전체 타임라인에 안정적으로 꽂힙니다.",
+      "narration_tts": "[DRAFT] 각 씬은 서브컴포지션으로 분리되어 전체 타임라인에 안정적으로 꽂힙니다.",
+      "altText": "여러 서브컴포지션 블록이 하나의 긴 타임라인에 정렬되는 장면.",
+      "layout": "compare",
+      "mood": "suspense",
+      "reveal": "parallel",
+      "emphasis": "sequence",
+      "headline": "씬 = 서브컴포지션",
+      "items": ["개별 씬", "전체 타임라인"],
+      "values": ["독립 렌더", "순서 결합"],
+      "unit": "구조",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand mood, modular scene blocks docking into a single precise timeline rail, technical animation blueprint feel, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": "[DRAFT] 음성 길이와 단어 위치는 장면 길이를 계산하는 기준 데이터가 됩니다.",
+      "narration_tts": "[DRAFT] 음성 길이와 단어 위치는 장면 길이를 계산하는 기준 데이터가 됩니다.",
+      "altText": "단어 위치가 시간축 위에서 시작, 진행, 종료 지점으로 이어지는 장면.",
+      "layout": "line",
+      "mood": "contemplative",
+      "reveal": "build_up",
+      "emphasis": "sequence",
+      "headline": "단어 타이밍 기준선",
+      "items": ["시작", "단어 진행", "장면 종료"],
+      "values": [0, 50, 100],
+      "unit": "%",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": "[DRAFT] 계약 파일은 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 갈라집니다.",
+      "narration_tts": "[DRAFT] 계약 파일은 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 갈라집니다.",
+      "altText": "계약 파일이 컴파일러를 통과해 두 개의 산출 흐름으로 분기되는 장면.",
+      "layout": "compare",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "contrast",
+      "headline": "계약에서 렌더로",
+      "items": ["scene_specs", "render-manifest", "HTML build"],
+      "values": ["작성 계약", "렌더 계약", "읽기 전용"],
+      "unit": "계층",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": "[DRAFT] 게이트는 스키마, 해시, 프레임 검사를 묶어 재현성을 확인합니다.",
+      "narration_tts": "[DRAFT] 게이트는 스키마, 해시, 프레임 검사를 묶어 재현성을 확인합니다.",
+      "altText": "세 개의 검증 레일이 하나의 재현성 표시로 합쳐지는 장면.",
+      "layout": "statistic",
+      "mood": "triumphant",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "검증 레일 3개",
+      "items": ["스키마", "해시", "프레임"],
+      "values": [1, 1, 1],
+      "unit": "검사",
+      "source": "briefs/T-demo-videos.md#D2",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "crossfade",
+      "duration": 0.25
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "slide_left",
+      "duration": 0.25
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "wipe_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "slide_right",
+      "duration": 0.25
+    }
+  ]
+}

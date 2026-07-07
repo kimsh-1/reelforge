@@ -19,6 +19,18 @@ import {
   emitDuckingTimeline
 } from "./audio-duck.mjs";
 import { blockHostHtml, blockVariablesForScene, resolveBlock } from "./blocks.mjs";
+import {
+  blockFrameHtml,
+  canvasOverrideCss,
+  classForCanvasOverrides,
+  cssVarsForFormat,
+  formatOverridesForManifest,
+  formatSpec,
+  patchSubtitleCssForFormat,
+  resolveCanvasOverrides,
+  resolveCompileFormat,
+  tokensForFormat
+} from "./formats.mjs";
 import { runRenderLint } from "./render-lint.mjs";
 import { staticSubtitleForScene, subtitleHookData } from "./subtitles.mjs";
 import { buildTiming } from "./timing.mjs";
@@ -29,8 +41,6 @@ import {
 } from "./transitions.mjs";
 import {
   DEFAULT_FPS,
-  DEFAULT_HEIGHT,
-  DEFAULT_WIDTH,
   GENERATED_COMMENT,
   GSAP_CDN,
   asArray,
@@ -260,10 +270,10 @@ function revealTween(scene) {
   return base;
 }
 
-function headlineFallbackHtml({ scene, timing }) {
+function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
   return `        <main
           id="${scene.sceneId}-content"
-          class="clip scene-content"
+          class="clip scene-content${classForCanvasOverrides(canvasOverrides)}"
           data-start="0"
           data-duration="${timing.durationSec}"
           data-track-index="2"
@@ -275,15 +285,17 @@ function headlineFallbackHtml({ scene, timing }) {
         </main>`;
 }
 
-function sceneHtml({ scene, timing, tokens, block }) {
+function sceneHtml({ scene, timing, tokens, block, renderFormat }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
   const foreground = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
   const muted = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.mutedText : "#CBD5E1";
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
   const variables = blockVariablesForScene({ scene, tokens });
-  const blockHost = blockHostHtml({ scene, timing, block, variables });
-  const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing });
+  const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
+  const blockHost = block.kind === "block" ? blockFrameHtml({ sceneId: scene.sceneId, innerHtml: rawBlockHost }) : "";
+  const canvasOverrides = resolveCanvasOverrides(scene, renderFormat.format);
+  const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
   const tween = revealTween(scene);
 
@@ -292,18 +304,19 @@ function sceneHtml({ scene, timing, tokens, block }) {
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=${DEFAULT_WIDTH}, height=${DEFAULT_HEIGHT}" />
+    <meta name="viewport" content="width=${renderFormat.width}, height=${renderFormat.height}" />
     <title>ReelForge ${htmlEscape(scene.sceneId)}</title>
       <style>
 ${fontFaceCss(tokens)}
         #root {
           position: absolute;
           inset: 0;
-          width: ${DEFAULT_WIDTH}px;
-          height: ${DEFAULT_HEIGHT}px;
+          width: ${renderFormat.width}px;
+          height: ${renderFormat.height}px;
           overflow: hidden;
           color: ${foreground};
           font-family: ${cssString(tokens.fonts.body.family)}, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          ${cssVarsForFormat(renderFormat)}
         }
         .scene-bg {
           position: absolute;
@@ -332,7 +345,22 @@ ${fontFaceCss(tokens)}
         .scene-content {
           display: grid;
           place-items: center;
-          padding: 96px 136px 184px;
+          padding: var(--rf-scene-padding-top) var(--rf-scene-padding-x) var(--rf-scene-padding-bottom);
+        }
+        .block-format-frame {
+          position: absolute;
+          left: var(--rf-block-left);
+          top: var(--rf-block-top);
+          width: var(--rf-reference-width);
+          height: var(--rf-reference-height);
+          transform: translate(-50%, -50%) scale(var(--rf-block-scale));
+          transform-origin: center center;
+          overflow: visible;
+        }
+        .block-format-frame > .block-host {
+          inset: 0;
+          width: 100%;
+          height: 100%;
         }
         .headline-panel {
           width: min(1420px, 100%);
@@ -368,14 +396,15 @@ ${fontFaceCss(tokens)}
           overflow-wrap: anywhere;
         }
 ${subtitleCss(tokens)}
+${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
       </style>
   </head>
   <body>
       <div
         id="root"
         data-composition-id="${scene.sceneId}"
-        data-width="${DEFAULT_WIDTH}"
-        data-height="${DEFAULT_HEIGHT}"
+        data-width="${renderFormat.width}"
+        data-height="${renderFormat.height}"
         data-duration="${timing.durationSec}"
       >
         <section
@@ -422,7 +451,7 @@ ${content}
 `;
 }
 
-function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, tokens }) {
+function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, tokens, renderFormat }) {
   const incomingFade = new Set(
     transitions
       .filter((transition) => transition.resolvedType === "crossfade" && transition.durationFrames > 0)
@@ -442,8 +471,8 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
         data-start="${sceneTiming.startSec}"
         data-duration="${sceneTiming.slotDurationSec}"
         data-track-index="${index + 1}"
-        data-width="${DEFAULT_WIDTH}"
-        data-height="${DEFAULT_HEIGHT}"
+        data-width="${renderFormat.width}"
+        data-height="${renderFormat.height}"
         style="opacity: ${initialOpacity}; z-index: ${index + 1};"
       ></div>`);
     audio.push(`      <audio
@@ -475,22 +504,22 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=${DEFAULT_WIDTH}, height=${DEFAULT_HEIGHT}" />
+    <meta name="viewport" content="width=${renderFormat.width}, height=${renderFormat.height}" />
     <title>ReelForge ${htmlEscape(projectId)}</title>
     <script src="${GSAP_CDN}"></script>
     <style>
       html,
       body {
         margin: 0;
-        width: ${DEFAULT_WIDTH}px;
-        height: ${DEFAULT_HEIGHT}px;
+        width: ${renderFormat.width}px;
+        height: ${renderFormat.height}px;
         overflow: hidden;
         background: ${bgColor};
       }
       #root {
         position: relative;
-        width: ${DEFAULT_WIDTH}px;
-        height: ${DEFAULT_HEIGHT}px;
+        width: ${renderFormat.width}px;
+        height: ${renderFormat.height}px;
         overflow: hidden;
       }
       #root > div[data-composition-src] {
@@ -506,8 +535,8 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
     <div
       id="root"
       data-composition-id="main"
-      data-width="${DEFAULT_WIDTH}"
-      data-height="${DEFAULT_HEIGHT}"
+      data-width="${renderFormat.width}"
+      data-height="${renderFormat.height}"
       data-start="0"
       data-duration="${timing.totalDurationSec}"
     >
@@ -558,10 +587,10 @@ function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
   };
 }
 
-function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm, compilerVersion }) {
+function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm, compilerVersion, renderFormat }) {
   return {
     meta: {
-      resolution: { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT },
+      resolution: { width: renderFormat.width, height: renderFormat.height },
       fps: timing.fps,
       videoTheme: videoTheme(tokens),
       designTokens: tokens,
@@ -604,8 +633,14 @@ function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, token
           duckingKeyframes: bgm.duckingKeyframes
         }
       : null,
-    formatOverrides: {}
+    formatOverrides: formatOverridesForManifest({ scenes, timing, fps: timing.fps })
   };
+}
+
+function patchSceneSubtitleForFormat({ tmpDir, sceneId, subtitle }) {
+  const scenePath = path.join(tmpDir, "scenes", `scene-${sceneId}.html`);
+  const html = readFileSync(scenePath, "utf8");
+  writeFileEnsured(scenePath, patchSubtitleCssForFormat(html, subtitle));
 }
 
 function writeManifestViaVf({ repoRoot, manifestPath, manifest }) {
@@ -643,8 +678,10 @@ export function compileProject({
   projectDir,
   presetPath = null,
   fps = DEFAULT_FPS,
-  runLint = true
+  runLint = true,
+  format = null
 }) {
+  const selectedFormat = formatSpec(resolveCompileFormat(format));
   const absoluteProjectDir = path.resolve(repoRoot, projectDir);
   const sceneSpecsPath = resolveProjectFile(absoluteProjectDir, "scene_specs.json");
   const audioMetaPath = resolveProjectFile(absoluteProjectDir, "audio_meta.json");
@@ -665,7 +702,8 @@ export function compileProject({
   resetDir(tmpDir);
 
   try {
-    const tokens = copiedDesignTokens({ repoRoot, buildDir: tmpDir, presetPath: absolutePresetPath, tokens: presetTokens });
+    const baseTokens = copiedDesignTokens({ repoRoot, buildDir: tmpDir, presetPath: absolutePresetPath, tokens: presetTokens });
+    const tokens = tokensForFormat(baseTokens, selectedFormat.format);
     const audioAssets = copiedAudioAssets({ projectDir: absoluteProjectDir, buildDir: tmpDir, audioScenes: audioMeta.scenes });
     const timing = buildTiming({ scenes, audioByScene, transitions: specs.transitions ?? [], fps });
     const bgm = buildBgm({ specs, tmpDir, scenes, audioMeta, timing });
@@ -678,7 +716,7 @@ export function compileProject({
       blockByScene.set(scene.sceneId, block);
       writeFileEnsured(
         path.join(tmpDir, "scenes", `scene-${scene.sceneId}.html`),
-        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block })
+        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat })
       );
     }
 
@@ -700,7 +738,7 @@ export function compileProject({
 
     writeFileEnsured(
       path.join(tmpDir, "index.html"),
-      indexHtml({ projectId: specs.projectId, scenes, timing, audioAssets, bgm, transitions, tokens })
+      indexHtml({ projectId: specs.projectId, scenes, timing, audioAssets, bgm, transitions, tokens, renderFormat: selectedFormat })
     );
 
     const manifest = buildManifest({
@@ -712,8 +750,12 @@ export function compileProject({
       tokens,
       transitions,
       bgm,
-      compilerVersion
+      compilerVersion,
+      renderFormat: selectedFormat
     });
+    for (const scene of scenes) {
+      patchSceneSubtitleForFormat({ tmpDir, sceneId: scene.sceneId, subtitle: tokens.subtitle });
+    }
     const manifestRel = normalizeRelPath(path.relative(repoRoot, path.join(tmpDir, "render-manifest.json")));
     const writeResult = writeManifestViaVf({ repoRoot, manifestPath: manifestRel, manifest });
 
@@ -739,6 +781,7 @@ export function compileProject({
       },
       timing: {
         fps,
+        format: selectedFormat.format,
         totalFrames: timing.totalFrames,
         totalDurationSec: timing.totalDurationSec,
         expectedFrameSum: scenes.reduce((sum, scene) => sum + timing.sceneTimings.get(scene.sceneId).durationFrames, 0)

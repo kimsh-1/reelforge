@@ -3,67 +3,150 @@
 <h1 align="center">ReelForge</h1>
 
 <p align="center">
-  <a href="#"><img alt="CI placeholder" src="https://img.shields.io/badge/CI-placeholder-lightgrey"></a>
+  <a href="#"><img alt="Gate replay" src="https://img.shields.io/badge/gates-local%20replay-blue"></a>
   <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
-  <a href="#"><img alt="Docker placeholder" src="https://img.shields.io/badge/docker-placeholder-lightgrey"></a>
+  <a href="#"><img alt="README sync" src="https://img.shields.io/badge/readme--sync-required-blue"></a>
 </p>
 
-reelforge は、短いブリーフからナレーション契約、コンパイル、レンダー、ゲート検証までを監査可能な一本の経路で扱う決定論的な動画制作リポジトリです。デモ動画や大きなメディアはコミットせず、証拠と研究資料だけを追跡します。
+ReelForge は、ブリーフ、ナレーション、シーン契約、HTML コンパイル、ローカルレンダー、ゲートレポートを監査可能な一本の経路にまとめる **Agent-native AI video factory** です。デフォルトスタックはキー不要かつ無料で再現できることを優先し、`hyperframes@0.7.26`、ローカル Chrome/ffmpeg、mock またはキー不要アダプターを使います。韓国語 README が正本で、この日本語版は同じセクションキーに同期します。
 
 ## [overview] プロジェクト概要
 
-reelforge は韓国語ナレーションを中心に、横長、縦長、正方形の動画生成を目標にします。レンダーエンジンは `hyperframes@0.7.26` に正確に固定し、編集は HTML を直接変更せず、`scene_specs` などの契約ファイルを変更して再コンパイルする単一経路で行います。
+ReelForge は、エージェントが直接編集し検証しやすい動画制作リポジトリです。ユーザーは `scene_specs.json` にシーン意図とナレーションを書き、パイプラインは TTS、画像、コンパイル、レンダー、ゲート検証を順に実行します。生成 HTML はビルド成果物なので、直接編集せず契約ファイルを変更して再コンパイルします。
 
-この T3 コミットは完成品ではなく、リポジトリの正本です。研究文書 00~10、P0 PoC の証拠、ゲートランナーの骨格、ライセンス方針、Codex 実行規則を一つの場所へ移管します。
+現時点で実証済みの範囲は P0~P3 です。P4~P6 はまだ完成機能ではなくロードマップです。特に P0c は単語抽出、単調性、音声長の整合、静的な韓国語レンダーだけを証明しており、単語単位字幕レンダー品質を証明したとは書きません。
 
-## [architecture] 5層アーキテクチャ概要
+## [architecture] アーキテクチャ
 
-| 層 | 役割 |
-|---|---|
-| L0 契約 | `scene_specs`、`audio_meta`、`design-tokens`、`versions`、`render-manifest` を真実のソースにします。 |
-| L1 パイプライン | ブリーフを台本、シーン、音声、画像、コンパイラ入力へ変換します。 |
-| L2 コンパイラ | 契約を読み、決定論的な hyperframes HTML と独自の render-lint 結果を生成します。 |
-| L3 スタジオ | adapter-hosted プレビューとスキーマ駆動の編集パネルを提供します。 |
-| L4 ゲート/パッケージング | `vf gate`、CI、ゴールデンフィクスチャ、回帰検証、最終スキルパッケージを担当します。 |
+```mermaid
+flowchart LR
+  Brief[Brief] --> SceneSpecs[scene_specs.json]
+  SceneSpecs --> Pipeline[vf pipeline run]
+  Pipeline --> TTS[TTS/audio_meta]
+  Pipeline --> Images[image assets/versions]
+  TTS --> Compiler[vf compile]
+  Images --> Compiler
+  Compiler --> Build[build/index.html + render-manifest]
+  Build --> Render[hyperframes render]
+  Render --> Gate[vf gate / project gate report]
+  Gate --> Reports[reports/*.json]
+```
 
-## [p0-results] P0 実証結果
-
-| ゲート | 結果 | 移管された証拠 |
+| 層 | 責務 | 現在の状態 |
 |---|---|---|
-| P0a | 通過 | 環境 doctor、5秒 MP4、yuv420p、faststart、決定論的再レンダー記録 |
-| P0b | 通過 | 3シーンのマウント、シーン単独レンダー、orphan レンダー成功の明示期待値、本文フレーム一致 |
-| P0c | 通過 | edge-tts の単語出力、CJK フォントレンダー、OCR 陽性対照、20行ストレス実行 |
-| P0d | 通過 | ナレーション編集、sourceHash 変化、選択的 re-TTS、全体再コンパイル、SSE 1回観測 |
+| L0 契約 | `scene_specs`、`audio_meta`、`design-tokens`、`versions`、`render-manifest` のスキーマと意味検証 | P1 でネイティブゲート化 |
+| L1 パイプライン | TTS、画像、コンパイル、レンダー、ゲートの順序と再開状態 | P3 で mock/real プロファイルを実証 |
+| L2 コンパイラ | 契約を決定論的な HyperFrames HTML と `render-manifest` に変換 | P2 で 8 ブロックとトランジションを実証 |
+| L3 Studio | adapter-hosted プレビューとスキーマ駆動の編集面 | P4 ロードマップ、現サーバー表面は実験的 |
+| L4 ゲート/パッケージング | レポート生成、レポート検証、回帰証拠、スキルパッケージング | P0~P3 レポートあり、P6 パッケージング予定 |
 
-正誤表の注記: P0c は単語同期字幕レンダーをまだ証明していません。現時点で証明済みなのは、words 生成、単調性、音声長の整合、静的な韓国語テキストレンダーです。
+## [proof-results] P0~P3 実証結果
 
-## [free-stack] 無料スタック
+下表は `git log --oneline` と現在の `reports/*.json` から読んだ値だけを書いています。レポートは 2026-07-07 KST 時点のワークツリーにあるファイルであり、P4~P6 完了を意味しません。
 
-デフォルト経路はキー不要かつ無料です。韓国語 TTS は `edge-tts` を既定候補にし、文字起こし/整列は将来のゲートで `faster-whisper` に固定します。画像は codex-imagegen とキー不要のストックフォールバックを前提にし、BGM は検証済みの CC0 または CC-BY 出典だけを許可します。
-
-禁止項目は `THIRD_PARTY_LICENSES.md` に固定されています。MusicGen、出典不明の BGM、再配布できない SFX、非商用ウェイトの TTS はデフォルトスタックから除外します。
-
-## [roadmap] ロードマップ P1~P6
-
-- P1: 5種類の契約スキーマ、検証器、ネガティブフィクスチャスイート。
-- P2: 音声非依存コンパイラ、8種類のシーンブロック、トランジション、render-lint。
-- P3: TTS、画像、バージョン、再開可能なパイプライン、実 TTS スモーク。
-- P4: Studio adapter、フォーム生成器、編集影響クラス、同時編集処理。
-- P5: 長尺動画メモリゲート、ゴールデン回帰、視覚判定ゲート。
-- P6: スキルパッケージング、マルチフォーマット、deck-factory 連携、環境間ハッシュ。
+| 段階 | git 根拠 | reports 根拠 | 実測値 | 境界 |
+|---|---|---|---|---|
+| P0 PoC 移行 | `756a8f1 init`、通過済み P0 PoC 資産の移行 | `p0a`~`p0d` 4/4 PASS、checks 23/23 | P0a 5.0s H.264 yuv420p MP4 74,557 bytes、P0b scene2 150/150 フレームハッシュ一致と orphan render exit 0、P0c edge-tts words 10 と 20/20 stress 成功、P0d selective re-TTS 後 s03 が 355 フレーム移動し SSE 1 回観測 | P0c は word-level subtitle render 品質の証明ではない |
+| P1 契約/ゲート | `c5096c1 P1 complete`、negative 57/57 と U-3 20/20 拒否に言及 | L0 レポート 4/4 PASS、checks 8/8 | 5 スキーマをコンパイル、契約ファイル 8 個を意味検証、asset ref 26 個を確認、duration intrusion 違反 0 個 | Studio と長尺動画回帰は含まない |
+| P2 コンパイラ | `f085b91 P2 complete`、`06aabb3` が full-8types 33.600s render に言及 | P2 レポート群 7/7 PASS、checks 70/70 | transition matrix 24 cases、8 ブロックレイアウト、PNG snapshot 24 個、full-8types MP4 10,895,535 bytes と 33.6s、determinism framemd5 314/314 一致、scene solo body 91/91 一致 | 美的品質判定は P5 領域 |
+| P3 パイプライン | `0c800e6 P3 complete`、8 ゲート + U-3 登録に言及 | P3 レポート群 10/10 PASS、checks 53/53 | mock E2E `out/main.mp4` 877,606 bytes、real edge-tts 1 scene 4.416s/6 words、version lifecycle node test 8/8、reroll は gen_01 を保持し gen_02 を選択、kill/resume 完了、U-3 misuse 11/11 通過 | edge-tts は非公式経路で商用権利根拠ではない |
 
 ## [installation] インストール
+
+必要要件は Node.js 22、ffmpeg/ffprobe、Chrome です。`package.json` は現在 `>=20` を許可していますが、新しい開発環境は Node 22 に合わせます。HyperFrames は必ず `0.7.26` に固定し、`npx hyperframes@latest` は使いません。
 
 ```bash
 cd ~/reelforge
 npm ci
+node --version
+ffmpeg -version
+ffprobe -version
+./node_modules/.bin/hyperframes doctor
 npm run lint
-npm run gate
 node bin/vf gate list
 ```
 
-レンダーゲートを実際に再実行する場合だけ、`node bin/vf gate p0b --execute` のように実行します。生成動画は `out/` 配下に置き、コミットしません。
+P0 evidence replay が高速な検証経路です。レンダーを実際に再実行する場合だけ、`node bin/vf gate p0b --execute` のように明示します。
 
-## [disclaimer] ライセンスと免責
+## [quickstart] クイックスタート
 
-コードは Apache-2.0 です。メディア、フォント、BGM、SFX はそれぞれのライセンスに従い、生成物の利用責任はユーザーにあります。有料アダプターキーはすべて任意であり、デフォルト動作は認証情報を要求してはいけません。
+最速のローカル実験は、既存 fixture をプロジェクトディレクトリへコピーする方法です。
+
+```bash
+mkdir -p tmp/demo
+cp fixtures/golden-specs/minimal-3scene/scene_specs.json tmp/demo/scene_specs.json
+node bin/vf pipeline run tmp/demo --profile mock
+```
+
+新規プロジェクトの最小 `scene_specs.json` は次の形から始められます。mock プロファイルは `audio_meta.json`、`versions.json`、`build/`、`out/main.mp4`、`reports/pipeline-gate-report.json` を生成します。
+
+```json
+{
+  "version": "1.0.0",
+  "projectId": "demo-reel",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "오늘의 핵심 지표를 짧게 요약합니다.",
+      "narration_tts": "오늘의 핵심 지표를 짧게 요약합니다.",
+      "altText": "짙은 배경 위에 핵심 지표 제목이 보이는 장면.",
+      "layout": "headline_only",
+      "mood": "informative",
+      "reveal": "fade_in",
+      "emphasis": "keyword",
+      "headline": "핵심 지표",
+      "items": [],
+      "values": [],
+      "unit": "",
+      "source": "demo",
+      "visual_kind": "none",
+      "kenBurns": { "enabled": false, "zoomFactor": 1, "zoomDirection": "in", "panDirection": "none" },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": []
+}
+```
+
+## [gates] ゲート体系
+
+`vf gate` は supervisor report 経路です。レポートは `reports/<id>-report.json` に書かれ、`gate`、`pass`、`checks`、`inputSet`、`canonicalInputMerkleHash`、`evidenceHash`、`gateScriptHash`、`gitCommit`、`command`、`exitCode`、`startedAt`、`finishedAt` を持つ必要があります。
+
+| コマンド | 用途 |
+|---|---|
+| `node bin/vf gate list` | 登録ゲートと fast/full プロファイルを確認 |
+| `npm run gate` | 移行済み P0 証拠と fast プロファイルゲートを replay |
+| `npm run gate:full` | render を含む full プロファイルを replay |
+| `node bin/vf gate p0b --execute` | 特定 PoC ゲートを実再実行 |
+| `node bin/vf verify-report reports/p0a-report.json` | レポートフィールド、ハッシュ、freshness を再計算 |
+
+## [free-stack] FREE-STACK 要約
+
+| 領域 | デフォルト選択 | キー必要 | ライセンス/注意 |
+|---|---|---|---|
+| レンダー | `hyperframes@0.7.26` + ローカル Chrome/ffmpeg | なし | Apache-2.0、厳密固定 |
+| TTS | mock TTS、任意の `edge-tts` real smoke | なし | `edge-tts` ライブラリは LGPLv3 だが MS 非公式経路なので商用権利根拠にはしない |
+| フォント | Pretendard Variable、D2Coding woff2 | なし | OFL 1.1、ライセンスファイルと SHA-256 同梱、RFN フォントは公式原型のみ |
+| 画像 | mock 画像または runner handoff | なし | 外部 stock/BGM は出典と再配布権利が確定するまでコミット禁止 |
+| BGM/SFX | デフォルトバンドルなし | なし | 検証済み CC0/CC-BY のみ可、YAL/Pixabay standalone 再配布は禁止 |
+
+フォントは `node scripts/fetch-fonts.mjs` で取得し、`assets/fonts/font-checksums.json` にバイト数と SHA-256 を記録します。
+
+## [usage] CLI ドキュメント
+
+完全な CLI リファレンスは `docs/usage.md` にあります。主要経路は `node bin/vf compile <projectDir>`、`node bin/vf pipeline run <projectDir> --profile mock`、`node bin/vf gate --all --profile full --replay`、`node bin/vf verify-report <report.json>`、`node bin/vf studio <projectDir> --port 3000` です。Studio のセキュリティと編集 UX は P4 作業なので、現在のコマンドはローカル実験表面として扱います。
+
+## [roadmap] ロードマップ
+
+| フェーズ | 状態 | 目標 |
+|---|---|---|
+| P4 | ロードマップ | Studio adapter、スキーマフォーム、編集影響クラス、同時編集 |
+| P5 | ロードマップ | 長尺動画メモリ、ゴールデン回帰、視覚判定ゲート |
+| P6 | ロードマップ | スキルパッケージング、マルチフォーマット、deck-factory 連携、環境間ハッシュ |
+
+P4~P6 は、この README では完成した製品機能として記述しません。完了表示は対応ゲートとレポートが存在してから追加します。
+
+## [license-disclaimer] ライセンスと免責
+
+コードは Apache-2.0 です。フォント、音声、画像、TTS 出力はそれぞれのライセンスとサービス条件に従います。このリポジトリは法律助言を提供しません。公開配布または商用利用の前に、`THIRD_PARTY_LICENSES.md` とプロジェクト別 provenance を確認してください。大きな生成メディアと権利未確認の出力はコミットしません。

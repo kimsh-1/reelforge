@@ -1,0 +1,190 @@
+{
+  "version": "1.0.0",
+  "projectId": "demo-d1-usage",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "narration": "[DRAFT] 먼저 터미널에서 의존성을 설치하고 새 작업 폴더를 엽니다.",
+      "narration_tts": "[DRAFT] 먼저 터미널에서 의존성을 설치하고 새 작업 폴더를 엽니다.",
+      "altText": "터미널과 프로젝트 폴더가 나란히 보이며 첫 단계가 시작되는 장면.",
+      "layout": "numbered",
+      "mood": "informative",
+      "reveal": "cascade",
+      "emphasis": "sequence",
+      "headline": "작업 시작",
+      "items": ["의존성 설치", "폴더 확인", "새 작업 시작"],
+      "values": [1, 2, 3],
+      "unit": "순서",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "narration": "[DRAFT] 브리프는 한 줄로 충분하게, 원하는 결과와 톤만 적습니다.",
+      "narration_tts": "[DRAFT] 브리프는 한 줄로 충분하게, 원하는 결과와 톤만 적습니다.",
+      "altText": "편집 콘솔 중앙에 짧은 브리프 입력 카드가 강조된 장면.",
+      "layout": "quote",
+      "mood": "contemplative",
+      "reveal": "typewriter",
+      "emphasis": "quote",
+      "headline": "한 줄 브리프",
+      "items": ["30초 제품 소개 영상을 차분한 톤으로"],
+      "values": ["사용자 입력 예시"],
+      "unit": "문장",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand mood, precise editorial control room, a clean prompt entry surface represented as abstract empty panels, matte charcoal desk, signal green and warm amber accents, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.06,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "narration": "[DRAFT] 확인 질문에는 대상, 길이, 화면 비율처럼 빠진 값만 채웁니다.",
+      "narration_tts": "[DRAFT] 확인 질문에는 대상, 길이, 화면 비율처럼 빠진 값만 채웁니다.",
+      "altText": "세 개의 빈 설정 항목이 체크 대기 상태로 정렬된 장면.",
+      "layout": "list",
+      "mood": "informative",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "빈 값만 채우기",
+      "items": ["대상", "길이", "화면 비율"],
+      "values": ["누구에게", "몇 초", "가로 또는 세로"],
+      "unit": "입력",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "narration": "[DRAFT] 초안 장면을 훑고 고칠 문장만 골라 바로 수정합니다.",
+      "narration_tts": "[DRAFT] 초안 장면을 훑고 고칠 문장만 골라 바로 수정합니다.",
+      "altText": "초안 장면 묶음 중 하나의 문장 카드만 선택되어 비교되는 장면.",
+      "layout": "compare",
+      "mood": "suspense",
+      "reveal": "split_reveal",
+      "emphasis": "contrast",
+      "headline": "초안 확인",
+      "items": ["그대로 둘 장면", "문장만 고칠 장면"],
+      "values": [4, 1],
+      "unit": "개",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "chart",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "narration": "[DRAFT] 승인 후에는 진행 로그를 보며 완료 신호가 나올 때까지 기다립니다.",
+      "narration_tts": "[DRAFT] 승인 후에는 진행 로그를 보며 완료 신호가 나올 때까지 기다립니다.",
+      "altText": "진행 레일과 완료 표시가 차례로 켜지는 대기 장면.",
+      "layout": "numbered",
+      "mood": "urgent",
+      "reveal": "build_up",
+      "emphasis": "sequence",
+      "headline": "승인 후 대기",
+      "items": ["승인", "진행 로그 확인", "완료 신호 확인"],
+      "values": [1, 2, 3],
+      "unit": "순서",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "generate_image",
+      "imageAsset": {
+        "prompt": "ReelForge brand mood, deterministic progress rails glowing across a dark production dashboard, empty status lights, clean mechanical rhythm, no visible text, no letters, no numbers, no logos, no watermark",
+        "placement": "background"
+      },
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.04,
+        "zoomDirection": "in",
+        "panDirection": "left"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "narration": "[DRAFT] 마지막에는 같은 폴더에서 최종 영상과 임베드용 자료를 확인합니다.",
+      "narration_tts": "[DRAFT] 마지막에는 같은 폴더에서 최종 영상과 임베드용 자료를 확인합니다.",
+      "altText": "완료 폴더 안에 영상 파일과 문서 조각이 정돈된 마무리 장면.",
+      "layout": "list",
+      "mood": "triumphant",
+      "reveal": "stagger",
+      "emphasis": "count",
+      "headline": "산출 확인",
+      "items": ["최종 영상", "README 조각", "임베드 위치"],
+      "values": ["확인", "확인", "확인"],
+      "unit": "산출",
+      "source": "briefs/T-demo-videos.md#D1",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1,
+        "zoomDirection": "in",
+        "panDirection": "none"
+      },
+      "subtitleMode": "karaoke"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "slide_left",
+      "duration": 0.2
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "wipe_right",
+      "duration": 0.25
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "slide_right",
+      "duration": 0.2
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "crossfade",
+      "duration": 0.25
+    }
+  ]
+}
