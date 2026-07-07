@@ -4,6 +4,7 @@ import { loadSceneSpecsSchema } from "./schema-loader.js";
 import { createPreviewController } from "./preview.js";
 
 const PREVIEW_RELOAD_EVENTS = new Set(["compile.completed", "file.changed", "tts.completed"]);
+const TERMINAL_JOB_STATUSES = new Set(["succeeded", "failed"]);
 
 function createElement(documentRef, tagName, attrs = {}, children = []) {
   const node = documentRef.createElement(tagName);
@@ -21,13 +22,6 @@ function createElement(documentRef, tagName, attrs = {}, children = []) {
     node.append(child);
   }
   return node;
-}
-
-function applyPatch(scene, patch) {
-  for (const [field, value] of Object.entries(patch)) {
-    if (value === undefined) delete scene[field];
-    else scene[field] = value;
-  }
 }
 
 function currentScene(state) {
@@ -121,16 +115,19 @@ function renderStatus(documentRef, refs, state, api) {
   );
 }
 
-function renderSceneList(documentRef, refs, state, selectScene) {
+function renderSceneList(documentRef, refs, state, selectScene, api) {
   refs.sceneList.replaceChildren();
   for (const scene of state.specs?.scenes ?? []) {
     const selected = scene.sceneId === state.selectedSceneId;
-    const card = createElement(documentRef, "button", {
-      type: "button",
+    const card = createElement(documentRef, "div", {
       className: `scene-card${selected ? " is-selected" : ""}`,
       dataset: { sceneId: scene.sceneId }
     });
-    card.append(
+    const main = createElement(documentRef, "button", {
+      type: "button",
+      className: "scene-card-main"
+    });
+    main.append(
       createElement(documentRef, "div", { className: "thumb" }, [
         createElement(documentRef, "span", { textContent: String(scene.sceneNumber ?? "") })
       ]),
@@ -139,7 +136,29 @@ function renderSceneList(documentRef, refs, state, selectScene) {
         createElement(documentRef, "span", { className: "layout-badge", textContent: scene.layout ?? "layout" })
       ])
     );
-    card.addEventListener("click", () => selectScene(scene.sceneId));
+    main.addEventListener("click", () => selectScene(scene.sceneId));
+    card.append(main);
+
+    const renderJob = state.renderJobsByScene[scene.sceneId] ?? null;
+    const preview = state.scenePreviews[scene.sceneId] ?? null;
+    if (preview?.href) {
+      card.append(
+        createElement(documentRef, "a", {
+          className: "scene-preview-link",
+          href: preview.href,
+          target: "_blank",
+          rel: "noreferrer",
+          textContent: "프리뷰"
+        })
+      );
+    } else if (renderJob) {
+      card.append(
+        createElement(documentRef, "span", {
+          className: `scene-render-status tone-${renderJob.status}`,
+          textContent: renderJob.status === "failed" ? "렌더 실패" : "렌더 중"
+        })
+      );
+    }
     refs.sceneList.append(card);
   }
 }
@@ -155,7 +174,8 @@ function renderImpact(documentRef, refs, state, performAction) {
   refs.impact.append(badge);
 
   if (impact?.reason) refs.impact.append(createElement(documentRef, "span", { className: "impact-reason", textContent: impact.reason }));
-  const actions = impact?.actions ?? [];
+  const rawActions = impact?.actions ?? [];
+  const actions = rawActions.includes("pipeline:tts") ? ["pipeline:tts"] : rawActions;
   if (actions.length === 0) return;
 
   const actionGroup = createElement(documentRef, "div", { className: "action-group" });
@@ -163,7 +183,7 @@ function renderImpact(documentRef, refs, state, performAction) {
     const button = createElement(documentRef, "button", {
       type: "button",
       className: "secondary-button",
-      textContent: actionLabel(action),
+      textContent: action === "pipeline:tts" ? "TTS 재생성+재컴파일" : actionLabel(action),
       dataset: { action }
     });
     button.addEventListener("click", () => performAction(action));
@@ -320,8 +340,12 @@ export async function createStudioPanel({
     lastImpact: null,
     lastEvent: null,
     lastError: null,
-    previewReloadPending: false
+    previewReloadPending: false,
+    renderJobsByScene: {},
+    scenePreviews: {}
   };
+  const pollingJobs = new Set();
+  let closed = false;
 
   function renderRight() {
     for (const button of [refs.sceneTab, refs.transitionTab, refs.versionsTab]) {
@@ -334,7 +358,7 @@ export async function createStudioPanel({
 
   function render() {
     renderStatus(documentRef, refs, state, api);
-    renderSceneList(documentRef, refs, state, selectScene);
+    renderSceneList(documentRef, refs, state, selectScene, api);
     renderImpact(documentRef, refs, state, performAction);
     renderRight();
   }
@@ -343,6 +367,54 @@ export async function createStudioPanel({
     state.project = await api.getProject();
     state.specs = state.project.specs ?? (await api.getSpecs());
     if (!state.selectedSceneId) state.selectedSceneId = state.specs?.scenes?.[0]?.sceneId ?? null;
+    for (const job of state.project.status?.jobs ?? []) upsertJob(job);
+  }
+
+  function artifactUrl(relPath) {
+    if (!relPath) return "";
+    if (typeof api.artifactUrl === "function") return api.artifactUrl(relPath);
+    return String(relPath);
+  }
+
+  function upsertJob(job) {
+    if (!job?.id) return;
+    if (job.type !== "render" || !job.sceneId) return;
+    state.renderJobsByScene[job.sceneId] = job;
+    if (job.status === "succeeded" && job.output) {
+      state.scenePreviews[job.sceneId] = {
+        href: artifactUrl(job.output),
+        output: job.output,
+        jobId: job.id,
+        bytes: job.bytes ?? 0
+      };
+    }
+  }
+
+  function wait(ms) {
+    return new Promise((resolve) => windowRef.setTimeout?.(resolve, ms) ?? setTimeout(resolve, ms));
+  }
+
+  async function pollJob(jobId) {
+    if (!jobId || typeof api.getJob !== "function" || pollingJobs.has(jobId)) return;
+    pollingJobs.add(jobId);
+    try {
+      for (;;) {
+        if (closed) return;
+        await wait(500);
+        const payload = await api.getJob(jobId);
+        const job = payload.job ?? payload;
+        upsertJob(job);
+        renderStatus(documentRef, refs, state, api);
+        renderSceneList(documentRef, refs, state, selectScene, api);
+        if (TERMINAL_JOB_STATUSES.has(job.status)) return;
+      }
+    } catch (error) {
+      state.lastError = error;
+      state.lastImpact = { class: "E3", actions: [], reason: error.message };
+      render();
+    } finally {
+      pollingJobs.delete(jobId);
+    }
   }
 
   function selectScene(sceneId) {
@@ -360,8 +432,8 @@ export async function createStudioPanel({
     }
     try {
       const result = await api.patchScene(scene.sceneId, patch);
-      applyPatch(scene, patch);
       state.lastImpact = result;
+      await refreshProject();
       render();
     } catch (error) {
       state.lastError = error;
@@ -373,8 +445,8 @@ export async function createStudioPanel({
   async function saveTransitions(transitions) {
     try {
       const result = await api.patchTransitions(transitions);
-      state.specs.transitions = transitions;
       state.lastImpact = result;
+      await refreshProject();
       render();
     } catch (error) {
       state.lastError = error;
@@ -388,9 +460,13 @@ export async function createStudioPanel({
     try {
       if (action === "compile:scene") await api.compile({ scope: "scene", sceneId: scene?.sceneId ?? null });
       else if (action === "compile:full") await api.compile({ scope: "full" });
-      else if (action === "pipeline:tts" && scene) await api.runTts([scene.sceneId]);
+      else if (action === "pipeline:tts" && scene) {
+        const result = await api.runTts([scene.sceneId]);
+        if (result.compileJob) upsertJob(result.compileJob);
+        await refreshProject();
+      }
       state.lastEvent = { event: action, data: { status: "queued" } };
-      renderStatus(documentRef, refs, state, api);
+      render();
     } catch (error) {
       state.lastError = error;
       state.lastImpact = { class: "E3", actions: [], reason: error.message };
@@ -423,7 +499,11 @@ export async function createStudioPanel({
     const scene = currentScene(state);
     if (!scene) return;
     try {
-      await api.renderScene(scene.sceneId);
+      const result = await api.renderScene(scene.sceneId);
+      const job = result.job ?? result;
+      upsertJob(job);
+      render();
+      pollJob(job.id);
     } catch (error) {
       state.lastError = error;
       state.lastImpact = { class: "E3", actions: [], reason: error.message };
@@ -440,8 +520,10 @@ export async function createStudioPanel({
 
   const subscription = api.subscribeEvents(({ event, data }) => {
     state.lastEvent = { event, data };
+    if (event === "render.status") upsertJob(data);
     if (PREVIEW_RELOAD_EVENTS.has(event)) schedulePreviewReload();
     renderStatus(documentRef, refs, state, api);
+    if (event === "render.status") renderSceneList(documentRef, refs, state, selectScene, api);
   });
 
   await refreshProject();
@@ -457,13 +539,20 @@ export async function createStudioPanel({
     selectScene,
     saveScene,
     saveTransitions,
-    close: () => subscription.close()
+    close: () => {
+      closed = true;
+      subscription.close();
+    }
   };
 }
 
 if (globalThis.document?.getElementById("rf-app")) {
-  createStudioPanel().catch((error) => {
-    const root = globalThis.document.getElementById("rf-app");
-    root.textContent = error instanceof Error ? error.message : String(error);
-  });
+  createStudioPanel()
+    .then((panel) => {
+      globalThis.__RF_STUDIO = panel;
+    })
+    .catch((error) => {
+      const root = globalThis.document.getElementById("rf-app");
+      root.textContent = error instanceof Error ? error.message : String(error);
+    });
 }

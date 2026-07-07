@@ -12,20 +12,20 @@ import {
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { compileProject, DEFAULT_PRESET } from "../../compiler/compiler.mjs";
+import { DEFAULT_PRESET } from "../../compiler/compiler.mjs";
 import {
   isPathInsideRoot,
   normalizeRelPath,
   readJsonFile
 } from "../../compiler/utils.mjs";
 import { writeJsonViaVf } from "../../pipeline/core/io.mjs";
-import { runTtsStep } from "../../pipeline/tts/index.mjs";
 import {
   EditLockConflictError,
   acquireEditLock,
   beforeSceneSpecsWrite,
   loadVersions
 } from "../../pipeline/versions-impl/index.mjs";
+import { compileStudioProject, runStudioTtsStep } from "../loop/index.mjs";
 import { StudioEventHub } from "./events.mjs";
 import {
   assertAllowedSceneFields,
@@ -229,7 +229,8 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
   const absoluteRepoRoot = path.resolve(repoRoot);
   const absoluteProjectDir = realpathSync(path.resolve(projectDir));
   const buildDir = path.join(absoluteProjectDir, "build");
-  const panelDir = path.join(moduleDir, "panel");
+  const artifactsDir = path.join(absoluteProjectDir, "out");
+  const panelDir = path.resolve(moduleDir, "..", "panel");
   const eventHub = new StudioEventHub();
   const jobs = new Map();
   const childJobs = new Set();
@@ -330,10 +331,12 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
       try {
         updateJob(job, "running");
         const result = withProjectRootEnv(absoluteProjectDir, () =>
-          compileProject({
+          compileStudioProject({
             repoRoot: absoluteRepoRoot,
             projectDir: absoluteProjectDir,
-            presetPath: DEFAULT_PRESET
+            presetPath: DEFAULT_PRESET,
+            scope,
+            sceneId
           })
         );
         updateJob(job, "succeeded", {
@@ -449,13 +452,17 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     const body = await readJsonBody(req);
     assertPlainObject(body, "request body");
     assertPlainObject(body.fields, "fields");
-    assertAllowedSceneFields(body.fields);
+    const patchFields = { ...body.fields };
+    if (Object.hasOwn(patchFields, "narration") && !Object.hasOwn(patchFields, "narration_tts")) {
+      patchFields.narration_tts = patchFields.narration;
+    }
+    assertAllowedSceneFields(patchFields);
 
     const beforeSpecs = readJsonFile(path.join(absoluteProjectDir, "scene_specs.json"));
     const { scene, index } = findScene(beforeSpecs, sceneId);
     const afterSpecs = structuredClone(beforeSpecs);
-    afterSpecs.scenes[index] = { ...scene, ...body.fields };
-    const changedFields = changedSceneFields(scene, afterSpecs.scenes[index], Object.keys(body.fields));
+    afterSpecs.scenes[index] = { ...scene, ...patchFields };
+    const changedFields = changedSceneFields(scene, afterSpecs.scenes[index], Object.keys(patchFields));
     const impact = classifyStudioImpact({ beforeSpecs, afterSpecs, changedFields });
     const save = saveSceneSpecsWithBackup(afterSpecs, {
       note: `studio patch ${sceneId}`,
@@ -474,6 +481,7 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
       reason: impact.reason,
       sceneId,
       changedFields,
+      scene: afterSpecs.scenes[index],
       backup: save.backup,
       compileJob: compileJob ? publicJob(compileJob) : null
     });
@@ -528,16 +536,18 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     if (!Array.isArray(sceneIds) || sceneIds.some((sceneId) => typeof sceneId !== "string")) {
       throw new HttpError(400, "sceneIds must be an array of strings");
     }
-    const result = runTtsStep(
-      {
+    if (sceneIds.length === 0) throw new HttpError(400, "sceneIds must contain at least one sceneId");
+    const profile = body.profile ?? "mock";
+    if (profile !== "mock") throw new HttpError(400, "studio selective TTS currently supports profile=mock");
+    const specs = readJsonFile(path.join(absoluteProjectDir, "scene_specs.json"));
+    for (const sceneId of sceneIds) findScene(specs, sceneId);
+    const result = withProjectRootEnv(absoluteProjectDir, () =>
+      runStudioTtsStep({
         repoRoot: absoluteRepoRoot,
         projectDir: absoluteProjectDir,
-        profile: body.profile ?? "mock",
-        force: true,
-        command: "vf studio pipeline tts",
-        state: { completedSteps: [], failedSteps: {}, stepHashes: {} }
-      },
-      { sceneIds }
+        profile,
+        sceneIds
+      })
     );
     eventHub.emitDebounced("tts:completed", "tts.completed", { sceneIds, result });
     const compileJob = startCompileJob({ scope: "full", reason: "pipeline-tts" });
@@ -618,6 +628,15 @@ export function createStudioServer({ repoRoot, projectDir, host = DEFAULT_HOST }
     }
     if (pathname.startsWith("/build/")) {
       serveFile(req, res, buildDir, pathname.slice("/build/".length));
+      return;
+    }
+    if (pathname === "/artifacts") {
+      redirect(res, "/artifacts/");
+      return;
+    }
+    if (pathname.startsWith("/artifacts/")) {
+      const requestRelPath = pathname.slice("/artifacts/".length).replace(/^out\//, "");
+      serveFile(req, res, artifactsDir, requestRelPath);
       return;
     }
     throw new HttpError(404, "not found");

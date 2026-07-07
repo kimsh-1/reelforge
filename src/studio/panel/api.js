@@ -60,6 +60,7 @@ function createRestApi({ fetchImpl = globalThis.fetch, EventSourceCtor = globalT
         method: "POST",
         body: { sceneId }
       }),
+    getJob: (jobId) => requestJson(fetchImpl, `/api/jobs/${encodeURIComponent(jobId)}`),
     runTts: (sceneIds) =>
       requestJson(fetchImpl, "/api/pipeline/tts", {
         method: "POST",
@@ -70,6 +71,7 @@ function createRestApi({ fetchImpl = globalThis.fetch, EventSourceCtor = globalT
         method: "PATCH",
         body: { selected: gen }
       }),
+    artifactUrl: (relPath) => `/artifacts/${String(relPath ?? "").replace(/^\/+/, "")}`,
     subscribeEvents: (callback) => {
       if (typeof EventSourceCtor !== "function") return { close: () => {} };
       const source = new EventSourceCtor("/api/events");
