@@ -1,17 +1,17 @@
 {
   "gate": "L1-8-ducking",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-8-ducking.mjs --profile full --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-8-ducking.mjs --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -129,10 +129,8 @@
       "id": "existing-motion-duck-render-test",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/motion-duck.mjs",
-        "exitCode": 0,
-        "stdoutTail": "motion-duck: PASS\ntmp: /tmp/p2w-p203-wLU30d\ncompile: PASS tmp/p2w-p203-30993-1783385325917/edit-scenario/build (copied to /tmp/p2w-p203-wLU30d/kenburns-build)\ncompile-out: unavailable in current vf; no shared fixture build was written\nkenburns: PASS hashes=0.8s:1e0d56e4,2.783s:27fab218,4.867s:1ef58d7e\nducking-keyframes: PASS [{\"timeSec\":0,\"volume\":0.35},{\"timeSec\":0.7,\"volume\":0.35},{\"timeSec\":1,\"volume\":0.15},{\"timeSec\":2.6,\"volume\":0.15},{\"timeSec\":2.9,\"volume\":0.35},{\"timeSec\":4,\"volume\":0.35}]\nducking-rms: PASS nonSpeech=-33.43dB speech=-40.23dB delta=6.79dB\n",
-        "stderrTail": ""
+        "skipped": true,
+        "reason": "render/RMS ducking test runs only with --profile full"
       }
     }
   ],
@@ -148,11 +146,11 @@
     "tests/motion-duck.mjs"
   ],
   "canonicalInputMerkleHash": "d7b46e1fb6cd67a1725d4880441dd7acd914068a05ccddcfdfd60700d64013d2",
-  "evidenceHash": "e0721f08aca5f7b28cc2e5b62720a4f628e81ebcad627c1fb113a3febbd70dca",
+  "evidenceHash": "1321c53211133104ea6d754edbaa47449f40b15e0d2b9046ec6c6dc255c83cc2",
   "gateScriptHash": "b88c7993d2521edb39c30047e386c349a35c499880131b4001067366da7bd5e4",
-  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
-  "command": "node bin/vf gate --all --profile full --replay",
+  "gitCommit": "2826bb46687154a4f3e55103b46b145e94e91b0f",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T00:48:45.149Z",
-  "finishedAt": "2026-07-07T00:49:11.576Z"
+  "startedAt": "2026-07-07T01:35:48.747Z",
+  "finishedAt": "2026-07-07T01:35:49.517Z"
 }

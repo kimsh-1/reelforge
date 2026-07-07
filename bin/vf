@@ -47,7 +47,7 @@ Commands:
   vf verify-report <report.json>
   vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest|pipeline-state>
   vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
-  vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--profile mock|real]
+  vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--force-dirty] [--profile mock|real]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
 Default gate profile is fast. Full adds render gates.
@@ -726,6 +726,7 @@ function pipelineCommand(args) {
   const until = optionValue(args, "--until");
   const only = optionValue(args, "--only");
   const force = args.includes("--force");
+  const forceDirty = args.includes("--force-dirty");
   const absoluteProjectDir = path.resolve(process.cwd(), projectDir);
   const command = ["node", "bin/vf", ...process.argv.slice(2)].join(" ");
 
@@ -736,6 +737,7 @@ function pipelineCommand(args) {
     until,
     only,
     force,
+    forceDirty,
     command
   });
 }

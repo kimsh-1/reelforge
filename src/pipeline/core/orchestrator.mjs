@@ -1,4 +1,5 @@
 import path from "node:path";
+import { DirtyPipelineError, assertPipelineClean } from "../versions-impl/index.mjs";
 import { hashPatterns, outputsExist } from "./globs.mjs";
 import { normalizeRelPath } from "./io.mjs";
 import {
@@ -35,9 +36,38 @@ function formatResult(result) {
   const fields = [];
   if (result.provider) fields.push(`provider=${result.provider}`);
   if (Number.isInteger(result.scenes)) fields.push(`scenes=${result.scenes}`);
+  if (Number.isInteger(result.generated)) fields.push(`generated=${result.generated}`);
+  if (Number.isInteger(result.reused)) fields.push(`reused=${result.reused}`);
   if (result.output) fields.push(`output=${result.output}`);
+  if (result.manifest) fields.push(`manifest=${result.manifest}`);
   if (result.report) fields.push(`report=${result.report}`);
   if (Number.isInteger(result.bytes)) fields.push(`bytes=${result.bytes}`);
+  return fields.length > 0 ? ` ${fields.join(" ")}` : "";
+}
+
+function isPendingStepError(error) {
+  return Boolean(error && typeof error === "object" && error.pending === true);
+}
+
+function projectDisplayPath(projectDir, value) {
+  if (!value) return null;
+  const absolute = path.isAbsolute(value)
+    ? value
+    : path.resolve(projectDir, String(value).replace(/^\.\//, ""));
+  const relative = path.relative(projectDir, absolute);
+  if (relative && !relative.startsWith("..") && !path.isAbsolute(relative)) {
+    return normalizeRelPath(relative);
+  }
+  return normalizeRelPath(String(value));
+}
+
+function formatPendingResult(ctx, error) {
+  const fields = [];
+  if (Array.isArray(error.missing)) fields.push(`pending=${error.missing.length}`);
+  const prompts = projectDisplayPath(ctx.projectDir, error.promptsPath);
+  const results = projectDisplayPath(ctx.projectDir, error.resultsDir);
+  if (prompts) fields.push(`prompts=${prompts}`);
+  if (results) fields.push(`resultsDir=${results}`);
   return fields.length > 0 ? ` ${fields.join(" ")}` : "";
 }
 
@@ -48,11 +78,19 @@ export function runPipeline({
   until = null,
   only = null,
   force = false,
+  forceDirty = false,
   command = "vf pipeline run",
   log = (line) => console.log(line)
 }) {
   if (!["mock", "real"].includes(profile)) throw new Error("--profile must be mock or real");
   const absoluteProjectDir = path.resolve(projectDir);
+  try {
+    assertPipelineClean({ projectDir: absoluteProjectDir, forceDirty, log });
+  } catch (error) {
+    if (error instanceof DirtyPipelineError) log(`pipeline: WARN ${error.message}`);
+    throw error;
+  }
+
   const steps = createStepRegistry();
   const planned = selectedSteps({ steps, only, until });
   const startedAt = new Date().toISOString();
@@ -102,6 +140,23 @@ export function runPipeline({
       events.push({ step: step.id, action: "run", result });
       log(`pipeline: DONE ${step.id}${formatResult(result)}`);
     } catch (error) {
+      if (isPendingStepError(error)) {
+        state.completedSteps = state.completedSteps.filter((stepId) => stepId !== step.id);
+        delete state.failedSteps[step.id];
+        writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
+        events.push({ step: step.id, action: "pending", missing: error.missing ?? [] });
+        log(`pipeline: WAIT ${step.id}${formatPendingResult(ctx, error)}`);
+        log(`pipeline: WAIT completed=${state.completedSteps.filter((stepId) => PIPELINE_STEP_ORDER.includes(stepId)).join(",")}`);
+        return {
+          pass: false,
+          pending: true,
+          pendingStep: step.id,
+          projectDir: absoluteProjectDir,
+          profile,
+          steps: events,
+          state
+        };
+      }
       markStepFailed(state, step.id, error);
       writePipelineState({ repoRoot, projectDir: absoluteProjectDir, state });
       log(`pipeline: FAIL ${step.id} ${error instanceof Error ? error.message : String(error)}`);

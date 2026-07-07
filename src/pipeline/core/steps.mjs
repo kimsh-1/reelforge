@@ -20,11 +20,8 @@ import {
   readJsonFile,
   sha256File
 } from "./io.mjs";
-import {
-  runMockImagesStep,
-  runMockTtsStep,
-  runRealPassthroughStep
-} from "./mock.mjs";
+import { IMAGE_MANIFEST_FILE, runImagesStep } from "../images/index.mjs";
+import { runTtsStep } from "../tts/index.mjs";
 
 export const PIPELINE_STEP_ORDER = ["tts", "images", "compile", "render", "gate"];
 export const PIPELINE_GATE_REPORT = "reports/pipeline-gate-report.json";
@@ -134,10 +131,14 @@ function runGateStep(ctx) {
     "scene_specs.json",
     "audio_meta.json",
     "versions.json",
+    IMAGE_MANIFEST_FILE,
     "build/index.html",
     "build/render-manifest.json",
     "out/main.mp4",
     "repo:src/pipeline/core/**",
+    "repo:src/pipeline/images/**",
+    "repo:src/pipeline/tts/**",
+    "repo:src/pipeline/versions-impl/**",
     "repo:src/compiler/**"
   ];
   const input = hashPatterns({ repoRoot: ctx.repoRoot, projectDir: ctx.projectDir, patterns: inputPatterns });
@@ -191,7 +192,7 @@ export function validPriorGateReport(ctx) {
     const inputMtime = maxMtimeMs({
       repoRoot: ctx.repoRoot,
       projectDir: ctx.projectDir,
-      patterns: ["scene_specs.json", "audio_meta.json", "versions.json", "build/**", "out/main.mp4"]
+      patterns: ["scene_specs.json", "audio_meta.json", "versions.json", IMAGE_MANIFEST_FILE, "build/**", "out/main.mp4"]
     });
     return reportMtime >= inputMtime;
   } catch {
@@ -211,30 +212,62 @@ export function defaultSkipWhen(ctx, step, inputHash) {
 }
 
 function ttsRun(ctx) {
-  if (ctx.profile === "mock") return runMockTtsStep(ctx);
-  return runRealPassthroughStep(ctx, "tts", "audio_meta.json");
+  return runTtsStep(ctx);
 }
 
 function imagesRun(ctx) {
-  if (ctx.profile === "mock") return runMockImagesStep(ctx);
-  return runRealPassthroughStep(ctx, "images", "versions.json");
+  return runImagesStep(ctx);
+}
+
+function projectRelToAbs(projectDir, relPath) {
+  return path.join(projectDir, String(relPath).replace(/^\.\//, ""));
+}
+
+function missingManifestAssets(ctx) {
+  const manifestPath = path.join(ctx.projectDir, IMAGE_MANIFEST_FILE);
+  if (!existsSync(manifestPath)) return [IMAGE_MANIFEST_FILE];
+  let manifest;
+  try {
+    manifest = readJsonFile(manifestPath);
+  } catch {
+    return [IMAGE_MANIFEST_FILE];
+  }
+
+  return (manifest.assets ?? [])
+    .map((asset) => asset?.path)
+    .filter(Boolean)
+    .filter((assetPath) => {
+      const absolute = projectRelToAbs(ctx.projectDir, assetPath);
+      return !existsSync(absolute) || !statSync(absolute).isFile() || statSync(absolute).size === 0;
+    })
+    .map((assetPath) => normalizeRelPath(assetPath));
+}
+
+function imagesSkipWhen(ctx, step, inputHash) {
+  const decision = defaultSkipWhen(ctx, step, inputHash);
+  if (!decision.skip) return decision;
+  const missing = missingManifestAssets(ctx);
+  if (missing.length > 0) {
+    return { skip: false, reason: "missing-manifest-assets", missing };
+  }
+  return decision;
 }
 
 export function createStepRegistry() {
   return [
     {
       id: "tts",
-      inputs: ["scene_specs.json"],
+      inputs: ["scene_specs.json", "repo:src/pipeline/tts/**", "repo:src/pipeline/core/mock.mjs"],
       outputs: ["audio_meta.json", "assets/audio/*.mp3"],
       run: ttsRun,
       skipWhen: defaultSkipWhen
     },
     {
       id: "images",
-      inputs: ["scene_specs.json"],
-      outputs: ["versions.json", "assets/images/*.png"],
+      inputs: ["scene_specs.json", "design-tokens.json", "repo:src/pipeline/images/**"],
+      outputs: ["versions.json", IMAGE_MANIFEST_FILE],
       run: imagesRun,
-      skipWhen: defaultSkipWhen
+      skipWhen: imagesSkipWhen
     },
     {
       id: "compile",

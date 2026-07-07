@@ -11,14 +11,15 @@ The pipeline starts from existing authoring contracts. P6 owns brief-to-scene au
 ## CLI
 
 ```bash
-node bin/vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--profile mock|real]
+node bin/vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--force-dirty] [--profile mock|real]
 ```
 
 - `--profile mock` is the default and is fully local.
-- `--profile real` is an adapter slot. Until P3-01/P3-02 land, the built-in real steps are passthrough checks that require their output contracts to already exist.
+- `--profile real` uses the Wave 1 adapters: TTS runs through `src/pipeline/tts`, and image generation runs through `src/pipeline/images`.
 - `--until <step>` runs from `tts` through the named step.
 - `--only <step>` runs one step without running dependencies.
 - `--force` ignores `pipeline_state.json` and reruns selected steps.
+- `--force-dirty` lets the run continue when `versions.json dirty=true`; without it the pipeline warns and stops before writing run state.
 
 ## Step Contract
 
@@ -45,8 +46,6 @@ Rules:
 
 ## Adapter Surface
 
-P3-01 and P3-02 should replace only the `tts` and `images` implementations, not the orchestrator.
-
 The step `ctx` contains:
 
 - `repoRoot`: absolute repository root.
@@ -65,8 +64,9 @@ TTS adapters must emit:
 
 Image adapters must emit:
 
-- `<projectDir>/assets/images/*`
+- `<projectDir>/image-manifest.json`
 - `<projectDir>/versions.json` resources with `selected` pointing at the active generation
+- `<projectDir>/assets/images/*` for every generated image asset listed in the manifest
 
 The compiler does not consume selected images yet. P3-03 owns full selected-pointer lifecycle and compiler asset resolution.
 
@@ -93,15 +93,21 @@ On rerun, a step is skipped when:
 
 If a process is killed mid-run, completed steps remain in `pipeline_state.json` because state is flushed after each step.
 
+If the real image runner has outstanding PNG results, the images module writes `image-manifest.json` with `status: "pending"` plus `assets/images/runner/prompts.jsonl`, then the pipeline logs `WAIT` and stops without marking `images` failed or complete. After the runner writes the requested PNGs under `assets/images/runner/results`, rerun the same pipeline command to resume from the incomplete `images` step.
+
+## Dirty Guard
+
+Pipeline runs call the versions lifecycle guard in `src/pipeline/versions-impl` before state is written. When `versions.json dirty=true`, the run logs a warning and aborts so manual or Studio edits can be reconciled. `--force-dirty` logs the same warning and continues.
+
 ## Profiles
 
 `mock` profile:
 
-- `tts`: creates silent MP3 files with `ffmpeg anullsrc` and synthetic monotonic word timings.
-- `images`: creates deterministic solid PNGs and selected generation entries in `versions.json`.
+- `tts`: `src/pipeline/tts` dispatches to the existing local mock, which creates silent MP3 files with `ffmpeg anullsrc` and synthetic monotonic word timings.
+- `images`: `src/pipeline/images` uses its `mock-image` provider, writes `image-manifest.json`, creates deterministic PNGs for `visual_kind=generate_image` scenes, and records selected generations in `versions.json`. Projects with no generated-image scenes still get a complete manifest and a schema-valid `versions.json`.
 - `compile`, `render`, and `gate` are the same as real profile.
 
 `real` profile:
 
-- `tts` and `images` are extension points for P3-01/P3-02.
-- Current fallback is passthrough only: `audio_meta.json` and `versions.json` must already exist.
+- `tts`: `src/pipeline/tts` runs the real adapter. The default provider chain uses edge-tts first and can fall back through the configured MeloTTS path for retryable edge failures.
+- `images`: `src/pipeline/images` uses the `codex-imagegen-runner` contract. It writes prompts to `assets/images/runner/prompts.jsonl`; absent PNG results produce a pending manifest and a resumable `WAIT` stop instead of a failed step.

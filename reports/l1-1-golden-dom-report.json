@@ -1,17 +1,17 @@
 {
   "gate": "L1-1-golden-dom",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile full --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -151,9 +151,9 @@
   "canonicalInputMerkleHash": "a34cd64ad15fb95bd1685548cf8e76020a28bb8eb0573e92c7d5e801434c7767",
   "evidenceHash": "dce94dddde42677b4665f1054e7a7be13dcb1676f69c113dc507a5ec7a32b342",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
-  "command": "node bin/vf gate --all --profile full --replay",
+  "gitCommit": "2826bb46687154a4f3e55103b46b145e94e91b0f",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-07T00:48:09.736Z",
-  "finishedAt": "2026-07-07T00:48:13.920Z"
+  "startedAt": "2026-07-07T01:35:27.760Z",
+  "finishedAt": "2026-07-07T01:35:31.987Z"
 }
