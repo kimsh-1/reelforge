@@ -5,7 +5,12 @@
   "description": "Authoring-layer source of truth. Composition HTML is generated from this contract and is not edited directly.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "projectId", "scenes", "transitions"],
+  "required": [
+    "version",
+    "projectId",
+    "scenes",
+    "transitions"
+  ],
   "properties": {
     "version": {
       "type": "string",
@@ -49,11 +54,29 @@
     },
     "layout": {
       "type": "string",
-      "enum": ["bar", "pie", "line", "list", "numbered", "statistic", "compare", "quote", "headline_only"]
+      "enum": [
+        "bar",
+        "pie",
+        "line",
+        "list",
+        "numbered",
+        "statistic",
+        "compare",
+        "quote",
+        "headline_only"
+      ]
     },
     "mood": {
       "type": "string",
-      "enum": ["dramatic", "urgent", "somber", "informative", "contemplative", "suspense", "triumphant"]
+      "enum": [
+        "dramatic",
+        "urgent",
+        "somber",
+        "informative",
+        "contemplative",
+        "suspense",
+        "triumphant"
+      ]
     },
     "reveal": {
       "type": "string",
@@ -74,20 +97,47 @@
     },
     "emphasis": {
       "type": "string",
-      "enum": ["number", "keyword", "count", "contrast", "sequence", "person", "quote"]
+      "enum": [
+        "number",
+        "keyword",
+        "count",
+        "contrast",
+        "sequence",
+        "person",
+        "quote"
+      ]
     },
     "visualKind": {
       "type": "string",
-      "enum": ["generate_image", "search_image", "chart", "map_scene", "video", "none"]
+      "enum": [
+        "generate_image",
+        "search_image",
+        "chart",
+        "map_scene",
+        "video",
+        "none"
+      ]
     },
     "imagePlacement": {
       "type": "string",
-      "enum": ["fullscreen", "background", "center", "left", "right", "inline"]
+      "enum": [
+        "fullscreen",
+        "background",
+        "center",
+        "left",
+        "right",
+        "inline"
+      ]
     },
     "kenBurns": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["enabled", "zoomFactor", "zoomDirection", "panDirection"],
+      "required": [
+        "enabled",
+        "zoomFactor",
+        "zoomDirection",
+        "panDirection"
+      ],
       "properties": {
         "enabled": {
           "type": "boolean"
@@ -98,18 +148,30 @@
         },
         "zoomDirection": {
           "type": "string",
-          "enum": ["in", "out"]
+          "enum": [
+            "in",
+            "out"
+          ]
         },
         "panDirection": {
           "type": "string",
-          "enum": ["none", "left", "right", "up", "down"]
+          "enum": [
+            "none",
+            "left",
+            "right",
+            "up",
+            "down"
+          ]
         }
       }
     },
     "imageAsset": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["prompt", "placement"],
+      "required": [
+        "prompt",
+        "placement"
+      ],
       "properties": {
         "prompt": {
           "type": "string",
@@ -189,7 +251,12 @@
     "transition": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["from", "to", "type", "duration"],
+      "required": [
+        "from",
+        "to",
+        "type",
+        "duration"
+      ],
       "properties": {
         "from": {
           "$ref": "#/$defs/sceneId"
@@ -199,7 +266,17 @@
         },
         "type": {
           "type": "string",
-          "enum": ["cut", "fade", "crossfade", "slide", "wipe", "slide_left", "slide_right", "wipe_left", "wipe_right"]
+          "enum": [
+            "cut",
+            "fade",
+            "crossfade",
+            "slide",
+            "wipe",
+            "slide_left",
+            "slide_right",
+            "wipe_left",
+            "wipe_right"
+          ]
         },
         "duration": {
           "type": "number",
@@ -224,8 +301,6 @@
         "emphasis",
         "headline",
         "items",
-        "values",
-        "unit",
         "source",
         "visual_kind",
         "kenBurns",
@@ -340,17 +415,54 @@
         },
         "subtitleMode": {
           "type": "string",
-          "enum": ["karaoke", "keyword"]
+          "enum": [
+            "karaoke",
+            "keyword"
+          ]
         },
         "ost": {
-          "enum": [0, 1, 2, null],
+          "enum": [
+            0,
+            1,
+            2,
+            null
+          ],
           "default": null,
           "$comment": "Reserved for v2 OST selection."
         },
         "overrides": {
           "$ref": "#/$defs/canvasOverride"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "layout": {
+                "enum": [
+                  "bar",
+                  "pie",
+                  "line",
+                  "statistic"
+                ]
+              }
+            },
+            "required": [
+              "layout"
+            ]
+          },
+          "then": {
+            "required": [
+              "values",
+              "unit"
+            ],
+            "properties": {
+              "values": true,
+              "unit": true
+            }
+          }
+        }
+      ]
     }
   }
 }
