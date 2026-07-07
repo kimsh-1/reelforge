@@ -12,9 +12,17 @@
       "mood": "informative",
       "reveal": "cascade",
       "emphasis": "sequence",
-      "headline": "브리프 투입",
-      "items": ["한 줄 요청", "톤 선택", "길이 지정"],
-      "values": [1, 2, 3],
+      "headline": "한 줄만 던져",
+      "items": [
+        "요청 한 줄",
+        "톤 고르기",
+        "길이 지정"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
       "unit": "step",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "none",
@@ -34,12 +42,20 @@
       "narration_tts": " ",
       "altText": "짧은 입력 문장이 여러 장면 카드로 즉시 확장되는 장면.",
       "layout": "quote",
-      "mood": "dramatic",
+      "mood": "suspense",
       "reveal": "typewriter",
       "emphasis": "quote",
-      "headline": "한 줄이 컷으로 분해",
-      "items": ["30초 제품 소개", "차분한 톤", "16:9"],
-      "values": ["brief", "style", "format"],
+      "headline": "한 줄을 읽는다",
+      "items": [
+        "30초 제품 소개",
+        "차분한 톤",
+        "16:9"
+      ],
+      "values": [
+        "brief",
+        "style",
+        "format"
+      ],
       "unit": "input",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "generate_image",
@@ -62,12 +78,20 @@
       "narration_tts": " ",
       "altText": "누락된 설정만 밝게 점등되고 나머지 항목은 잠긴 상태로 유지되는 장면.",
       "layout": "list",
-      "mood": "suspense",
+      "mood": "informative",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
-      "headline": "빈 값만 질문",
-      "items": ["대상 시청자", "영상 길이", "화면 비율"],
-      "values": ["필요", "필요", "필요"],
+      "headline": "빈 칸만 되묻기",
+      "items": [
+        "대상 시청자",
+        "영상 길이",
+        "화면 비율"
+      ],
+      "values": [
+        "필요",
+        "필요",
+        "필요"
+      ],
       "unit": "missing",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "none",
@@ -89,9 +113,15 @@
       "mood": "urgent",
       "reveal": "split_reveal",
       "emphasis": "contrast",
-      "headline": "초안 즉시 비교",
-      "items": ["그대로 유지", "문장 교체"],
-      "values": [7, 1],
+      "headline": "씬만 콕 수정",
+      "items": [
+        "그대로 유지",
+        "한 씬 교체"
+      ],
+      "values": [
+        7,
+        1
+      ],
       "unit": "scene",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "chart",
@@ -113,9 +143,17 @@
       "mood": "triumphant",
       "reveal": "build_up",
       "emphasis": "sequence",
-      "headline": "승인하면 빌드",
-      "items": ["승인", "컴파일", "렌더"],
-      "values": [1, 2, 3],
+      "headline": "누르면 렌더",
+      "items": [
+        "승인",
+        "컴파일",
+        "렌더"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
       "unit": "run",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "generate_image",
@@ -141,9 +179,17 @@
       "mood": "contemplative",
       "reveal": "stagger",
       "emphasis": "keyword",
-      "headline": "산출물 체크",
-      "items": ["mp4", "gif preview", "README asset"],
-      "values": ["완료", "완료", "완료"],
+      "headline": "한 번에 셋 다",
+      "items": [
+        "mp4",
+        "gif preview",
+        "README asset"
+      ],
+      "values": [
+        "완료",
+        "완료",
+        "완료"
+      ],
       "unit": "output",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "none",
@@ -165,9 +211,19 @@
       "mood": "informative",
       "reveal": "build_up",
       "emphasis": "sequence",
-      "headline": "타임라인 자동 정렬",
-      "items": ["컷 1", "컷 2", "컷 3", "컷 4"],
-      "values": [0, 10, 20, 30],
+      "headline": "컷은 알아서",
+      "items": [
+        "컷 1",
+        "컷 2",
+        "컷 3",
+        "컷 4"
+      ],
+      "values": [
+        0,
+        10,
+        20,
+        30
+      ],
       "unit": "sec",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "chart",
@@ -189,10 +245,16 @@
       "mood": "dramatic",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "게이트 통과 12",
-      "items": ["통과 체크", "중복 문장"],
-      "values": [12, 0],
-      "unit": "check",
+      "headline": "키도 0, 돈도 0",
+      "items": [
+        "API 키",
+        "월 요금"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "unit": "zero",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "chart",
       "kenBurns": {
@@ -213,9 +275,17 @@
       "mood": "triumphant",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
-      "headline": "한 폴더에 완성",
-      "items": ["영상", "프리뷰", "문서 조각"],
-      "values": [1, 1, 1],
+      "headline": "폴더 하나로 끝",
+      "items": [
+        "영상",
+        "프리뷰",
+        "문서 조각"
+      ],
+      "values": [
+        1,
+        1,
+        1
+      ],
       "unit": "asset",
       "source": "briefs/T-demo-videos.md#D1",
       "visual_kind": "chart",

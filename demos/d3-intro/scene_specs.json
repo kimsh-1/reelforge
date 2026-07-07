@@ -13,8 +13,14 @@
       "reveal": "spotlight",
       "emphasis": "quote",
       "headline": "ReelForge",
-      "items": ["brief to video", "verified render"],
-      "values": ["brand intro", "showcase"],
+      "items": [
+        "한 줄이 영상",
+        "검증된 렌더"
+      ],
+      "values": [
+        "brand",
+        "showcase"
+      ],
       "unit": "mark",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "generate_image",
@@ -41,9 +47,15 @@
       "mood": "triumphant",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "30초 안에 각인",
-      "items": ["총 길이", "하이라이트 컷"],
-      "values": [30, 10],
+      "headline": "30초면 충분",
+      "items": [
+        "총 길이",
+        "하이라이트 컷"
+      ],
+      "values": [
+        30,
+        10
+      ],
       "unit": "sec",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "chart",
@@ -65,9 +77,15 @@
       "mood": "urgent",
       "reveal": "split_reveal",
       "emphasis": "contrast",
-      "headline": "브리프 vs 완성본",
-      "items": ["한 줄 입력", "VFX 쇼케이스"],
-      "values": [1, 30],
+      "headline": "한 줄 vs 30초",
+      "items": [
+        "한 줄 입력",
+        "VFX 쇼케이스"
+      ],
+      "values": [
+        1,
+        30
+      ],
       "unit": "sec",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "chart",
@@ -86,12 +104,20 @@
       "narration_tts": " ",
       "altText": "브랜드 톤, 장면 계약, 검증 루프가 한 줄 슬로건처럼 연속 점등되는 장면.",
       "layout": "quote",
-      "mood": "informative",
+      "mood": "suspense",
       "reveal": "typewriter",
       "emphasis": "keyword",
-      "headline": "톤, 계약, 검증",
-      "items": ["brand tone", "scene contract", "gate loop"],
-      "values": ["locked", "authored", "checked"],
+      "headline": "톤·계약·검증",
+      "items": [
+        "브랜드 톤",
+        "씬 계약",
+        "검증 루프"
+      ],
+      "values": [
+        "locked",
+        "authored",
+        "checked"
+      ],
       "unit": "skill",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "none",
@@ -110,13 +136,19 @@
       "narration_tts": " ",
       "altText": "납품 전 품질 편차가 검수 레일에서 선명하게 정렬되는 장면.",
       "layout": "compare",
-      "mood": "suspense",
+      "mood": "contemplative",
       "reveal": "split_reveal",
       "emphasis": "contrast",
-      "headline": "반복 편집 vs 품질 판단",
-      "items": ["자동화 대상", "사람의 리뷰"],
-      "values": [80, 20],
-      "unit": "%",
+      "headline": "반복 자동 판단 사람",
+      "items": [
+        "반복 편집",
+        "품질 판단"
+      ],
+      "values": [
+        "자동",
+        "사람"
+      ],
+      "unit": "role",
       "source": "research/11-market-signals/README.md",
       "visual_kind": "generate_image",
       "imageAsset": {
@@ -141,9 +173,15 @@
       "mood": "dramatic",
       "reveal": "stagger_then_flash",
       "emphasis": "number",
-      "headline": "블록 8개 점등",
-      "items": ["scene blocks", "transition types"],
-      "values": [8, 6],
+      "headline": "블록 8·전환 6",
+      "items": [
+        "씬 블록",
+        "전환"
+      ],
+      "values": [
+        8,
+        6
+      ],
       "unit": "vfx",
       "source": "docs/compiler.md#block-interface",
       "visual_kind": "chart",
@@ -166,8 +204,18 @@
       "reveal": "stagger_then_flash",
       "emphasis": "quote",
       "headline": "하이라이트 몽타주",
-      "items": ["copy", "image", "block", "render"],
-      "values": ["flash", "flash", "flash", "flash"],
+      "items": [
+        "카피",
+        "이미지",
+        "블록",
+        "렌더"
+      ],
+      "values": [
+        "flash",
+        "flash",
+        "flash",
+        "flash"
+      ],
       "unit": "beat",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "chart",
@@ -186,12 +234,18 @@
       "narration_tts": " ",
       "altText": "TTS가 꺼진 상태와 BGM 중심 리듬이 비교되며 음악 레일만 살아 있는 장면.",
       "layout": "compare",
-      "mood": "contemplative",
+      "mood": "somber",
       "reveal": "parallel",
       "emphasis": "contrast",
-      "headline": "TTS off, BGM on",
-      "items": ["narration", "music bed"],
-      "values": [0, 1],
+      "headline": "말은 끄고 음악만",
+      "items": [
+        "나레이션",
+        "배경음악"
+      ],
+      "values": [
+        0,
+        1
+      ],
       "unit": "track",
       "source": "briefs/T-demo-videos.md#v2",
       "visual_kind": "chart",
@@ -213,9 +267,15 @@
       "mood": "somber",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "중복 headline 0",
-      "items": ["spoken words", "overlap"],
-      "values": [0, 0],
+      "headline": "겹치는 문장 0",
+      "items": [
+        "말한 단어",
+        "중복"
+      ],
+      "values": [
+        0,
+        0
+      ],
       "unit": "count",
       "source": "demos/check-overlap.mjs",
       "visual_kind": "chart",
@@ -237,9 +297,15 @@
       "mood": "triumphant",
       "reveal": "dramatic_pause",
       "emphasis": "quote",
-      "headline": "Show, don't tell",
-      "items": ["ReelForge skill", "ready to render"],
-      "values": ["demo", "delivery"],
+      "headline": "말 대신 렌더",
+      "items": [
+        "ReelForge",
+        "스타 한 번"
+      ],
+      "values": [
+        "demo",
+        "star"
+      ],
       "unit": "final",
       "source": "briefs/T-demo-videos.md#D3",
       "visual_kind": "none",

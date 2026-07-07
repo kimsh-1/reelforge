@@ -12,9 +12,15 @@
       "mood": "informative",
       "reveal": "split_reveal",
       "emphasis": "contrast",
-      "headline": "HTML = 프레임 원본",
-      "items": ["DOM 상태", "렌더 프레임"],
-      "values": [1, 1],
+      "headline": "HTML이 곧 프레임",
+      "items": [
+        "DOM 상태",
+        "렌더 프레임"
+      ],
+      "values": [
+        1,
+        1
+      ],
       "unit": "frame",
       "source": "docs/compiler.md#architecture",
       "visual_kind": "generate_image",
@@ -38,12 +44,18 @@
       "narration_tts": " ",
       "altText": "동일한 입력과 동일한 시각이 동일한 프레임 결과로 잠기는 장면.",
       "layout": "statistic",
-      "mood": "dramatic",
+      "mood": "triumphant",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "Seek 결과 1:1",
-      "items": ["입력 세트", "프레임 결과"],
-      "values": [1, 1],
+      "headline": "같은 입력 같은 컷",
+      "items": [
+        "입력 세트",
+        "프레임 결과"
+      ],
+      "values": [
+        1,
+        1
+      ],
       "unit": "match",
       "source": "docs/compiler.md#timing",
       "visual_kind": "chart",
@@ -65,9 +77,15 @@
       "mood": "suspense",
       "reveal": "parallel",
       "emphasis": "sequence",
-      "headline": "씬 = 서브컴포지션",
-      "items": ["개별 scene", "main timeline"],
-      "values": [1, 1],
+      "headline": "씬은 블록이다",
+      "items": [
+        "개별 씬",
+        "메인 축"
+      ],
+      "values": [
+        1,
+        1
+      ],
       "unit": "slot",
       "source": "docs/compiler.md#block-interface",
       "visual_kind": "generate_image",
@@ -90,12 +108,22 @@
       "narration_tts": " ",
       "altText": "오디오 duration 값이 누적되어 컷 시작점과 전체 길이를 만드는 장면.",
       "layout": "line",
-      "mood": "contemplative",
+      "mood": "informative",
       "reveal": "build_up",
       "emphasis": "sequence",
-      "headline": "타이밍은 오디오 권위",
-      "items": ["s01", "s02", "s03", "total"],
-      "values": [3, 6, 9, 30],
+      "headline": "타이밍은 오디오",
+      "items": [
+        "s01",
+        "s02",
+        "s03",
+        "total"
+      ],
+      "values": [
+        3,
+        6,
+        9,
+        30
+      ],
       "unit": "sec",
       "source": "docs/compiler.md#timing",
       "visual_kind": "chart",
@@ -114,12 +142,18 @@
       "narration_tts": " ",
       "altText": "작성 계약이 컴파일러를 지나 렌더 매니페스트와 HTML 산출물로 분기되는 장면.",
       "layout": "compare",
-      "mood": "informative",
+      "mood": "urgent",
       "reveal": "cascade",
       "emphasis": "contrast",
-      "headline": "계약에서 렌더로",
-      "items": ["작성 계약", "렌더 산출물"],
-      "values": [1, 2],
+      "headline": "계약이 곧 렌더",
+      "items": [
+        "작성 계약",
+        "렌더 산출물"
+      ],
+      "values": [
+        1,
+        2
+      ],
       "unit": "stage",
       "source": "docs/compiler.md#architecture",
       "visual_kind": "none",
@@ -141,9 +175,17 @@
       "mood": "triumphant",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
-      "headline": "검증 레일 3개",
-      "items": ["schema", "hash", "frame"],
-      "values": [1, 1, 1],
+      "headline": "검증 레일 셋",
+      "items": [
+        "schema",
+        "hash",
+        "frame"
+      ],
+      "values": [
+        1,
+        1,
+        1
+      ],
       "unit": "rail",
       "source": "docs/compiler.md#render-lint",
       "visual_kind": "chart",
@@ -162,12 +204,22 @@
       "narration_tts": " ",
       "altText": "여덟 가지 장면 블록이 막대 그래프처럼 빠르게 차오르는 장면.",
       "layout": "bar",
-      "mood": "urgent",
+      "mood": "dramatic",
       "reveal": "stagger",
       "emphasis": "number",
-      "headline": "블록 8종 준비",
-      "items": ["chart", "text", "compare", "quote"],
-      "values": [3, 2, 2, 1],
+      "headline": "씬 블록 8종",
+      "items": [
+        "chart",
+        "text",
+        "compare",
+        "quote"
+      ],
+      "values": [
+        3,
+        2,
+        2,
+        1
+      ],
       "unit": "type",
       "source": "docs/compiler.md#block-interface",
       "visual_kind": "chart",
@@ -186,12 +238,20 @@
       "narration_tts": " ",
       "altText": "컴파일 입력의 역할 비중이 원형 차트로 분리되어 보이는 장면.",
       "layout": "pie",
-      "mood": "somber",
+      "mood": "contemplative",
       "reveal": "cascade",
       "emphasis": "contrast",
       "headline": "입력 계약 3분할",
-      "items": ["scene", "audio", "tokens"],
-      "values": [45, 35, 20],
+      "items": [
+        "scene",
+        "audio",
+        "tokens"
+      ],
+      "values": [
+        45,
+        35,
+        20
+      ],
       "unit": "%",
       "source": "docs/compiler.md#architecture",
       "visual_kind": "chart",
@@ -213,9 +273,17 @@
       "mood": "informative",
       "reveal": "cascade",
       "emphasis": "sequence",
-      "headline": "컴파일 3단",
-      "items": ["validate", "emit HTML", "lint"],
-      "values": [1, 2, 3],
+      "headline": "컴파일 3단계",
+      "items": [
+        "validate",
+        "emit HTML",
+        "lint"
+      ],
+      "values": [
+        1,
+        2,
+        3
+      ],
       "unit": "phase",
       "source": "docs/compiler.md#render-lint",
       "visual_kind": "none",
@@ -237,9 +305,15 @@
       "mood": "dramatic",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "해시로 잠그는 결과",
-      "items": ["sourceHash", "evidenceHash"],
-      "values": [64, 64],
+      "headline": "해시로 봉인",
+      "items": [
+        "sourceHash",
+        "evidenceHash"
+      ],
+      "values": [
+        64,
+        64
+      ],
       "unit": "hex",
       "source": "AGENTS.md#Gate-Rules",
       "visual_kind": "chart",
