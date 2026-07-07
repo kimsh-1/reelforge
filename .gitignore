@@ -7,3 +7,4 @@ reports/*.tmp
 npm-debug.log*
 .DS_Store
 tmp/
+fixtures/golden-specs/*/build/
