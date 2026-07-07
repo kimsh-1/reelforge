@@ -4,10 +4,18 @@ import { jsonAttr, normalizeRelPath } from "./utils.mjs";
 
 const HEADLINE_LAYOUT = "headline_only";
 export const BLOCK_RUNTIME_READY_VERSION = "P2-08.block-runtime-ready.v1";
+const DISPLAY_UNIT_ALLOWLIST = new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]);
 
 function cleanLabel(value) {
   if (value === undefined || value === null) return "";
   return String(value).trim();
+}
+
+export function displayUnit(value) {
+  const text = cleanLabel(value);
+  if (!text) return "";
+  const normalized = text === "％" ? "%" : text.toLowerCase();
+  return DISPLAY_UNIT_ALLOWLIST.has(normalized) ? normalized : "";
 }
 
 function compareSideLabel(value) {
@@ -34,7 +42,7 @@ export function blockVariablesForScene({ scene, tokens }) {
     title: scene.headline,
     items: scene.items ?? [],
     values: scene.values ?? [],
-    unit: scene.unit ?? "",
+    unit: displayUnit(scene.unit),
     accent: mood.accent ?? tokens.colors?.accent ?? "#2563EB",
     mood: scene.mood,
     emphasis: scene.emphasis,

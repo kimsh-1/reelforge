@@ -188,6 +188,7 @@
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
+          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--quote-shadow) 34%, transparent);
         }
 
         .quote-meta {
@@ -477,7 +478,7 @@
           const title = stringValue(variables.title, "인용");
           const items = arrayValue(variables.items).map((item) => stringValue(item, ""));
           const values = arrayValue(variables.values).map((value) => valueText(value));
-          const unit = stringValue(variables.unit, "");
+          const unit = displayUnit(variables.unit);
           const emphasis = stringValue(variables.emphasis, "quote");
           const reveal = stringValue(variables.reveal, "typewriter");
           const revealMode = reveal.toLowerCase();
@@ -659,6 +660,15 @@
             if (value === undefined || value === null) return fallback;
             const text = String(value).trim();
             return text.length > 0 ? text : fallback;
+          }
+
+          function displayUnit(value) {
+            const text = stringValue(value, "");
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
           }
 
           function valueText(value) {

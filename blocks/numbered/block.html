@@ -90,6 +90,7 @@
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
+          text-shadow: 0 0.18rem 1rem var(--numbered-shadow);
         }
 
         .numbered-unit {
@@ -369,7 +370,7 @@
           const title = textValue(variables.title, "순위 리스트");
           const items = arrayValue(variables.items);
           const values = arrayValue(variables.values);
-          const unit = textValue(variables.unit, "");
+          const unit = displayUnit(variables.unit);
           const source = textValue(variables.source, "");
           const rows = normalizeRows({ items, values, unit, title });
           const duration = blockDuration(root, 4);
@@ -413,6 +414,10 @@
             stampUnit.textContent = unit;
             label.textContent = row.label;
             meta.textContent = row.meta;
+            if (!row.meta) {
+              meta.hidden = true;
+              meta.style.display = "none";
+            }
             rule.setAttribute("aria-hidden", "true");
 
             stamp.append(rank, stampUnit);
@@ -525,7 +530,7 @@
                 {
                   label: title,
                   badge: "01",
-                  meta: unit ? `1 ${unit}` : "1"
+                  meta: unit ? `1 ${unit}` : ""
                 }
               ];
             }
@@ -535,7 +540,7 @@
               const numeric = numericValue(raw);
               const rank = Number.isFinite(numeric) && numeric > 0 ? Math.round(numeric) : index + 1;
               rows.push({
-                label: textValue(items[index], `항목 ${index + 1}`),
+                label: stripOrdinalEcho(textValue(items[index], `항목 ${index + 1}`), index),
                 badge: formatRank(rank),
                 meta: metaText(raw, index, unit)
               });
@@ -558,10 +563,31 @@
 
           function metaText(raw, index, unit) {
             if (raw === undefined || raw === null || String(raw).trim() === "") {
-              return unit ? `${index + 1} ${unit}` : `#${index + 1}`;
+              return unit ? `${index + 1} ${unit}` : "";
             }
             const text = String(raw).trim();
+            if (isOrdinalEcho(text, index)) return "";
             return unit && !text.includes(unit) ? `${text} ${unit}` : text;
+          }
+
+          function stripOrdinalEcho(label, index) {
+            const pattern = new RegExp(`^\\s*#?0?${index + 1}(?:[.)#:-]|\\s)+`, "u");
+            const stripped = String(label).replace(pattern, "").trim();
+            return stripped || label;
+          }
+
+          function isOrdinalEcho(text, index) {
+            const normalized = String(text).trim();
+            return new RegExp(`^#?0?${index + 1}$`, "u").test(normalized);
+          }
+
+          function displayUnit(value) {
+            const text = textValue(value, "");
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
           }
 
           function ariaLabel(chartTitle, chartRows, unit) {

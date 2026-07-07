@@ -39,11 +39,12 @@
           font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
           overflow: hidden;
           --line-accent: currentColor;
-          --line-text: currentColor;
+          --line-text: var(--rf-text, currentColor);
           --line-muted: color-mix(in srgb, var(--line-text) 68%, transparent);
           --line-subtle: color-mix(in srgb, var(--line-text) 18%, transparent);
           --line-faint: color-mix(in srgb, var(--line-text) 9%, transparent);
           --line-panel: color-mix(in srgb, var(--line-text) 7%, transparent);
+          --line-shadow: var(--rf-shadow, currentColor);
           --line-accent-soft: color-mix(in srgb, var(--line-accent) 20%, transparent);
           --line-accent-faint: color-mix(in srgb, var(--line-accent) 10%, transparent);
         }
@@ -89,6 +90,7 @@
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
+          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--line-shadow) 34%, transparent);
         }
 
         .line-unit {
@@ -199,6 +201,16 @@
           text-anchor: middle;
         }
 
+        .line-value[data-anchor="start"],
+        .line-label[data-anchor="start"] {
+          text-anchor: start;
+        }
+
+        .line-value[data-anchor="end"],
+        .line-label[data-anchor="end"] {
+          text-anchor: end;
+        }
+
         .line-label {
           fill: var(--line-muted);
           font-size: 34px;
@@ -210,7 +222,7 @@
           fill: var(--line-muted);
           font-size: 28px;
           font-weight: 720;
-          text-anchor: end;
+          text-anchor: start;
         }
 
         .line-source {
@@ -224,7 +236,7 @@
           fill: var(--line-text);
           font-size: 34px;
           font-weight: 900;
-          text-anchor: start;
+          text-anchor: end;
           font-variant-numeric: tabular-nums;
         }
 
@@ -366,7 +378,7 @@
             })
             .filter((value) => Number.isFinite(value));
           const count = Math.min(items.length, values.length);
-          const unit = textOf(vars.unit);
+          const unit = displayUnit(vars.unit);
           const source = textOf(vars.source);
           const accent = textOf(vars.accent).trim() || "currentColor";
           const duration = blockDuration(root, 4);
@@ -394,10 +406,10 @@
             const chart = {
               width: 1440,
               height: 620,
-              left: 92,
-              right: 48,
-              top: 46,
-              bottom: 82
+              left: 132,
+              right: 78,
+              top: 52,
+              bottom: 128
             };
             const plotWidth = chart.width - chart.left - chart.right;
             const plotHeight = chart.height - chart.top - chart.bottom;
@@ -440,7 +452,7 @@
               );
               const yLabel = svgNode("text", {
                 class: "line-y-label",
-                x: chart.left - 24,
+                x: chart.left + 18,
                 y: y + 10
               });
               yLabel.textContent = `${fmt(value)}${unit}`;
@@ -471,6 +483,13 @@
             lineGroup.appendChild(path);
 
             points.forEach((point, index) => {
+              const isFirst = index === 0;
+              const isLast = index === points.length - 1;
+              const valueAnchor = isFirst ? "start" : isLast ? "end" : "middle";
+              const valueX = isFirst ? point.x + 30 : isLast ? point.x - 18 : point.x;
+              const valueY = point.y - chart.top < 78 ? point.y + 54 : point.y - 38;
+              const labelAnchor = isFirst ? "start" : isLast ? "end" : "middle";
+              const labelX = isFirst ? point.x + 4 : isLast ? point.x - 4 : point.x;
               const circle = svgNode("circle", {
                 class: "line-point",
                 cx: point.x,
@@ -480,13 +499,15 @@
               circle.dataset.highlight = index === points.length - 1 ? "true" : "false";
               const value = svgNode("text", {
                 class: "line-value",
-                x: point.x,
-                y: point.y - 32
+                "data-anchor": valueAnchor,
+                x: valueX,
+                y: valueY
               });
               const label = svgNode("text", {
                 class: "line-label",
-                x: point.x,
-                y: chart.top + plotHeight + 58
+                "data-anchor": labelAnchor,
+                x: labelX,
+                y: chart.top + plotHeight + 62
               });
               value.textContent = `${fmt(point.value)}${unit}`;
               label.textContent = point.label;
@@ -495,20 +516,11 @@
               labelGroup.appendChild(label);
             });
 
-            const endPoint = points[points.length - 1];
-            const endLabel = svgNode("text", {
-              class: "line-end-label",
-              x: Math.min(chart.width - chart.right - 180, endPoint.x + 26),
-              y: endPoint.y + 12
-            });
-            endLabel.textContent = `${endPoint.label} ${fmt(endPoint.value)}${unit}`;
-            labelGroup.appendChild(endLabel);
-
             if (source) {
               const sourceText = svgNode("text", {
                 class: "line-source",
                 x: chart.width - chart.right,
-                y: chart.height - 34
+                y: chart.height - 18
               });
               sourceText.textContent = source;
               labelGroup.appendChild(sourceText);
@@ -590,6 +602,15 @@
             const livingStart = Math.min(exitStart - 0.42, Math.max(1.22, total * 0.3));
             const livingDuration = Math.max(0.6, exitStart - livingStart);
             return { exitStart, exitDuration, livingStart, livingDuration };
+          }
+
+          function displayUnit(value) {
+            const text = textOf(value).trim();
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
           }
         })();
       </script>
