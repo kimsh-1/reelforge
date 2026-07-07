@@ -1,7 +1,0 @@
-{
-  "tool_name": "mcp__firecrawl__firecrawl_search",
-  "tool_input_preview": "{\"query\":\"SBS 개표방송 그래픽 바이폰 선거방송 모션그래픽 디자인 세계적\",\"limit\":6}",
-  "error": "Tool 'firecrawl_search' execution failed: Request failed with status code 402",
-  "timestamp": "2026-07-07T04:46:22.625Z",
-  "retry_count": 2
-}
