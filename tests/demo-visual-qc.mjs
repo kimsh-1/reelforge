@@ -160,7 +160,7 @@ function analyzeFrame(filePath, width, height) {
     // 장식 엣지(카드 경계·그라데이션)에 끌려 텍스트 가독성을 저평가한다 — s10 프레임 육안 정상
     // + 프리셋 토큰 대비 실측 5.5+ 확인. 가독성의 정본은 컴파일타임 토큰 대비(>=4.5)이고,
     // 런타임은 (a) 콘텐츠 실존(엣지 bbox), (b) 진짜 깡통(저대비 AND 콘텐츠 부재)만 잡는다.
-    passCenter: centralEdgePixels >= minCentralEdgePixels || (bbox && (bbox.maxX - bbox.minX) > 200),
+    passCenter: centralEdgePixels >= minCentralEdgePixels || (bbox && bbox.width > 200 && bbox.height > 80),
     passContrast: contrastRatio >= 3.0 || centralEdgePixels >= minCentralEdgePixels
   };
 }
