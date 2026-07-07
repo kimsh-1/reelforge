@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/pipeline-state.schema.json",
+  "title": "ReelForge pipeline_state.json",
+  "description": "Resume checkpoint for vf pipeline run. It is written atomically through vf write.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["completedSteps", "failedSteps", "stepHashes", "startedAt", "finishedAt"],
+  "properties": {
+    "completedSteps": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/stepId"
+      }
+    },
+    "failedSteps": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/stepId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/failure"
+      }
+    },
+    "stepHashes": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/stepId"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/sha256"
+      }
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finishedAt": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "stepId": {
+      "type": "string",
+      "enum": ["tts", "images", "compile", "render", "gate"]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["message", "at"],
+      "properties": {
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

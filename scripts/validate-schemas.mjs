@@ -11,7 +11,8 @@ const schemaPaths = [
   "schemas/audio-meta.schema.json",
   "schemas/design-tokens.schema.json",
   "schemas/versions.schema.json",
-  "schemas/render-manifest.schema.json"
+  "schemas/render-manifest.schema.json",
+  "schemas/pipeline-state.schema.json"
 ];
 
 const ajv = new Ajv2020({

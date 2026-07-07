@@ -29,7 +29,8 @@ export const schemaSpecs = {
   "audio-meta": "schemas/audio-meta.schema.json",
   "design-tokens": "schemas/design-tokens.schema.json",
   versions: "schemas/versions.schema.json",
-  "render-manifest": "schemas/render-manifest.schema.json"
+  "render-manifest": "schemas/render-manifest.schema.json",
+  "pipeline-state": "schemas/pipeline-state.schema.json"
 };
 
 export const schemaOrder = [
@@ -50,7 +51,9 @@ const schemaAliases = new Map([
   ["designtokens", "design-tokens"],
   ["versions", "versions"],
   ["render-manifest", "render-manifest"],
-  ["rendermanifest", "render-manifest"]
+  ["rendermanifest", "render-manifest"],
+  ["pipeline-state", "pipeline-state"],
+  ["pipelinestate", "pipeline-state"]
 ]);
 
 const ignoredScanRoots = new Set([

@@ -1,6 +1,6 @@
 {
   "gate": "L0-1",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
@@ -78,10 +78,10 @@
   ],
   "canonicalInputMerkleHash": "b5e18b8d8eed3fbe67aef28b5caa2a9a150674b26ef60b98be1138ea1370b1df",
   "evidenceHash": "f5af69683907469bdc492b59484f87b4406bf757a02624a51268564d42377949",
-  "gateScriptHash": "e57ef1fb674cecbdd7805ba1bea1a3270041d64c406d34066351339b71ce4c15",
-  "gitCommit": "06aabb3232c9d3e2a6ab8f131b6c0327524346a8",
-  "command": "node bin/vf gate --all --profile full --replay",
+  "gateScriptHash": "55cb9723515419b29b4d9fe96f61ec1291c57e938b0b14e5294accb7fd130022",
+  "gitCommit": "43f3e973722e4e7090d59cc4f055786272eda3fc",
+  "command": "node bin/vf gate l0-1 --json",
   "exitCode": 0,
-  "startedAt": "2026-07-07T00:48:09.598Z",
-  "finishedAt": "2026-07-07T00:48:09.703Z"
+  "startedAt": "2026-07-07T01:09:14.340Z",
+  "finishedAt": "2026-07-07T01:09:14.434Z"
 }

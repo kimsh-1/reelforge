@@ -30,6 +30,7 @@ import {
 } from "../src/gates/semantic.mjs";
 import { DEFAULT_PRESET, compileProject } from "../src/compiler/compiler.mjs";
 import { isPathInsideAnyRoot } from "../src/compiler/utils.mjs";
+import { runPipeline } from "../src/pipeline/core/orchestrator.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const projectRootsEnv = "VF_PROJECT_ROOTS";
@@ -44,8 +45,9 @@ Commands:
   vf gate all [--profile fast|full] [--json] [--replay|--execute]
   vf gate <id> [--profile fast|full] [--json] [--replay|--execute]
   vf verify-report <report.json>
-  vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest>
+  vf write <file> [--project-root <dir>] --schema <auto|scene-specs|audio-meta|design-tokens|versions|render-manifest|pipeline-state>
   vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
+  vf pipeline run <projectDir> [--until <step>] [--only <step>] [--force] [--profile mock|real]
 
 Default gate mode is --replay for migrated P0 evidence. Use --execute to rerun the PoC script.
 Default gate profile is fast. Full adds render gates.
@@ -696,6 +698,48 @@ function compileCommand(args) {
   }
 }
 
+function pipelinePositionals(args) {
+  const positionals = [];
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (["--until", "--only", "--profile"].includes(arg)) {
+      index += 1;
+      continue;
+    }
+    if (arg.startsWith("--")) continue;
+    positionals.push(arg);
+  }
+  return positionals;
+}
+
+function pipelineCommand(args) {
+  const positionals = pipelinePositionals(args);
+  const subcommand = positionals[0];
+  if (subcommand !== "run") throw new Error("vf pipeline requires subcommand: run");
+
+  const projectDir = positionals[1];
+  if (!projectDir) throw new Error("vf pipeline run requires <projectDir>");
+
+  const profile = optionValue(args, "--profile") ?? "mock";
+  if (!["mock", "real"].includes(profile)) throw new Error("--profile must be mock or real");
+
+  const until = optionValue(args, "--until");
+  const only = optionValue(args, "--only");
+  const force = args.includes("--force");
+  const absoluteProjectDir = path.resolve(process.cwd(), projectDir);
+  const command = ["node", "bin/vf", ...process.argv.slice(2)].join(" ");
+
+  runPipeline({
+    repoRoot,
+    projectDir: absoluteProjectDir,
+    profile,
+    until,
+    only,
+    force,
+    command
+  });
+}
+
 try {
   const [command, ...args] = process.argv.slice(2);
   if (!command) usage(0);
@@ -703,6 +747,7 @@ try {
   else if (command === "verify-report") verifyReportCommand(args);
   else if (command === "write") writeCommand(args);
   else if (command === "compile") compileCommand(args);
+  else if (command === "pipeline") pipelineCommand(args);
   else usage(1);
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));
