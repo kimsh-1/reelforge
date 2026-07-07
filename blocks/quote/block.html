@@ -112,6 +112,7 @@
           gap: 2.2rem;
           padding: 3.55rem 4.25rem 3.15rem;
           overflow: hidden;
+          animation: quote-frame-living 2.15s ease-in-out 1.15s infinite alternate;
         }
 
         .quote-frame::before {
@@ -137,6 +138,25 @@
           line-height: 1;
           pointer-events: none;
           will-change: transform, opacity;
+          animation: quote-glyph-drift 2.6s ease-in-out 1.15s infinite alternate;
+        }
+
+        @keyframes quote-glyph-drift {
+          0% {
+            transform: translate3d(0, 0, 0) rotate(0deg);
+          }
+          100% {
+            transform: translate3d(9px, -13px, 0) rotate(1.3deg);
+          }
+        }
+
+        @keyframes quote-frame-living {
+          0% {
+            filter: brightness(1);
+          }
+          100% {
+            filter: brightness(1.09);
+          }
         }
 
         .quote-header {
