@@ -14,15 +14,15 @@
       "emphasis": "contrast",
       "headline": "HTML이 곧 프레임",
       "items": [
-        "DOM 상태",
-        "렌더 프레임"
+        "HTML DOM",
+        "영상 프레임"
       ],
       "values": [
-        1,
-        1
+        "작성",
+        "렌더"
       ],
-      "unit": "frame",
-      "source": "docs/compiler.md#architecture",
+      "unit": "state",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, abstract browser DOM layers transforming into a clean video frame grid, deterministic rendering lab, matte charcoal with signal green and amber accents, no visible text, no letters, no numbers, no logos, no watermark",
@@ -49,15 +49,15 @@
       "emphasis": "number",
       "headline": "같은 입력 같은 컷",
       "items": [
-        "입력 세트",
-        "프레임 결과"
+        "프레임 차이",
+        "바이트 차이"
       ],
       "values": [
-        1,
-        1
+        0,
+        0
       ],
-      "unit": "match",
-      "source": "docs/compiler.md#timing",
+      "unit": "diff",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -79,15 +79,15 @@
       "emphasis": "sequence",
       "headline": "씬은 블록이다",
       "items": [
-        "개별 씬",
-        "메인 축"
+        "한 개 씬",
+        "전체 영상"
       ],
       "values": [
-        1,
-        1
+        "블록 단위",
+        "조립"
       ],
-      "unit": "slot",
-      "source": "docs/compiler.md#block-interface",
+      "unit": "form",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, modular scene blocks docking into a single precise timeline rail, technical animation blueprint feel, no visible text, no letters, no numbers, no logos, no watermark",
@@ -113,19 +113,19 @@
       "emphasis": "sequence",
       "headline": "타이밍은 오디오",
       "items": [
-        "s01",
-        "s02",
-        "s03",
-        "total"
+        "컷 1",
+        "컷 2",
+        "컷 3",
+        "끝"
       ],
       "values": [
-        3,
         6,
-        9,
+        12,
+        20,
         30
       ],
       "unit": "sec",
-      "source": "docs/compiler.md#timing",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -147,15 +147,15 @@
       "emphasis": "contrast",
       "headline": "계약이 곧 렌더",
       "items": [
-        "작성 계약",
-        "렌더 산출물"
+        "입력 계약",
+        "출력 영상"
       ],
       "values": [
-        1,
-        2
+        "작성",
+        "자동"
       ],
-      "unit": "stage",
-      "source": "docs/compiler.md#architecture",
+      "unit": "flow",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
@@ -175,19 +175,15 @@
       "mood": "triumphant",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
-      "headline": "검증 레일 셋",
+      "headline": "게이트 35항",
       "items": [
-        "schema",
-        "hash",
-        "frame"
+        "검증 게이트"
       ],
       "values": [
-        1,
-        1,
-        1
+        35
       ],
-      "unit": "rail",
-      "source": "docs/compiler.md#render-lint",
+      "unit": "gate",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -221,7 +217,7 @@
         1
       ],
       "unit": "type",
-      "source": "docs/compiler.md#block-interface",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -237,7 +233,7 @@
       "narration": " ",
       "narration_tts": " ",
       "altText": "컴파일 입력의 역할 비중이 원형 차트로 분리되어 보이는 장면.",
-      "layout": "pie",
+      "layout": "list",
       "mood": "contemplative",
       "reveal": "cascade",
       "emphasis": "contrast",
@@ -247,13 +243,7 @@
         "audio",
         "tokens"
       ],
-      "values": [
-        45,
-        35,
-        20
-      ],
-      "unit": "%",
-      "source": "docs/compiler.md#architecture",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -279,13 +269,7 @@
         "emit HTML",
         "lint"
       ],
-      "values": [
-        1,
-        2,
-        3
-      ],
-      "unit": "phase",
-      "source": "docs/compiler.md#render-lint",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
@@ -315,7 +299,7 @@
         64
       ],
       "unit": "hex",
-      "source": "AGENTS.md#Gate-Rules",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -372,7 +356,7 @@
     {
       "from": "s08",
       "to": "s09",
-      "type": "slide",
+      "type": "crossfade",
       "duration": 0.24
     },
     {

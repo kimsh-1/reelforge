@@ -107,7 +107,7 @@ function expectedTiming(audioMeta, durations) {
   });
   const starts = [0, sceneFrames[0], sceneFrames[0] + sceneFrames[1]];
   const totalFrames = sceneFrames.reduce((sum, value) => sum + value, 0);
-  const transitionStarts = transitionFrames.map((frames, index) => starts[index + 1] - frames);
+  const transitionStarts = transitionFrames.map((frames, index) => starts[index + 1]);
   return { sceneFrames, requestedTransitionFrames, transitionFrames, transitionStarts, starts, totalFrames };
 }
 
@@ -129,8 +129,14 @@ function verifyCompileResult({ type, caseId, caseDir, durations, result }) {
     assert(scene.durationFrames === expected.sceneFrames[index], `${caseId}: ${sceneId} durationFrames mismatch`);
   });
 
-  assert(byScene.get("s01").slotDurationFrames === expected.sceneFrames[0], `${caseId}: s01 slot duration mismatch`);
-  assert(byScene.get("s02").slotDurationFrames === expected.sceneFrames[1], `${caseId}: s02 slot duration mismatch`);
+  assert(
+    byScene.get("s01").slotDurationFrames === expected.sceneFrames[0] + expected.transitionFrames[0],
+    `${caseId}: s01 slot duration mismatch`
+  );
+  assert(
+    byScene.get("s02").slotDurationFrames === expected.sceneFrames[1] + expected.transitionFrames[1],
+    `${caseId}: s02 slot duration mismatch`
+  );
   assert(byScene.get("s03").slotDurationFrames === expected.sceneFrames[2], `${caseId}: s03 slot duration mismatch`);
 
   result.transitions.forEach((transition, index) => {

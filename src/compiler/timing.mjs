@@ -68,7 +68,7 @@ export function buildTiming({ scenes, audioByScene, transitions, fps }) {
     const durationFrames = durationFramesByScene.get(scene.sceneId);
     const startFrame = cursorFrame;
     const outgoingFrames = outgoingTransitionFrames.get(scene.sceneId) ?? 0;
-    const slotDurationFrames = durationFrames;
+    const slotDurationFrames = durationFrames + outgoingFrames;
     const durationSec = secondsFromFrames(durationFrames, fps);
     const startSec = secondsFromFrames(startFrame, fps);
 

@@ -907,7 +907,7 @@ export function compileProject({
     const transitions = (specs.transitions ?? []).map((transition) => {
       const durationFrames = timing.transitionFrames.get(`${transition.from}->${transition.to}`) ?? 0;
       const toTiming = timing.sceneTimings.get(transition.to);
-      const startFrame = Math.max(0, toTiming.startFrame - durationFrames);
+      const startFrame = toTiming.startFrame;
       const emitted = emitTransition({
         transition,
         fromSlotId: `slot-${transition.from}`,

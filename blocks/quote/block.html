@@ -43,6 +43,47 @@
           --quote-shadow: var(--rf-shadow, var(--quote-ink));
         }
 
+        .quote-impact-flash,
+        .quote-impact-vignette,
+        .quote-letterbox {
+          position: absolute;
+          pointer-events: none;
+        }
+
+        .quote-impact-flash {
+          inset: 0;
+          z-index: 30;
+          background: var(--rf-flash, #fff7ea);
+          opacity: 0;
+          mix-blend-mode: screen;
+        }
+
+        .quote-impact-vignette {
+          inset: 0;
+          z-index: 20;
+          background: radial-gradient(ellipse 120% 90% at 50% 45%, transparent 52%, rgba(0, 0, 0, 0.68) 100%);
+          opacity: 0;
+        }
+
+        .quote-letterbox {
+          left: 0;
+          right: 0;
+          height: 8.5%;
+          z-index: 22;
+          background: #05080b;
+          transform: scaleY(0);
+        }
+
+        .quote-letterbox-top {
+          top: 0;
+          transform-origin: top center;
+        }
+
+        .quote-letterbox-bottom {
+          bottom: 0;
+          transform-origin: bottom center;
+        }
+
         .quote-stage {
           position: absolute;
           inset: 7.963% 7.083% 17.963%;
@@ -319,6 +360,55 @@
         #root[data-detail-count="0"] .quote-details {
           display: none;
         }
+
+        #root[data-reveal-mode="spotlight"] .quote-stage {
+          inset: 9.5% 7.083% 17.963%;
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-frame {
+          min-height: 42rem;
+          align-content: center;
+          border-color: color-mix(in srgb, var(--quote-accent) 58%, transparent);
+          background:
+            linear-gradient(135deg, color-mix(in srgb, var(--quote-accent) 14%, transparent), transparent 48%),
+            color-mix(in srgb, var(--quote-surface) 88%, transparent);
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-details {
+          display: none;
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-header {
+          grid-template-columns: minmax(0, 1fr);
+          justify-items: center;
+          text-align: center;
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-title-group {
+          justify-items: center;
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-title {
+          font-size: 8.35rem;
+          line-height: 0.95;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          text-align: center;
+          text-shadow: 0 0 1.4rem color-mix(in srgb, var(--quote-accent) 30%, transparent);
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-body,
+        #root[data-reveal-mode="spotlight"] .quote-footer {
+          justify-items: center;
+          text-align: center;
+        }
+
+        #root[data-reveal-mode="spotlight"] .quote-text {
+          max-width: 56rem;
+          font-size: 4.2rem;
+          letter-spacing: 0;
+        }
       </style>
       <div
         id="root"
@@ -329,6 +419,10 @@
         role="img"
         aria-label=""
       >
+        <span class="quote-impact-vignette" aria-hidden="true"></span>
+        <span class="quote-letterbox quote-letterbox-top" aria-hidden="true"></span>
+        <span class="quote-letterbox quote-letterbox-bottom" aria-hidden="true"></span>
+        <span class="quote-impact-flash" aria-hidden="true"></span>
         <section class="quote-stage">
           <article class="quote-frame">
             <span class="quote-glyph" aria-hidden="true">“</span>
@@ -386,6 +480,7 @@
           const unit = stringValue(variables.unit, "");
           const emphasis = stringValue(variables.emphasis, "quote");
           const reveal = stringValue(variables.reveal, "typewriter");
+          const revealMode = reveal.toLowerCase();
           const source = stringValue(variables.source, "");
           const quoteText = stringValue(items[1] || items[0], title);
           const context = stringValue(items[0], unit || title);
@@ -395,6 +490,7 @@
 
           root.style.setProperty("--quote-accent", safeColor(variables.accent));
           root.dataset.detailCount = String(detailRows.length);
+          root.dataset.revealMode = revealMode;
           titleEl.textContent = title;
           moodEl.textContent = "";
           moodEl.setAttribute("aria-hidden", "true");
@@ -424,13 +520,30 @@
           const tl = gsap.timeline({ paused: true });
           const chars = gsap.utils.toArray(root.querySelectorAll(".quote-char"));
           const details = gsap.utils.toArray(root.querySelectorAll(".quote-detail"));
-          const typewriter = reveal.toLowerCase().includes("type");
+          const typewriter = revealMode.includes("type");
+          const spotlight = revealMode.includes("spotlight");
+          const beatFlash = revealMode.includes("flash");
           const charStagger = chars.length > 0 ? Math.min(0.045, Math.max(0.018, 0.58 / chars.length)) : 0.03;
+          const detailStagger = beatFlash ? 0.055 : 0.12;
           const glyph = root.querySelector(".quote-glyph");
+          const stage = root.querySelector(".quote-stage");
+          const frame = root.querySelector(".quote-frame");
+          const rule = root.querySelector(".quote-rule");
+          const footer = root.querySelector(".quote-footer");
+          const detailsPanel = root.querySelector(".quote-details");
+          const flash = root.querySelector(".quote-impact-flash");
+          const vignette = root.querySelector(".quote-impact-vignette");
+          const letterboxes = gsap.utils.toArray(root.querySelectorAll(".quote-letterbox"));
+
+          if (spotlight) {
+            buildSpotlightTimeline();
+            registerTimeline(tl);
+            return;
+          }
 
           tl.addLabel("start", 0);
           tl.fromTo(
-            root.querySelector(".quote-frame"),
+            frame,
             { opacity: 0, y: 36, scale: 0.985 },
             { opacity: 1, y: 0, scale: 1, duration: 0.72, ease: "power4.out" },
             0
@@ -443,7 +556,7 @@
             0.1
           );
           tl.fromTo(
-            root.querySelector(".quote-rule"),
+            rule,
             { scaleX: 0, opacity: 0 },
             { scaleX: 1, opacity: 1, duration: 0.58, ease: "power3.inOut" },
             0.22
@@ -469,27 +582,74 @@
           tl.fromTo(
             details,
             { opacity: 0, y: 22 },
-            { opacity: 1, y: 0, duration: 0.38, ease: "power3.out", stagger: 0.12 },
+            { opacity: 1, y: 0, duration: 0.38, ease: "power3.out", stagger: detailStagger },
             0.82
           );
           tl.fromTo(
-            root.querySelector(".quote-footer"),
+            footer,
             { opacity: 0, y: 12 },
             { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
             1.15
           );
+          if (beatFlash) {
+            addBeatFlashHits();
+          }
           tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(root.querySelector(".quote-frame"), { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(root.querySelector(".quote-rule"), { scaleX: 0.72, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".quote-stage"), { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+          tl.to(frame, { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+          tl.to(rule, { scaleX: 0.72, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
+          tl.to(stage, { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
-          timelineIds(host, root).forEach((id) => {
-            if (id) window.__timelines[id] = tl;
-          });
-          globalThis.__timelines = window.__timelines;
-          timelineIds(host, root).forEach((id) => {
-            if (id) globalThis.__timelines[id] = tl;
-          });
+          registerTimeline(tl);
+
+          function buildSpotlightTimeline() {
+            const hit = Math.min(0.58, Math.max(0.34, duration * 0.16));
+            const holdDrift = Math.max(0.8, duration - hit - 0.64);
+            tl.addLabel("start", 0);
+            tl.set([frame, titleEl, quoteEl, contextEl, rule, footer, glyph, detailsPanel], { opacity: 0 }, 0);
+            tl.set(stage, { x: 0, y: 0, scale: 1 }, 0);
+            tl.fromTo(letterboxes, { scaleY: 0 }, { scaleY: 1, duration: 0.42, ease: "power3.inOut" }, 0);
+            tl.to(vignette, { opacity: 0.62, duration: 0.16, ease: "power2.in" }, Math.max(0, hit - 0.22));
+            tl.set(flash, { opacity: 1 }, hit);
+            tl.set(frame, { opacity: 1, y: 0, scale: 1.12 }, hit);
+            tl.set([titleEl, quoteEl], { opacity: 1 }, hit);
+            tl.set(glyph, { opacity: 0.72, scale: 1.04, y: 0 }, hit);
+            tl.to(flash, { opacity: 0, duration: 0.12, ease: "power3.out" }, hit);
+            tl.to(frame, { scale: 1, duration: 0.5, ease: "power4.out" }, hit);
+            tl.fromTo(stage, { x: 5, y: -3 }, { x: 0, y: 0, duration: 0.2, ease: "power3.out" }, hit);
+            tl.fromTo(rule, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.42, ease: "power3.out" }, hit + 0.16);
+            tl.fromTo(contextEl, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, ease: "power2.out" }, hit + 0.38);
+            tl.fromTo(footer, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out" }, hit + 0.62);
+            tl.to(vignette, { opacity: 0.36, duration: 0.8, ease: "power2.out" }, hit + 0.04);
+            tl.to(titleEl, { scale: 1.018, duration: holdDrift, ease: "sine.inOut" }, hit + 0.52);
+            tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
+            tl.to(stage, { y: -16, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+            tl.addLabel("final", duration);
+          }
+
+          function addBeatFlashHits() {
+            const targets = details.length > 0 ? details : chars.slice(0, 4);
+            const beatStart = 0.82;
+            const beatGap = 0.16;
+            targets.slice(0, 4).forEach((target, index) => {
+              const at = beatStart + index * beatGap;
+              tl.set(flash, { opacity: index % 2 === 0 ? 0.58 : 0.42 }, at);
+              tl.to(flash, { opacity: 0, duration: 0.07, ease: "power2.out" }, at);
+              tl.fromTo(target, { scale: 0.97 }, { scale: 1.045, duration: 0.08, ease: "power3.out", repeat: 1, yoyo: true }, at);
+            });
+            tl.fromTo(stage, { x: -10 }, { x: 0, duration: 0.2, ease: "power3.out" }, beatStart);
+            tl.to(vignette, { opacity: 0.26, duration: 0.1, ease: "none" }, beatStart);
+            tl.to(vignette, { opacity: 0, duration: 0.42, ease: "power2.out" }, beatStart + 0.12);
+          }
+
+          function registerTimeline(timeline) {
+            timelineIds(host, root).forEach((id) => {
+              if (id) window.__timelines[id] = timeline;
+            });
+            globalThis.__timelines = window.__timelines;
+            timelineIds(host, root).forEach((id) => {
+              if (id) globalThis.__timelines[id] = timeline;
+            });
+          }
 
           function arrayValue(value) {
             return Array.isArray(value) ? value : [];

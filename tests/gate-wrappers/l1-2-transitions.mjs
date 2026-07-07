@@ -53,7 +53,7 @@ function expectedTiming(audioMeta, durations) {
   });
   const starts = [0, sceneFrames[0], sceneFrames[0] + sceneFrames[1]];
   const totalFrames = sceneFrames.reduce((sum, value) => sum + value, 0);
-  const transitionStarts = transitionFrames.map((frames, index) => starts[index + 1] - frames);
+  const transitionStarts = transitionFrames.map((frames, index) => starts[index + 1]);
   return { sceneFrames, requestedTransitionFrames, transitionFrames, transitionStarts, starts, totalFrames };
 }
 
@@ -119,10 +119,10 @@ function verifyCompile(compiled) {
     }
   });
 
-  if (byScene.get("s01")?.slotDurationFrames !== expected.sceneFrames[0]) {
+  if (byScene.get("s01")?.slotDurationFrames !== expected.sceneFrames[0] + expected.transitionFrames[0]) {
     failures.push("s01 slotDurationFrames mismatch");
   }
-  if (byScene.get("s02")?.slotDurationFrames !== expected.sceneFrames[1]) {
+  if (byScene.get("s02")?.slotDurationFrames !== expected.sceneFrames[1] + expected.transitionFrames[1]) {
     failures.push("s02 slotDurationFrames mismatch");
   }
   if (byScene.get("s03")?.slotDurationFrames !== expected.sceneFrames[2]) failures.push("s03 slotDurationFrames mismatch");

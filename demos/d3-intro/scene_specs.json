@@ -17,12 +17,7 @@
         "한 줄이 영상",
         "검증된 렌더"
       ],
-      "values": [
-        "brand",
-        "showcase"
-      ],
-      "unit": "mark",
-      "source": "briefs/T-demo-videos.md#D3",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand intro mood, premium agency editing suite, dark cinematic control room, glowing review rails, confident product reveal without readable branding, no visible text, no letters, no numbers, no logos, no watermark",
@@ -49,15 +44,13 @@
       "emphasis": "number",
       "headline": "30초면 충분",
       "items": [
-        "총 길이",
-        "하이라이트 컷"
+        "완성 영상"
       ],
       "values": [
-        30,
-        10
+        30
       ],
       "unit": "sec",
-      "source": "briefs/T-demo-videos.md#D3",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -83,11 +76,11 @@
         "VFX 쇼케이스"
       ],
       "values": [
-        1,
-        30
+        "한 줄",
+        "30초"
       ],
-      "unit": "sec",
-      "source": "briefs/T-demo-videos.md#D3",
+      "unit": "io",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -113,13 +106,7 @@
         "씬 계약",
         "검증 루프"
       ],
-      "values": [
-        "locked",
-        "authored",
-        "checked"
-      ],
-      "unit": "skill",
-      "source": "briefs/T-demo-videos.md#D3",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
@@ -139,7 +126,7 @@
       "mood": "contemplative",
       "reveal": "split_reveal",
       "emphasis": "contrast",
-      "headline": "반복 자동 판단 사람",
+      "headline": "반복은 자동 판단은 사람",
       "items": [
         "반복 편집",
         "품질 판단"
@@ -149,7 +136,7 @@
         "사람"
       ],
       "unit": "role",
-      "source": "research/11-market-signals/README.md",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, premium quality review gate before delivery, abstract variance bands becoming clean aligned frames, agency-grade polish, no visible text, no letters, no numbers, no logos, no watermark",
@@ -183,7 +170,7 @@
         6
       ],
       "unit": "vfx",
-      "source": "docs/compiler.md#block-interface",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -205,19 +192,11 @@
       "emphasis": "quote",
       "headline": "하이라이트 몽타주",
       "items": [
-        "카피",
-        "이미지",
-        "블록",
-        "렌더"
+        "카피가 뜨고",
+        "컷이 튀고",
+        "렌더로 닫다"
       ],
-      "values": [
-        "flash",
-        "flash",
-        "flash",
-        "flash"
-      ],
-      "unit": "beat",
-      "source": "briefs/T-demo-videos.md#D3",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -247,7 +226,7 @@
         1
       ],
       "unit": "track",
-      "source": "briefs/T-demo-videos.md#v2",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -267,17 +246,15 @@
       "mood": "somber",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "겹치는 문장 0",
+      "headline": "톤 프리셋 16",
       "items": [
-        "말한 단어",
-        "중복"
+        "브랜드 프리셋"
       ],
       "values": [
-        0,
-        0
+        16
       ],
-      "unit": "count",
-      "source": "demos/check-overlap.mjs",
+      "unit": "preset",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -302,12 +279,7 @@
         "ReelForge",
         "스타 한 번"
       ],
-      "values": [
-        "demo",
-        "star"
-      ],
-      "unit": "final",
-      "source": "briefs/T-demo-videos.md#D3",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
@@ -352,8 +324,8 @@
     {
       "from": "s06",
       "to": "s07",
-      "type": "wipe_left",
-      "duration": 0.22
+      "type": "cut",
+      "duration": 0
     },
     {
       "from": "s07",

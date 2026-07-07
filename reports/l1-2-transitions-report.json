@@ -496,8 +496,8 @@
             12
           ],
           "transitionStarts": [
-            161,
-            522
+            167,
+            534
           ],
           "starts": [
             0,
@@ -515,7 +515,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 173,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -524,7 +524,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 379,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -543,7 +543,7 @@
               "to": "s02",
               "type": "fade",
               "duration": 0.2,
-              "startFrame": 161,
+              "startFrame": 167,
               "durationFrames": 6,
               "resolvedType": "crossfade"
             },
@@ -552,7 +552,7 @@
               "to": "s03",
               "type": "fade",
               "duration": 0.4,
-              "startFrame": 522,
+              "startFrame": 534,
               "durationFrames": 12,
               "resolvedType": "crossfade"
             }
@@ -583,8 +583,8 @@
             21
           ],
           "transitionStarts": [
-            157,
-            513
+            167,
+            534
           ],
           "starts": [
             0,
@@ -602,7 +602,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 177,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -611,7 +611,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 388,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -630,7 +630,7 @@
               "to": "s02",
               "type": "fade",
               "duration": 0.333,
-              "startFrame": 157,
+              "startFrame": 167,
               "durationFrames": 10,
               "resolvedType": "crossfade"
             },
@@ -639,7 +639,7 @@
               "to": "s03",
               "type": "fade",
               "duration": 0.667,
-              "startFrame": 513,
+              "startFrame": 534,
               "durationFrames": 21,
               "resolvedType": "crossfade"
             }
@@ -670,8 +670,8 @@
             69
           ],
           "transitionStarts": [
-            152,
-            465
+            167,
+            534
           ],
           "starts": [
             0,
@@ -689,7 +689,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 182,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -698,7 +698,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 436,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -717,7 +717,7 @@
               "to": "s02",
               "type": "fade",
               "duration": 0.5,
-              "startFrame": 152,
+              "startFrame": 167,
               "durationFrames": 15,
               "resolvedType": "crossfade"
             },
@@ -726,7 +726,7 @@
               "to": "s03",
               "type": "fade",
               "duration": 5,
-              "startFrame": 465,
+              "startFrame": 534,
               "durationFrames": 69,
               "resolvedType": "crossfade"
             }
@@ -844,8 +844,8 @@
             12
           ],
           "transitionStarts": [
-            161,
-            522
+            167,
+            534
           ],
           "starts": [
             0,
@@ -863,7 +863,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 173,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -872,7 +872,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 379,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -891,7 +891,7 @@
               "to": "s02",
               "type": "crossfade",
               "duration": 0.2,
-              "startFrame": 161,
+              "startFrame": 167,
               "durationFrames": 6,
               "resolvedType": "crossfade"
             },
@@ -900,7 +900,7 @@
               "to": "s03",
               "type": "crossfade",
               "duration": 0.4,
-              "startFrame": 522,
+              "startFrame": 534,
               "durationFrames": 12,
               "resolvedType": "crossfade"
             }
@@ -931,8 +931,8 @@
             21
           ],
           "transitionStarts": [
-            157,
-            513
+            167,
+            534
           ],
           "starts": [
             0,
@@ -950,7 +950,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 177,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -959,7 +959,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 388,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -978,7 +978,7 @@
               "to": "s02",
               "type": "crossfade",
               "duration": 0.333,
-              "startFrame": 157,
+              "startFrame": 167,
               "durationFrames": 10,
               "resolvedType": "crossfade"
             },
@@ -987,7 +987,7 @@
               "to": "s03",
               "type": "crossfade",
               "duration": 0.667,
-              "startFrame": 513,
+              "startFrame": 534,
               "durationFrames": 21,
               "resolvedType": "crossfade"
             }
@@ -1018,8 +1018,8 @@
             69
           ],
           "transitionStarts": [
-            152,
-            465
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1037,7 +1037,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 182,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1046,7 +1046,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 436,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1065,7 +1065,7 @@
               "to": "s02",
               "type": "crossfade",
               "duration": 0.5,
-              "startFrame": 152,
+              "startFrame": 167,
               "durationFrames": 15,
               "resolvedType": "crossfade"
             },
@@ -1074,7 +1074,7 @@
               "to": "s03",
               "type": "crossfade",
               "duration": 5,
-              "startFrame": 465,
+              "startFrame": 534,
               "durationFrames": 69,
               "resolvedType": "crossfade"
             }
@@ -1192,8 +1192,8 @@
             12
           ],
           "transitionStarts": [
-            161,
-            522
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1211,7 +1211,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 173,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1220,7 +1220,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 379,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1239,7 +1239,7 @@
               "to": "s02",
               "type": "slide_left",
               "duration": 0.2,
-              "startFrame": 161,
+              "startFrame": 167,
               "durationFrames": 6,
               "resolvedType": "slide_left"
             },
@@ -1248,7 +1248,7 @@
               "to": "s03",
               "type": "slide_left",
               "duration": 0.4,
-              "startFrame": 522,
+              "startFrame": 534,
               "durationFrames": 12,
               "resolvedType": "slide_left"
             }
@@ -1279,8 +1279,8 @@
             21
           ],
           "transitionStarts": [
-            157,
-            513
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1298,7 +1298,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 177,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1307,7 +1307,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 388,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1326,7 +1326,7 @@
               "to": "s02",
               "type": "slide_left",
               "duration": 0.333,
-              "startFrame": 157,
+              "startFrame": 167,
               "durationFrames": 10,
               "resolvedType": "slide_left"
             },
@@ -1335,7 +1335,7 @@
               "to": "s03",
               "type": "slide_left",
               "duration": 0.667,
-              "startFrame": 513,
+              "startFrame": 534,
               "durationFrames": 21,
               "resolvedType": "slide_left"
             }
@@ -1366,8 +1366,8 @@
             69
           ],
           "transitionStarts": [
-            152,
-            465
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1385,7 +1385,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 182,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1394,7 +1394,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 436,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1413,7 +1413,7 @@
               "to": "s02",
               "type": "slide_left",
               "duration": 0.5,
-              "startFrame": 152,
+              "startFrame": 167,
               "durationFrames": 15,
               "resolvedType": "slide_left"
             },
@@ -1422,7 +1422,7 @@
               "to": "s03",
               "type": "slide_left",
               "duration": 5,
-              "startFrame": 465,
+              "startFrame": 534,
               "durationFrames": 69,
               "resolvedType": "slide_left"
             }
@@ -1540,8 +1540,8 @@
             12
           ],
           "transitionStarts": [
-            161,
-            522
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1559,7 +1559,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 173,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1568,7 +1568,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 379,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1587,7 +1587,7 @@
               "to": "s02",
               "type": "slide_right",
               "duration": 0.2,
-              "startFrame": 161,
+              "startFrame": 167,
               "durationFrames": 6,
               "resolvedType": "slide_right"
             },
@@ -1596,7 +1596,7 @@
               "to": "s03",
               "type": "slide_right",
               "duration": 0.4,
-              "startFrame": 522,
+              "startFrame": 534,
               "durationFrames": 12,
               "resolvedType": "slide_right"
             }
@@ -1627,8 +1627,8 @@
             21
           ],
           "transitionStarts": [
-            157,
-            513
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1646,7 +1646,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 177,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1655,7 +1655,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 388,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1674,7 +1674,7 @@
               "to": "s02",
               "type": "slide_right",
               "duration": 0.333,
-              "startFrame": 157,
+              "startFrame": 167,
               "durationFrames": 10,
               "resolvedType": "slide_right"
             },
@@ -1683,7 +1683,7 @@
               "to": "s03",
               "type": "slide_right",
               "duration": 0.667,
-              "startFrame": 513,
+              "startFrame": 534,
               "durationFrames": 21,
               "resolvedType": "slide_right"
             }
@@ -1714,8 +1714,8 @@
             69
           ],
           "transitionStarts": [
-            152,
-            465
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1733,7 +1733,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 182,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1742,7 +1742,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 436,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1761,7 +1761,7 @@
               "to": "s02",
               "type": "slide_right",
               "duration": 0.5,
-              "startFrame": 152,
+              "startFrame": 167,
               "durationFrames": 15,
               "resolvedType": "slide_right"
             },
@@ -1770,7 +1770,7 @@
               "to": "s03",
               "type": "slide_right",
               "duration": 5,
-              "startFrame": 465,
+              "startFrame": 534,
               "durationFrames": 69,
               "resolvedType": "slide_right"
             }
@@ -1888,8 +1888,8 @@
             12
           ],
           "transitionStarts": [
-            161,
-            522
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1907,7 +1907,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 173,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -1916,7 +1916,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 379,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -1935,7 +1935,7 @@
               "to": "s02",
               "type": "wipe",
               "duration": 0.2,
-              "startFrame": 161,
+              "startFrame": 167,
               "durationFrames": 6,
               "resolvedType": "wipe"
             },
@@ -1944,7 +1944,7 @@
               "to": "s03",
               "type": "wipe",
               "duration": 0.4,
-              "startFrame": 522,
+              "startFrame": 534,
               "durationFrames": 12,
               "resolvedType": "wipe"
             }
@@ -1975,8 +1975,8 @@
             21
           ],
           "transitionStarts": [
-            157,
-            513
+            167,
+            534
           ],
           "starts": [
             0,
@@ -1994,7 +1994,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 177,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -2003,7 +2003,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 388,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -2022,7 +2022,7 @@
               "to": "s02",
               "type": "wipe",
               "duration": 0.333,
-              "startFrame": 157,
+              "startFrame": 167,
               "durationFrames": 10,
               "resolvedType": "wipe"
             },
@@ -2031,7 +2031,7 @@
               "to": "s03",
               "type": "wipe",
               "duration": 0.667,
-              "startFrame": 513,
+              "startFrame": 534,
               "durationFrames": 21,
               "resolvedType": "wipe"
             }
@@ -2062,8 +2062,8 @@
             69
           ],
           "transitionStarts": [
-            152,
-            465
+            167,
+            534
           ],
           "starts": [
             0,
@@ -2081,7 +2081,7 @@
               "block": "native",
               "startFrame": 0,
               "durationFrames": 167,
-              "slotDurationFrames": 167,
+              "slotDurationFrames": 182,
               "path": "scenes/scene-s01.html"
             },
             {
@@ -2090,7 +2090,7 @@
               "block": "block",
               "startFrame": 167,
               "durationFrames": 367,
-              "slotDurationFrames": 367,
+              "slotDurationFrames": 436,
               "path": "scenes/scene-s02.html"
             },
             {
@@ -2109,7 +2109,7 @@
               "to": "s02",
               "type": "wipe",
               "duration": 0.5,
-              "startFrame": 152,
+              "startFrame": 167,
               "durationFrames": 15,
               "resolvedType": "wipe"
             },
@@ -2118,7 +2118,7 @@
               "to": "s03",
               "type": "wipe",
               "duration": 5,
-              "startFrame": 465,
+              "startFrame": 534,
               "durationFrames": 69,
               "resolvedType": "wipe"
             }
@@ -2145,12 +2145,12 @@
     "tests/gate-wrappers/l1-2-transitions.mjs",
     "tests/transitions-matrix.mjs"
   ],
-  "canonicalInputMerkleHash": "57ca4ad2ac1af941faf70c67bcfdc2bd20eefa438ae0364838ea96be140b3b5b",
-  "evidenceHash": "ea0e84011b5c8d6943c2f1413b07ed89e29ae2773d869e495dde08a6cfd02ef8",
-  "gateScriptHash": "1279edd035e277ea30e347e80d5e8e2aedc89d133b0cbe2481ecad3afb137bb1",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "canonicalInputMerkleHash": "72aa2fba8455fc59e01b99add86d214114c21d1882042860bc1dd99f70c340f7",
+  "evidenceHash": "a9929f32a3f71b0a5489090fddf703dc71ad666d98b5b76cf4c78c53a12c78a1",
+  "gateScriptHash": "d68ede2080b8d966380eacbba1e0a05b370fada56b2d526ea795dee27ef98871",
+  "gitCommit": "82c222ecea720e6570e69871094cd7f6f5a0b504",
+  "command": "node bin/vf gate l1-2-transitions --profile fast",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:32:52.380Z",
-  "finishedAt": "2026-07-07T05:33:11.049Z"
+  "startedAt": "2026-07-07T14:32:29.290Z",
+  "finishedAt": "2026-07-07T14:32:47.675Z"
 }

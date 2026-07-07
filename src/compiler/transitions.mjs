@@ -1,6 +1,6 @@
 import { secondsFromFrames } from "./utils.mjs";
 
-export const TRANSITION_HOOK_VERSION = "P2-01.transition-hook.v1";
+export const TRANSITION_HOOK_VERSION = "R7a.transition-hook.v2";
 
 const TRANSITION_ALIASES = new Map([
   ["cut", "cut"],
@@ -21,7 +21,7 @@ export function transitionHookSignature() {
       transition: "{ from, to, type, duration }",
       fromSlotId: "DOM id for outgoing scene host in index.html",
       toSlotId: "DOM id for incoming scene host in index.html",
-      startFrame: "transition overlap start frame; adjacent scene start frames are not moved",
+      startFrame: "transition starts at the incoming scene start frame; outgoing slots are extended to cover the overlap",
       durationFrames: "transition overlap frames",
       fps: "render fps"
     },
@@ -43,6 +43,13 @@ function zOrderLines({ fromSlotId, toSlotId, startSec }) {
   ];
 }
 
+function outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }) {
+  return [
+    `        tl.set("#${fromSlotId}", { zIndex: 1000 }, ${startSec});`,
+    `        tl.set("#${toSlotId}", { zIndex: 999 }, ${startSec});`
+  ];
+}
+
 function crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec }) {
   return [
     ...zOrderLines({ fromSlotId, toSlotId, startSec }),
@@ -52,25 +59,27 @@ function crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec }) {
 }
 
 function slideLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction }) {
-  const xPercent = direction === "right" ? -100 : 100;
+  const xPercent = direction === "right" ? 100 : -100;
   return [
-    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    ...outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }),
     `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
-    `        tl.fromTo("#${toSlotId}", { xPercent: ${xPercent} }, { xPercent: 0, duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.to("#${fromSlotId}", { xPercent: ${xPercent}, duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "transform" }, ${endSec});`,
     `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
   ];
 }
 
-function wipeInsetForType(type) {
-  if (type === "wipe_right") return "inset(0 100% 0 0)";
-  return "inset(0 0 0 100%)";
+function outgoingWipeInsetForType(type) {
+  if (type === "wipe_right") return "inset(0 0 0 100%)";
+  return "inset(0 100% 0 0)";
 }
 
 function wipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, type }) {
   return [
-    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    ...outgoingCoverZOrderLines({ fromSlotId, toSlotId, startSec }),
     `        tl.set("#${toSlotId}", { opacity: 1 }, ${startSec});`,
-    `        tl.fromTo("#${toSlotId}", { clipPath: "${wipeInsetForType(type)}" }, { clipPath: "inset(0 0 0 0)", duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.fromTo("#${fromSlotId}", { clipPath: "inset(0 0 0 0)" }, { clipPath: "${outgoingWipeInsetForType(type)}", duration: ${durationSec}, ease: "none" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "clipPath" }, ${endSec});`,
     `        tl.set("#${toSlotId}", { clearProps: "clipPath" }, ${endSec});`
   ];
 }

@@ -18,13 +18,7 @@
         "톤 고르기",
         "길이 지정"
       ],
-      "values": [
-        1,
-        2,
-        3
-      ],
-      "unit": "step",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
@@ -51,13 +45,7 @@
         "차분한 톤",
         "16:9"
       ],
-      "values": [
-        "brief",
-        "style",
-        "format"
-      ],
-      "unit": "input",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, precise editorial control room, a clean prompt entry surface represented as abstract empty panels, matte charcoal desk, signal green and warm amber accents, no visible text, no letters, no numbers, no logos, no watermark",
@@ -72,40 +60,8 @@
       "subtitleMode": "karaoke"
     },
     {
-      "sceneId": "s03",
-      "sceneNumber": 3,
-      "narration": " ",
-      "narration_tts": " ",
-      "altText": "누락된 설정만 밝게 점등되고 나머지 항목은 잠긴 상태로 유지되는 장면.",
-      "layout": "list",
-      "mood": "informative",
-      "reveal": "stagger_then_flash",
-      "emphasis": "count",
-      "headline": "빈 칸만 되묻기",
-      "items": [
-        "대상 시청자",
-        "영상 길이",
-        "화면 비율"
-      ],
-      "values": [
-        "필요",
-        "필요",
-        "필요"
-      ],
-      "unit": "missing",
-      "source": "briefs/T-demo-videos.md#D1",
-      "visual_kind": "none",
-      "kenBurns": {
-        "enabled": true,
-        "zoomFactor": 1.05,
-        "zoomDirection": "out",
-        "panDirection": "left"
-      },
-      "subtitleMode": "keyword"
-    },
-    {
       "sceneId": "s04",
-      "sceneNumber": 4,
+      "sceneNumber": 3,
       "narration": " ",
       "narration_tts": " ",
       "altText": "초안과 수정안이 좌우로 나뉘어 한 문장 차이만 강조되는 장면.",
@@ -123,7 +79,7 @@
         1
       ],
       "unit": "scene",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -135,7 +91,7 @@
     },
     {
       "sceneId": "s05",
-      "sceneNumber": 5,
+      "sceneNumber": 4,
       "narration": " ",
       "narration_tts": " ",
       "altText": "승인 신호 뒤로 진행 레일이 빠르게 채워지고 빌드 단계가 점등되는 장면.",
@@ -149,13 +105,7 @@
         "컴파일",
         "렌더"
       ],
-      "values": [
-        1,
-        2,
-        3
-      ],
-      "unit": "run",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "generate_image",
       "imageAsset": {
         "prompt": "ReelForge brand mood, deterministic progress rails glowing across a dark production dashboard, empty status lights, clean mechanical rhythm, no visible text, no letters, no numbers, no logos, no watermark",
@@ -170,40 +120,34 @@
       "subtitleMode": "keyword"
     },
     {
-      "sceneId": "s06",
-      "sceneNumber": 6,
+      "sceneId": "s03",
+      "sceneNumber": 5,
       "narration": " ",
       "narration_tts": " ",
-      "altText": "완료 폴더에서 영상, 프리뷰, 임베드 자료가 한 번에 확인되는 장면.",
+      "altText": "누락된 설정만 밝게 점등되고 나머지 항목은 잠긴 상태로 유지되는 장면.",
       "layout": "list",
-      "mood": "contemplative",
-      "reveal": "stagger",
-      "emphasis": "keyword",
-      "headline": "한 번에 셋 다",
+      "mood": "informative",
+      "reveal": "stagger_then_flash",
+      "emphasis": "count",
+      "headline": "빈 칸만 되묻기",
       "items": [
-        "mp4",
-        "gif preview",
-        "README asset"
+        "대상 시청자",
+        "영상 길이",
+        "화면 비율"
       ],
-      "values": [
-        "완료",
-        "완료",
-        "완료"
-      ],
-      "unit": "output",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "none",
       "kenBurns": {
         "enabled": true,
-        "zoomFactor": 1.03,
+        "zoomFactor": 1.05,
         "zoomDirection": "out",
-        "panDirection": "down"
+        "panDirection": "left"
       },
       "subtitleMode": "keyword"
     },
     {
       "sceneId": "s07",
-      "sceneNumber": 7,
+      "sceneNumber": 6,
       "narration": " ",
       "narration_tts": " ",
       "altText": "씬 길이들이 하나의 타임라인 위에 균일한 박자로 정렬되는 장면.",
@@ -225,7 +169,7 @@
         30
       ],
       "unit": "sec",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -234,6 +178,32 @@
         "panDirection": "right"
       },
       "subtitleMode": "karaoke"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 7,
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "완료 폴더에서 영상, 프리뷰, 임베드 자료가 한 번에 확인되는 장면.",
+      "layout": "list",
+      "mood": "contemplative",
+      "reveal": "stagger",
+      "emphasis": "keyword",
+      "headline": "한 번에 셋 다",
+      "items": [
+        "mp4 영상",
+        "gif 프리뷰",
+        "문서 조각"
+      ],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": true,
+        "zoomFactor": 1.03,
+        "zoomDirection": "out",
+        "panDirection": "down"
+      },
+      "subtitleMode": "keyword"
     },
     {
       "sceneId": "s08",
@@ -255,7 +225,7 @@
         0
       ],
       "unit": "zero",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -271,7 +241,7 @@
       "narration": " ",
       "narration_tts": " ",
       "altText": "완성 패키지 구성 요소가 막대 그래프로 정리되고 마지막 막대가 밝게 채워지는 장면.",
-      "layout": "bar",
+      "layout": "list",
       "mood": "triumphant",
       "reveal": "stagger_then_flash",
       "emphasis": "count",
@@ -281,13 +251,7 @@
         "프리뷰",
         "문서 조각"
       ],
-      "values": [
-        1,
-        1,
-        1
-      ],
-      "unit": "asset",
-      "source": "briefs/T-demo-videos.md#D1",
+      "source": "ReelForge",
       "visual_kind": "chart",
       "kenBurns": {
         "enabled": true,
@@ -307,36 +271,36 @@
     },
     {
       "from": "s02",
-      "to": "s03",
+      "to": "s04",
       "type": "wipe_right",
       "duration": 0.22
     },
     {
-      "from": "s03",
-      "to": "s04",
+      "from": "s04",
+      "to": "s05",
       "type": "crossfade",
       "duration": 0.2
     },
     {
-      "from": "s04",
-      "to": "s05",
+      "from": "s05",
+      "to": "s03",
       "type": "slide_right",
       "duration": 0.24
     },
     {
-      "from": "s05",
-      "to": "s06",
+      "from": "s03",
+      "to": "s07",
       "type": "fade",
       "duration": 0.2
     },
     {
-      "from": "s06",
-      "to": "s07",
+      "from": "s07",
+      "to": "s06",
       "type": "wipe_left",
       "duration": 0.22
     },
     {
-      "from": "s07",
+      "from": "s06",
       "to": "s08",
       "type": "cut",
       "duration": 0
