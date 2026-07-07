@@ -8,6 +8,8 @@ Inputs:
 
 - `<projectDir>/scene_specs.json`
 - `<projectDir>/audio_meta.json`
+- optional `<projectDir>/image-manifest.json`
+- optional `<projectDir>/versions.json`
 - design tokens via `--preset <path>`, default `fixtures/presets/light.json`
 
 The compiler uses the same `vf` schema and semantic validators as `vf write` before it writes anything. It also verifies that each `audio_meta.scenes[].sourceHash` equals `SHA-256(scene_specs.scenes[].narration_tts)`.
@@ -20,6 +22,17 @@ Outputs go under `<projectDir>/build/`:
 - copied render assets under `assets/`
 
 `build/` and `.build-tmp-*` are generated artifact directories. They are ignored by git and skipped by contract discovery gates; source contracts stay in the project root.
+
+## Image Assets
+
+When `<projectDir>/image-manifest.json` exists, the compiler resolves images for scenes whose `visual_kind` is `generate_image`.
+
+Selection order:
+
+- If `versions.json` contains `resources.image_<sceneId>.selected`, that generation must match an `image-manifest.json` asset for the same scene and `gen`.
+- Otherwise the first matching `image-manifest.json` asset for the scene is used.
+
+The selected source path must be a project-relative `./assets/...` file. The compiler copies it into `build/assets/images/`, records the build-relative path in `render-manifest.json` as `scenes[].imagePath`, and emits a full-bleed `<img>` layer inside the scene background. Existing image scrim and dim rules are applied over the image, and the scene's `kenBurns` settings animate the image layer rather than relying on post-build HTML overrides.
 
 ## Timing
 

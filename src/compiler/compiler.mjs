@@ -61,6 +61,7 @@ import {
   writeFileEnsured,
   writeSilentWav
 } from "./utils.mjs";
+import { emitKenBurnsTimeline, kenBurnsCss } from "./motion.mjs";
 
 const DEFAULT_PRESET = "fixtures/presets/light.json";
 const COMPILER_STAMP_INPUTS = ["repo:src/compiler/**", "repo:blocks/**", "repo:package.json"];
@@ -167,6 +168,86 @@ function copiedAudioAssets({ projectDir, buildDir, audioScenes }) {
   return out;
 }
 
+function readJsonIfExists(filePath, fallback = null) {
+  return existsSync(filePath) ? readJsonFile(filePath) : fallback;
+}
+
+function imageResourceType(sceneId) {
+  return `image_${sceneId}`;
+}
+
+function manifestAssetsForScene(imageManifest, sceneId) {
+  return (imageManifest?.assets ?? []).filter((asset) => asset?.sceneId === sceneId && typeof asset?.path === "string");
+}
+
+function selectedVersionEntry(versions, sceneId) {
+  const history = versions?.resources?.[imageResourceType(sceneId)];
+  const selected = history?.selected;
+  if (typeof selected !== "string") return null;
+  const entries = Array.isArray(history?.entries) ? history.entries : [];
+  const entry = entries.find((candidate) => candidate?.gen === selected);
+  return entry?.path ? entry : null;
+}
+
+function imageTargetRelPath({ sceneId, assetPath, gen }) {
+  const rel = String(assetPath).replace(/^\.\//, "");
+  if (rel.startsWith("assets/images/")) return normalizeRelPath(rel);
+  const ext = path.extname(rel) || ".png";
+  const base = path.basename(rel, ext).replace(/[^A-Za-z0-9._-]+/g, "-") || "image";
+  const genPart = gen ? `${gen}_` : "";
+  return normalizeRelPath(path.join("assets", "images", `${sceneId}_${genPart}${base}${ext}`));
+}
+
+function resolveImageAssetForScene({ imageManifest, versions, scene }) {
+  if (scene.visual_kind !== "generate_image") return null;
+
+  const assets = manifestAssetsForScene(imageManifest, scene.sceneId);
+  const selected = selectedVersionEntry(versions, scene.sceneId);
+  if (selected) {
+    const matched = assets.find((asset) => asset.gen === selected.gen);
+    if (!matched) {
+      throw new Error(
+        `image-manifest.json missing selected asset for ${imageResourceType(scene.sceneId)} ${selected.gen}`
+      );
+    }
+    return { ...matched, path: selected.path, selectedGen: selected.gen, source: "versions" };
+  }
+
+  const fallback = assets[0] ?? null;
+  return fallback ? { ...fallback, selectedGen: fallback.gen ?? null, source: "image-manifest" } : null;
+}
+
+function copiedImageAssets({ projectDir, buildDir, scenes }) {
+  const imageManifestPath = path.join(projectDir, "image-manifest.json");
+  const imageManifest = readJsonIfExists(imageManifestPath);
+  if (!imageManifest) return new Map();
+
+  const versions = readJsonIfExists(path.join(projectDir, "versions.json"));
+  const out = new Map();
+  for (const scene of scenes) {
+    const asset = resolveImageAssetForScene({ imageManifest, versions, scene });
+    if (!asset) continue;
+
+    const sourcePath = requireRelativeAsset(
+      projectDir,
+      asset.path,
+      `image-manifest.assets[${asset.sceneId}].path`
+    );
+    const targetRel = imageTargetRelPath({
+      sceneId: scene.sceneId,
+      assetPath: asset.path,
+      gen: asset.selectedGen
+    });
+    copyAssetToBuild({ sourcePath, buildDir, targetRelPath: targetRel });
+    out.set(scene.sceneId, {
+      ...asset,
+      manifestPath: `./${targetRel}`,
+      htmlPath: targetRel
+    });
+  }
+  return out;
+}
+
 function resolveFontSource({ repoRoot, presetDir, tokenPath }) {
   const candidates = [
     path.resolve(repoRoot, tokenPath),
@@ -241,7 +322,26 @@ function subtitleCss(tokens) {
           -webkit-text-stroke: ${subtitle.strokeWidth}px ${subtitle.strokeColor};
           paint-order: stroke fill;
           opacity: ${subtitle.visible ? 1 : 0};
-        }`;
+	        }`;
+}
+
+function cssVarBlock(vars) {
+  return Object.entries(vars)
+    .filter(([, value]) => typeof value === "string" && value.length > 0)
+    .map(([key, value]) => `${key}: ${value};`)
+    .join(" ");
+}
+
+function blockFrameStyle({ scene, tokens }) {
+  const mood = tokens.moods?.[scene.mood] ?? {};
+  return cssVarBlock({
+    "--rf-text": tokens.colors?.text,
+    "--rf-muted-text": tokens.colors?.mutedText,
+    "--rf-surface": tokens.colors?.surface,
+    "--rf-panel": tokens.colors?.panel,
+    "--rf-accent": mood.accent ?? tokens.colors?.accent,
+    "--rf-shadow": tokens.colors?.shadow
+  });
 }
 
 function revealTween(scene) {
@@ -271,7 +371,7 @@ function revealTween(scene) {
 }
 
 function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
-  const imageClass = scene.imageAsset ? " has-image-asset" : "";
+  const imageClass = scene.renderImage ? " has-image-asset" : "";
   return `        <main
           id="${scene.sceneId}-content"
           class="clip scene-content${classForCanvasOverrides(canvasOverrides)}${imageClass}"
@@ -293,11 +393,44 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat }) {
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
   const variables = blockVariablesForScene({ scene, tokens });
   const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
-  const blockHost = block.kind === "block" ? blockFrameHtml({ sceneId: scene.sceneId, innerHtml: rawBlockHost }) : "";
+  const blockHost =
+    block.kind === "block"
+      ? blockFrameHtml({ sceneId: scene.sceneId, innerHtml: rawBlockHost, style: blockFrameStyle({ scene, tokens }) })
+      : "";
   const canvasOverrides = resolveCanvasOverrides(scene, renderFormat.format);
   const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
   const tween = revealTween(scene);
+  const imageAsset = scene.renderImage ?? null;
+  const imageSrc = imageAsset ? `../${imageAsset.htmlPath}` : null;
+  const imageLayer = imageAsset
+    ? `          <img id="${scene.sceneId}-image" class="rf-scene-image" src="${htmlAttr(imageSrc)}" alt="" aria-hidden="true" />`
+    : "";
+  const imageCss = imageAsset
+    ? `        .rf-scene-image {
+          position: absolute;
+          inset: -4%;
+          width: 108%;
+          height: 108%;
+          object-fit: cover;
+          object-position: center;
+          z-index: 0;
+          opacity: 1;
+          pointer-events: none;
+          will-change: transform;
+        }
+${kenBurnsCss({ sceneId: scene.sceneId, hasImage: true })}`
+    : "";
+  const imageTimeline = imageAsset
+    ? emitKenBurnsTimeline({
+        sceneId: scene.sceneId,
+        kenBurns: scene.kenBurns,
+        durationSec: timing.durationSec,
+        hasImage: true,
+        width: renderFormat.width,
+        height: renderFormat.height
+      }).join("\n")
+    : "";
 
   return `<!doctype html>
 <!-- ${GENERATED_COMMENT} -->
@@ -425,8 +558,9 @@ ${fontFaceCss(tokens)}
             0 3px 18px rgba(0, 0, 0, 0.78),
             0 0 2px rgba(0, 0, 0, 0.92);
         }
-${subtitleCss(tokens)}
-${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
+	${subtitleCss(tokens)}
+	${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
+${imageCss}
       </style>
   </head>
   <body>
@@ -440,12 +574,14 @@ ${canvasOverrideCss({ sceneId: scene.sceneId, overrides: canvasOverrides })}
         <section
           id="${scene.sceneId}-bg"
           class="clip scene-bg"
-          data-has-image-asset="${scene.imageAsset ? "true" : "false"}"
+          data-has-image-asset="${imageAsset ? "true" : "false"}"
           data-start="0"
           data-duration="${timing.durationSec}"
           data-track-index="1"
           aria-hidden="true"
-        ></section>
+        >
+${imageLayer}
+        </section>
 ${content}
         <div
           id="${scene.sceneId}-subtitles"
@@ -468,13 +604,14 @@ ${content}
               ? `tl.fromTo("#${scene.sceneId}-block-host", ${tween.from}, ${tween.to}, 0.1);`
               : `tl.fromTo("#${scene.sceneId}-panel", ${tween.from}, ${tween.to}, 0.1);`
           }
-          tl.fromTo(
-            "#${scene.sceneId}-subtitles",
-            { opacity: 0, y: 18 },
-            { opacity: ${tokens.subtitle.visible ? 1 : 0}, y: 0, duration: 0.36, ease: "power2.out" },
-            0.36
-          );
-          window.__timelines[${cssString(scene.sceneId)}] = tl;
+	          tl.fromTo(
+	            "#${scene.sceneId}-subtitles",
+	            { opacity: 0, y: 18 },
+	            { opacity: ${tokens.subtitle.visible ? 1 : 0}, y: 0, duration: 0.36, ease: "power2.out" },
+	            0.36
+	          );
+${imageTimeline}
+	          window.__timelines[${cssString(scene.sceneId)}] = tl;
         })();
       </script>
   </body>
@@ -618,7 +755,19 @@ function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
   };
 }
 
-function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, tokens, transitions, bgm, compilerVersion, renderFormat }) {
+function buildManifest({
+  specs,
+  scenes,
+  audioByScene,
+  audioAssets,
+  imageAssets,
+  timing,
+  tokens,
+  transitions,
+  bgm,
+  compilerVersion,
+  renderFormat
+}) {
   return {
     meta: {
       resolution: { width: renderFormat.width, height: renderFormat.height },
@@ -646,7 +795,7 @@ function buildManifest({ specs, scenes, audioByScene, audioAssets, timing, token
             startSec: word.start
           }))
         },
-        imagePath: null,
+        imagePath: imageAssets.get(scene.sceneId)?.manifestPath ?? null,
         kenBurns: scene.kenBurns,
         startFrame: sceneTiming.startFrame
       };
@@ -736,19 +885,23 @@ export function compileProject({
     const baseTokens = copiedDesignTokens({ repoRoot, buildDir: tmpDir, presetPath: absolutePresetPath, tokens: presetTokens });
     const tokens = tokensForFormat(baseTokens, selectedFormat.format);
     const audioAssets = copiedAudioAssets({ projectDir: absoluteProjectDir, buildDir: tmpDir, audioScenes: audioMeta.scenes });
+    const imageAssets = copiedImageAssets({ projectDir: absoluteProjectDir, buildDir: tmpDir, scenes });
+    const renderScenes = scenes.map((scene) =>
+      imageAssets.has(scene.sceneId) ? { ...scene, renderImage: imageAssets.get(scene.sceneId) } : scene
+    );
     const timing = buildTiming({ scenes, audioByScene, transitions: specs.transitions ?? [], fps });
     const bgm = buildBgm({ specs, tmpDir, scenes, audioMeta, timing });
 
     const warnings = [...timing.warnings];
     const blockByScene = new Map();
-    for (const scene of scenes) {
+    for (const scene of renderScenes) {
       const block = resolveBlock({ repoRoot, buildDir: tmpDir, layout: scene.layout });
       warnings.push(...block.warnings.map((warning) => ({ sceneId: scene.sceneId, ...warning })));
       blockByScene.set(scene.sceneId, block);
       writeFileEnsured(
-        path.join(tmpDir, "scenes", `scene-${scene.sceneId}.html`),
-        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat })
-      );
+	        path.join(tmpDir, "scenes", `scene-${scene.sceneId}.html`),
+	        sceneHtml({ scene, timing: timing.sceneTimings.get(scene.sceneId), tokens, block, renderFormat: selectedFormat })
+	      );
     }
 
     const transitions = (specs.transitions ?? []).map((transition) => {
@@ -774,9 +927,10 @@ export function compileProject({
 
     const manifest = buildManifest({
       specs,
-      scenes,
+      scenes: renderScenes,
       audioByScene,
       audioAssets,
+      imageAssets,
       timing,
       tokens,
       transitions,

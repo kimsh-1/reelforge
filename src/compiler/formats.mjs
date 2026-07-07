@@ -1,4 +1,4 @@
-import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from "./utils.mjs";
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH, htmlAttr } from "./utils.mjs";
 
 export const DEFAULT_FORMAT = "16:9";
 export const SUPPORTED_FORMATS = ["16:9", "9:16", "1:1"];
@@ -134,8 +134,9 @@ export function cssVarsForFormat(spec) {
   ].join("\n          ");
 }
 
-export function blockFrameHtml({ sceneId, innerHtml }) {
-  return `        <div id="${sceneId}-block-frame" class="block-format-frame">
+export function blockFrameHtml({ sceneId, innerHtml, style = "" }) {
+  const styleAttr = style ? ` style="${htmlAttr(style)}"` : "";
+  return `        <div id="${sceneId}-block-frame" class="block-format-frame"${styleAttr}>
 ${innerHtml}
         </div>`;
 }

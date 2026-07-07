@@ -224,7 +224,7 @@ export function emitLivingBackgroundTimeline({ sceneId, durationSec }) {
 export function applyLivingBackgroundToSceneHtml({ html, scene, durationSec }) {
   if (html.includes(`data-rf-living-background="${LIVING_BACKGROUND_VERSION}"`)) return html;
   const sceneId = scene.sceneId;
-  const bgClosePattern = new RegExp(`(<section\\b[^>]*\\bid=["']${sceneId}-bg["'][^>]*>)(\\s*)(</section>)`);
+  const bgClosePattern = new RegExp(`(<section\\b[^>]*\\bid=["']${sceneId}-bg["'][^>]*>)([\\s\\S]*?)(</section>)`);
   const timelineNeedle = `          window.__timelines[${cssString(sceneId)}] = tl;`;
   if (!html.includes("</style>")) throw new Error(`scene ${sceneId} HTML is missing </style>`);
   if (!html.includes(timelineNeedle)) {
@@ -240,6 +240,6 @@ export function applyLivingBackgroundToSceneHtml({ html, scene, durationSec }) {
   const lines = emitLivingBackgroundTimeline({ sceneId, durationSec });
   return html
     .replace("</style>", `${css}\n      </style>`)
-    .replace(bgClosePattern, `$1\n          ${marker}\n          ${markup}\n        $3`)
+    .replace(bgClosePattern, `$1$2\n          ${marker}\n          ${markup}\n        $3`)
     .replace(timelineNeedle, `${lines.join("\n")}\n${timelineNeedle}`);
 }
