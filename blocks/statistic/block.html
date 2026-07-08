@@ -81,6 +81,25 @@
           gap: 2.1rem;
           padding: 3.95rem 4.45rem 3.5rem;
           overflow: hidden;
+          animation: stat-hero-living 2.15s ease-in-out 1.2s infinite alternate;
+        }
+
+        @keyframes stat-hero-living {
+          0% {
+            filter: brightness(1);
+          }
+          100% {
+            filter: brightness(1.09);
+          }
+        }
+
+        @keyframes stat-inner-drift {
+          0% {
+            transform: translate3d(0, 0, 0);
+          }
+          100% {
+            transform: translate3d(0, -7px, 0);
+          }
         }
 
         .stat-hero::before {
@@ -90,6 +109,7 @@
           border: 0.08rem solid var(--stat-line-soft);
           border-radius: 0.5rem;
           pointer-events: none;
+          animation: stat-inner-drift 2.6s ease-in-out 1.2s infinite alternate;
         }
 
         .stat-header {
@@ -151,6 +171,18 @@
           transform: scale(0.92);
           pointer-events: none;
           will-change: transform, opacity;
+          animation: stat-glow-living 2.3s ease-in-out 1.2s infinite alternate;
+        }
+
+        @keyframes stat-glow-living {
+          0% {
+            opacity: 0.5;
+            transform: scale(0.97) translate3d(0, 0, 0);
+          }
+          100% {
+            opacity: 0.95;
+            transform: scale(1.05) translate3d(12px, -10px, 0);
+          }
         }
 
         .stat-number-line {

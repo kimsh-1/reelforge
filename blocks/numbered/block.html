@@ -57,6 +57,16 @@
           gap: 1.55rem;
           box-sizing: border-box;
           padding: 4.65rem 6.25rem 8.45rem;
+          animation: numbered-stage-living 2.15s ease-in-out 1.2s infinite alternate;
+        }
+
+        @keyframes numbered-stage-living {
+          0% {
+            filter: brightness(1);
+          }
+          100% {
+            filter: brightness(1.09);
+          }
         }
 
         .numbered-header {
