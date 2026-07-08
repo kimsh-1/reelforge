@@ -360,14 +360,14 @@
         </section>
       <script>
         (function () {
-          const scriptParent = document.currentScript?.parentElement || document;
-          const rootSelector =
-            '#root[data-composition-id="statistic"], #root[data-hf-original-composition-id="statistic"], [data-hf-inner-root="true"][data-hf-authored-id="root"]';
           const root =
-            (scriptParent.matches?.(rootSelector) ? scriptParent : null) ||
-            scriptParent.querySelector?.(rootSelector) ||
-            document.querySelector(rootSelector) ||
-            document.querySelector('[data-composition-id="statistic"], [data-hf-original-composition-id="statistic"]');
+            document.querySelector('[data-composition-id="statistic"]') ??
+            document.querySelector('[data-hf-original-composition-id="statistic"]');
+          if (!root) {
+            window.__timelines = window.__timelines || {};
+            window.__timelines.statistic = gsap.timeline({ paused: true });
+            return;
+          }
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
             root.closest("[data-variable-values]") ||
@@ -506,23 +506,55 @@
               ...(globalThis.__hfVariablesByComp?.[runtimeId] || {}),
               ...(globalThis.__hfVariablesByComp?.statistic || {})
             };
-            return { ...readHostVariables(hostElement), ...registry, ...direct, ...scoped };
+            const hostVars = readHostVariables(hostElement);
+            const merged = { ...registry, ...direct, ...scoped };
+            for (const [key, value] of Object.entries(hostVars)) {
+              if (value !== undefined && value !== null && value !== "") merged[key] = value;
+            }
+            return merged;
           }
 
           function readHostVariables(element) {
+            const decodeAttr = (value) =>
+              String(value || "")
+                .replaceAll("&quot;", '"')
+                .replaceAll("&#34;", '"')
+                .replaceAll("&#39;", "'")
+                .replaceAll("&apos;", "'")
+                .replaceAll("&amp;", "&");
+            const parseBag = (value) => {
+              try {
+                const parsed = JSON.parse(decodeAttr(value));
+                return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+              } catch {
+                return null;
+              }
+            };
+            const hasStatData = (bag) => bag && (bag.title !== undefined || Array.isArray(bag.values));
             let node = element;
             while (node) {
               if (node.getAttribute && node.hasAttribute("data-variable-values")) {
-                try {
-                  const parsed = JSON.parse(node.getAttribute("data-variable-values"));
-                  return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
-                } catch {
-                  return {};
-                }
+                const bag = parseBag(node.getAttribute("data-variable-values"));
+                if (hasStatData(bag)) return bag;
               }
               node = node.parentElement;
             }
-            return {};
+            const anchor = element || root;
+            const hosts = Array.from(document.querySelectorAll("[data-variable-values]"));
+            let best = null;
+            for (const hostNode of hosts) {
+              const bag = parseBag(hostNode.getAttribute("data-variable-values"));
+              if (!hasStatData(bag)) continue;
+              const source = hostNode.getAttribute("data-composition-src") || "";
+              const hostId = hostNode.getAttribute("data-composition-id") || "";
+              const related = hostId === "statistic" || source.includes("statistic/block.html");
+              if (anchor && hostNode.contains(anchor)) {
+                if (!best || best.node.contains(hostNode)) best = { node: hostNode, bag };
+              } else if (related && !best) {
+                best = { node: hostNode, bag };
+              }
+            }
+            return best ? best.bag : {};
           }
 
           function stringValue(value, fallback) {

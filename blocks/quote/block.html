@@ -526,7 +526,7 @@
           renderMeta(metaEl, []);
           renderQuoteText(quoteEl, quoteText);
           contextEl.textContent = context;
-          sourceEl.textContent = source ? `${source} · ${context}` : context;
+          sourceEl.textContent = source ? (context && context !== source ? `${source} · ${context}` : source) : context;
           root.setAttribute("aria-label", ariaLabel({ title, quoteText, context, source, detailRows }));
 
           detailRows.forEach((row) => {
