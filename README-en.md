@@ -1,6 +1,6 @@
 <p align="center"><a href="README.md">한국어</a> | English | <a href="README-ja.md">日本語</a></p>
 
-<!-- HERO: /mnt/d/reelforge-output/hero — 데모 완성 후 GIF+릴리스 링크 삽입 -->
+<p align="center"><img src="docs/assets/hero.gif" alt="ReelForge demo highlights" width="720"></p>
 <p align="center">
   <img src="docs/images/studio-scenes.png" alt="ReelForge Studio scene editor" width="900">
 </p>
@@ -53,9 +53,9 @@ Real TTS and image runners are optional; rights and service terms stay in projec
 
 | Demo | Use | Spec | Release |
 |---|---|---|---|
-| D1 Usage | Tutorial video for install, pipeline run, and Studio review | `demos/d1-usage/scene_specs.json` | [Release link pending](#) |
-| D2 Engine | Short engine explainer for HTML compilation, seek determinism, and gates | `demos/d2-engine/scene_specs.json` | [Release link pending](#) |
-| D3 Intro | Brand/product intro for people seeing ReelForge for the first time | `demos/d3-intro/scene_specs.json` | [Release link pending](#) |
+| D1 Usage | Tutorial video for install, pipeline run, and Studio review | `demos/d1-usage/scene_specs.json` | [d1-usage.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d1-usage.mp4) |
+| D2 Engine | Short engine explainer for HTML compilation, seek determinism, and gates | `demos/d2-engine/scene_specs.json` | [d2-engine.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d2-engine.mp4) |
+| D3 Intro | Brand/product intro for people seeing ReelForge for the first time | `demos/d3-intro/scene_specs.json` | [d3-intro.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d3-intro.mp4) |
 
 ## [skill] Using The Skill In Claude Code
 
