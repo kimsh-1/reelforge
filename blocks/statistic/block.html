@@ -23,6 +23,7 @@
     <template>
       <div
         id="root"
+        class="stat-rootbox"
         data-composition-id="statistic"
         data-width="1920"
         data-height="1080"
@@ -31,7 +32,7 @@
         aria-label=""
       >
         <style>
-        #root {
+        .stat-rootbox {
           position: absolute;
           inset: 0;
           width: 1920px;
@@ -209,6 +210,10 @@
           letter-spacing: 0;
         }
 
+        .stat-number[data-zero="true"] {
+          color: var(--stat-accent);
+        }
+
         .stat-unit {
           display: inline-block;
           color: var(--stat-accent);
@@ -218,12 +223,12 @@
           letter-spacing: 0;
         }
 
-        #root[data-has-unit="false"] .stat-number-line {
+        .stat-rootbox[data-has-unit="false"] .stat-number-line {
           align-items: center;
           white-space: nowrap;
         }
 
-        #root[data-has-unit="false"] .stat-unit {
+        .stat-rootbox[data-has-unit="false"] .stat-unit {
           display: none;
         }
 
@@ -329,11 +334,11 @@
           color: var(--stat-accent);
         }
 
-        #root[data-row-count="0"] .stat-stage {
+        .stat-rootbox[data-row-count="0"] .stat-stage {
           grid-template-columns: minmax(0, 1fr);
         }
 
-        #root[data-row-count="0"] .stat-details {
+        .stat-rootbox[data-row-count="0"] .stat-details {
           display: none;
         }
       </style>
@@ -402,6 +407,7 @@
           kickerEl.textContent = "";
           kickerEl.setAttribute("aria-hidden", "true");
           numberEl.textContent = formatNumber(0, main.decimals);
+          numberEl.dataset.zero = String(main.numeric === 0);
           unitEl.textContent = unit;
           captionEl.textContent = main.label;
           sourceEl.textContent = source;

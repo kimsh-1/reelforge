@@ -433,6 +433,11 @@
           root.setAttribute("aria-label", ariaLabel(title, rows, unitLabel));
 
           const list = root.querySelector("[data-numbered-list]");
+          const numericRows = rows.filter((row) => row.numeric !== null);
+          const rankedRule =
+            numericRows.length === rows.length &&
+            new Set(numericRows.map((row) => row.numeric)).size > 1;
+          const ruleMax = rankedRule ? Math.max(...numericRows.map((row) => Math.abs(row.numeric))) : 0;
           rows.forEach((row) => {
             const item = document.createElement("li");
             const stamp = document.createElement("div");
@@ -463,6 +468,11 @@
               meta.style.display = "none";
             }
             rule.setAttribute("aria-hidden", "true");
+            if (rankedRule && ruleMax > 0 && row.numeric !== null) {
+              rule.style.height = `${Math.max(18, Math.round((Math.abs(row.numeric) / ruleMax) * 74))}%`;
+            } else {
+              rule.style.display = "none";
+            }
 
             stamp.append(rank, stampUnit);
             copy.append(label, meta);
@@ -585,7 +595,8 @@
               rows.push({
                 label: stripOrdinalEcho(textValue(items[index], `항목 ${index + 1}`), index),
                 badge: formatRank(rank),
-                meta: metaText(raw, index, unit)
+                meta: metaText(raw, index, unit),
+                numeric: Number.isFinite(numeric) ? numeric : null
               });
             }
             return rows;

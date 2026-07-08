@@ -14,8 +14,8 @@
       "emphasis": "quote",
       "headline": "ReelForge",
       "items": [
-        "한 줄이 영상",
-        "검증된 렌더"
+        "한 줄이 영상이 된다",
+        "렌더는 검증까지 마친다"
       ],
       "source": "ReelForge",
       "visual_kind": "generate_image",
@@ -102,9 +102,9 @@
       "emphasis": "keyword",
       "headline": "톤·계약·검증",
       "items": [
-        "브랜드 톤",
-        "씬 계약",
-        "검증 루프"
+        "톤은 브랜드에 맞추고",
+        "씬은 계약으로 묶고",
+        "검증은 루프가 돈다"
       ],
       "source": "ReelForge",
       "visual_kind": "none",
@@ -246,9 +246,9 @@
       "mood": "somber",
       "reveal": "count_up",
       "emphasis": "number",
-      "headline": "톤 프리셋 19",
+      "headline": "프리셋 19종 내장",
       "items": [
-        "브랜드 프리셋"
+        "내장 브랜드 프리셋"
       ],
       "values": [
         19
@@ -276,8 +276,8 @@
       "emphasis": "quote",
       "headline": "말 대신 렌더",
       "items": [
-        "ReelForge",
-        "스타 한 번"
+        "말 대신 렌더로 보여준다",
+        "좋았다면 스타 한 번"
       ],
       "source": "ReelForge",
       "visual_kind": "none",

@@ -22,7 +22,7 @@
   <body>
     <template>
       <style>
-        #root {
+        .list-rootbox {
           position: absolute;
           inset: 0;
           width: 1920px;
@@ -228,7 +228,7 @@
           border-color: var(--list-line);
         }
 
-        #root[data-has-values="false"] .list-item {
+        .list-rootbox[data-has-values="false"] .list-item {
           grid-template-columns: 4.75rem minmax(0, 1fr);
         }
 
@@ -236,7 +236,7 @@
           grid-template-columns: 4.75rem minmax(0, 1fr);
         }
 
-        #root[data-has-values="false"] .list-value {
+        .list-rootbox[data-has-values="false"] .list-value {
           display: none;
         }
 
@@ -300,6 +300,7 @@
       </style>
       <div
         id="root"
+        class="list-rootbox"
         data-composition-id="list"
         data-width="1920"
         data-height="1080"
@@ -318,12 +319,12 @@
       </div>
       <script>
         (function () {
+          const scriptParent = document.currentScript?.parentElement || document;
           const root =
-            document.querySelector('[data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
-            document.querySelector('[data-hf-inner-root="true"]') ||
-            document.querySelector('#root[data-composition-id="list"], #root[data-hf-original-composition-id="list"]') ||
-            document.getElementById("root") ||
+            scriptParent.querySelector?.(':scope > .list-rootbox, :scope .list-rootbox') ||
+            document.querySelector('.list-rootbox[data-composition-id="list"], .list-rootbox[data-hf-original-composition-id="list"]') ||
             document.querySelector('[data-composition-id="list"], [data-hf-original-composition-id="list"]');
+          if (!root) return;
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
             root.closest("[data-variable-values]") ||

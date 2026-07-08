@@ -22,7 +22,7 @@
   <body>
     <template>
       <style>
-        #root {
+        .quote-rootbox {
           position: absolute;
           inset: 0;
           width: 1920px;
@@ -382,20 +382,20 @@
           overflow-wrap: anywhere;
         }
 
-        #root[data-detail-count="0"] .quote-stage {
+        .quote-rootbox[data-detail-count="0"] .quote-stage {
           grid-template-columns: minmax(0, 1fr);
         }
 
-        #root[data-detail-count="0"] .quote-details {
+        .quote-rootbox[data-detail-count="0"] .quote-details {
           display: none;
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-stage {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-stage {
           inset: 9.5% 7.083% 17.963%;
           grid-template-columns: minmax(0, 1fr);
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-frame {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-frame {
           min-height: 42rem;
           align-content: center;
           border-color: color-mix(in srgb, var(--quote-accent) 58%, transparent);
@@ -404,21 +404,21 @@
             color-mix(in srgb, var(--quote-surface) 88%, transparent);
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-details {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-details {
           display: none;
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-header {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-header {
           grid-template-columns: minmax(0, 1fr);
           justify-items: center;
           text-align: center;
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-title-group {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-title-group {
           justify-items: center;
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-title {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-title {
           font-size: 8.35rem;
           line-height: 0.95;
           letter-spacing: 0.08em;
@@ -427,13 +427,13 @@
           text-shadow: 0 0 1.4rem color-mix(in srgb, var(--quote-accent) 30%, transparent);
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-body,
-        #root[data-reveal-mode="spotlight"] .quote-footer {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-body,
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-footer {
           justify-items: center;
           text-align: center;
         }
 
-        #root[data-reveal-mode="spotlight"] .quote-text {
+        .quote-rootbox[data-reveal-mode="spotlight"] .quote-text {
           max-width: 56rem;
           font-size: 4.2rem;
           letter-spacing: 0;
@@ -441,6 +441,7 @@
       </style>
       <div
         id="root"
+        class="quote-rootbox"
         data-composition-id="quote"
         data-width="1920"
         data-height="1080"
@@ -483,10 +484,10 @@
         (function () {
           const scriptParent = document.currentScript?.parentElement || document;
           const root =
-            scriptParent.querySelector(':scope > #root[data-composition-id="quote"]') ||
-            scriptParent.querySelector(':scope > #root[data-hf-original-composition-id="quote"]') ||
+            scriptParent.querySelector(':scope > .quote-rootbox[data-composition-id="quote"]') ||
+            scriptParent.querySelector(':scope > .quote-rootbox[data-hf-original-composition-id="quote"]') ||
             scriptParent.querySelector(':scope > [data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
-            document.querySelector('#root[data-composition-id="quote"], #root[data-hf-original-composition-id="quote"]') ||
+            document.querySelector('.quote-rootbox[data-composition-id="quote"], .quote-rootbox[data-hf-original-composition-id="quote"]') ||
             document.querySelector('[data-composition-id="quote"], [data-hf-original-composition-id="quote"]');
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
