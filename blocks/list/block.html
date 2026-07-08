@@ -319,12 +319,12 @@
       </div>
       <script>
         (function () {
-          const scriptParent = document.currentScript?.parentElement || document;
           const root =
-            scriptParent.querySelector?.(':scope > .list-rootbox, :scope .list-rootbox') ||
+            document.querySelector('[data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
+            document.querySelector('[data-hf-inner-root="true"]') ||
             document.querySelector('.list-rootbox[data-composition-id="list"], .list-rootbox[data-hf-original-composition-id="list"]') ||
+            document.getElementById("root") ||
             document.querySelector('[data-composition-id="list"], [data-hf-original-composition-id="list"]');
-          if (!root) return;
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
             root.closest("[data-variable-values]") ||
