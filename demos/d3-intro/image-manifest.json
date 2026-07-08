@@ -24,6 +24,14 @@
       "prompt": "Use case: productivity-visual. Asset type: ReelForge demo quality gate background, 16:9 landscape PNG, 1536x864 or larger. Primary request: Quality review gate before delivery, abstract variance bands aligning into clean blank frames under warm inspection lights. Scene/backdrop: premium agency review bay made of smooth dark panels, simplified surfaces with no controls or labels. Subject: unlabeled translucent bands entering from both sides and converging into one perfectly aligned blank central frame, signal-green alignment rails, amber inspection lights. Style/medium: cinematic high-end 3D technical render, elegant premium QA visual, minimal abstract geometry. Composition/framing: wide 16:9, central clean frame alignment, side bands symmetrical, open space for later HTML overlays. Lighting/mood: warm amber inspection light, signal-green final alignment glow, dark suspense resolving into confidence. Color palette: matte charcoal, graphite, black glass, signal green, amber, subtle steel. Constraints: completely text-free image; no visible text; no letters; no numbers; no glyphs; no labels; no readable UI; no tiny markings; no tick marks; no buttons with labels; no logos; no watermarks; no code; all copy will be added later as HTML layers. Avoid: typography, pseudo-text, alphabetic shapes, numerals, QA words, console micro markings, fake labels, signage, watermark, brand marks, icons containing letters.",
       "width": 1536,
       "height": 864
+    },
+    {
+      "id": "image_s09_gen_01",
+      "sceneId": "s09",
+      "path": "./assets/images/s09_gen_01.png",
+      "gen": "gen_01",
+      "provider": "codex-imagegen",
+      "prompt": "Premium brand preset library wall in a high-end video studio — backlit shelf grid of glowing tone swatches and color palettes, cinematic teal-and-amber grading, no readable text, photorealistic."
     }
   ],
   "pending": [],

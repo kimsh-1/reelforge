@@ -255,7 +255,7 @@
       ],
       "unit": "preset",
       "source": "ReelForge",
-      "visual_kind": "chart",
+      "visual_kind": "generate_image",
       "kenBurns": {
         "enabled": true,
         "zoomFactor": 1.07,
