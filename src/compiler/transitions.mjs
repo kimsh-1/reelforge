@@ -4,8 +4,18 @@ export const TRANSITION_HOOK_VERSION = "R7a.transition-hook.v2";
 
 const TRANSITION_ALIASES = new Map([
   ["cut", "cut"],
+  ["flash-cut", "flash-cut"],
+  ["flash_cut", "flash-cut"],
   ["fade", "crossfade"],
   ["crossfade", "crossfade"],
+  ["push-wipe", "push-wipe-left"],
+  ["push_wipe", "push-wipe-left"],
+  ["push-wipe-left", "push-wipe-left"],
+  ["push_wipe_left", "push-wipe-left"],
+  ["push-wipe-right", "push-wipe-right"],
+  ["push_wipe_right", "push-wipe-right"],
+  ["zoom-punch", "zoom-punch"],
+  ["zoom_punch", "zoom-punch"],
   ["slide", "slide_left"],
   ["slide_left", "slide_left"],
   ["slide_right", "slide_right"],
@@ -87,6 +97,48 @@ function wipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, type }
   ];
 }
 
+function flashCutLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, durationFrames, fps }) {
+  const flashSec = secondsFromFrames(Math.max(1, Math.min(6, durationFrames)), fps);
+  const settleSec = Math.max(0.001, Number(Math.min(durationSec, flashSec).toFixed(6)));
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.set("#${toSlotId}", { opacity: 1, scale: 1.012, transformOrigin: "50% 50%" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0 }, ${startSec});`,
+    `        tl.set("#rf-transition-flash", { opacity: 1, scale: 1.035 }, ${startSec});`,
+    `        tl.to("#rf-transition-flash", { opacity: 0, scale: 1, duration: ${settleSec}, ease: "power3.out" }, ${startSec});`,
+    `        tl.to("#${toSlotId}", { scale: 1, duration: ${settleSec}, ease: "power4.out" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "transform" }, ${endSec});`,
+    `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
+  ];
+}
+
+function pushWipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction }) {
+  const incomingX = direction === "right" ? -100 : 100;
+  const outgoingX = direction === "right" ? 100 : -100;
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.set("#${fromSlotId}", { opacity: 1, xPercent: 0, scale: 1, transformOrigin: "50% 50%" }, ${startSec});`,
+    `        tl.set("#${toSlotId}", { opacity: 1, xPercent: ${incomingX}, scale: 1.018, transformOrigin: "50% 50%" }, ${startSec});`,
+    `        tl.to("#${fromSlotId}", { xPercent: ${outgoingX}, scale: 0.982, duration: ${durationSec}, ease: "power3.inOut" }, ${startSec});`,
+    `        tl.to("#${toSlotId}", { xPercent: 0, scale: 1, duration: ${durationSec}, ease: "power4.out" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "transform" }, ${endSec});`,
+    `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
+  ];
+}
+
+function zoomPunchLines({ fromSlotId, toSlotId, startSec, endSec, durationSec }) {
+  return [
+    ...zOrderLines({ fromSlotId, toSlotId, startSec }),
+    `        tl.set("#${toSlotId}", { opacity: 1, scale: 1.08, transformOrigin: "50% 50%" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 1, scale: 1, transformOrigin: "50% 50%" }, ${startSec});`,
+    ...outgoingContentFadeLines({ fromSlotId, startSec, durationSec }),
+    `        tl.to("#${fromSlotId}", { opacity: 0, scale: 0.96, duration: ${durationSec}, ease: "power3.in" }, ${startSec});`,
+    `        tl.to("#${toSlotId}", { scale: 1, duration: ${durationSec}, ease: "power4.out" }, ${startSec});`,
+    `        tl.set("#${fromSlotId}", { opacity: 0, clearProps: "transform" }, ${endSec});`,
+    `        tl.set("#${toSlotId}", { clearProps: "transform" }, ${endSec});`
+  ];
+}
+
 function outgoingContentFadeLines({ fromSlotId, startSec, durationSec }) {
   const selector = `#${fromSlotId} .scene-content, #${fromSlotId} .block-format-frame, #${fromSlotId} .block-host, #${fromSlotId} .subtitles`;
   return [
@@ -117,6 +169,13 @@ export function emitTransition({ transition, fromSlotId, toSlotId, startFrame, d
   let lines;
   if (resolvedType === "crossfade") {
     lines = crossfadeLines({ fromSlotId, toSlotId, startSec, durationSec });
+  } else if (resolvedType === "flash-cut") {
+    lines = flashCutLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, durationFrames, fps });
+  } else if (resolvedType === "push-wipe-left" || resolvedType === "push-wipe-right") {
+    const direction = resolvedType === "push-wipe-right" ? "right" : "left";
+    lines = pushWipeLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction });
+  } else if (resolvedType === "zoom-punch") {
+    lines = zoomPunchLines({ fromSlotId, toSlotId, startSec, endSec, durationSec });
   } else if (resolvedType === "slide_left" || resolvedType === "slide_right") {
     const direction = resolvedType === "slide_right" ? "right" : "left";
     lines = slideLines({ fromSlotId, toSlotId, startSec, endSec, durationSec, direction });

@@ -10,7 +10,7 @@
       "altText": "HTML DOM 레이어가 영상 프레임 그리드로 변환되는 기술 쇼케이스 장면.",
       "layout": "compare",
       "mood": "informative",
-      "reveal": "split_reveal",
+      "reveal": "zoom_in",
       "emphasis": "contrast",
       "headline": "HTML이 곧 프레임",
       "items": [
@@ -314,38 +314,38 @@
     {
       "from": "s01",
       "to": "s02",
-      "type": "crossfade",
-      "duration": 0.22
+      "type": "zoom-punch",
+      "duration": 0.32
     },
     {
       "from": "s02",
       "to": "s03",
-      "type": "slide_left",
-      "duration": 0.24
+      "type": "flash-cut",
+      "duration": 0.2
     },
     {
       "from": "s03",
       "to": "s04",
-      "type": "wipe_left",
-      "duration": 0.22
+      "type": "cut",
+      "duration": 0
     },
     {
       "from": "s04",
       "to": "s05",
-      "type": "fade",
-      "duration": 0.2
+      "type": "push-wipe",
+      "duration": 0.3
     },
     {
       "from": "s05",
       "to": "s06",
-      "type": "slide_right",
-      "duration": 0.24
+      "type": "zoom-punch",
+      "duration": 0.3
     },
     {
       "from": "s06",
       "to": "s07",
-      "type": "wipe_right",
-      "duration": 0.22
+      "type": "cut",
+      "duration": 0
     },
     {
       "from": "s07",
@@ -356,14 +356,14 @@
     {
       "from": "s08",
       "to": "s09",
-      "type": "crossfade",
-      "duration": 0.24
+      "type": "push-wipe-right",
+      "duration": 0.3
     },
     {
       "from": "s09",
       "to": "s10",
-      "type": "wipe",
-      "duration": 0.22
+      "type": "zoom-punch",
+      "duration": 0.3
     }
   ]
 }

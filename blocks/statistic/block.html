@@ -90,7 +90,7 @@
             filter: brightness(1);
           }
           100% {
-            filter: brightness(1.09);
+            filter: brightness(1.13);
           }
         }
 
@@ -99,7 +99,7 @@
             transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translate3d(0, -7px, 0);
+            transform: translate3d(0, -12px, 0);
           }
         }
 
@@ -162,6 +162,18 @@
           align-content: center;
           gap: 1.1rem;
           overflow: hidden;
+          transform-origin: 50% 50%;
+          will-change: transform;
+          animation: stat-main-float 2.42s ease-in-out calc(var(--rf-scene-start, 0s) + 1.18s) infinite alternate;
+        }
+
+        @keyframes stat-main-float {
+          0% {
+            transform: translate3d(0, -6px, 0);
+          }
+          100% {
+            transform: translate3d(0, 6px, 0);
+          }
         }
 
         .stat-glow {
@@ -182,7 +194,7 @@
           }
           100% {
             opacity: 0.95;
-            transform: scale(1.05) translate3d(12px, -10px, 0);
+            transform: scale(1.08) translate3d(18px, -14px, 0);
           }
         }
 

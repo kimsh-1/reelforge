@@ -167,14 +167,14 @@ export function livingBackgroundCss({ sceneId }) {
         }
         #${sceneId}-bg .rf-bg-living {
           position: absolute;
-          inset: -9%;
+          inset: -14%;
           z-index: 0;
           background:
             radial-gradient(ellipse 58% 42% at 18% 18%, color-mix(in srgb, var(--rf-accent, Highlight) 18%, transparent), transparent 68%),
             radial-gradient(ellipse 52% 44% at 82% 76%, color-mix(in srgb, var(--rf-text, CanvasText) 10%, transparent), transparent 70%),
             linear-gradient(135deg, color-mix(in srgb, var(--rf-panel, Canvas) 24%, transparent), transparent 56%);
-          opacity: 0.62;
-          transform: translate3d(0, 0, 0) scale(1.04);
+          opacity: 0.66;
+          transform: translate3d(0, 0, 0) scale(1.08);
           transform-origin: 50% 50%;
           pointer-events: none;
           will-change: transform, opacity;
@@ -216,8 +216,8 @@ export function emitLivingBackgroundTimeline({ sceneId, durationSec }) {
   const grainA = deterministicPair(sceneId, 1);
   const grainB = deterministicPair(sceneId, 2);
   return [
-    `          tl.fromTo(${cssString(`#${sceneId}-bg .rf-bg-living`)}, { opacity: 0.32, x: -18, y: 10, scale: 1.035 }, { opacity: 0.66, x: 26, y: -18, scale: 1.075, rotation: 0.35, duration: ${livingDuration}, ease: "sine.inOut" }, 0);`,
-    `          tl.fromTo(${cssString(`#${sceneId}-bg .rf-bg-grain`)}, { opacity: 0.035, x: ${grainA.x}, y: ${grainA.y} }, { opacity: 0.065, x: ${grainB.x}, y: ${grainB.y}, duration: ${duration}, ease: "steps(${Math.max(8, Math.round(duration * 10))})" }, 0);`
+    `          tl.fromTo(${cssString(`#${sceneId}-bg .rf-bg-living`)}, { opacity: 0.34, x: -36, y: 20, scale: 1.06 }, { opacity: 0.74, x: 52, y: -36, scale: 1.135, rotation: 0.7, duration: ${livingDuration}, ease: "sine.inOut" }, 0);`,
+    `          tl.fromTo(${cssString(`#${sceneId}-bg .rf-bg-grain`)}, { opacity: 0.038, x: ${grainA.x * 2}, y: ${grainA.y * 2} }, { opacity: 0.072, x: ${grainB.x * 2}, y: ${grainB.y * 2}, duration: ${duration}, ease: "steps(${Math.max(8, Math.round(duration * 10))})" }, 0);`
   ];
 }
 

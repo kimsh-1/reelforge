@@ -1,6 +1,6 @@
 {
   "gate": "P0a",
-  "pass": true,
+  "pass": false,
   "checks": [
     {
       "id": "doctor-critical",
@@ -56,40 +56,24 @@
     },
     {
       "id": "mp4-exists",
-      "pass": true,
+      "pass": false,
       "measured": {
         "path": "out/p0a.mp4",
-        "bytes": 74557
+        "bytes": 0
       }
     },
     {
       "id": "ffprobe-profile",
-      "pass": true,
+      "pass": false,
       "measured": {
-        "codec": "h264",
-        "pix_fmt": "yuv420p",
-        "duration": 5,
-        "durationToleranceSec": 0.3,
-        "audioTrackCount": 0,
-        "hasAudioTrack": false,
-        "streams": [
-          {
-            "index": 0,
-            "codec_name": "h264",
-            "codec_type": "video",
-            "pix_fmt": "yuv420p"
-          }
-        ]
+        "error": "out/p0a.mp4 missing or empty"
       }
     },
     {
       "id": "faststart",
-      "pass": true,
+      "pass": false,
       "measured": {
-        "moovOffset": 32,
-        "mdatOffset": 1475,
-        "fileSize": 74557,
-        "method": "top-level MP4 atom scan"
+        "error": "out/p0a.mp4 not found"
       }
     }
   ],
@@ -104,24 +88,12 @@
       "sha256": "aa1cf08a7974458b38ba5ad1af877f2c9c35abfb0f5c3c12046e09f2dd2bdf90"
     },
     {
-      "path": "out/p0a.mp4",
-      "sha256": "2cfebb16944467ff1e4a8f0172843a1c562d14917cf038199427997b134cf4da"
-    },
-    {
       "path": "scripts/gate-p0a.mjs",
       "sha256": "e73e3c605c743c082de16552ae1c81da879e86c0c093648f91a5cff2433bc141"
-    },
-    {
-      "path": "package.json",
-      "sha256": "70a5e13d64c553f9fc02f39b75b3e7c3c682b314227a9f9b9d8ab1e2db0d5660"
-    },
-    {
-      "path": "package-lock.json",
-      "sha256": "2aa999326653f57cf406d2658533eb701c6f9c5b4ecebd499423efa672c6d3a8"
     }
   ],
-  "command": "node /home/seunghyeong/video-factory-poc/scripts/gate-p0a.mjs",
-  "exitCode": 0,
-  "startedAt": "2026-07-06T18:22:33.175Z",
-  "finishedAt": "2026-07-06T18:22:33.196Z"
+  "command": "node /home/seunghyeong/reelforge/poc/scripts/gate-p0a.mjs",
+  "exitCode": 1,
+  "startedAt": "2026-07-09T05:14:16.512Z",
+  "finishedAt": "2026-07-09T05:14:16.523Z"
 }

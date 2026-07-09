@@ -120,6 +120,10 @@
           stroke: color-mix(in srgb, var(--rf-pie-muted) 46%, transparent);
         }
 
+        .pie-slice[data-highlight="true"] {
+          animation: pie-slice-glow 2.42s ease-in-out calc(var(--rf-scene-start, 0s) + 1.12s) infinite alternate;
+        }
+
         .pie-center {
           display: grid;
           place-items: center;
@@ -227,6 +231,26 @@
           aspect-ratio: 1;
           border-radius: 50%;
           background: var(--slice-color, var(--rf-pie-accent));
+          transform-origin: 50% 50%;
+          animation: pie-dot-orbit 2.26s ease-in-out calc(var(--rf-scene-start, 0s) + 0.98s) infinite alternate;
+        }
+
+        @keyframes pie-slice-glow {
+          0% {
+            filter: brightness(1) drop-shadow(0 0 0 var(--rf-pie-panel));
+          }
+          100% {
+            filter: brightness(1.18) drop-shadow(0 0 1.1rem var(--rf-pie-panel-strong));
+          }
+        }
+
+        @keyframes pie-dot-orbit {
+          0% {
+            transform: translate3d(0, -6px, 0) scale(0.96);
+          }
+          100% {
+            transform: translate3d(0, 6px, 0) scale(1.14);
+          }
         }
 
         .pie-label {

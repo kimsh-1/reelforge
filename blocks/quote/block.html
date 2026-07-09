@@ -247,7 +247,10 @@
           min-height: 0;
           display: grid;
           align-content: center;
-          gap: 1.65rem;
+          gap: 1.45rem;
+          transform-origin: 50% 50%;
+          will-change: transform;
+          animation: quote-body-float 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.12s) infinite alternate;
         }
 
         .quote-rule {
@@ -259,15 +262,24 @@
 
         .quote-text {
           margin: 0;
-          max-width: 61rem;
+          max-width: 69rem;
           color: var(--quote-ink);
-          font-size: 5.35rem;
+          font-size: 6.15rem;
           font-weight: 900;
-          line-height: 1.13;
-          letter-spacing: -0.03em;
+          line-height: 1.08;
+          letter-spacing: 0;
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
+        }
+
+        @keyframes quote-body-float {
+          0% {
+            transform: translate3d(0, -6px, 0);
+          }
+          100% {
+            transform: translate3d(0, 6px, 0);
+          }
         }
 
         .quote-char {
@@ -434,8 +446,8 @@
         }
 
         .quote-rootbox[data-reveal-mode="spotlight"] .quote-text {
-          max-width: 56rem;
-          font-size: 4.2rem;
+          max-width: 62rem;
+          font-size: 4.85rem;
           letter-spacing: 0;
         }
       </style>

@@ -404,7 +404,13 @@ function revealTween(scene) {
   return base;
 }
 
-function blockRevealTween() {
+function blockRevealTween(scene) {
+  if (scene.reveal === "zoom_in") {
+    return {
+      from: "{ opacity: 0, y: 0, scale: 1.08 }",
+      to: "{ opacity: 1, y: 0, scale: 1, duration: 0.34, ease: \"power4.out\" }"
+    };
+  }
   return {
     from: "{ opacity: 0, y: 10, scale: 0.996 }",
     to: "{ opacity: 1, y: 0, scale: 1, duration: 0.24, ease: \"power3.out\" }"
@@ -415,7 +421,8 @@ function needsTitleScrim({ imageAsset, tokens }) {
   return Boolean(imageAsset) || colorLuminance(tokens.colors.background) <= 0.5;
 }
 
-function outgoingContentFadeTimeline({ scene, timing, block, fps }) {
+function outgoingContentFadeTimeline({ scene, timing, block, fps, isFinalScene = false }) {
+  if (isFinalScene) return "";
   const outgoingFrames = timing.outgoingTransitionFrames ?? 0;
   if (outgoingFrames <= 0) return "";
 
@@ -447,26 +454,29 @@ function headlineFallbackHtml({ scene, timing, canvasOverrides }) {
         </main>`;
 }
 
-function sceneHtml({ scene, timing, tokens, block, renderFormat, fps, repeatIndex = 0 }) {
+function sceneHtml({ scene, timing, tokens, block, renderFormat, fps, repeatIndex = 0, isFinalScene = false }) {
   const mood = tokens.moods?.[scene.mood] ?? {};
   const accent = mood.accent ?? tokens.colors.accent;
   const imageAsset = scene.renderImage ?? null;
+  const htmlTiming = isFinalScene
+    ? { ...timing, durationSec: Number((timing.durationSec + secondsFromFrames(1, fps)).toFixed(6)) }
+    : timing;
   const foreground = imageAsset ? "#F8FAFC" : colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.text : "#F8FAFC";
   const panel = colorLuminance(tokens.colors.background) > 0.5 ? tokens.colors.surface : "rgba(15, 23, 42, 0.72)";
   const variables = blockVariablesForScene({ scene, tokens, repeatIndex });
-  const rawBlockHost = blockHostHtml({ scene, timing, block, variables });
+  const rawBlockHost = blockHostHtml({ scene, timing: htmlTiming, block, variables });
   const blockHost =
     block.kind === "block"
       ? blockFrameHtml({ sceneId: scene.sceneId, innerHtml: rawBlockHost, style: blockFrameStyle({ scene, tokens }) })
       : "";
   const canvasOverrides = resolveCanvasOverrides(scene, renderFormat.format);
-  const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
+  const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing: htmlTiming, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
   const hasSubtitleContent =
     Boolean(String(scene.narration ?? "").trim()) || (subtitleData?.words?.length ?? 0) > 0;
   const tween = block.kind === "block" ? blockRevealTween(scene) : revealTween(scene);
   const titleScrim = needsTitleScrim({ imageAsset, tokens });
-  const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps });
+  const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps, isFinalScene });
   const imageSrc = imageAsset ? `../${imageAsset.htmlPath}` : null;
   const imageLayer = imageAsset
     ? `          <img id="${scene.sceneId}-image" class="rf-scene-image" src="${htmlAttr(imageSrc)}" alt="" aria-hidden="true" />`
@@ -651,7 +661,7 @@ ${imageCss}
         data-composition-id="${scene.sceneId}"
         data-width="${renderFormat.width}"
         data-height="${renderFormat.height}"
-        data-duration="${timing.durationSec}"
+        data-duration="${htmlTiming.durationSec}"
         data-title-scrim="${titleScrim ? "true" : "false"}"
       >
         <section
@@ -659,7 +669,7 @@ ${imageCss}
           class="clip scene-bg"
           data-has-image-asset="${imageAsset ? "true" : "false"}"
           data-start="0"
-          data-duration="${timing.durationSec}"
+          data-duration="${htmlTiming.durationSec}"
           data-track-index="1"
           aria-hidden="true"
         >
@@ -672,7 +682,7 @@ ${
           id="${scene.sceneId}-subtitles"
           class="clip subtitles"
           data-start="0"
-          data-duration="${timing.durationSec}"
+          data-duration="${htmlTiming.durationSec}"
           data-track-index="20"
           data-subtitle-mode="${htmlAttr(scene.subtitleMode)}"
           data-subtitles='${jsonAttr(subtitleData)}'
@@ -723,13 +733,17 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
   scenes.forEach((scene, index) => {
     const sceneTiming = timing.sceneTimings.get(scene.sceneId);
     const initialOpacity = incomingFade.has(scene.sceneId) ? 0 : 1;
+    const slotDurationSec =
+      index === scenes.length - 1
+        ? Number((sceneTiming.slotDurationSec + secondsFromFrames(1, timing.fps)).toFixed(6))
+        : sceneTiming.slotDurationSec;
     slots.push(`      <div
         id="slot-${scene.sceneId}"
         class="clip scene-slot"
         data-composition-id="${scene.sceneId}"
         data-composition-src="scenes/scene-${scene.sceneId}.html"
         data-start="${sceneTiming.startSec}"
-        data-duration="${sceneTiming.slotDurationSec}"
+        data-duration="${slotDurationSec}"
         data-track-index="${index + 1}"
         data-width="${renderFormat.width}"
         data-height="${renderFormat.height}"
@@ -748,6 +762,7 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
   const transitionLines = transitions.flatMap((transition) => transition.lines);
   const duckingLines = bgm ? emitDuckingTimeline({ keyframes: bgm.duckingKeyframes }) : [];
   const bgColor = tokens.colors?.background ?? "#0F172A";
+  const transitionAccent = tokens.colors?.accent ?? "#FFFFFF";
   const bgmAudio = bgm
     ? `      <audio
         id="rf-bgm"
@@ -789,6 +804,19 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
         height: 100%;
         box-sizing: border-box;
       }
+      #rf-transition-flash {
+        position: absolute;
+        inset: -5%;
+        z-index: 2000;
+        pointer-events: none;
+        opacity: 0;
+        background:
+          radial-gradient(ellipse 88% 72% at 50% 48%, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.38) 48%, transparent 72%),
+          linear-gradient(90deg, color-mix(in srgb, ${transitionAccent} 72%, white), rgba(255, 255, 255, 0.92) 46%, color-mix(in srgb, ${transitionAccent} 46%, transparent));
+        mix-blend-mode: screen;
+        transform-origin: 50% 50%;
+        will-change: opacity, transform;
+      }
     </style>
   </head>
   <body>
@@ -803,6 +831,7 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
 ${slots.join("\n")}
 ${audio.join("\n")}
 ${bgmAudio}
+      <div id="rf-transition-flash" aria-hidden="true"></div>
     </div>
     <script>
       window.__timelines = window.__timelines || {};
@@ -1004,7 +1033,7 @@ export function compileProject({
       repeatIndexByScene.set(scene.sceneId, count);
       layoutCounts.set(scene.layout, count + 1);
     }
-    for (const scene of renderScenes) {
+    for (const [index, scene] of renderScenes.entries()) {
       const block = resolveBlock({ repoRoot, buildDir: tmpDir, layout: scene.layout });
       warnings.push(...block.warnings.map((warning) => ({ sceneId: scene.sceneId, ...warning })));
       blockByScene.set(scene.sceneId, block);
@@ -1017,7 +1046,8 @@ export function compileProject({
           block,
           renderFormat: selectedFormat,
           fps,
-          repeatIndex: repeatIndexByScene.get(scene.sceneId) ?? 0
+          repeatIndex: repeatIndexByScene.get(scene.sceneId) ?? 0,
+          isFinalScene: index === renderScenes.length - 1
         })
 	      );
     }

@@ -40,15 +40,16 @@
           --list-line-soft: color-mix(in srgb, var(--list-ink) 14%, transparent);
           --list-accent-soft: color-mix(in srgb, var(--list-accent) 14%, transparent);
           --list-shadow: var(--rf-shadow, var(--list-ink));
+          --list-row-count: 3;
         }
 
         .list-stage {
           position: absolute;
-          inset: 8.25% 7.25% 15.75%;
+          inset: 6.65% 6.85% 13.25%;
           display: grid;
-          grid-template-columns: minmax(0, 0.78fr) minmax(42rem, 1.18fr);
-          align-items: center;
-          gap: 5rem;
+          grid-template-columns: minmax(0, 0.72fr) minmax(44rem, 1.28fr);
+          align-items: stretch;
+          gap: 4.5rem;
           box-sizing: border-box;
         }
 
@@ -56,7 +57,7 @@
           min-width: 0;
           display: grid;
           align-content: center;
-          gap: 1.55rem;
+          gap: 1.65rem;
         }
 
         .list-kicker {
@@ -100,12 +101,34 @@
           overflow-wrap: anywhere;
         }
 
+        .list-count {
+          width: fit-content;
+          margin: 0;
+          box-sizing: border-box;
+          padding: 1rem 1.25rem;
+          border: 0.1rem solid var(--list-line);
+          border-radius: 0.5rem;
+          background:
+            linear-gradient(90deg, var(--list-accent-soft), transparent 60%),
+            var(--list-panel);
+          color: var(--list-ink);
+          font-size: 1.7rem;
+          font-weight: 860;
+          line-height: 1;
+          letter-spacing: 0;
+          white-space: nowrap;
+          box-shadow: 0 0.8rem 2rem color-mix(in srgb, var(--list-shadow) 12%, transparent);
+        }
+
         .list-stack {
           min-width: 0;
+          min-height: 0;
           margin: 0;
           padding: 0;
           display: grid;
-          gap: 1.15rem;
+          grid-template-rows: repeat(var(--list-row-count), minmax(9.9rem, 1fr));
+          align-content: stretch;
+          gap: 1.25rem;
           list-style: none;
           counter-reset: list-item-count;
         }
@@ -113,13 +136,13 @@
         .list-item {
           position: relative;
           min-width: 0;
-          min-height: 8.7rem;
+          min-height: 9.9rem;
           display: grid;
           grid-template-columns: 4.75rem minmax(0, 1fr) auto;
           align-items: center;
           gap: 1.35rem;
           box-sizing: border-box;
-          padding: 1.28rem 1.45rem;
+          padding: 1.42rem 1.6rem;
           border: 0.1rem solid var(--list-line-soft);
           border-radius: 0.5rem;
           background:
@@ -177,7 +200,7 @@
         .list-label {
           min-width: 0;
           color: var(--list-ink);
-          font-size: 2.55rem;
+          font-size: 3.05rem;
           font-weight: 850;
           line-height: 1.14;
           letter-spacing: 0;
@@ -188,7 +211,7 @@
         .list-meta {
           min-width: 0;
           color: var(--list-muted);
-          font-size: 1.18rem;
+          font-size: 1.32rem;
           font-weight: 720;
           line-height: 1.15;
           letter-spacing: 0;
@@ -203,7 +226,7 @@
           border-radius: 0.5rem;
           background: var(--list-accent-soft);
           color: var(--list-ink);
-          font-size: 1.8rem;
+          font-size: 2rem;
           font-weight: 900;
           line-height: 1;
           letter-spacing: 0;
@@ -295,7 +318,7 @@
         }
 
         .list-sweep {
-          animation: list-sweep-living 1.48s ease-in-out 1.05s infinite;
+          animation: list-sweep-living 1.48s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite;
         }
       </style>
       <div
@@ -313,6 +336,7 @@
             <p class="list-kicker" data-list-mood></p>
             <h1 class="list-title" data-list-title></h1>
             <p class="list-source" data-list-source></p>
+            <p class="list-count" data-list-count></p>
           </header>
           <ol class="list-stack" data-list-items aria-label="목록 항목"></ol>
         </section>
@@ -334,6 +358,7 @@
           const titleEl = root.querySelector("[data-list-title]");
           const moodEl = root.querySelector("[data-list-mood]");
           const sourceEl = root.querySelector("[data-list-source]");
+          const countEl = root.querySelector("[data-list-count]");
           const listEl = root.querySelector("[data-list-items]");
           const variables = readVariables(host);
 
@@ -345,12 +370,14 @@
           const phases = phaseTimes(duration);
 
           root.style.setProperty("--list-accent", safeColor(variables.accent));
+          root.style.setProperty("--list-row-count", String(Math.max(1, rows.length)));
           root.dataset.hasValues = rows.some((row) => row.value.length > 0) ? "true" : "false";
           titleEl.textContent = title;
           moodEl.textContent = "";
           moodEl.setAttribute("aria-hidden", "true");
           sourceEl.textContent = source;
           sourceEl.style.opacity = source ? "1" : "0";
+          countEl.textContent = `${rows.length}개 항목`;
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));
 
           rows.forEach((row, index) => {

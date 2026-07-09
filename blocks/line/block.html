@@ -132,6 +132,35 @@
           pointer-events: none;
         }
 
+        .line-chart-shell::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: -18%;
+          width: 18%;
+          background: linear-gradient(90deg, transparent, var(--line-accent-soft), transparent);
+          opacity: 0;
+          transform: skewX(-12deg);
+          pointer-events: none;
+          animation: line-scan-living 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite;
+        }
+
+        @keyframes line-scan-living {
+          0% {
+            left: -18%;
+            opacity: 0;
+          }
+          24%,
+          58% {
+            opacity: 0.78;
+          }
+          100% {
+            left: 104%;
+            opacity: 0;
+          }
+        }
+
         .line-svg {
           position: absolute;
           inset: 0;

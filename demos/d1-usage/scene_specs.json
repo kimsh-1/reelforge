@@ -266,38 +266,38 @@
     {
       "from": "s01",
       "to": "s02",
-      "type": "slide_left",
-      "duration": 0.24
+      "type": "zoom-punch",
+      "duration": 0.32
     },
     {
       "from": "s02",
       "to": "s04",
-      "type": "wipe_right",
-      "duration": 0.22
+      "type": "cut",
+      "duration": 0
     },
     {
       "from": "s04",
       "to": "s05",
-      "type": "crossfade",
-      "duration": 0.2
+      "type": "push-wipe",
+      "duration": 0.3
     },
     {
       "from": "s05",
       "to": "s03",
-      "type": "slide_right",
-      "duration": 0.24
+      "type": "flash-cut",
+      "duration": 0.2
     },
     {
       "from": "s03",
       "to": "s07",
-      "type": "fade",
-      "duration": 0.2
+      "type": "cut",
+      "duration": 0
     },
     {
       "from": "s07",
       "to": "s06",
-      "type": "wipe_left",
-      "duration": 0.22
+      "type": "zoom-punch",
+      "duration": 0.3
     },
     {
       "from": "s06",
@@ -308,8 +308,8 @@
     {
       "from": "s08",
       "to": "s09",
-      "type": "wipe",
-      "duration": 0.24
+      "type": "push-wipe-right",
+      "duration": 0.3
     }
   ]
 }

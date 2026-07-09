@@ -156,12 +156,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-2-scene-solo.mjs"
   ],
-  "canonicalInputMerkleHash": "e40b41a7b06178b7af3c8edf9d7d4f5a655b9d29922fea9fe1492947aa42f709",
+  "canonicalInputMerkleHash": "37b68076a9b2d40253f39be042a1c19afd29363287145751684e29330336f970",
   "evidenceHash": "76d1b091fe91cf375a68a603a66434867d5b34fdc195b25c57a418b9a5a1fb88",
   "gateScriptHash": "ddf8495d3e6fb0774c3fca8e91fda7c28377a3a2783f12ba6d32d186b0aa9fd9",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
+  "gitCommit": "66f458fb97a3fb3e0e09bc7432cbbbd21a8f6402",
+  "command": "node bin/vf gate l2-2-scene-solo --profile full --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-08T06:29:17.714Z",
-  "finishedAt": "2026-07-08T06:39:49.821Z"
+  "startedAt": "2026-07-09T05:04:24.091Z",
+  "finishedAt": "2026-07-09T05:14:16.360Z"
 }
