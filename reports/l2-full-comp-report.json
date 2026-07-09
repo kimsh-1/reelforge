@@ -1,14 +1,14 @@
 {
   "gate": "L2-full-comp",
   "profile": "full",
-  "pass": false,
+  "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": false,
+      "pass": true,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/l2-full-comp.mjs --profile full --json",
-        "exitCode": 1,
+        "exitCode": 0,
         "signal": null,
         "error": null,
         "profile": "full",
@@ -91,29 +91,41 @@
     },
     {
       "id": "render:full-8types",
-      "pass": false,
+      "pass": true,
       "measured": {
         "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
-        "exitCode": 1,
+        "exitCode": 0,
         "output": "tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
-        "bytes": 0,
-        "stderr": "\n✗  Render failed\n\n   Protocol error (Runtime.callFunctionOn): Target closed\n   Try --docker for containerized rendering\n\n"
+        "bytes": 97937966,
+        "stderr": ""
       }
     },
     {
       "id": "ffprobe-duration-ceil-sum",
-      "pass": false,
+      "pass": true,
       "measured": {
         "command": "ffprobe -v error -show_entries stream=index,codec_type,codec_name,pix_fmt -show_entries format=duration -of json /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
-        "exitCode": 1,
+        "exitCode": 0,
         "expectedFrames": 1007,
         "expectedDurationSec": 33.56666666666667,
-        "actualDurationSec": null,
-        "deltaSec": null,
+        "actualDurationSec": 33.6,
+        "deltaSec": 0.03333333333333144,
         "durationToleranceSec": 0.2,
         "fps": 30,
-        "stderr": "/home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4: No such file or directory",
-        "streams": null
+        "stderr": "",
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "pix_fmt": "yuv420p"
+          },
+          {
+            "index": 1,
+            "codec_name": "aac",
+            "codec_type": "audio"
+          }
+        ]
       }
     }
   ],
@@ -127,12 +139,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-full-comp.mjs"
   ],
-  "canonicalInputMerkleHash": "6dc1e676063b695cdf4dff8c9e2d308e8ce665c97fd07028db86e0d0c501e8af",
-  "evidenceHash": "504930cff7099dd36465d51c906e1ba66f7a91d7753ab85b0e269d59998052b7",
+  "canonicalInputMerkleHash": "9135c61f9d4af00b015d98e5b251709aba77bae414a7b71c852772887793449b",
+  "evidenceHash": "a4a21dc90cd5ebb81775b038af9440fd63ead50709eddeb73204d19de2bf6b2d",
   "gateScriptHash": "57f17d8706f8c9ca8c3e972790e195dbf1f8c31c1620d36141cb53610d3d3b6f",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
-  "exitCode": 1,
-  "startedAt": "2026-07-08T06:39:49.822Z",
-  "finishedAt": "2026-07-08T07:05:36.479Z"
+  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
+  "command": "node bin/vf gate l2-full-comp --profile full --execute",
+  "exitCode": 0,
+  "startedAt": "2026-07-09T06:14:44.714Z",
+  "finishedAt": "2026-07-09T06:43:21.723Z"
 }

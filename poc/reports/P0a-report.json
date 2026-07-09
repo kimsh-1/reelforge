@@ -94,6 +94,6 @@
   ],
   "command": "node /home/seunghyeong/reelforge/poc/scripts/gate-p0a.mjs",
   "exitCode": 1,
-  "startedAt": "2026-07-09T05:14:16.512Z",
-  "finishedAt": "2026-07-09T05:14:16.523Z"
+  "startedAt": "2026-07-09T06:12:29.521Z",
+  "finishedAt": "2026-07-09T06:12:29.523Z"
 }

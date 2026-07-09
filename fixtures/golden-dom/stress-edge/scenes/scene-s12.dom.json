@@ -47,8 +47,9 @@
               "tag": "div",
               "attrs": {
                 "data-composition-id": "s12",
-                "data-duration": "3.7999999989999997",
+                "data-duration": "3.833333",
                 "data-height": "1080",
+                "data-title-scrim": "false",
                 "data-width": "1920",
                 "id": "root"
               },
@@ -58,18 +59,73 @@
                   "attrs": {
                     "aria-hidden": "true",
                     "class": "clip scene-bg",
-                    "data-duration": "3.7999999989999997",
+                    "data-duration": "3.833333",
+                    "data-has-image-asset": "false",
                     "data-start": "0",
                     "data-track-index": "1",
                     "id": "s12-bg"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "svg",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-filter",
+                        "focusable": "false"
+                      },
+                      "children": [
+                        {
+                          "tag": "filter",
+                          "attrs": {
+                            "id": "s12-rf-grain"
+                          },
+                          "children": [
+                            {
+                              "tag": "feturbulence",
+                              "attrs": {
+                                "baseFrequency": "0.78",
+                                "numOctaves": "2",
+                                "seed": "7",
+                                "stitchTiles": "stitch",
+                                "type": "fractalNoise"
+                              },
+                              "children": []
+                            },
+                            {
+                              "tag": "fecolormatrix",
+                              "attrs": {
+                                "type": "saturate",
+                                "values": "0"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-living"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-grain"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "main",
                   "attrs": {
                     "class": "clip scene-content",
-                    "data-duration": "3.7999999989999997",
+                    "data-duration": "3.833333",
                     "data-start": "0",
                     "data-track-index": "2",
                     "id": "s12-content"
@@ -83,10 +139,10 @@
                       },
                       "children": [
                         {
-                          "tag": "p",
+                          "tag": "div",
                           "attrs": {
-                            "class": "mood-label",
-                            "id": "s12-mood"
+                            "aria-hidden": "true",
+                            "class": "headline-accent"
                           },
                           "children": []
                         },
@@ -105,7 +161,7 @@
                   "tag": "div",
                   "attrs": {
                     "class": "clip subtitles rf-subtitles-enhanced",
-                    "data-duration": "3.7999999989999997",
+                    "data-duration": "3.833333",
                     "data-rf-subtitle-renderer": "p2-02-subtitles",
                     "data-start": "0",
                     "data-subtitle-mode": "karaoke",
@@ -120,7 +176,40 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "0"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -135,7 +224,56 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "1"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "4"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "5"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -150,7 +288,24 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "2"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -165,7 +320,16 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "3"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -180,7 +344,16 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "4"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -195,7 +368,32 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "5"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -217,7 +415,32 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "6"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -232,14 +455,56 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "7"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }

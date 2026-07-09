@@ -49,6 +49,7 @@
                 "data-composition-id": "s05",
                 "data-duration": "3.133333332333333",
                 "data-height": "1080",
+                "data-title-scrim": "false",
                 "data-width": "1920",
                 "id": "root"
               },
@@ -59,11 +60,66 @@
                     "aria-hidden": "true",
                     "class": "clip scene-bg",
                     "data-duration": "3.133333332333333",
+                    "data-has-image-asset": "false",
                     "data-start": "0",
                     "data-track-index": "1",
                     "id": "s05-bg"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "svg",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-filter",
+                        "focusable": "false"
+                      },
+                      "children": [
+                        {
+                          "tag": "filter",
+                          "attrs": {
+                            "id": "s05-rf-grain"
+                          },
+                          "children": [
+                            {
+                              "tag": "feturbulence",
+                              "attrs": {
+                                "baseFrequency": "0.78",
+                                "numOctaves": "2",
+                                "seed": "7",
+                                "stitchTiles": "stitch",
+                                "type": "fractalNoise"
+                              },
+                              "children": []
+                            },
+                            {
+                              "tag": "fecolormatrix",
+                              "attrs": {
+                                "type": "saturate",
+                                "values": "0"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-living"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-grain"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",
@@ -82,7 +138,7 @@
                         "data-height": "1080",
                         "data-start": "0",
                         "data-track-index": "3",
-                        "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;}",
+                        "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
                         "data-width": "1920",
                         "id": "s05-block-host"
                       },
@@ -108,49 +164,160 @@
                       "attrs": {
                         "class": "rf-subtitle-keyword"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-keyword"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-keyword"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-keyword"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "br",
@@ -164,7 +331,80 @@
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "5"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "6"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "7"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "8"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "9"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "10"
+                          },
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }

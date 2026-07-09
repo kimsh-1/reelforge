@@ -1,6 +1,6 @@
 {
   "gate": "P0a",
-  "profile": "fast",
+  "profile": "full",
   "pass": false,
   "checks": [
     {
@@ -86,11 +86,11 @@
   "canonicalInputMerkleHash": "0352c63f274a5ab5af94721b430ec8e33ae10a23473e74f1164ee3e201ff1262",
   "evidenceHash": "6dab22d824257a50accee5809eaf7fb46f764eb99ac5d860e403c8b48fd36708",
   "gateScriptHash": "e73e3c605c743c082de16552ae1c81da879e86c0c093648f91a5cff2433bc141",
-  "gitCommit": "66f458fb97a3fb3e0e09bc7432cbbbd21a8f6402",
-  "command": "node bin/vf gate p0a --execute",
+  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
+  "command": "node bin/vf gate p0a --profile full --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-09T05:14:16.460Z",
-  "finishedAt": "2026-07-09T05:14:16.535Z",
+  "startedAt": "2026-07-09T06:12:29.492Z",
+  "finishedAt": "2026-07-09T06:12:29.538Z",
   "mode": "execute",
   "sourceReport": "poc/reports/P0a-report.json",
   "execution": {

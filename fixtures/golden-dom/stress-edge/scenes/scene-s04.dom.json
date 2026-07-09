@@ -49,6 +49,7 @@
                 "data-composition-id": "s04",
                 "data-duration": "5.099999999",
                 "data-height": "1080",
+                "data-title-scrim": "false",
                 "data-width": "1920",
                 "id": "root"
               },
@@ -59,11 +60,66 @@
                     "aria-hidden": "true",
                     "class": "clip scene-bg",
                     "data-duration": "5.099999999",
+                    "data-has-image-asset": "false",
                     "data-start": "0",
                     "data-track-index": "1",
                     "id": "s04-bg"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "tag": "svg",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-filter",
+                        "focusable": "false"
+                      },
+                      "children": [
+                        {
+                          "tag": "filter",
+                          "attrs": {
+                            "id": "s04-rf-grain"
+                          },
+                          "children": [
+                            {
+                              "tag": "feturbulence",
+                              "attrs": {
+                                "baseFrequency": "0.78",
+                                "numOctaves": "2",
+                                "seed": "7",
+                                "stitchTiles": "stitch",
+                                "type": "fractalNoise"
+                              },
+                              "children": []
+                            },
+                            {
+                              "tag": "fecolormatrix",
+                              "attrs": {
+                                "type": "saturate",
+                                "values": "0"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-living"
+                      },
+                      "children": []
+                    },
+                    {
+                      "tag": "span",
+                      "attrs": {
+                        "aria-hidden": "true",
+                        "class": "rf-bg-grain"
+                      },
+                      "children": []
+                    }
+                  ]
                 },
                 {
                   "tag": "div",
@@ -82,7 +138,7 @@
                         "data-height": "1080",
                         "data-start": "0",
                         "data-track-index": "3",
-                        "data-variable-values": "{&quot;title&quot;:&quot;지역 반응 비교&quot;,&quot;items&quot;:[&quot;수도권&quot;,&quot;남부권&quot;],&quot;values&quot;:[63,54],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;map_scene&quot;,&quot;source&quot;:&quot;fixture:stress-edge-map&quot;}",
+                        "data-variable-values": "{&quot;title&quot;:&quot;지역 반응 비교&quot;,&quot;items&quot;:[&quot;수도권&quot;,&quot;남부권&quot;],&quot;values&quot;:[63,54],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;map_scene&quot;,&quot;source&quot;:&quot;fixture:stress-edge-map&quot;,&quot;leftLabel&quot;:&quot;수도권&quot;,&quot;rightLabel&quot;:&quot;남부권&quot;,&quot;repeatIndex&quot;:0}",
                         "data-width": "1920",
                         "id": "s04-block-host"
                       },
@@ -109,7 +165,32 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "0"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -124,7 +205,32 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "1"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -139,7 +245,24 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "2"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -154,7 +277,40 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "3"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -169,7 +325,40 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "4"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -191,7 +380,40 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "5"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -206,7 +428,40 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "6"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -221,7 +476,24 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "7"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
@@ -236,14 +508,64 @@
                         "class": "rf-subtitle-word is-future",
                         "data-rf-word-index": "8"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "1"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "2"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "3"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "4"
+                          },
+                          "children": []
+                        }
+                      ]
                     },
                     {
                       "tag": "span",
                       "attrs": {
                         "class": "rf-subtitle-text"
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attrs": {
+                            "class": "rf-subtitle-syllable",
+                            "data-rf-syllable-index": "0"
+                          },
+                          "children": []
+                        }
+                      ]
                     }
                   ]
                 }

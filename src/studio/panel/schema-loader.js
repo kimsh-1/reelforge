@@ -53,7 +53,8 @@ export function resolveSchema(schema, rootSchema) {
     return resolveSchema(getSchemaRef(rootSchema, schema.$ref) ?? {}, rootSchema);
   }
   if (Array.isArray(schema.allOf)) {
-    return mergeSchemas(schema.allOf.map((part) => resolveSchema(part, rootSchema)));
+    const { allOf, ...base } = schema;
+    return mergeSchemas([base, ...allOf.map((part) => resolveSchema(part, rootSchema))]);
   }
   if (Array.isArray(schema.oneOf) && !schema.type && !schema.enum) {
     return { ...schema, type: schema.oneOf.map((part) => resolveSchema(part, rootSchema).type).filter(Boolean) };

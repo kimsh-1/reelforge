@@ -1,14 +1,14 @@
 {
   "gate": "U-2-studio-form-sweep",
   "profile": "full",
-  "pass": false,
+  "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": false,
+      "pass": true,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/u2-studio-form-sweep.mjs --profile full --json",
-        "exitCode": 1,
+        "exitCode": 0,
         "signal": null,
         "error": null,
         "profile": "full",
@@ -19,17 +19,72 @@
     },
     {
       "id": "schema-editable-fields-enumerated",
-      "pass": false,
+      "pass": true,
       "measured": {
-        "count": 0,
-        "fields": []
+        "count": 54,
+        "fields": [
+          "altText",
+          "caption",
+          "emphasis",
+          "headline",
+          "imageAsset.placement",
+          "imageAsset.prompt",
+          "items",
+          "kenBurns.enabled",
+          "kenBurns.panDirection",
+          "kenBurns.zoomDirection",
+          "kenBurns.zoomFactor",
+          "layout",
+          "mood",
+          "ost",
+          "overrides.byFormat.1:1.headline.height",
+          "overrides.byFormat.1:1.headline.width",
+          "overrides.byFormat.1:1.headline.x",
+          "overrides.byFormat.1:1.headline.y",
+          "overrides.byFormat.1:1.image.height",
+          "overrides.byFormat.1:1.image.width",
+          "overrides.byFormat.1:1.image.x",
+          "overrides.byFormat.1:1.image.y",
+          "overrides.byFormat.16:9.headline.height",
+          "overrides.byFormat.16:9.headline.width",
+          "overrides.byFormat.16:9.headline.x",
+          "overrides.byFormat.16:9.headline.y",
+          "overrides.byFormat.16:9.image.height",
+          "overrides.byFormat.16:9.image.width",
+          "overrides.byFormat.16:9.image.x",
+          "overrides.byFormat.16:9.image.y",
+          "overrides.byFormat.9:16.headline.height",
+          "overrides.byFormat.9:16.headline.width",
+          "overrides.byFormat.9:16.headline.x",
+          "overrides.byFormat.9:16.headline.y",
+          "overrides.byFormat.9:16.image.height",
+          "overrides.byFormat.9:16.image.width",
+          "overrides.byFormat.9:16.image.x",
+          "overrides.byFormat.9:16.image.y",
+          "overrides.headline.height",
+          "overrides.headline.width",
+          "overrides.headline.x",
+          "overrides.headline.y",
+          "overrides.image.height",
+          "overrides.image.width",
+          "overrides.image.x",
+          "overrides.image.y",
+          "reveal",
+          "source",
+          "subtitleMode",
+          "unit",
+          "values",
+          "visual_kind",
+          "narration",
+          "narration_tts"
+        ]
       }
     },
     {
       "id": "rest-patch-e1-fields-class-and-persistence",
       "pass": true,
       "measured": {
-        "count": 0,
+        "count": 52,
         "failures": []
       }
     },
@@ -37,14 +92,275 @@
       "id": "e1-compile-jobs-succeeded",
       "pass": true,
       "measured": {
-        "jobs": []
+        "jobs": [
+          {
+            "id": "compile-90113b60-2c68-4c9a-9ff0-49e0c849759c",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-9f3eeb9c-61de-4859-b69a-208d0bc58b7d",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-6b7937cb-93b6-49a6-b5ab-d3f6817338dc",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-420f7a03-1e9c-40d5-b70a-476ffcbe5451",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-ed3d80e2-db50-432d-be0b-a5e43ec8feed",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-86034ed8-ccb0-4d4e-8d80-ca3212865b8f",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-b9527dbf-1899-4a29-8bf5-b573f137882e",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-59235f71-9903-4841-9566-7047f4d469b2",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-186e24d1-2365-4849-aad7-b40ebfcdbac2",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-9df6393d-0002-4387-ac19-7c1a99872359",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-349b6dcd-2191-43de-a03f-e6dd6de3802a",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-6d99dcc7-6607-4aa1-8eab-bb01aa38e086",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-fdcc682c-530f-499c-91a2-f8b45d7244bd",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-bfd90827-8d22-48cd-a71b-922ea21cf873",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-3211e27e-c4e9-45a8-b9fc-8c4abf623814",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-cf510198-7905-4dd2-b62b-3342114b4eb5",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-ff4be890-a48b-4d45-b3ff-9135bf1cfb03",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-bd1a4a2b-7f60-4b13-8d81-063248b4f09a",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-1bfce7c3-c3a2-482f-8bf4-0dce684ae809",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-c409cfea-d96c-4463-81d5-03fc9c1eee6f",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-c4ae64e7-8bd8-439f-8c87-94efe864179c",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-107d04e4-c8e1-4da4-b3ff-caf871dd7fcf",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-ba0d2930-a1c4-4da3-869a-2f98975c96dc",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-28001225-ead8-4bb1-aee8-e5f0b3fa5fd0",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-db81ffe8-d332-468f-b1da-620f7583fd04",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-cef9e14e-00c4-4800-abcb-5b3b9b87e825",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-d0f06e9b-898c-4231-ad6b-d79419e47202",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-59ce84d4-6866-4789-91c0-a1ee1cf88e66",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-59ef80ac-dad7-4e05-a92f-609db452df62",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-b2f5bd8b-bb9c-4507-9852-d7bc23718031",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-3a44db0c-7787-4bc6-8343-e2e86e880cf5",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-01c345b0-e0c0-4cda-97b7-db39dc771aae",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-2b89ba9d-0c48-4357-972c-dbc3706cd24e",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-abb01b1e-4486-43e4-aa23-50af6a74b2b0",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-bf34ba60-8207-4704-87d7-d81e517dfb3a",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-597b9a11-2ec3-439a-acfd-f02337e21cdb",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-43fa3f41-0b06-486d-84cd-24f11f59e138",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-787ae3dd-024f-4c98-a78f-527a16a2576d",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-272fdfdf-4ebd-4788-bc41-eb5d0d272edb",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-a1c0c881-6c45-461d-87f6-516f94160c9d",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-206b786c-b788-48f0-b948-426235abc044",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-3dc596d0-53ad-4d39-b979-0297d2e40bbe",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-269299f4-432f-4ba7-887b-7a32a14522ce",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-98306273-632a-43ce-9ac0-8f3ebbdfe936",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-e67fa753-8cc4-48d4-805f-54bb517eb27d",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-8271f469-197a-4b9c-8a9c-f34bbd568f3c",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-0d0de190-eb2e-4da4-b25c-c30a80c5ec67",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-bd9191d5-1f9c-4f88-89d1-dc21fa735a9d",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-cd7f33bb-5f63-4b14-95e7-737eccf42ecf",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-80f3b61e-fcc2-411f-a9c4-e533cfe4734f",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-c2d14317-e926-4482-b67d-19b0ee797879",
+            "status": "succeeded",
+            "error": null
+          },
+          {
+            "id": "compile-2bb77fba-fa33-49d4-9cba-092ceaa99e26",
+            "status": "succeeded",
+            "error": null
+          }
+        ]
       }
     },
     {
       "id": "rest-patch-e2-fields-class-and-persistence",
       "pass": true,
       "measured": {
-        "count": 0,
+        "count": 2,
         "failures": []
       }
     },
@@ -53,8 +369,8 @@
       "pass": true,
       "measured": {
         "sceneId": "s01",
-        "headline": "오늘의 핵심",
-        "narration_tts": "서비스 지표를 한눈에 보는 세 장면 요약입니다."
+        "headline": "U2 headline 4",
+        "narration_tts": "U2 narration 2."
       }
     }
   ],
@@ -77,12 +393,12 @@
     "tests/gate-wrappers/p4-studio-helpers.mjs",
     "tests/gate-wrappers/u2-studio-form-sweep.mjs"
   ],
-  "canonicalInputMerkleHash": "509ddba6ba5328ed4cab6d8eb7711aff139cd6a49b1e92ac4bd96ce2bd4ad4b9",
-  "evidenceHash": "813efc586e7cae4287793033e67d37bcde058b886b80bcb75d11c1195a7b7696",
+  "canonicalInputMerkleHash": "4b587e5db985a7b863720a1529cb2a39728bd07f4f6877e14a54c822c6fa3e6d",
+  "evidenceHash": "96fd375ef3b9c57e37c2ab513239dd402c45598616b9da4c8a263fab73df5dbc",
   "gateScriptHash": "1c1a85758eaf92875ad7b92cbaeffaa2fdfd0fdc68533f530e7bad7331370f9d",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
-  "exitCode": 1,
-  "startedAt": "2026-07-08T06:29:08.797Z",
-  "finishedAt": "2026-07-08T06:29:08.920Z"
+  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
+  "command": "node bin/vf gate u2-studio-form-sweep --profile full --execute",
+  "exitCode": 0,
+  "startedAt": "2026-07-09T07:27:28.027Z",
+  "finishedAt": "2026-07-09T07:28:58.384Z"
 }
