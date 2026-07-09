@@ -88,13 +88,14 @@ printf '%s\n' '{"version":"1.0.0","projectId":"write-demo","scenes":[{"sceneId":
 프로젝트 계약 파일을 읽어 `build/index.html`, `build/scenes/*.html`, `build/render-manifest.json`을 생성합니다. Composition HTML은 읽기 전용 빌드 산출물입니다.
 
 ```bash
-node bin/vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--json]
+node bin/vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>] [--format 16:9|9:16|1:1] [--json]
 ```
 
 | 옵션 | 설명 |
 |---|---|
 | `--preset <design-tokens.json>` | 기본 디자인 토큰 대신 지정한 preset을 사용합니다. 기본값은 컴파일러의 `DEFAULT_PRESET`입니다. |
 | `--fps <number>` | 렌더 타이밍 양자화 FPS를 지정합니다. 양수여야 합니다. |
+| `--format 16:9\|9:16\|1:1` | 컴파일할 캔버스 비율을 지정합니다. 기본값은 `16:9`입니다. |
 | `--json` | buildDir, timing, scenes, render-lint, warnings를 JSON으로 출력합니다. |
 
 예시:
@@ -102,6 +103,7 @@ node bin/vf compile <projectDir> [--preset <design-tokens.json>] [--fps <number>
 ```bash
 node bin/vf compile fixtures/golden-specs/minimal-3scene --json
 node bin/vf compile fixtures/golden-specs/full-8types --fps 29.97
+node bin/vf compile fixtures/golden-specs/full-8types --format 9:16 --json
 ```
 
 ## `pipeline run`

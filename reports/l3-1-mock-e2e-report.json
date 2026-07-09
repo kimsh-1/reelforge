@@ -1,17 +1,17 @@
 {
   "gate": "L3-1-mock-e2e",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l3-1-mock-e2e --profile fast --json",
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l3-1-mock-e2e --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -29,11 +29,11 @@
           "pipeline: DONE tts provider=mock-tts scenes=3",
           "pipeline: RUN images reason=missing-outputs inputHash=77462d03e69d",
           "pipeline: DONE images provider=mock-image scenes=0 generated=0 reused=0 manifest=image-manifest.json",
-          "pipeline: RUN compile reason=missing-outputs inputHash=d8998bc12e46",
+          "pipeline: RUN compile reason=missing-outputs inputHash=d4151f72b6fd",
           "pipeline: DONE compile",
-          "pipeline: RUN render reason=missing-outputs inputHash=8b0f44095620",
-          "pipeline: DONE render output=out/main.mp4 bytes=877606",
-          "pipeline: RUN gate reason=missing-outputs inputHash=26e4e29850a0",
+          "pipeline: RUN render reason=missing-outputs inputHash=daed5b669b30",
+          "pipeline: DONE render output=out/main.mp4 bytes=803619",
+          "pipeline: RUN gate reason=missing-outputs inputHash=c18c8b494737",
           "pipeline: DONE gate report=reports/pipeline-gate-report.json",
           "pipeline: PASS completed=tts,images,compile,render,gate"
         ],
@@ -45,7 +45,7 @@
       "pass": true,
       "measured": {
         "output": "tmp/gate-work/p3/l3-1-mock-e2e/project/out/main.mp4",
-        "bytes": 877606
+        "bytes": 803619
       }
     },
     {
@@ -67,12 +67,12 @@
     "src/pipeline/core/orchestrator.mjs",
     "src/pipeline/core/steps.mjs"
   ],
-  "canonicalInputMerkleHash": "e7132ca40ea7bef7496bd4e033dd3db57acb435c700cd6076a906d2cf28094f3",
+  "canonicalInputMerkleHash": "6db0034bcafc0a20d0209ba2ffbd885c0ba3ecb720e9f76f406b7c81a7980268",
   "evidenceHash": "28f00671fc830edf6f60d3c4eafd4d15f48b6403daed1b2e2e798684effb7efa",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:20.480Z",
-  "finishedAt": "2026-07-07T05:33:46.203Z"
+  "startedAt": "2026-07-08T06:28:28.009Z",
+  "finishedAt": "2026-07-08T06:28:46.647Z"
 }

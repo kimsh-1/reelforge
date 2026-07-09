@@ -1,17 +1,17 @@
 {
   "gate": "L1-7-resume",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-7-resume --profile fast --json",
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-7-resume --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -43,7 +43,7 @@
         "logs": [
           "pipeline: SKIP tts reason=resume-state inputHash=a10e2fd80745",
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
-          "pipeline: RUN compile reason=missing-outputs inputHash=d8998bc12e46",
+          "pipeline: RUN compile reason=missing-outputs inputHash=d4151f72b6fd",
           "pipeline: PASS completed=tts,images,compile"
         ]
       }
@@ -60,7 +60,7 @@
         "logs": [
           "pipeline: SKIP tts reason=resume-state inputHash=a10e2fd80745",
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
-          "pipeline: SKIP compile reason=resume-state inputHash=d8998bc12e46",
+          "pipeline: SKIP compile reason=resume-state inputHash=d4151f72b6fd",
           "pipeline: PASS completed=tts,images,compile"
         ]
       }
@@ -76,9 +76,9 @@
   "canonicalInputMerkleHash": "d0e214bc348e55c72108e1566714ce7b3d1baa12157048fd4ea5fb351dae4bde",
   "evidenceHash": "932b8ffe1d9c0e3dd771aa264cc98fb5decb31526ae48f0110954e4b6ddd4ad0",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:15.506Z",
-  "finishedAt": "2026-07-07T05:33:18.454Z"
+  "startedAt": "2026-07-08T06:23:48.456Z",
+  "finishedAt": "2026-07-08T06:23:51.325Z"
 }

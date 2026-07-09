@@ -50,15 +50,17 @@ Never add `duration` to a scene. Only transition edges own `duration`.
 
 General limits: `items` and `values` max 40 entries; item text max 200 chars; string values max 120 chars. Keep most production scenes far below those limits.
 
+`values` and `unit` are contract-required only for `bar`, `pie`, `line`, and `statistic`. For `list`, `numbered`, `compare`, `quote`, and `headline_only`, include them only when the visible design needs explicit values.
+
 ## Visual Fields
 
 Use `visual_kind` deliberately:
 
 - `chart`: data-driven layouts such as `bar`, `pie`, `line`, or metric comparisons.
-- `generate_image`: needs `imageAsset.prompt` and `imageAsset.placement`; the pipeline will create selected assets through `image-manifest.json` and `versions.json`.
-- `search_image`: reserved for stock/search-backed visuals.
-- `map_scene`: reserved for geographic scenes.
-- `video`: reserved for external clip placement.
+- `generate_image`: needs `imageAsset.prompt` and `imageAsset.placement`; the pipeline will create selected assets through `image-manifest.json` and `versions.json`. Currently only `generate_image` is wired into compiled image placement.
+- `search_image`: reserved for stock/search-backed visuals; not wired into compiled image placement yet.
+- `map_scene`: reserved for geographic scenes; not wired into compiled image placement yet.
+- `video`: reserved for external clip placement; not wired into compiled image placement yet.
 - `none`: text, chartless, or pure layout scenes.
 
 Allowed `imageAsset.placement`: `fullscreen`, `background`, `center`, `left`, `right`, `inline`.
@@ -124,6 +126,9 @@ Weak: `지난주 신규 가입은 검색 유입이 가장 컸다.`
 These failures produced valid-looking renders but poor viewer results. Check them before every handoff:
 
 - **Empty copy makes empty scenes**: schema-valid `headline`, `items`, or `values` can still be lifeless if they are placeholders, raw brief fragments, or English fixture labels. Run the copy polish step first; visible copy must be short, Korean-first when the video is Korean, and strong enough to sell the beat without narration.
-- **Generated images are not enough**: an image prompt or runner result does not matter unless the scene actually wires `visual_kind: "generate_image"` or `search_image`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText`. Never paste selected asset paths into `scene_specs`; the manifest and versions files own selection.
+- **Generated images are not enough**: an image prompt or runner result does not matter unless the scene actually wires `visual_kind: "generate_image"`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText`. Never paste selected asset paths into `scene_specs`; the manifest and versions files own selection.
 - **Hardcoded labels leak implementation**: do not let layout names, schema field names, fixture labels, or renderer defaults become on-screen text. Author the displayed labels in `headline`, `items`, `values`, `unit`, and `source`; keep internal labels out of the frame.
 - **Motion is already in the block**: do not compensate for a dull scene by inventing extra JSON fields or editing HTML. Pick a better `mood`, `reveal`, `emphasis`, transition, or shorter copy so the block's built-in entrance, living motion, and exit can work.
+- **Nested inline roots can erase selectors**: nested inline scenes may strip the inner root `id`, which kills `#id` CSS and query selectors. Block roots should rely on classes or data attributes, not a fragile inner `#root`.
+- **Solo render is not whole-render proof**: bugs that appear only in full composition are missed by rendering a scene alone. Always compare at least one full-render frame against the solo frame for changed blocks.
+- **Korean clipping trap**: `line-height < 1` combined with `overflow: hidden` clips the top of Hangul glyphs. Keep Korean text containers at safe line-height or visible overflow.

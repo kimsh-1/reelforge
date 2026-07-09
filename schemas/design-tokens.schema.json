@@ -36,16 +36,31 @@
     "colorMap": {
       "type": "object",
       "minProperties": 1,
+      "required": ["background", "panel", "surface", "text", "accent"],
       "propertyNames": {
         "type": "string",
         "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
       },
-      "patternProperties": {
-        "^[A-Za-z][A-Za-z0-9_]*$": {
+      "properties": {
+        "background": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "panel": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "surface": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "text": {
+          "$ref": "#/$defs/hexColor"
+        },
+        "accent": {
           "$ref": "#/$defs/hexColor"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": {
+        "$ref": "#/$defs/hexColor"
+      }
     },
     "moodName": {
       "type": "string",

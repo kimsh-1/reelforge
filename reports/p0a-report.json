@@ -1,7 +1,7 @@
 {
   "gate": "P0a",
-  "profile": "fast",
-  "pass": true,
+  "profile": "full",
+  "pass": false,
   "checks": [
     {
       "id": "doctor-critical",
@@ -57,40 +57,24 @@
     },
     {
       "id": "mp4-exists",
-      "pass": true,
+      "pass": false,
       "measured": {
         "path": "out/p0a.mp4",
-        "bytes": 74557
+        "bytes": 0
       }
     },
     {
       "id": "ffprobe-profile",
-      "pass": true,
+      "pass": false,
       "measured": {
-        "codec": "h264",
-        "pix_fmt": "yuv420p",
-        "duration": 5,
-        "durationToleranceSec": 0.3,
-        "audioTrackCount": 0,
-        "hasAudioTrack": false,
-        "streams": [
-          {
-            "index": 0,
-            "codec_name": "h264",
-            "codec_type": "video",
-            "pix_fmt": "yuv420p"
-          }
-        ]
+        "error": "out/p0a.mp4 missing or empty"
       }
     },
     {
       "id": "faststart",
-      "pass": true,
+      "pass": false,
       "measured": {
-        "moovOffset": 32,
-        "mdatOffset": 1475,
-        "fileSize": 74557,
-        "method": "top-level MP4 atom scan"
+        "error": "out/p0a.mp4 not found"
       }
     }
   ],
@@ -100,13 +84,18 @@
     "poc/scripts/gate-p0a.mjs"
   ],
   "canonicalInputMerkleHash": "0352c63f274a5ab5af94721b430ec8e33ae10a23473e74f1164ee3e201ff1262",
-  "evidenceHash": "7188b698e2bb7faa854d6c2ad63b6452817387a304e638b9afbb0541c7683b12",
+  "evidenceHash": "6dab22d824257a50accee5809eaf7fb46f764eb99ac5d860e403c8b48fd36708",
   "gateScriptHash": "e73e3c605c743c082de16552ae1c81da879e86c0c093648f91a5cff2433bc141",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
-  "exitCode": 0,
-  "startedAt": "2026-07-07T05:32:47.641Z",
-  "finishedAt": "2026-07-07T05:32:47.644Z",
-  "mode": "replay",
-  "sourceReport": "poc/reports/P0a-report.json"
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
+  "exitCode": 1,
+  "startedAt": "2026-07-08T06:22:11.810Z",
+  "finishedAt": "2026-07-08T06:22:11.840Z",
+  "mode": "execute",
+  "sourceReport": "poc/reports/P0a-report.json",
+  "execution": {
+    "exitCode": 1,
+    "signal": null,
+    "error": null
+  }
 }

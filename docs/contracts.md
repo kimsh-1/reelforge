@@ -1,6 +1,6 @@
 # video-factory Contracts
 
-The five JSON contracts are the single source boundary between authoring, assets, compilation, rendering, and deck export.
+The six JSON contracts are the single source boundary between authoring, assets, compilation, rendering, and deck export.
 
 ## Flow
 
@@ -8,6 +8,7 @@ The five JSON contracts are the single source boundary between authoring, assets
 |---|---|---|---|
 | `scene_specs.json` | script/director, studio save path | TTS planner, image planner, compiler, studio | Authored scene content, stable `sceneId`, accessibility `altText`, visual intent, transition edges |
 | `audio_meta.json` | TTS/alignment step | compiler, invalidation checks, subtitle renderer | Audio paths, durations, word timings, narration `sourceHash` |
+| `image-manifest.json` | image generation step | compiler, image gates | Generated image assets for `visual_kind=generate_image`, provider status, pending runner work |
 | `design-tokens.json` | preset/project editor | compiler, studio form generator | Colors, mood pacing, subtitle style, bundled font roles |
 | `versions.json` | pipeline state manager | resume logic, studio, asset resolvers | Resource generation history and each active `resources[type].selected` pointer |
 | `render-manifest.json` | compiler only | hyperframes renderer, deck adapter, gates | Resolved timing, token snapshots, scene clip paths, subtitles, BGM ducking |

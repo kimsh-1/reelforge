@@ -464,17 +464,17 @@
         }
 
         .compare-item {
-          animation: compare-row-living 2.35s ease-in-out 1.05s infinite alternate;
+          animation: compare-row-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite alternate;
         }
 
         .compare-item:nth-child(2n) {
-          animation-delay: 1.28s;
+          animation-delay: calc(var(--rf-scene-start, 0s) + 1.28s);
           animation-direction: alternate-reverse;
         }
 
         .compare-side-tag,
         .compare-vs {
-          animation: compare-pill-pulse 1.72s ease-in-out 0.88s infinite alternate;
+          animation: compare-pill-pulse 1.72s ease-in-out calc(var(--rf-scene-start, 0s) + 0.88s) infinite alternate;
         }
 
         #compare-root[data-has-side-titles="false"] .compare-panel {
@@ -968,17 +968,17 @@
           }
 
           .compare-item {
-            animation: compare-row-living 2.35s ease-in-out 1.05s infinite alternate;
+            animation: compare-row-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite alternate;
           }
 
           .compare-item:nth-child(2n) {
-            animation-delay: 1.28s;
+            animation-delay: calc(var(--rf-scene-start, 0s) + 1.28s);
             animation-direction: alternate-reverse;
           }
 
           .compare-side-tag,
           .compare-vs {
-            animation: compare-pill-pulse 1.72s ease-in-out 0.88s infinite alternate;
+            animation: compare-pill-pulse 1.72s ease-in-out calc(var(--rf-scene-start, 0s) + 0.88s) infinite alternate;
           }
 
           #compare-root[data-has-side-titles="false"] .compare-panel {

@@ -1,17 +1,17 @@
 {
   "gate": "L3-3-edit-E1",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l3-3-edit-e1.mjs --profile fast --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l3-3-edit-e1.mjs --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -69,12 +69,12 @@
     "tests/gate-wrappers/p4-studio-helpers.mjs",
     "tests/studio-e2e.test.mjs"
   ],
-  "canonicalInputMerkleHash": "1f6472b757421fb5c593f41801ff9afa9d7dac1b3ba9cf38a931fc478b85c07e",
-  "evidenceHash": "39d609954f271b92243467bb93a5e932b09d474890205e35e37b1f669f0d3467",
+  "canonicalInputMerkleHash": "a81c0bd1dc81f9ee566888799abfe7033e46e01dbf632a36ae51c40d4496ebcc",
+  "evidenceHash": "8cefda28eabc813e8082533b256d4e3bd4c1bafc6e0c4f71534715ca07d60dbf",
   "gateScriptHash": "9b145e3b92976d07409b11ea03dcf5212f720bb35cf9b6176f91709cdb152448",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:46.204Z",
-  "finishedAt": "2026-07-07T05:33:46.271Z"
+  "startedAt": "2026-07-08T06:28:48.283Z",
+  "finishedAt": "2026-07-08T06:28:48.321Z"
 }

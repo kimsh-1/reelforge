@@ -1,17 +1,17 @@
 {
   "gate": "L1-4-tts-contract",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-4-tts-contract --profile fast --json",
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-4-tts-contract --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -34,8 +34,14 @@
       "id": "edge-tts-real-one-sentence",
       "pass": true,
       "measured": {
-        "skipped": true,
-        "reason": "edge-tts live synthesis runs with --profile full"
+        "provider": "edge-tts",
+        "voice": "ko-KR-SunHiNeural",
+        "audioPath": "./assets/audio/s01.3ce3d80ee145.edge.mp3",
+        "audioBytes": 29808,
+        "audioDurationSec": 4.968,
+        "wordCount": 8,
+        "violations": [],
+        "error": null
       }
     }
   ],
@@ -51,9 +57,9 @@
   "canonicalInputMerkleHash": "7580fde1c7b699915a1961b425bd492c841f3df0102a6192c6569dff8f1a18e0",
   "evidenceHash": "5a2b3559c7f8fa89ad86ee7fe0a11c5d50aa50450ec7d124b222784a11d6cf0c",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:12.470Z",
-  "finishedAt": "2026-07-07T05:33:12.702Z"
+  "startedAt": "2026-07-08T06:23:43.661Z",
+  "finishedAt": "2026-07-08T06:23:45.641Z"
 }

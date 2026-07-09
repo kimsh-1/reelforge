@@ -109,6 +109,7 @@
     },
     "visualKind": {
       "type": "string",
+      "description": "Visual intent enum. Currently only generate_image is wired into compiler image placement; search_image, map_scene, and video remain reserved for backward-compatible authoring contracts.",
       "enum": [
         "generate_image",
         "search_image",
@@ -405,7 +406,8 @@
           "maxLength": 256
         },
         "visual_kind": {
-          "$ref": "#/$defs/visualKind"
+          "$ref": "#/$defs/visualKind",
+          "description": "Currently only generate_image is wired into compiler image placement; search_image, map_scene, and video remain reserved."
         },
         "imageAsset": {
           "$ref": "#/$defs/imageAsset"

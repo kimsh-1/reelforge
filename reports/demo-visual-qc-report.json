@@ -62,12 +62,12 @@
     "tests/demo-visual-qc.mjs",
     "tests/gate-wrappers/demo-visual-qc.mjs"
   ],
-  "canonicalInputMerkleHash": "0ed67ef5eeed0d109b8456cdd00f614fb035d65d46946df4136c9d803255747e",
-  "evidenceHash": "15554dca2bf4468b25e8c581b39ef6f3da2d6ec611001ff914db4cd281df99f6",
+  "canonicalInputMerkleHash": "9f40214c1ef40ded181f10a3ff730c3bbb3c31cc1921ed72758fe3a935c92bc9",
+  "evidenceHash": "1420b851b40f2c5c28ded050e594c1c575ada326744b4d5669d4ec67dafc8bba",
   "gateScriptHash": "10856428d1c00af7665cd9ada69f7d21c52ab4f2ba29c4a836b547435bd9fd55",
-  "gitCommit": "7a35588ba8094d9ddb48569fd9e6fc40acadc64c",
-  "command": "node bin/vf gate demo-visual-qc --profile full --json",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T04:57:58.999Z",
-  "finishedAt": "2026-07-07T04:58:20.784Z"
+  "startedAt": "2026-07-08T07:58:02.871Z",
+  "finishedAt": "2026-07-08T08:03:21.902Z"
 }

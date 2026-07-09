@@ -84,65 +84,65 @@
           "index": 0,
           "leftPts": 0,
           "rightPts": 0,
-          "leftHash": "436590ba7ebb97de005939b9994beb90",
-          "rightHash": "b5d1277f7b236d436d159267f79eca81"
+          "leftHash": "02d1dd0808c30ecdee4b112dfa2c2e45",
+          "rightHash": "71b6fa2ff0dc9ceb95bc89ab3aa134b1"
         },
         "firstMismatches": [
           {
             "index": 0,
             "leftPts": 0,
             "rightPts": 0,
-            "leftHash": "436590ba7ebb97de005939b9994beb90",
-            "rightHash": "b5d1277f7b236d436d159267f79eca81"
+            "leftHash": "02d1dd0808c30ecdee4b112dfa2c2e45",
+            "rightHash": "71b6fa2ff0dc9ceb95bc89ab3aa134b1"
           },
           {
             "index": 1,
             "leftPts": 512,
             "rightPts": 512,
-            "leftHash": "c15b59bf9cc413ebbdc6fdee09b432ff",
-            "rightHash": "01733f06c077f85cb13826fbf46045bc"
+            "leftHash": "dfeec17965e4c5d6477a51e80a926a5c",
+            "rightHash": "54bab3e0d93202735c4a2a81629f9e90"
           },
           {
             "index": 2,
             "leftPts": 1024,
             "rightPts": 1024,
-            "leftHash": "5a267cce7b0f0e018dd51ab939242604",
-            "rightHash": "83be8294700db49f46492d09c5ab6714"
+            "leftHash": "aa7708f3634bb9f62913edc32f7924f9",
+            "rightHash": "d87759aa4856130d4b102541263c264a"
           },
           {
             "index": 3,
             "leftPts": 1536,
             "rightPts": 1536,
-            "leftHash": "33c908cf9f1535fd05152f4118ca361d",
-            "rightHash": "3954a0fceac813845203a279ea33627a"
+            "leftHash": "29be28ed160533fe5495a69231d30692",
+            "rightHash": "7cc5e979ef125d3d882429eb1ae158b0"
           },
           {
             "index": 4,
             "leftPts": 2048,
             "rightPts": 2048,
-            "leftHash": "1011195f5aa37a4caa4b8d177d9f4dfc",
-            "rightHash": "b33d062fa1c194c1ab601ddbbb5e8cb7"
+            "leftHash": "3fc499465ec493c16780a92f93e0c94f",
+            "rightHash": "e5485ef8790791b8c1f0fe98bfe454c1"
           },
           {
             "index": 5,
             "leftPts": 2560,
             "rightPts": 2560,
-            "leftHash": "1fa677527c38414114b509f0d0f78c9c",
-            "rightHash": "e06652bdc608441a6a615bb04131e4bd"
+            "leftHash": "2d6400b46394e590988f4fc5a2187534",
+            "rightHash": "0f36cccb7786df8b66785c44f016fdf0"
           },
           {
             "index": 6,
             "leftPts": 3072,
             "rightPts": 3072,
-            "leftHash": "d8f36fb0e3af6a713db8da4a58433357",
-            "rightHash": "959b45994e79e344a9f72e6c2fe42c96"
+            "leftHash": "dacdeddc9b9a3aa8ab54bffa14a59b70",
+            "rightHash": "c392df37f931a6dc8cf5908ff5b97fda"
           },
           {
             "index": 7,
             "leftPts": 3584,
             "rightPts": 3584,
-            "leftHash": "265bbb4f3625bed9107631daef184b95",
-            "rightHash": "72df762e1d37cb22a2488e5d45132d11"
+            "leftHash": "573ee3bbb6fa6358a1f03009907622cd",
+            "rightHash": "829fd2e75604112818fba90018c8de4f"
           }
         ]
       }
@@ -156,12 +156,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-2-scene-solo.mjs"
   ],
-  "canonicalInputMerkleHash": "810898c90053968b02172a49992278afa89ba08181ddd3ea5efa174079bb1fb0",
-  "evidenceHash": "4372dae59420c14011d745f4f760e30b3e26e32642c21c2ed13a09eec65dbc12",
+  "canonicalInputMerkleHash": "e40b41a7b06178b7af3c8edf9d7d4f5a655b9d29922fea9fe1492947aa42f709",
+  "evidenceHash": "76d1b091fe91cf375a68a603a66434867d5b34fdc195b25c57a418b9a5a1fb88",
   "gateScriptHash": "ddf8495d3e6fb0774c3fca8e91fda7c28377a3a2783f12ba6d32d186b0aa9fd9",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile full --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-07T05:08:22.888Z",
-  "finishedAt": "2026-07-07T05:17:12.442Z"
+  "startedAt": "2026-07-08T06:29:17.714Z",
+  "finishedAt": "2026-07-08T06:39:49.821Z"
 }

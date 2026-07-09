@@ -112,7 +112,7 @@
           gap: 2.2rem;
           padding: 3.55rem 4.25rem 3.15rem;
           overflow: hidden;
-          animation: quote-frame-living 2.15s ease-in-out 1.15s infinite alternate;
+          animation: quote-frame-living 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.15s) infinite alternate;
         }
 
         .quote-frame::before {
@@ -138,7 +138,7 @@
           line-height: 1;
           pointer-events: none;
           will-change: transform, opacity;
-          animation: quote-glyph-drift 2.6s ease-in-out 1.15s infinite alternate;
+          animation: quote-glyph-drift 2.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.15s) infinite alternate;
         }
 
         @keyframes quote-glyph-drift {

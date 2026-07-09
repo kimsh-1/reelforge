@@ -1,17 +1,17 @@
 {
   "gate": "L1-1-golden-dom",
-  "profile": "fast",
+  "profile": "full",
   "pass": false,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": false,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile fast --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile full --json",
         "exitCode": 1,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -78,14 +78,93 @@
         "mismatches": [
           {
             "fixtureName": "minimal-3scene",
+            "htmlRel": "index.html",
+            "snapshotRel": "fixtures/golden-dom/minimal-3scene/index.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/div[0]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "3.1666666656666664",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "3.433333332333333",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "kind": "attrs"
+              }
+            ]
+          },
+          {
+            "fixtureName": "minimal-3scene",
             "htmlRel": "scenes/scene-s01.html",
             "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s01.dom.json",
             "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s01",
+                  "data-duration": "3.1666666656666664",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s01",
+                  "data-duration": "3.1666666656666664",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.1666666656666664",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.1666666656666664",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "kind": "attrs"
+              },
               {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -101,10 +180,56 @@
             "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s02.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s02",
+                  "data-duration": "3.433333332333333",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s02",
+                  "data-duration": "3.433333332333333",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.433333332333333",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.433333332333333",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -132,10 +257,56 @@
             "snapshotRel": "fixtures/golden-dom/minimal-3scene/scenes/scene-s03.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s03",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s03",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.8666666656666666",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.8666666656666666",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -153,14 +324,119 @@
           },
           {
             "fixtureName": "edit-scenario",
+            "htmlRel": "index.html",
+            "snapshotRel": "fixtures/golden-dom/edit-scenario/index.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/div[0]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "5.566666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "6.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "12.233333332333332",
+                  "data-height": "1080",
+                  "data-start": "5.566666665666666",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "12.499999999",
+                  "data-height": "1080",
+                  "data-start": "5.566666665666666",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "kind": "attrs"
+              }
+            ]
+          },
+          {
+            "fixtureName": "edit-scenario",
             "htmlRel": "scenes/scene-s01.html",
             "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s01.dom.json",
             "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s01",
+                  "data-duration": "5.566666665666666",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s01",
+                  "data-duration": "5.566666665666666",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "5.566666665666666",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "5.566666665666666",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "kind": "attrs"
+              },
               {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -200,10 +476,78 @@
             "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s02.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s02",
+                  "data-duration": "12.233333332333332",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s02",
+                  "data-duration": "12.233333332333332",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "12.233333332333332",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "12.233333332333332",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "12.233333332333332",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;편집 대상&quot;,&quot;items&quot;:[&quot;sourceHash 변경&quot;,&quot;해당 씬 재합성&quot;,&quot;후속 씬 시작 시각 이동&quot;],&quot;values&quot;:[&quot;예상&quot;,&quot;부분&quot;,&quot;전체 컴파일&quot;],&quot;unit&quot;:&quot;편집 영향&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:p0d-edit-loop&quot;}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "12.233333332333332",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;편집 대상&quot;,&quot;items&quot;:[&quot;sourceHash 변경&quot;,&quot;해당 씬 재합성&quot;,&quot;후속 씬 시작 시각 이동&quot;],&quot;values&quot;:[&quot;예상&quot;,&quot;부분&quot;,&quot;전체 컴파일&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:p0d-edit-loop&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -300,24 +644,6 @@
                 "expected": 0,
                 "actual": 2,
                 "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[31]",
-                "expected": 0,
-                "actual": 2,
-                "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[33]",
-                "expected": 0,
-                "actual": 4,
-                "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[35]",
-                "expected": 0,
-                "actual": 3,
-                "kind": "child-count"
               }
             ]
           },
@@ -327,10 +653,56 @@
             "snapshotRel": "fixtures/golden-dom/edit-scenario/scenes/scene-s03.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.633333332333334",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.633333332333334",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.633333332333334",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.633333332333334",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -342,14 +714,245 @@
           },
           {
             "fixtureName": "full-8types",
+            "htmlRel": "index.html",
+            "snapshotRel": "fixtures/golden-dom/full-8types/index.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/div[0]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "4.9333333323333335",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "5.133333332333334",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "4.166666665666667",
+                  "data-height": "1080",
+                  "data-start": "4.9333333323333335",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-start": "4.9333333323333335",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[2]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s03",
+                  "data-composition-src": "scenes/scene-s03.html",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-start": "9.099999999",
+                  "data-track-index": "3",
+                  "data-width": "1920",
+                  "id": "slot-s03"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s03",
+                  "data-composition-src": "scenes/scene-s03.html",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-start": "9.099999999",
+                  "data-track-index": "3",
+                  "data-width": "1920",
+                  "id": "slot-s03"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[4]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s05",
+                  "data-composition-src": "scenes/scene-s05.html",
+                  "data-duration": "3.133333332333333",
+                  "data-height": "1080",
+                  "data-start": "17.399999999",
+                  "data-track-index": "5",
+                  "data-width": "1920",
+                  "id": "slot-s05"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s05",
+                  "data-composition-src": "scenes/scene-s05.html",
+                  "data-duration": "3.3333333323333334",
+                  "data-height": "1080",
+                  "data-start": "17.399999999",
+                  "data-track-index": "5",
+                  "data-width": "1920",
+                  "id": "slot-s05"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[5]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s06",
+                  "data-composition-src": "scenes/scene-s06.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "20.533333332333335",
+                  "data-track-index": "6",
+                  "data-width": "1920",
+                  "id": "slot-s06"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s06",
+                  "data-composition-src": "scenes/scene-s06.html",
+                  "data-duration": "4.333333332333333",
+                  "data-height": "1080",
+                  "data-start": "20.533333332333335",
+                  "data-track-index": "6",
+                  "data-width": "1920",
+                  "id": "slot-s06"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[6]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s07",
+                  "data-composition-src": "scenes/scene-s07.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "24.599999999",
+                  "data-track-index": "7",
+                  "data-width": "1920",
+                  "id": "slot-s07"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s07",
+                  "data-composition-src": "scenes/scene-s07.html",
+                  "data-duration": "4.333333332333333",
+                  "data-height": "1080",
+                  "data-start": "24.599999999",
+                  "data-track-index": "7",
+                  "data-width": "1920",
+                  "id": "slot-s07"
+                },
+                "kind": "attrs"
+              }
+            ]
+          },
+          {
+            "fixtureName": "full-8types",
             "htmlRel": "scenes/scene-s01.html",
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s01.dom.json",
             "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s01",
+                  "data-duration": "4.9333333323333335",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s01",
+                  "data-duration": "4.9333333323333335",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.9333333323333335",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.9333333323333335",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "kind": "attrs"
+              },
               {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "bar",
+                  "data-composition-src": "blocks/bar/block.html",
+                  "data-duration": "4.9333333323333335",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;채널별 신규 가입&quot;,&quot;items&quot;:[&quot;검색 유입&quot;,&quot;추천 유입&quot;,&quot;광고 유입&quot;],&quot;values&quot;:[6200,4800,3100],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-growth-snapshot&quot;}",
+                  "data-width": "1920",
+                  "id": "s01-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "bar",
+                  "data-composition-src": "blocks/bar/block.html",
+                  "data-duration": "4.9333333323333335",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;채널별 신규 가입&quot;,&quot;items&quot;:[&quot;검색 유입&quot;,&quot;추천 유입&quot;,&quot;광고 유입&quot;],&quot;values&quot;:[6200,4800,3100],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-growth-snapshot&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s01-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -443,10 +1046,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s02.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s02",
+                  "data-duration": "4.166666665666667",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s02",
+                  "data-duration": "4.166666665666667",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.166666665666667",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.166666665666667",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "pie",
+                  "data-composition-src": "blocks/pie/block.html",
+                  "data-duration": "4.166666665666667",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;월간 지출 비중&quot;,&quot;items&quot;:[&quot;인건비&quot;,&quot;인프라&quot;,&quot;마케팅&quot;,&quot;기타&quot;],&quot;values&quot;:[48,27,18,7],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-finance-rollup&quot;}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "pie",
+                  "data-composition-src": "blocks/pie/block.html",
+                  "data-duration": "4.166666665666667",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;월간 지출 비중&quot;,&quot;items&quot;:[&quot;인건비&quot;,&quot;인프라&quot;,&quot;마케팅&quot;,&quot;기타&quot;],&quot;values&quot;:[48,27,18,7],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-finance-rollup&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -522,10 +1193,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s03.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.4333333323333335",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.4333333323333335",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "line",
+                  "data-composition-src": "blocks/line/block.html",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;재방문율 4주 추이&quot;,&quot;items&quot;:[&quot;1주차&quot;,&quot;2주차&quot;,&quot;3주차&quot;,&quot;4주차&quot;],&quot;values&quot;:[29,31,34,37],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-retention-weekly&quot;}",
+                  "data-width": "1920",
+                  "id": "s03-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "line",
+                  "data-composition-src": "blocks/line/block.html",
+                  "data-duration": "4.4333333323333335",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;재방문율 4주 추이&quot;,&quot;items&quot;:[&quot;1주차&quot;,&quot;2주차&quot;,&quot;3주차&quot;,&quot;4주차&quot;],&quot;values&quot;:[29,31,34,37],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-retention-weekly&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s03-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -601,10 +1340,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s04.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s04",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s04",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.8666666656666666",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s04-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.8666666656666666",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s04-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;이번 주 점검 항목&quot;,&quot;items&quot;:[&quot;온보딩 문서 최신화&quot;,&quot;알림 문구 A/B 테스트&quot;,&quot;결제 안내 오류 점검&quot;],&quot;values&quot;:[&quot;진행&quot;,&quot;대기&quot;,&quot;완료&quot;],&quot;unit&quot;:&quot;상태&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-ops-checklist&quot;}",
+                  "data-width": "1920",
+                  "id": "s04-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "3.8666666656666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;이번 주 점검 항목&quot;,&quot;items&quot;:[&quot;온보딩 문서 최신화&quot;,&quot;알림 문구 A/B 테스트&quot;,&quot;결제 안내 오류 점검&quot;],&quot;values&quot;:[&quot;진행&quot;,&quot;대기&quot;,&quot;완료&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-ops-checklist&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s04-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -686,10 +1493,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s05.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s05",
+                  "data-duration": "3.133333332333333",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s05",
+                  "data-duration": "3.133333332333333",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.133333332333333",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s05-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.133333332333333",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s05-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "numbered",
+                  "data-composition-src": "blocks/numbered/block.html",
+                  "data-duration": "3.133333332333333",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;}",
+                  "data-width": "1920",
+                  "id": "s05-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "numbered",
+                  "data-composition-src": "blocks/numbered/block.html",
+                  "data-duration": "3.133333332333333",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;출시 전 세 단계&quot;,&quot;items&quot;:[&quot;품질 검수&quot;,&quot;법무 승인&quot;,&quot;점진 배포&quot;],&quot;values&quot;:[1,2,3],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-release-readiness&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s05-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -747,10 +1622,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s06.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s06",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s06",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.066666665666666",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s06-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.066666665666666",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s06-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "statistic",
+                  "data-composition-src": "blocks/statistic/block.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;응답 시간 184ms&quot;,&quot;items&quot;:[&quot;평균 응답 시간&quot;,&quot;목표 대비 개선&quot;],&quot;values&quot;:[184,16],&quot;unit&quot;:&quot;ms&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-latency-sli&quot;}",
+                  "data-width": "1920",
+                  "id": "s06-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "statistic",
+                  "data-composition-src": "blocks/statistic/block.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;응답 시간 184ms&quot;,&quot;items&quot;:[&quot;평균 응답 시간&quot;,&quot;목표 대비 개선&quot;],&quot;values&quot;:[184,16],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-latency-sli&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s06-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -820,10 +1763,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s07.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s07",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s07",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.066666665666666",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s07-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.066666665666666",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s07-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;추천 모델 비교&quot;,&quot;items&quot;:[&quot;기존 클릭률&quot;,&quot;신규 클릭률&quot;,&quot;기존 이탈률&quot;,&quot;신규 이탈률&quot;],&quot;values&quot;:[12.4,15.8,9.1,7.6],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#6D28D9&quot;,&quot;mood&quot;:&quot;suspense&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-recommendation-ab&quot;}",
+                  "data-width": "1920",
+                  "id": "s07-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "4.066666665666666",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;추천 모델 비교&quot;,&quot;items&quot;:[&quot;기존 클릭률&quot;,&quot;신규 클릭률&quot;,&quot;기존 이탈률&quot;,&quot;신규 이탈률&quot;],&quot;values&quot;:[12.4,15.8,9.1,7.6],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#6D28D9&quot;,&quot;mood&quot;:&quot;suspense&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:2026-07-recommendation-ab&quot;,&quot;leftLabel&quot;:&quot;기존&quot;,&quot;rightLabel&quot;:&quot;신규&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s07-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -893,10 +1904,78 @@
             "snapshotRel": "fixtures/golden-dom/full-8types/scenes/scene-s08.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s08",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s08",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.899999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s08-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.899999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s08-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "quote",
+                  "data-composition-src": "blocks/quote/block.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;사용자 인용&quot;,&quot;items&quot;:[&quot;사용자 인터뷰&quot;,&quot;설정이 쉬워야 다시 씁니다&quot;],&quot;values&quot;:[&quot;5회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-user-interviews&quot;}",
+                  "data-width": "1920",
+                  "id": "s08-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "quote",
+                  "data-composition-src": "blocks/quote/block.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;사용자 인용&quot;,&quot;items&quot;:[&quot;사용자 인터뷰&quot;,&quot;설정이 쉬워야 다시 씁니다&quot;],&quot;values&quot;:[&quot;5회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:2026-07-user-interviews&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s08-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -962,14 +2041,275 @@
           },
           {
             "fixtureName": "stress-edge",
+            "htmlRel": "index.html",
+            "snapshotRel": "fixtures/golden-dom/stress-edge/index.dom.json",
+            "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]/div[0]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s01",
+                  "data-composition-src": "scenes/scene-s01.html",
+                  "data-duration": "4.399999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "data-width": "1920",
+                  "id": "slot-s01"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-start": "4.199999999",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s02",
+                  "data-composition-src": "scenes/scene-s02.html",
+                  "data-duration": "4.999999999",
+                  "data-height": "1080",
+                  "data-start": "4.199999999",
+                  "data-track-index": "2",
+                  "data-width": "1920",
+                  "id": "slot-s02"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[3]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s04",
+                  "data-composition-src": "scenes/scene-s04.html",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-start": "13.399999999",
+                  "data-track-index": "4",
+                  "data-width": "1920",
+                  "id": "slot-s04"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s04",
+                  "data-composition-src": "scenes/scene-s04.html",
+                  "data-duration": "5.299999999",
+                  "data-height": "1080",
+                  "data-start": "13.399999999",
+                  "data-track-index": "4",
+                  "data-width": "1920",
+                  "id": "slot-s04"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[4]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s05",
+                  "data-composition-src": "scenes/scene-s05.html",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-start": "18.499999999",
+                  "data-track-index": "5",
+                  "data-width": "1920",
+                  "id": "slot-s05"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s05",
+                  "data-composition-src": "scenes/scene-s05.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "18.499999999",
+                  "data-track-index": "5",
+                  "data-width": "1920",
+                  "id": "slot-s05"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[6]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s07",
+                  "data-composition-src": "scenes/scene-s07.html",
+                  "data-duration": "4.299999999",
+                  "data-height": "1080",
+                  "data-start": "53.199999999000006",
+                  "data-track-index": "7",
+                  "data-width": "1920",
+                  "id": "slot-s07"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s07",
+                  "data-composition-src": "scenes/scene-s07.html",
+                  "data-duration": "4.499999999",
+                  "data-height": "1080",
+                  "data-start": "53.199999999000006",
+                  "data-track-index": "7",
+                  "data-width": "1920",
+                  "id": "slot-s07"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[7]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s08",
+                  "data-composition-src": "scenes/scene-s08.html",
+                  "data-duration": "4.599999999",
+                  "data-height": "1080",
+                  "data-start": "57.499999999",
+                  "data-track-index": "8",
+                  "data-width": "1920",
+                  "id": "slot-s08"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s08",
+                  "data-composition-src": "scenes/scene-s08.html",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-start": "57.499999999",
+                  "data-track-index": "8",
+                  "data-width": "1920",
+                  "id": "slot-s08"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[9]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s10",
+                  "data-composition-src": "scenes/scene-s10.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "66.59999999899999",
+                  "data-track-index": "10",
+                  "data-width": "1920",
+                  "id": "slot-s10"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s10",
+                  "data-composition-src": "scenes/scene-s10.html",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-start": "66.59999999899999",
+                  "data-track-index": "10",
+                  "data-width": "1920",
+                  "id": "slot-s10"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[10]",
+                "expected": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s11",
+                  "data-composition-src": "scenes/scene-s11.html",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-start": "71.499999999",
+                  "data-track-index": "11",
+                  "data-width": "1920",
+                  "id": "slot-s11"
+                },
+                "actual": {
+                  "class": "clip scene-slot",
+                  "data-composition-id": "s11",
+                  "data-composition-src": "scenes/scene-s11.html",
+                  "data-duration": "4.399999999",
+                  "data-height": "1080",
+                  "data-start": "71.499999999",
+                  "data-track-index": "11",
+                  "data-width": "1920",
+                  "id": "slot-s11"
+                },
+                "kind": "attrs"
+              }
+            ]
+          },
+          {
+            "fixtureName": "stress-edge",
             "htmlRel": "scenes/scene-s01.html",
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s01.dom.json",
             "diffs": [
+              {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s01",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s01",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.199999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.199999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s01-bg"
+                },
+                "kind": "attrs"
+              },
               {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -997,10 +2337,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s02.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s02",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s02",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.799999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.799999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s02-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "bar",
+                  "data-composition-src": "blocks/bar/block.html",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;검색 유입 상승&quot;,&quot;items&quot;:[&quot;검색&quot;,&quot;추천&quot;,&quot;광고&quot;],&quot;values&quot;:[7400,5100,2900],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-growth&quot;}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "bar",
+                  "data-composition-src": "blocks/bar/block.html",
+                  "data-duration": "4.799999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;검색 유입 상승&quot;,&quot;items&quot;:[&quot;검색&quot;,&quot;추천&quot;,&quot;광고&quot;],&quot;values&quot;:[7400,5100,2900],&quot;unit&quot;:&quot;명&quot;,&quot;accent&quot;:&quot;#047857&quot;,&quot;mood&quot;:&quot;triumphant&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;stagger&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-growth&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s02-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1070,10 +2478,56 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s03.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.399999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s03",
+                  "data-duration": "4.399999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.399999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.399999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s03-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1089,10 +2543,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s04.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s04",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s04",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "5.099999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s04-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "5.099999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s04-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;지역 반응 비교&quot;,&quot;items&quot;:[&quot;수도권&quot;,&quot;남부권&quot;],&quot;values&quot;:[63,54],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;map_scene&quot;,&quot;source&quot;:&quot;fixture:stress-edge-map&quot;}",
+                  "data-width": "1920",
+                  "id": "s04-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "5.099999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;지역 반응 비교&quot;,&quot;items&quot;:[&quot;수도권&quot;,&quot;남부권&quot;],&quot;values&quot;:[63,54],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;split_reveal&quot;,&quot;visualKind&quot;:&quot;map_scene&quot;,&quot;source&quot;:&quot;fixture:stress-edge-map&quot;,&quot;leftLabel&quot;:&quot;수도권&quot;,&quot;rightLabel&quot;:&quot;남부권&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s04-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1162,10 +2684,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s05.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s05",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s05",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.699999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s05-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.699999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s05-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "quote",
+                  "data-composition-src": "blocks/quote/block.html",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;현장 피드백&quot;,&quot;items&quot;:[&quot;매장 인터뷰&quot;,&quot;차분한 안내가 좋았습니다&quot;],&quot;values&quot;:[&quot;6회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;인용&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;search_image&quot;,&quot;source&quot;:&quot;fixture:stress-edge-search-image&quot;}",
+                  "data-width": "1920",
+                  "id": "s05-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "quote",
+                  "data-composition-src": "blocks/quote/block.html",
+                  "data-duration": "4.699999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;현장 피드백&quot;,&quot;items&quot;:[&quot;매장 인터뷰&quot;,&quot;차분한 안내가 좋았습니다&quot;],&quot;values&quot;:[&quot;6회 반복&quot;,&quot;핵심 문장&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;quote&quot;,&quot;reveal&quot;:&quot;typewriter&quot;,&quot;visualKind&quot;:&quot;search_image&quot;,&quot;source&quot;:&quot;fixture:stress-edge-search-image&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s05-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1205,10 +2795,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s06.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s06",
+                  "data-duration": "29.999999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s06",
+                  "data-duration": "29.999999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "29.999999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s06-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "29.999999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s06-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "numbered",
+                  "data-composition-src": "blocks/numbered/block.html",
+                  "data-duration": "29.999999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;30초 설명 구간&quot;,&quot;items&quot;:[&quot;문제 정의&quot;,&quot;사용자 맥락&quot;,&quot;실험 계획&quot;,&quot;예상 리스크&quot;],&quot;values&quot;:[1,2,3,4],&quot;unit&quot;:&quot;단계&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-long-audio&quot;}",
+                  "data-width": "1920",
+                  "id": "s06-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "numbered",
+                  "data-composition-src": "blocks/numbered/block.html",
+                  "data-duration": "29.999999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;30초 설명 구간&quot;,&quot;items&quot;:[&quot;문제 정의&quot;,&quot;사용자 맥락&quot;,&quot;실험 계획&quot;,&quot;예상 리스크&quot;],&quot;values&quot;:[1,2,3,4],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#2563EB&quot;,&quot;mood&quot;:&quot;informative&quot;,&quot;emphasis&quot;:&quot;sequence&quot;,&quot;reveal&quot;:&quot;cascade&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-long-audio&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s06-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1305,24 +2963,6 @@
                 "expected": 0,
                 "actual": 1,
                 "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[28]",
-                "expected": 0,
-                "actual": 2,
-                "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[30]",
-                "expected": 0,
-                "actual": 4,
-                "kind": "child-count"
-              },
-              {
-                "path": "/html[0]/body[1]/div[0]/div[2]/span[32]",
-                "expected": 0,
-                "actual": 4,
-                "kind": "child-count"
               }
             ]
           },
@@ -1332,10 +2972,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s07.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s07",
+                  "data-duration": "4.299999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s07",
+                  "data-duration": "4.299999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.299999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s07-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.299999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s07-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "4.299999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;앱 흐름 클립&quot;,&quot;items&quot;:[&quot;탐색&quot;,&quot;선택&quot;,&quot;완료&quot;],&quot;values&quot;:[&quot;2초&quot;,&quot;3초&quot;,&quot;1초&quot;],&quot;unit&quot;:&quot;구간&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;video&quot;,&quot;source&quot;:&quot;fixture:stress-edge-video&quot;}",
+                  "data-width": "1920",
+                  "id": "s07-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "4.299999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;앱 흐름 클립&quot;,&quot;items&quot;:[&quot;탐색&quot;,&quot;선택&quot;,&quot;완료&quot;],&quot;values&quot;:[&quot;2초&quot;,&quot;3초&quot;,&quot;1초&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#B91C1C&quot;,&quot;mood&quot;:&quot;urgent&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;stagger_then_flash&quot;,&quot;visualKind&quot;:&quot;video&quot;,&quot;source&quot;:&quot;fixture:stress-edge-video&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s07-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1387,10 +3095,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s08.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s08",
+                  "data-duration": "4.599999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s08",
+                  "data-duration": "4.599999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.599999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s08-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.599999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s08-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "pie",
+                  "data-composition-src": "blocks/pie/block.html",
+                  "data-duration": "4.599999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;비용 구조&quot;,&quot;items&quot;:[&quot;인력&quot;,&quot;인프라&quot;,&quot;콘텐츠&quot;],&quot;values&quot;:[52,31,17],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;spotlight&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-cost&quot;}",
+                  "data-width": "1920",
+                  "id": "s08-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "pie",
+                  "data-composition-src": "blocks/pie/block.html",
+                  "data-duration": "4.599999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;비용 구조&quot;,&quot;items&quot;:[&quot;인력&quot;,&quot;인프라&quot;,&quot;콘텐츠&quot;],&quot;values&quot;:[52,31,17],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#334155&quot;,&quot;mood&quot;:&quot;somber&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;spotlight&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-cost&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s08-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1460,10 +3236,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s09.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s09",
+                  "data-duration": "4.499999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s09",
+                  "data-duration": "4.499999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.499999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s09-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.499999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s09-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "statistic",
+                  "data-composition-src": "blocks/statistic/block.html",
+                  "data-duration": "4.499999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;저장률 18.4%&quot;,&quot;items&quot;:[&quot;평균 시청 시간&quot;,&quot;저장률&quot;],&quot;values&quot;:[21.8,18.4],&quot;unit&quot;:&quot;초/%&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-stat&quot;}",
+                  "data-width": "1920",
+                  "id": "s09-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "statistic",
+                  "data-composition-src": "blocks/statistic/block.html",
+                  "data-duration": "4.499999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;저장률 18.4%&quot;,&quot;items&quot;:[&quot;평균 시청 시간&quot;,&quot;저장률&quot;],&quot;values&quot;:[21.8,18.4],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#7C2D12&quot;,&quot;mood&quot;:&quot;dramatic&quot;,&quot;emphasis&quot;:&quot;number&quot;,&quot;reveal&quot;:&quot;count_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-stat&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:0}",
+                  "data-width": "1920",
+                  "id": "s09-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1503,10 +3347,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s10.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s10",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s10",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.899999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s10-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.899999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s10-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;실험군 대조군&quot;,&quot;items&quot;:[&quot;실험군 전환&quot;,&quot;대조군 전환&quot;],&quot;values&quot;:[7.4,6.1],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#6D28D9&quot;,&quot;mood&quot;:&quot;suspense&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;parallel&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-ab&quot;}",
+                  "data-width": "1920",
+                  "id": "s10-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "compare",
+                  "data-composition-src": "blocks/compare/block.html",
+                  "data-duration": "4.899999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;실험군 대조군&quot;,&quot;items&quot;:[&quot;실험군 전환&quot;,&quot;대조군 전환&quot;],&quot;values&quot;:[7.4,6.1],&quot;unit&quot;:&quot;%&quot;,&quot;accent&quot;:&quot;#6D28D9&quot;,&quot;mood&quot;:&quot;suspense&quot;,&quot;emphasis&quot;:&quot;contrast&quot;,&quot;reveal&quot;:&quot;parallel&quot;,&quot;visualKind&quot;:&quot;chart&quot;,&quot;source&quot;:&quot;fixture:stress-edge-ab&quot;,&quot;leftLabel&quot;:&quot;기존&quot;,&quot;rightLabel&quot;:&quot;기존&quot;,&quot;repeatIndex&quot;:1}",
+                  "data-width": "1920",
+                  "id": "s10-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1570,10 +3482,78 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s11.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s11",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s11",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.199999999",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s11-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "4.199999999",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s11-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/div[1]/div[0]",
+                "expected": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;다음 주 실행&quot;,&quot;items&quot;:[&quot;후킹 문구 수정&quot;,&quot;썸네일 교체&quot;,&quot;리텐션 확인&quot;],&quot;values&quot;:[&quot;월&quot;,&quot;수&quot;,&quot;금&quot;],&quot;unit&quot;:&quot;요일&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-next&quot;}",
+                  "data-width": "1920",
+                  "id": "s11-block-host"
+                },
+                "actual": {
+                  "class": "clip block-host",
+                  "data-composition-id": "list",
+                  "data-composition-src": "blocks/list/block.html",
+                  "data-duration": "4.199999999",
+                  "data-height": "1080",
+                  "data-start": "0",
+                  "data-track-index": "3",
+                  "data-variable-values": "{&quot;title&quot;:&quot;다음 주 실행&quot;,&quot;items&quot;:[&quot;후킹 문구 수정&quot;,&quot;썸네일 교체&quot;,&quot;리텐션 확인&quot;],&quot;values&quot;:[&quot;월&quot;,&quot;수&quot;,&quot;금&quot;],&quot;unit&quot;:&quot;&quot;,&quot;accent&quot;:&quot;#0F766E&quot;,&quot;mood&quot;:&quot;contemplative&quot;,&quot;emphasis&quot;:&quot;count&quot;,&quot;reveal&quot;:&quot;build_up&quot;,&quot;visualKind&quot;:&quot;none&quot;,&quot;source&quot;:&quot;fixture:stress-edge-next&quot;,&quot;leftLabel&quot;:&quot;&quot;,&quot;rightLabel&quot;:&quot;&quot;,&quot;repeatIndex&quot;:1}",
+                  "data-width": "1920",
+                  "id": "s11-block-host"
+                },
+                "kind": "attrs"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1601,10 +3581,56 @@
             "snapshotRel": "fixtures/golden-dom/stress-edge/scenes/scene-s12.dom.json",
             "diffs": [
               {
+                "path": "/html[0]/body[1]/div[0]",
+                "expected": {
+                  "data-composition-id": "s12",
+                  "data-duration": "3.7999999989999997",
+                  "data-height": "1080",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "actual": {
+                  "data-composition-id": "s12",
+                  "data-duration": "3.7999999989999997",
+                  "data-height": "1080",
+                  "data-title-scrim": "false",
+                  "data-width": "1920",
+                  "id": "root"
+                },
+                "kind": "attrs"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/section[0]",
+                "expected": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.7999999989999997",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s12-bg"
+                },
+                "actual": {
+                  "aria-hidden": "true",
+                  "class": "clip scene-bg",
+                  "data-duration": "3.7999999989999997",
+                  "data-has-image-asset": "false",
+                  "data-start": "0",
+                  "data-track-index": "1",
+                  "id": "s12-bg"
+                },
+                "kind": "attrs"
+              },
+              {
                 "path": "/html[0]/body[1]/div[0]/section[0]",
                 "expected": 0,
                 "actual": 3,
                 "kind": "child-count"
+              },
+              {
+                "path": "/html[0]/body[1]/div[0]/main[1]/div[0]/p[0]",
+                "expected": "p",
+                "actual": "div",
+                "kind": "tag"
               },
               {
                 "path": "/html[0]/body[1]/div[0]/div[2]/span[0]",
@@ -1677,7 +3703,7 @@
             "rule": "inline scene script must parse and pass the compiler VM smoke check",
             "measured": {
               "scriptIndex": 1,
-              "line": 324,
+              "line": 379,
               "error": "Error: p2-review-render-lint-bypass"
             }
           }
@@ -1735,12 +3761,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l1-1-golden-dom.mjs"
   ],
-  "canonicalInputMerkleHash": "f4c13c85b13d8c5eff34c843d70a241519649e1cd8f006a879f64409f2da217e",
-  "evidenceHash": "0c513f4db9f4e8c1cde95166447426bc55e97ffaf8e12c964973cdf8ead8cc03",
+  "canonicalInputMerkleHash": "a229c3836881368f0c41cd0318c7a1323420886e85234b3ea9a9ef135f6a7a2a",
+  "evidenceHash": "84b8fbef0fe07e0ad9f76d84e3c00800ac49da09c777fa5cef157d1b13d739d6",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-07T05:32:47.661Z",
-  "finishedAt": "2026-07-07T05:32:52.379Z"
+  "startedAt": "2026-07-08T06:22:47.581Z",
+  "finishedAt": "2026-07-08T06:22:52.207Z"
 }

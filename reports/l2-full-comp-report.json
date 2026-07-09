@@ -1,14 +1,14 @@
 {
   "gate": "L2-full-comp",
   "profile": "full",
-  "pass": true,
+  "pass": false,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": true,
+      "pass": false,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/l2-full-comp.mjs --profile full --json",
-        "exitCode": 0,
+        "exitCode": 1,
         "signal": null,
         "error": null,
         "profile": "full",
@@ -91,41 +91,29 @@
     },
     {
       "id": "render:full-8types",
-      "pass": true,
+      "pass": false,
       "measured": {
         "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4 --fps=30 --quality=high --crf=0 --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
-        "exitCode": 0,
+        "exitCode": 1,
         "output": "tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
-        "bytes": 10895535,
-        "stderr": "[FrameCapture] Sub-composition timelines not registered after 120000ms: bar, pie, list, numbered, quote. Compositions that load data asynchronously (e.g. fetch) must register window.__timelines[id] after setup completes.\n"
+        "bytes": 0,
+        "stderr": "\n✗  Render failed\n\n   Protocol error (Runtime.callFunctionOn): Target closed\n   Try --docker for containerized rendering\n\n"
       }
     },
     {
       "id": "ffprobe-duration-ceil-sum",
-      "pass": true,
+      "pass": false,
       "measured": {
         "command": "ffprobe -v error -show_entries stream=index,codec_type,codec_name,pix_fmt -show_entries format=duration -of json /home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4",
-        "exitCode": 0,
+        "exitCode": 1,
         "expectedFrames": 1007,
         "expectedDurationSec": 33.56666666666667,
-        "actualDurationSec": 33.6,
-        "deltaSec": 0.03333333333333144,
+        "actualDurationSec": null,
+        "deltaSec": null,
         "durationToleranceSec": 0.2,
         "fps": 30,
-        "stderr": "",
-        "streams": [
-          {
-            "index": 0,
-            "codec_name": "h264",
-            "codec_type": "video",
-            "pix_fmt": "yuv420p"
-          },
-          {
-            "index": 1,
-            "codec_name": "aac",
-            "codec_type": "audio"
-          }
-        ]
+        "stderr": "/home/seunghyeong/reelforge/tmp/gate-work/l2-full-comp/videos/full-8types.mp4: No such file or directory",
+        "streams": null
       }
     }
   ],
@@ -139,12 +127,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-full-comp.mjs"
   ],
-  "canonicalInputMerkleHash": "cc59d0c3d0b9097cedad06a81356f095bce7bf727b5c953e27f981845fe32335",
-  "evidenceHash": "a4a21dc90cd5ebb81775b038af9440fd63ead50709eddeb73204d19de2bf6b2d",
+  "canonicalInputMerkleHash": "6dc1e676063b695cdf4dff8c9e2d308e8ce665c97fd07028db86e0d0c501e8af",
+  "evidenceHash": "504930cff7099dd36465d51c906e1ba66f7a91d7753ab85b0e269d59998052b7",
   "gateScriptHash": "57f17d8706f8c9ca8c3e972790e195dbf1f8c31c1620d36141cb53610d3d3b6f",
-  "gitCommit": "2a3b0d883b133f48152622d328a445c5f118eb93",
-  "command": "node bin/vf gate --all --profile full --replay",
-  "exitCode": 0,
-  "startedAt": "2026-07-07T02:36:50.940Z",
-  "finishedAt": "2026-07-07T02:40:26.737Z"
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
+  "exitCode": 1,
+  "startedAt": "2026-07-08T06:39:49.822Z",
+  "finishedAt": "2026-07-08T07:05:36.479Z"
 }

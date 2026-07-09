@@ -125,7 +125,7 @@ UI 애니메이션 권장치(200–500ms, [animations.dev](https://animations.de
 
 ## D. 색·글로우·블러 규칙 (linear류 다크 기준)
 
-- **단일 액센트 원칙**: near-black(#010102) 캔버스 + 액센트 1색(#5e6ad2류). 한 씬에 액센트 계열 외 유채색 추가 금지. Linear 스타일의 정의적 특징 ([Medium — The rise of Linear style design](https://medium.com/design-bootcamp/the-rise-of-linear-style-design-origins-trends-and-techniques-4fd96aab7646)). 텍스트 대비는 4.5:1 이상 유지(`docs/design-presets.md` 대비표가 계약).
+- **단일 액센트 원칙**: near-black(#010102) 캔버스 + 액센트 1색(#5e6ad2류). 한 씬에 액센트 계열 외 유채색 추가 금지. Linear 스타일의 정의적 특징 ([Medium — The rise of Linear style design](https://medium.com/design-bootcamp/the-rise-of-linear-style-design-origins-trends-and-techniques-4fd96aab7646)). 텍스트 대비는 런타임 `contrast >= 3` 또는 central-edge 검증을 통과해야 한다(`docs/design-presets.md` 참고).
 - **글로우는 씬당 1광원**: 글로우는 "지금 봐야 할 곳" 포인터다. 두 개면 포인터가 아니라 장식이고, 장식 글로우는 아마추어 신호.
 - **글로우 구현 계약**: box-shadow를 프레임마다 tween하지 않는다. 정적 라디얼 글로우를 pseudo-element/별도 레이어에 렌더하고 **opacity와 scale만** 애니메이트 — 컴포지터 스레드에서 처리되어 렌더 결정성·성능 모두 안전 ([chyshkala — Linear design systems in dark mode](https://chyshkala.com/blog/why-linear-design-systems-break-in-dark-mode-and-how-to-fix-them)).
 - **다크에서 그림자 금지, 밝기로 층위**: 다크 캔버스에서 depth는 drop-shadow가 아니라 surface 밝기 사다리 + hairline 보더로 만든다 (Linear 시스템 관행, [Medium](https://medium.com/design-bootcamp/the-rise-of-linear-style-design-origins-trends-and-techniques-4fd96aab7646)).

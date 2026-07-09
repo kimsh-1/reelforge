@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/image-manifest.schema.json",
+  "title": "video-factory image-manifest.json",
+  "description": "Image generation manifest written by the images pipeline and consumed by the compiler for visual_kind=generate_image scenes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "provider", "generatedAt", "assets"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["complete", "pending"]
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runner": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["contractVersion", "prompts", "resultsDir"],
+          "properties": {
+            "contractVersion": {
+              "type": "string",
+              "minLength": 1
+            },
+            "prompts": {
+              "$ref": "#/$defs/projectAssetPath"
+            },
+            "resultsDir": {
+              "$ref": "#/$defs/projectAssetPath"
+            }
+          }
+        }
+      ]
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      }
+    },
+    "pending": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pendingAsset"
+      }
+    },
+    "filters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ocr": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filterLog"
+          }
+        },
+        "composition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/filterLog"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sceneId": {
+      "type": "string",
+      "pattern": "^s\\d{2,}$"
+    },
+    "generationId": {
+      "type": "string",
+      "pattern": "^gen_\\d{2,}$"
+    },
+    "projectAssetPath": {
+      "type": "string",
+      "pattern": "^\\.\\/assets\\/.+"
+    },
+    "imagePath": {
+      "type": "string",
+      "pattern": "^\\.\\/assets\\/images\\/.+\\.png$"
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sceneId", "path", "gen", "provider", "prompt"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sceneId": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "path": {
+          "$ref": "#/$defs/imagePath"
+        },
+        "gen": {
+          "$ref": "#/$defs/generationId"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "pendingAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sceneId", "gen", "resultPath", "reason", "bytes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sceneId": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "gen": {
+          "$ref": "#/$defs/generationId"
+        },
+        "resultPath": {
+          "$ref": "#/$defs/imagePath"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "filterLog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sceneId", "pass", "status", "message"],
+      "properties": {
+        "sceneId": {
+          "$ref": "#/$defs/sceneId"
+        },
+        "pass": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

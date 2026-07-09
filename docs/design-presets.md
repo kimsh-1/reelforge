@@ -2,6 +2,7 @@
 
 ReelForge presets are schema-valid `design-tokens.json` files for `vf compile --preset`.
 All presets keep the shared local Pretendard font asset and encode source style through color, role weights, mood pacing, and subtitle tokens.
+The catalog contains 16 video presets plus 3 fixture/demo variants (`dark`, `demo-dark`, `light`), for 19 preset files total under `fixtures/presets/`.
 
 Compile pattern:
 
@@ -46,7 +47,7 @@ Hard rules carried into the catalog:
 
 ## Contrast Notes
 
-Measured WCAG contrast targets use normal text threshold `4.5:1`. Subtitle backgrounds that are `rgba(...)` are measured after compositing over the preset background; transparent subtitles are measured against the preset background and rely on stroke as an extra video safeguard.
+The table below records measured text contrast for preset tuning. Runtime visual QC currently accepts text when measured contrast is `>= 3` or the central-edge contrast heuristic passes. Subtitle backgrounds that are `rgba(...)` are measured after compositing over the preset background; transparent subtitles also rely on stroke as an extra video safeguard.
 
 | Preset | Primary Text | Subtitle Text | Action Text |
 |---|---:|---:|---:|

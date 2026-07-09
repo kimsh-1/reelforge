@@ -1,17 +1,17 @@
 {
   "gate": "L1-2-transitions",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-2-transitions.mjs --profile fast --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-2-transitions.mjs --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -2127,11 +2127,173 @@
       }
     },
     {
-      "id": "render-transition-pixels",
+      "id": "render-transition-pixels:crossfade-short-long",
       "pass": true,
       "measured": {
-        "skipped": true,
-        "reason": "render traces run only with --profile full"
+        "caseId": "crossfade-short-long",
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/crossfade-short-long/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long --at 5.366667,5.666667,6.966667 --no-end --describe false",
+        "exitCode": 0,
+        "times": "5.366667,5.666667,6.966667",
+        "frames": [
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-00-at-5.4s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-01-at-5.7s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/crossfade-short-long/frame-02-at-7.0s.png"
+        ],
+        "hashes": [
+          "0702f62b348447edcd5f70db96cb72c370d07599aefeedd890f9db74eabe8e76",
+          "ee43456a41739c7f3fa5ddc12000bdc33da61ba8d0edff51b26d7f659d0be0d3",
+          "99f49caf964c32ea411f30609ea82b9da2e172c93a47f18eaf63bc4f28b1eccc"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render-transition-pixels:wipe-short-long",
+      "pass": true,
+      "measured": {
+        "caseId": "wipe-short-long",
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/wipe-short-long/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long --at 5.366667,5.666667,6.966667 --no-end --describe false",
+        "exitCode": 0,
+        "times": "5.366667,5.666667,6.966667",
+        "frames": [
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-00-at-5.4s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-01-at-5.7s.png",
+          "tmp/gate-work/l1-2-transitions/snapshots/wipe-short-long/frame-02-at-7.0s.png"
+        ],
+        "hashes": [
+          "0702f62b348447edcd5f70db96cb72c370d07599aefeedd890f9db74eabe8e76",
+          "82879d82aefa0dee98341a1fba90dd5be84feaa47245f081f2594b3050302f48",
+          "99f49caf964c32ea411f30609ea82b9da2e172c93a47f18eaf63bc4f28b1eccc"
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "id": "render-transition-pixels:hostile-2997-short-scenes",
+      "pass": true,
+      "measured": {
+        "compileCommand": "/usr/bin/node bin/vf compile tmp/gate-work/l1-2-transitions/cases/hostile-2997-short-scenes --fps 29.97 --preset fixtures/presets/dark.json --json",
+        "snapshotCommand": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/cases/hostile-2997-short-scenes/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes --at 0,0.233567,0.266933,0.3003,0.333667,0.433767,0.467133,0.5005,0.533867,0.9009 --no-end --describe false",
+        "snapshotExitCode": 0,
+        "totalFrames": 28,
+        "transitions": [
+          {
+            "from": "s01",
+            "to": "s02",
+            "type": "crossfade",
+            "duration": 1.0009999989999998,
+            "startFrame": 10,
+            "durationFrames": 3,
+            "resolvedType": "crossfade"
+          },
+          {
+            "from": "s02",
+            "to": "s03",
+            "type": "slide_left",
+            "duration": 0.800799999,
+            "startFrame": 16,
+            "durationFrames": 3,
+            "resolvedType": "slide_left"
+          }
+        ],
+        "clampWarnings": [
+          {
+            "code": "transition-duration-clamped",
+            "message": "transition s01->s02 was clamped from 30f to 3f",
+            "transition": {
+              "from": "s01",
+              "to": "s02",
+              "type": "crossfade",
+              "duration": 1.0009999989999998
+            },
+            "requestedFrames": 30,
+            "durationFrames": 3,
+            "maxFrames": 3,
+            "safeRatio": 0.5
+          },
+          {
+            "code": "transition-duration-clamped",
+            "message": "transition s02->s03 was clamped from 24f to 3f",
+            "transition": {
+              "from": "s02",
+              "to": "s03",
+              "type": "slide_left",
+              "duration": 0.800799999
+            },
+            "requestedFrames": 24,
+            "durationFrames": 3,
+            "maxFrames": 3,
+            "safeRatio": 0.5
+          }
+        ],
+        "sampleFrames": [
+          0,
+          7,
+          8,
+          9,
+          10,
+          13,
+          14,
+          15,
+          16,
+          27
+        ],
+        "times": [
+          0,
+          0.233567,
+          0.266933,
+          0.3003,
+          0.333667,
+          0.433767,
+          0.467133,
+          0.5005,
+          0.533867,
+          0.9009
+        ],
+        "ratios": [
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-00-at-0.0s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-01-at-0.2s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-02-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-03-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-04-at-0.3s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-05-at-0.4s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-06-at-0.5s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-07-at-0.5s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-08-at-0.5s.png",
+            "nearWhiteRatio": 0
+          },
+          {
+            "file": "tmp/gate-work/l1-2-transitions/snapshots/hostile-2997-short-scenes/frame-09-at-0.9s.png",
+            "nearWhiteRatio": 0
+          }
+        ],
+        "blankFrames": [],
+        "stderr": ""
       }
     }
   ],
@@ -2145,12 +2307,12 @@
     "tests/gate-wrappers/l1-2-transitions.mjs",
     "tests/transitions-matrix.mjs"
   ],
-  "canonicalInputMerkleHash": "72aa2fba8455fc59e01b99add86d214114c21d1882042860bc1dd99f70c340f7",
-  "evidenceHash": "a9929f32a3f71b0a5489090fddf703dc71ad666d98b5b76cf4c78c53a12c78a1",
+  "canonicalInputMerkleHash": "570ea0b27542dee869afcfbd55c65a4d93d1b68f09f66ba15524ea1075d5ef76",
+  "evidenceHash": "ed4f91fa38884760ac49d6f6963775a25cbbc1f0db3b17a3a8991bb374fe34ca",
   "gateScriptHash": "d68ede2080b8d966380eacbba1e0a05b370fada56b2d526ea795dee27ef98871",
-  "gitCommit": "82c222ecea720e6570e69871094cd7f6f5a0b504",
-  "command": "node bin/vf gate l1-2-transitions --profile fast",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T14:32:29.290Z",
-  "finishedAt": "2026-07-07T14:32:47.675Z"
+  "startedAt": "2026-07-08T06:22:52.208Z",
+  "finishedAt": "2026-07-08T06:23:42.156Z"
 }

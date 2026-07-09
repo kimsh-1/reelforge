@@ -1,17 +1,17 @@
 {
   "gate": "L1-9-blocks",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-9-blocks.mjs --profile fast --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-9-blocks.mjs --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -229,8 +229,169 @@
       "id": "block-snapshots-and-animation",
       "pass": true,
       "measured": {
-        "skipped": true,
-        "reason": "PNG snapshots and animation checks run only with --profile full"
+        "command": "npx hyperframes snapshot /home/seunghyeong/reelforge/tmp/gate-work/l1-9-blocks/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/l1-9-blocks/snapshots --at 0.05,2.466667,1.2,4.983333,7.016667,6.133333,9.15,11.316667,10.3,13.583333,15.466667,14.733333,17.45,18.966667,18.6,20.583333,22.566667,21.733333,24.65,26.633333,25.8,28.716667,31.116667,29.866667 --no-end --describe false",
+        "exitCode": 0,
+        "expectedPngCount": 24,
+        "actualPngCount": 24,
+        "times": [
+          0.05,
+          2.466667,
+          1.2,
+          4.983333,
+          7.016667,
+          6.133333,
+          9.15,
+          11.316667,
+          10.3,
+          13.583333,
+          15.466667,
+          14.733333,
+          17.45,
+          18.966667,
+          18.6,
+          20.583333,
+          22.566667,
+          21.733333,
+          24.65,
+          26.633333,
+          25.8,
+          28.716667,
+          31.116667,
+          29.866667
+        ],
+        "triples": [
+          {
+            "sceneId": "s01",
+            "layout": "bar",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-00-at-0.1s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-01-at-2.5s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-02-at-1.2s.png",
+            "earlyHash": "5449bbe3d52984ba4a01c69a37d189dd6be40cacc65f570443ed5e1fe2d180d1",
+            "midHash": "68cefe165136c82a39c46535eeb84602ac0a2c9ac6e635596940da3353b61895",
+            "lateHash": "e4705d2c5910e4bd51d5a0bc35265547013e8184b47a6ebe7334c5f01f089b5e",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.5900038580246914
+            }
+          },
+          {
+            "sceneId": "s02",
+            "layout": "pie",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-03-at-5.0s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-04-at-7.0s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-05-at-6.1s.png",
+            "earlyHash": "3787c6123dab05da3512fee868335f741a3a5a9055b4ab2d75dc1710291bad9c",
+            "midHash": "50f8490c3f889263604396a3f3d3039a1952de55771c9f9eed74777341df9865",
+            "lateHash": "ccf8596c8f248ab4d9c0abbfcb6fd7f26a5fc39a566876db47756ce6f78cad9a",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.3496117862654321
+            }
+          },
+          {
+            "sceneId": "s03",
+            "layout": "line",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-06-at-9.2s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-07-at-11.3s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-08-at-10.3s.png",
+            "earlyHash": "ac6b915c0e0aa8beaaecada382bd0c53a9a63799328774690a1f791e6687323e",
+            "midHash": "4a4155e69d90a4b20f4a2d4e64f0b324ee7596db14ac087a0b5a35bd6ee58d91",
+            "lateHash": "6682ee1819316486c67ad4dedcbbb521df610ac1c256ca9948b64216ba92d132",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.1750173611111111
+            }
+          },
+          {
+            "sceneId": "s04",
+            "layout": "list",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-09-at-13.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-10-at-15.5s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-11-at-14.7s.png",
+            "earlyHash": "a8869ccbe60c2c3836cedb61d5ec07b1ae7a2f1e9af3c60f87caf54c614d5b24",
+            "midHash": "8fc2b8ba7b3de38fa2ba9b0f1902498fa2f2a9aa140c58eef12027186648dc41",
+            "lateHash": "49719e5aa568b3fdb3c8c3ad20c66380a499e3ce47dcaa8e8105e1da630e15e5",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.48636525848765433
+            }
+          },
+          {
+            "sceneId": "s05",
+            "layout": "numbered",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-12-at-17.4s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-13-at-19.0s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-14-at-18.6s.png",
+            "earlyHash": "aa2a812e0eb68ef6b253c3fac484d6fc6265e21c1a18c8c7ea8d7bba770fca50",
+            "midHash": "a7df49fc76c5191fd06a07bd968e9564769dc8407a2c4bee21b3ea635084c2fa",
+            "lateHash": "87266590178dd792f981024b86d056dbfd0bae50f2b217eb564c9b0ae32d08ee",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.535934124228395
+            }
+          },
+          {
+            "sceneId": "s06",
+            "layout": "statistic",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-15-at-20.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-16-at-22.6s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-17-at-21.7s.png",
+            "earlyHash": "8fe519ef0ec6dcb25f2e7457213d985ca8dbe03e64a454d382666d168d3d4f98",
+            "midHash": "de97898a6827fc2c69773116c6b394f20b5e70fd26700c62417dee7ecf8e7ef7",
+            "lateHash": "60f35ad81c0b8d436971cffa4fcfd42411f2f520cd0c2446449af8855b5446cd",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.11720968364197532
+            }
+          },
+          {
+            "sceneId": "s07",
+            "layout": "compare",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-18-at-24.6s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-19-at-26.6s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-20-at-25.8s.png",
+            "earlyHash": "390db1552b813833d4da7a0d99ba3d741ada590486bff1e21838517f7df09fa9",
+            "midHash": "681b1f650723c17aeb0b6757cbb045fd6f1b219b77a2a77d57701c7643e7e4f7",
+            "lateHash": "435130bb1639963b3a55592269f8b6546ce8e13433a15cb1981257e064c8e717",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.4800096450617284
+            }
+          },
+          {
+            "sceneId": "s08",
+            "layout": "quote",
+            "early": "tmp/gate-work/l1-9-blocks/snapshots/frame-21-at-28.7s.png",
+            "mid": "tmp/gate-work/l1-9-blocks/snapshots/frame-22-at-31.1s.png",
+            "late": "tmp/gate-work/l1-9-blocks/snapshots/frame-23-at-29.9s.png",
+            "earlyHash": "e439f8b194ef17791c0bd6a1b212d3826421c79df71c933fb14c03b811dcd2d9",
+            "midHash": "31a6b618751171719b702a819a92b2ffb59925346af640c44d017705ed253aa5",
+            "lateHash": "c12ec5ad47f5b172dd1e7aa4a38c1c176130c1f937108c2de9a6f72c4016371f",
+            "midStats": {
+              "width": 1920,
+              "height": 1080,
+              "opaqueRatio": 1,
+              "nearWhiteRatio": 0.6059775270061728
+            }
+          }
+        ],
+        "animated": true,
+        "midSceneVisible": true,
+        "stderr": ""
       }
     }
   ],
@@ -243,12 +404,12 @@
     "src/compiler/compiler.mjs",
     "tests/gate-wrappers/l1-9-blocks.mjs"
   ],
-  "canonicalInputMerkleHash": "23c6a9bb72661cff253ae15b19a0714211be9b605ab70b6aed1a4959434db560",
-  "evidenceHash": "1a9f2a45165194e604279ea12ebca8dac4d4ed3f90efdfd1b04427d246fb4afa",
+  "canonicalInputMerkleHash": "78184071a438fda3bb612a41f36e4af6d48a93ecada8d166b325e9727fa6aebc",
+  "evidenceHash": "1bc459e187fb6fc9e2dc554d3749f1a975482c98fffbe5fbfd97319edbd1a0ff",
   "gateScriptHash": "ac97f333001aaf2a5dfde89db0c59c35c01a61e5ee6ab99e6196cc9a6b343c23",
-  "gitCommit": "99c6a592207ff45e48c9680e3800446292ecadb1",
-  "command": "node bin/vf gate l1-9-blocks --profile fast --execute",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-08T02:41:33.742Z",
-  "finishedAt": "2026-07-08T02:41:34.760Z"
+  "startedAt": "2026-07-08T06:27:40.953Z",
+  "finishedAt": "2026-07-08T06:28:28.009Z"
 }

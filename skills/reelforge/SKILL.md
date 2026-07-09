@@ -23,7 +23,7 @@ cp fixtures/golden-specs/full-8types/scene_specs.json "$PROJECT_DIR/scene_specs.
 3. Validate `scene_specs.json` through the write path:
 
 ```bash
-node bin/vf write "$PROJECT_DIR/scene_specs.json" --schema scene-specs < "$PROJECT_DIR/scene_specs.json"
+node bin/vf write "$PROJECT_DIR/scene_specs.json" --project-root "$PROJECT_DIR" --schema scene-specs < "$PROJECT_DIR/scene_specs.json"
 ```
 
 4. Run the local pipeline:
@@ -77,7 +77,7 @@ When the brief is underspecified, propose defaults and ask for confirmation. For
 Work in this order; do not jump straight from brief to JSON:
 
 1. **Copy polish**: rewrite all on-screen copy with a gn-voice-style pass before visual authoring. No empty placeholders, raw English labels, fixture text, or dummy copy. Target sellable Korean headlines of 12 characters or fewer; prefer concrete nouns, numbers, contrast, and a payoff. Good model lines: `한 줄만 던져`, `빈 칸만 되묻기`, `누르면 렌더`, `키도 0, 돈도 0`, `말 대신 렌더`.
-2. **Design selection**: choose one preset from the 16 preset catalog, then keep it stable for the project. Read `references/design-direction.md` for the brief-type selection tree and consult `docs/design-presets.md` for the full preset catalog and contrast constraints. Do not invent a custom look when a catalog preset fits.
+2. **Design selection**: choose one preset from the 비디오 전용 16종 카탈로그 + fixture/demo 변형 3종(총 19파일), then keep it stable for the project. Read `references/design-direction.md` for the brief-type selection tree and consult `docs/design-presets.md` for the full preset catalog and contrast constraints. Do not invent a custom look when a catalog preset fits.
 3. **Step 1 content**: produce the narrative arc, scene count, `sceneId`, `sceneNumber`, polished `headline`, `narration`, `narration_tts`, `items`, `values`, `unit`, and `source`.
 4. **Step 2 visuals**: assign `layout`, `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, authored `altText`, and `transitions`.
 5. **Viewer QC**: after render, run machine checks and inspect frames as a viewer. Reject if any 1.5s stretch feels frozen, generated images are absent from the actual frame, headline contrast is weak, or the first three seconds would not stop a feed scroll.
@@ -102,7 +102,8 @@ Primary layout selection:
 `scene_specs.json` must contain:
 
 - Root: `version`, `projectId`, `scenes`, `transitions`.
-- Each scene: `sceneId`, `sceneNumber`, `narration`, `narration_tts`, `altText`, `layout`, `mood`, `reveal`, `emphasis`, `headline`, `items`, `values`, `unit`, `source`, `visual_kind`, `kenBurns`, `subtitleMode`.
+- Each scene: `sceneId`, `sceneNumber`, `narration`, `narration_tts`, `altText`, `layout`, `mood`, `reveal`, `emphasis`, `headline`, `items`, `source`, `visual_kind`, `kenBurns`, `subtitleMode`.
+- `values` and `unit` are required only for `bar`, `pie`, `line`, and `statistic`; other layouts may include them only when the visible copy needs them.
 - Scene IDs: stable `s01`, `s02`, ... keys. Do not reuse an ID for a different scene.
 - Transitions: edges only, `transitions[]{from,to,type,duration}`.
 
@@ -153,7 +154,9 @@ For demo/showcase visual quality, run the full-profile visual QC gate:
 node bin/vf gate demo-visual-qc --profile full
 ```
 
-Then inspect snapshot grids or rendered frames manually. The viewer standard is stricter than gate pass: no static holds, generated/search images must appear in-frame, small labels must remain readable, and contrast must work at mobile feed size.
+Current full-profile QC measures 씬 콘텐츠 29행 + 모션 88쌍 + 이미지 행 + supervisor 4 checks. Then inspect snapshot grids or rendered frames manually. The viewer standard is stricter than gate pass: no static holds, generated images must appear in-frame, small labels must remain readable, and contrast must pass the runtime `contrast >= 3` or central-edge rule at mobile feed size.
+
+No-narration demos may rely on a project BGM file at `assets/audio/bgm.mp3`; the compiler wires that file automatically when any scene requests OST. Scenes with empty narration and no timed words emit no subtitle container.
 
 ## Studio Edit Loop
 

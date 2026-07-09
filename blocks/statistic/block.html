@@ -82,7 +82,7 @@
           gap: 2.1rem;
           padding: 3.95rem 4.45rem 3.5rem;
           overflow: hidden;
-          animation: stat-hero-living 2.15s ease-in-out 1.2s infinite alternate;
+          animation: stat-hero-living 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
         @keyframes stat-hero-living {
@@ -110,7 +110,7 @@
           border: 0.08rem solid var(--stat-line-soft);
           border-radius: 0.5rem;
           pointer-events: none;
-          animation: stat-inner-drift 2.6s ease-in-out 1.2s infinite alternate;
+          animation: stat-inner-drift 2.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
         .stat-header {
@@ -172,7 +172,7 @@
           transform: scale(0.92);
           pointer-events: none;
           will-change: transform, opacity;
-          animation: stat-glow-living 2.3s ease-in-out 1.2s infinite alternate;
+          animation: stat-glow-living 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
         @keyframes stat-glow-living {

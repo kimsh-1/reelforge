@@ -1,7 +1,7 @@
 {
   "gate": "P0c",
-  "profile": "fast",
-  "pass": true,
+  "profile": "full",
+  "pass": false,
   "checks": [
     {
       "id": "tts-words-valid",
@@ -30,7 +30,7 @@
     },
     {
       "id": "font-embedded-render",
-      "pass": true,
+      "pass": false,
       "measured": {
         "fontPath": "fixtures/p0c/fonts/PretendardVariable.woff2",
         "fontBytes": 2057688,
@@ -38,22 +38,22 @@
         "actualSha256": "9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4",
         "sourceUrl": "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/woff2/PretendardVariable.woff2",
         "htmlReferencesFont": true,
-        "mp4Bytes": 254812,
+        "mp4Bytes": 0,
         "frameEvidence": [
           {
             "path": "out/p0c-frames/mid.png",
-            "exists": true,
-            "bytes": 193292
+            "exists": false,
+            "bytes": 0
           },
           {
             "path": "out/p0c-frames/random-01.png",
-            "exists": true,
-            "bytes": 193291
+            "exists": false,
+            "bytes": 0
           },
           {
             "path": "out/p0c-frames/random-02.png",
-            "exists": true,
-            "bytes": 193399
+            "exists": false,
+            "bytes": 0
           }
         ]
       }
@@ -118,28 +118,9 @@
     },
     {
       "id": "av-duration-match",
-      "pass": true,
+      "pass": false,
       "measured": {
-        "path": "out/p0c.mp4",
-        "expectedAudioDurationSec": 7.344,
-        "containerDurationSec": 7.381333,
-        "deltaSec": 0.037332999999999394,
-        "durationToleranceSec": 0.3,
-        "hasAudioTrack": true,
-        "audioTrackCount": 1,
-        "videoTrackCount": 1,
-        "streams": [
-          {
-            "index": 0,
-            "codec_name": "h264",
-            "codec_type": "video"
-          },
-          {
-            "index": 1,
-            "codec_name": "aac",
-            "codec_type": "audio"
-          }
-        ]
+        "error": "out/p0c.mp4 missing or empty"
       }
     },
     {
@@ -168,13 +149,18 @@
     "poc/scripts/p0c-stress.mjs"
   ],
   "canonicalInputMerkleHash": "50befe2e48e87dcb05b383ec859bb6c290db985bc0c7325ec0bccfb6bddf3111",
-  "evidenceHash": "68b66b01e7636a982fe5b98ca1d3162431045df51225a79c7e4bd97340e52fb1",
+  "evidenceHash": "290008aac4481e75988554fc05895246e233d492baa452e52193b18b3998ff95",
   "gateScriptHash": "c3c3d841a8cb947e16dcdff6f019aab92a17d79c359cd7d82385d3894dd18974",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
-  "exitCode": 0,
-  "startedAt": "2026-07-07T05:32:47.648Z",
-  "finishedAt": "2026-07-07T05:32:47.655Z",
-  "mode": "replay",
-  "sourceReport": "poc/reports/P0c-report.json"
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
+  "exitCode": 1,
+  "startedAt": "2026-07-08T06:22:47.450Z",
+  "finishedAt": "2026-07-08T06:22:47.495Z",
+  "mode": "execute",
+  "sourceReport": "poc/reports/P0c-report.json",
+  "execution": {
+    "exitCode": 1,
+    "signal": null,
+    "error": null
+  }
 }

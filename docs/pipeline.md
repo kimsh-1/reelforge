@@ -65,12 +65,12 @@ TTS adapters must emit:
 
 Image adapters must emit:
 
-- `<projectDir>/image-manifest.json`
+- `<projectDir>/image-manifest.json`, validated by `schemas/image-manifest.schema.json`
 - `<projectDir>/versions.json` resources with `selected` pointing at the active generation
 - `<projectDir>/assets/images/*` for every generated image asset listed in the manifest
 - runner-provided PNGs are accepted only when size > 0 and the PNG signature is valid; invalid results keep the scene pending and emit a warning
 
-The compiler does not consume selected images yet. P3-03 owns full selected-pointer lifecycle and compiler asset resolution.
+The compiler consumes selected images for scenes whose `visual_kind` is `generate_image`. `search_image`, `map_scene`, and `video` remain reserved authoring values and are not wired into compiler image placement yet.
 
 The compile step hashes repo implementation inputs with `repo:<glob>`, including `repo:src/compiler/**`, `repo:blocks/**`, the active preset (`repo:fixtures/presets/light.json` by default), and `repo:package.json`. Build manifests also stamp `meta.compilerVersion` with the compiler package version and implementation input hash.
 

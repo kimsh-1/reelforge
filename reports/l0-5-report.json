@@ -1,13 +1,13 @@
 {
   "gate": "L0-5",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "scene-specs-duration-intrusion",
       "pass": true,
       "measured": {
-        "filesChecked": 7,
+        "filesChecked": 12,
         "allowedDurationPaths": [
           "/transitions/<index>/duration"
         ],
@@ -22,14 +22,19 @@
     "fixtures/golden-specs/edit-scenario/scene_specs.json",
     "fixtures/golden-specs/full-8types/scene_specs.json",
     "fixtures/golden-specs/minimal-3scene/scene_specs.json",
-    "fixtures/golden-specs/stress-edge/scene_specs.json"
+    "fixtures/golden-specs/stress-edge/scene_specs.json",
+    "showcase/edu-explainer/scene_specs.json",
+    "showcase/news-brief/scene_specs.json",
+    "showcase/quote-wisdom/scene_specs.json",
+    "showcase/ranking-top5/scene_specs.json",
+    "showcase/stat-briefing/scene_specs.json"
   ],
-  "canonicalInputMerkleHash": "c6ede858b34bc3b29eacbeaf42f851c31d90c912c160801a6663b1a760347348",
-  "evidenceHash": "d1d834a8dd87c91dc5da8659f023088b45df1d0e6708853dd501ade1d8938c7e",
+  "canonicalInputMerkleHash": "eb9d226873ba3b8c4bf17200f8bc8734903cd89da0b0fcf01730b1c3589e9879",
+  "evidenceHash": "f430680ffd379ad47b14040bcbd250ee0a8980091131f139e8321c49d1cc89a3",
   "gateScriptHash": "9d4b416f52629f51a9c5891658e69438c8a38fcb115f43027715d486c0842d28",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:32:47.256Z",
-  "finishedAt": "2026-07-07T05:32:47.429Z"
+  "startedAt": "2026-07-08T06:22:11.413Z",
+  "finishedAt": "2026-07-08T06:22:11.550Z"
 }

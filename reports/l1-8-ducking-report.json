@@ -1,17 +1,17 @@
 {
   "gate": "L1-8-ducking",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-8-ducking.mjs --profile fast --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-8-ducking.mjs --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -129,8 +129,10 @@
       "id": "existing-motion-duck-render-test",
       "pass": true,
       "measured": {
-        "skipped": true,
-        "reason": "render/RMS ducking test runs only with --profile full"
+        "command": "/usr/bin/node tests/motion-duck.mjs",
+        "exitCode": 0,
+        "stdoutTail": "motion-duck: PASS\ntmp: /tmp/p2w-p203-JJ34Uv\ncompile: PASS tmp/p2w-p203-29506-1783491832202/edit-scenario/build (copied to /tmp/p2w-p203-JJ34Uv/kenburns-build)\ncompile-out: unavailable in current vf; no shared fixture build was written\nkenburns: PASS hashes=0.8s:ca55b78b,2.783s:bf8515f5,4.867s:85462685\nducking-keyframes: PASS [{\"timeSec\":0,\"volume\":0.35},{\"timeSec\":0.7,\"volume\":0.35},{\"timeSec\":1,\"volume\":0.15},{\"timeSec\":2.6,\"volume\":0.15},{\"timeSec\":2.9,\"volume\":0.35},{\"timeSec\":4,\"volume\":0.35}]\nducking-rms: PASS nonSpeech=-33.43dB speech=-40.23dB delta=6.79dB\n",
+        "stderrTail": ""
       }
     }
   ],
@@ -145,12 +147,12 @@
     "tests/gate-wrappers/l1-8-ducking.mjs",
     "tests/motion-duck.mjs"
   ],
-  "canonicalInputMerkleHash": "3bf15533eed867bf200a34c6afabd5566b1b09d95f72839b72b73b60ca00759e",
-  "evidenceHash": "92e9efec3900304cdf74ad2acf0698b54a3d9bf38a26450270d48ac98264aef2",
+  "canonicalInputMerkleHash": "eb6ed142fd3eb6537a565c9f88a96503fef32585080eedf7775ce65e194ca646",
+  "evidenceHash": "2567c4b47ac18538c0278d786a6ec3b4caa04d1338ec9ec64b5bbcb63d1614fd",
   "gateScriptHash": "b88c7993d2521edb39c30047e386c349a35c499880131b4001067366da7bd5e4",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:18.454Z",
-  "finishedAt": "2026-07-07T05:33:19.409Z"
+  "startedAt": "2026-07-08T06:23:51.325Z",
+  "finishedAt": "2026-07-08T06:27:40.952Z"
 }

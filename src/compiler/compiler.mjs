@@ -462,6 +462,8 @@ function sceneHtml({ scene, timing, tokens, block, renderFormat, fps, repeatInde
   const canvasOverrides = resolveCanvasOverrides(scene, renderFormat.format);
   const content = block.kind === "block" ? blockHost : headlineFallbackHtml({ scene, timing, canvasOverrides });
   const subtitleData = subtitleHookData({ scene, timing });
+  const hasSubtitleContent =
+    Boolean(String(scene.narration ?? "").trim()) || (subtitleData?.words?.length ?? 0) > 0;
   const tween = block.kind === "block" ? blockRevealTween(scene) : revealTween(scene);
   const titleScrim = needsTitleScrim({ imageAsset, tokens });
   const outgoingFadeTimeline = outgoingContentFadeTimeline({ scene, timing, block, fps });
@@ -664,7 +666,9 @@ ${imageCss}
 ${imageLayer}
         </section>
 ${content}
-        <div
+${
+  hasSubtitleContent
+    ? `        <div
           id="${scene.sceneId}-subtitles"
           class="clip subtitles"
           data-start="0"
@@ -672,7 +676,9 @@ ${content}
           data-track-index="20"
           data-subtitle-mode="${htmlAttr(scene.subtitleMode)}"
           data-subtitles='${jsonAttr(subtitleData)}'
-        >${htmlEscape(scene.narration)}</div>
+        >${htmlEscape(scene.narration)}</div>`
+    : ""
+}
       </div>
       <script src="${GSAP_CDN}"></script>
       <script>
@@ -685,12 +691,16 @@ ${content}
               ? `tl.fromTo("#${scene.sceneId}-block-host", ${tween.from}, ${tween.to}, 0);`
               : `tl.fromTo("#${scene.sceneId}-panel", ${tween.from}, ${tween.to}, 0.1);`
           }
-	          tl.fromTo(
+${
+  hasSubtitleContent
+    ? `	          tl.fromTo(
 	            "#${scene.sceneId}-subtitles",
 	            { opacity: 0, y: 18 },
 	            { opacity: ${tokens.subtitle.visible ? 1 : 0}, y: 0, duration: 0.36, ease: "power2.out" },
 	            0.36
-	          );
+	          );`
+    : ""
+}
 ${imageTimeline}
 ${outgoingFadeTimeline}
 	          window.__timelines[${cssString(scene.sceneId)}] = tl;
@@ -723,7 +733,7 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
         data-track-index="${index + 1}"
         data-width="${renderFormat.width}"
         data-height="${renderFormat.height}"
-        style="opacity: ${initialOpacity}; z-index: ${index + 1};"
+        style="opacity: ${initialOpacity}; z-index: ${index + 1}; --rf-scene-start: ${sceneTiming.startSec}s;"
       ></div>`);
     audio.push(`      <audio
         id="audio-${scene.sceneId}"
@@ -812,7 +822,7 @@ function projectHasBgm(specs) {
   return (specs.scenes ?? []).some((scene) => scene.ost !== undefined && scene.ost !== null && scene.ost !== 0);
 }
 
-function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
+function buildBgm({ specs, projectDir, tmpDir, scenes, audioMeta, timing }) {
   if (!projectHasBgm(specs)) return null;
 
   const volume = DEFAULT_BGM_VOLUME;
@@ -824,9 +834,20 @@ function buildBgm({ specs, tmpDir, scenes, audioMeta, timing }) {
     bgmVolume: volume,
     speechVolume: DEFAULT_SPEECH_VOLUME
   });
-  const manifestPath = "./assets/audio/bgm-silence.wav";
-  const htmlPath = "assets/audio/bgm-silence.wav";
-  writeSilentWav(path.join(tmpDir, htmlPath), timing.totalDurationSec);
+  const projectTrack = ["bgm.mp3", "bgm.wav", "bgm.ogg"]
+    .map((name) => path.join(projectDir ?? "", "assets", "audio", name))
+    .find((candidate) => existsSync(candidate));
+  let manifestPath;
+  let htmlPath;
+  if (projectTrack) {
+    htmlPath = `assets/audio/${path.basename(projectTrack)}`;
+    manifestPath = `./${htmlPath}`;
+    copyAssetToBuild({ sourcePath: projectTrack, buildDir: tmpDir, targetRelPath: htmlPath });
+  } else {
+    manifestPath = "./assets/audio/bgm-silence.wav";
+    htmlPath = "assets/audio/bgm-silence.wav";
+    writeSilentWav(path.join(tmpDir, htmlPath), timing.totalDurationSec);
+  }
 
   return {
     manifestPath,
@@ -972,7 +993,7 @@ export function compileProject({
       imageAssets.has(scene.sceneId) ? { ...scene, renderImage: imageAssets.get(scene.sceneId) } : scene
     );
     const timing = buildTiming({ scenes, audioByScene, transitions: specs.transitions ?? [], fps });
-    const bgm = buildBgm({ specs, tmpDir, scenes, audioMeta, timing });
+    const bgm = buildBgm({ specs, projectDir: absoluteProjectDir, tmpDir, scenes, audioMeta, timing });
 
     const warnings = [...timing.warnings];
     const blockByScene = new Map();

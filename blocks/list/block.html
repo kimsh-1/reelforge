@@ -282,16 +282,16 @@
         }
 
         .list-item {
-          animation: list-row-living 2.18s ease-in-out 1s infinite alternate;
+          animation: list-row-living 2.18s ease-in-out calc(var(--rf-scene-start, 0s) + 1s) infinite alternate;
         }
 
         .list-item:nth-child(2n) {
-          animation-delay: 1.22s;
+          animation-delay: calc(var(--rf-scene-start, 0s) + 1.22s);
           animation-direction: alternate-reverse;
         }
 
         .list-icon {
-          animation: list-icon-pulse 1.64s ease-in-out 0.92s infinite alternate;
+          animation: list-icon-pulse 1.64s ease-in-out calc(var(--rf-scene-start, 0s) + 0.92s) infinite alternate;
         }
 
         .list-sweep {

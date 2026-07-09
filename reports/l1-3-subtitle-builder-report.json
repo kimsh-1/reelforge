@@ -1,17 +1,17 @@
 {
   "gate": "L1-3-subtitle-builder",
-  "profile": "fast",
+  "profile": "full",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-3-subtitle-builder --profile fast --json",
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-3-subtitle-builder --profile full --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "fast",
+        "profile": "full",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -84,12 +84,12 @@
     "src/compiler/subtitles.mjs",
     "src/gates/p3-gates.mjs"
   ],
-  "canonicalInputMerkleHash": "767b208690e697442b2c2fcf8ef87e7cb5063e5d9724951a594b6567bd2d1c16",
+  "canonicalInputMerkleHash": "9a11a7781fe811f08db610be0572eed5b30cec3237cdba67e742942b9e45396e",
   "evidenceHash": "922ffa3fb3e4c81458f59404603d97d4d51514c07f6f247866f0cdabcf7894f3",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "758569aa5c92d020dd7e60083af4647e76d5f9b9",
-  "command": "node bin/vf gate --all --profile fast --replay",
+  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
+  "command": "node bin/vf gate all --profile full --execute",
   "exitCode": 0,
-  "startedAt": "2026-07-07T05:33:11.050Z",
-  "finishedAt": "2026-07-07T05:33:12.469Z"
+  "startedAt": "2026-07-08T06:23:42.156Z",
+  "finishedAt": "2026-07-08T06:23:43.661Z"
 }

@@ -260,11 +260,11 @@
         }
 
         .bar-row {
-          animation: bar-row-living 2.1s ease-in-out 1s infinite alternate;
+          animation: bar-row-living 2.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1s) infinite alternate;
         }
 
         .bar-row:nth-child(2n) {
-          animation-delay: 1.2s;
+          animation-delay: calc(var(--rf-scene-start, 0s) + 1.2s);
           animation-direction: alternate-reverse;
         }
 

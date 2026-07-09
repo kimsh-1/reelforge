@@ -1,6 +1,6 @@
 # ReelForge Compiler
 
-`vf compile <projectDir>` turns authored contracts into a self-contained HyperFrames build. The generated HTML is read-only; edits must go back through `scene_specs.json` or the design token preset and then recompile.
+`vf compile <projectDir> [--format 16:9|9:16|1:1]` turns authored contracts into a self-contained HyperFrames build. The generated HTML is read-only; edits must go back through `scene_specs.json` or the design token preset and then recompile.
 
 ## Architecture
 
@@ -25,7 +25,7 @@ Outputs go under `<projectDir>/build/`:
 
 ## Image Assets
 
-When `<projectDir>/image-manifest.json` exists, the compiler resolves images for scenes whose `visual_kind` is `generate_image`.
+When `<projectDir>/image-manifest.json` exists, the compiler resolves images for scenes whose `visual_kind` is `generate_image`. `search_image`, `map_scene`, and `video` remain schema-compatible reserved values; they are not wired into compiler image placement yet.
 
 Selection order:
 
@@ -126,21 +126,21 @@ Other transition names currently compile as crossfade with a warning. P2-01 shou
 
 ## BGM Interface
 
-`index.html` includes a root-level BGM `<audio>` entry. P2-00 generates a deterministic silent WAV so the layer and manifest contract are present without choosing real music.
+When any scene requests OST, `index.html` includes a root-level BGM `<audio>` entry. The compiler first looks for a project track at `assets/audio/bgm.mp3`, then `bgm.wav`, then `bgm.ogg`; if none exists it generates a deterministic silent WAV so the layer and manifest contract remain present.
 
 `render-manifest.json` records:
 
 ```json
 {
   "bgm": {
-    "path": "./assets/audio/bgm-silence.wav",
+    "path": "./assets/audio/bgm.mp3",
     "volume": 0.15,
     "duckingKeyframes": [{ "timeSec": 0, "volume": 0.15 }]
   }
 }
 ```
 
-P2-03 owns real BGM selection and applying the ducking automation.
+The manifest path is the selected project track when present, otherwise `./assets/audio/bgm-silence.wav`. Empty-narration scenes with no timed words emit no subtitle container.
 
 ## Render Lint
 
