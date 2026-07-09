@@ -41,8 +41,8 @@
       "pass": false,
       "measured": {
         "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-dense-visual/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-dense-visual/videos/full-8types.mp4 --fps=30 --quality=standard --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
-        "exitCode": 1,
-        "signal": null,
+        "exitCode": 128,
+        "signal": "SIGKILL",
         "reusedFrom": null,
         "output": "tmp/gate-work/p5/l2-dense-visual/videos/full-8types.mp4",
         "bytes": 0,
@@ -62,9 +62,9 @@
   "canonicalInputMerkleHash": "d7f39ed5be345701dd4e341cd826a84803dc948f26db266eec779df5754c008a",
   "evidenceHash": "cd9e3e4a289cde1a0cb93a04ec674bc55c7468fc3600a01997227fa5a243744e",
   "gateScriptHash": "259aba51e5e745737c537f139b72dd5de7d6f9e2bc0cd5c294fb40b93dbb0142",
-  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
+  "gitCommit": "3025751c2bbc357dd59268b163d528fde54643cf",
   "command": "node bin/vf gate l2-dense-visual --profile full --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-09T07:03:25.540Z",
-  "finishedAt": "2026-07-09T07:23:27.577Z"
+  "startedAt": "2026-07-09T08:01:16.132Z",
+  "finishedAt": "2026-07-09T08:18:23.794Z"
 }

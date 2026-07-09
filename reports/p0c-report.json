@@ -1,6 +1,6 @@
 {
   "gate": "P0c",
-  "profile": "full",
+  "profile": "fast",
   "pass": false,
   "checks": [
     {
@@ -151,11 +151,11 @@
   "canonicalInputMerkleHash": "50befe2e48e87dcb05b383ec859bb6c290db985bc0c7325ec0bccfb6bddf3111",
   "evidenceHash": "290008aac4481e75988554fc05895246e233d492baa452e52193b18b3998ff95",
   "gateScriptHash": "c3c3d841a8cb947e16dcdff6f019aab92a17d79c359cd7d82385d3894dd18974",
-  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
-  "command": "node bin/vf gate p0c --profile full --execute",
+  "gitCommit": "3025751c2bbc357dd59268b163d528fde54643cf",
+  "command": "node bin/vf gate p0c --execute",
   "exitCode": 1,
-  "startedAt": "2026-07-09T06:12:29.650Z",
-  "finishedAt": "2026-07-09T06:12:29.764Z",
+  "startedAt": "2026-07-09T08:18:24.413Z",
+  "finishedAt": "2026-07-09T08:18:24.535Z",
   "mode": "execute",
   "sourceReport": "poc/reports/P0c-report.json",
   "execution": {

@@ -27,3 +27,15 @@
 - P6 마감(release·히어로·태그) → LOOP-PROTOCOL 본 루프(전수조사 → showcase 5종)
 - 4.0 도달 데모부터 P6 마감(release mp4·히어로 GIF·v0.1.0)
 - 이후 LOOP-PROTOCOL 본 루프(전수조사 → showcase 5종 → 판정 → 학습 반영)
+
+## ⏸ 정지 지점 (2026-07-09, 사용자 지시로 중단)
+
+**완료**: 데모 3종 4.0 합격·v0.1.0 릴리스(소리 있는 v11로 자산 교체 완료), R19 임팩트 수술 커밋(aa4f392), 불변식 게이트 PSNR 방법론 수정(l2-2 PASS·PSNR 83dB), 스튜디오 resolveSchema allOf 버그 수정(u2 PASS), 골든 DOM 재생성(l1-1 PASS), p0d·l2-full-comp PASS, BGM 실배선+빈자막 제거+오디오 게이트(66f458f).
+
+**재개 시 여기부터**:
+1. 잔여 게이트 4종 실패 — 청정 재실행에도 실패했으므로 실결함: l2-8-anchors·l2-dense-visual(full-8types 렌더가 --workers=1로 행/초저속 — 타임아웃·워커 설정 검토), p0a·p0c(PoC 렌더 mp4 0바이트 — poc 스크립트의 렌더 인자/환경 확인. p0d는 venv 재구축으로 PASS했음).
+2. v12 렌더 3종(R19 임팩트 반영) → 1fps 스트립 동봉 opus 재심("연속 재생" 기준) → 현행본·릴리스 교체.
+3. LOOP-PROTOCOL 2단계: showcase 5종 생산(/mnt/d/reelforge-output/showcase/loop1/).
+4. 사용자 실관람 피드백 반영 항목: "정적 슬라이드쇼" — R19가 1차 수술, v12 스트립으로 재검.
+
+**주의**: 렌더 게이트는 반드시 1개씩(경합 시 크래시), 게이트 체인 후 chrome-headless 좀비 정리. C드라이브 회수는 사용자가 fstrim+diskpart 실행 대기(vhdx 66.9GB→~37GB 예상, 경로 C:\WSL\Ubuntu-24.04\ext4.vhdx).
