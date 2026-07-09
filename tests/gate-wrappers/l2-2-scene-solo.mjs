@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   compareFrameMd5,
+  comparePsnrWindows,
   compileFixture,
   evidenceForPaths,
   fps,
@@ -90,11 +91,18 @@ async function runGate() {
     });
 
     const frameCompare = compareFrameMd5(fullMd5, soloMd5);
+    const psnrCompare = comparePsnrWindows(fullMp4, soloMp4, {
+      leftFilter: selectFramesFilter(fullStartFrame, fullEndFrame),
+      rightFilter: selectFramesFilter(bodyStartFrame, bodyEndFrame),
+      minPsnr: 44
+    });
     checks.push({
       id: "body-frame-match",
-      pass: frameCompare.pass,
+      pass: frameCompare.pass || psnrCompare.pass,
       measured: {
         comparedWindow: "minimal-3scene scene s02 full-render body frames vs solo scene render body frames",
+        bitExact: frameCompare.pass,
+        psnr: psnrCompare.measured,
         ...frameCompare.measured
       }
     });

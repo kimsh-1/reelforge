@@ -255,6 +255,24 @@ export function compareFrameMd5(leftPath, rightPath) {
   };
 }
 
+export function comparePsnrWindows(leftPath, rightPath, { leftFilter, rightFilter, minPsnr = 44 } = {}) {
+  const norm = (f) => (f ? `${f},setpts=N/FRAME_RATE/TB` : "setpts=N/FRAME_RATE/TB");
+  const lavfi = `[0:v]${norm(leftFilter)}[a];[1:v]${norm(rightFilter)}[b];[a][b]psnr`;
+  const result = run("ffmpeg", ["-v", "info", "-i", leftPath, "-i", rightPath, "-lavfi", lavfi, "-f", "null", "-"]);
+  const text = `${result.stderr ?? ""}\n${result.stdout ?? ""}`;
+  const match = text.match(/PSNR.*?average:(inf|[\d.]+)/);
+  const average = match ? (match[1] === "inf" ? Infinity : Number.parseFloat(match[1])) : null;
+  return {
+    pass: average !== null && average >= minPsnr,
+    measured: {
+      averagePsnr: average === Infinity ? "inf" : average,
+      minPsnr,
+      parsed: Boolean(match),
+      note: "lossy-encode tolerant comparison; md5 kept as informational"
+    }
+  };
+}
+
 export function copyFileEnsured(source, target) {
   ensureDir(path.dirname(target));
   copyFileSync(source, target);

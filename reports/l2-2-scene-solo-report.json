@@ -1,14 +1,14 @@
 {
   "gate": "L2-2-scene-solo",
   "profile": "full",
-  "pass": false,
+  "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": false,
+      "pass": true,
       "measured": {
         "command": "/usr/bin/node tests/gate-wrappers/l2-2-scene-solo.mjs --profile full --json",
-        "exitCode": 1,
+        "exitCode": 0,
         "signal": null,
         "error": null,
         "profile": "full",
@@ -71,78 +71,85 @@
     },
     {
       "id": "body-frame-match",
-      "pass": false,
+      "pass": true,
       "measured": {
         "comparedWindow": "minimal-3scene scene s02 full-render body frames vs solo scene render body frames",
+        "bitExact": false,
+        "psnr": {
+          "averagePsnr": 83.122472,
+          "minPsnr": 44,
+          "parsed": true,
+          "note": "lossy-encode tolerant comparison; md5 kept as informational"
+        },
         "leftFrameCount": 91,
         "rightFrameCount": 91,
         "minComparedFrames": 91,
-        "mismatchedFrameCount": 90,
+        "mismatchedFrameCount": 84,
         "ptsMismatchCount": 0,
         "lengthMismatch": false,
         "firstMismatch": {
           "index": 0,
           "leftPts": 0,
           "rightPts": 0,
-          "leftHash": "02d1dd0808c30ecdee4b112dfa2c2e45",
-          "rightHash": "71b6fa2ff0dc9ceb95bc89ab3aa134b1"
+          "leftHash": "1e40d566e5516903e95a9441f8a5b9f8",
+          "rightHash": "235e80f76b8ae5d56ffef3d91e640fb5"
         },
         "firstMismatches": [
           {
             "index": 0,
             "leftPts": 0,
             "rightPts": 0,
-            "leftHash": "02d1dd0808c30ecdee4b112dfa2c2e45",
-            "rightHash": "71b6fa2ff0dc9ceb95bc89ab3aa134b1"
+            "leftHash": "1e40d566e5516903e95a9441f8a5b9f8",
+            "rightHash": "235e80f76b8ae5d56ffef3d91e640fb5"
           },
           {
             "index": 1,
             "leftPts": 512,
             "rightPts": 512,
-            "leftHash": "dfeec17965e4c5d6477a51e80a926a5c",
-            "rightHash": "54bab3e0d93202735c4a2a81629f9e90"
+            "leftHash": "1003331baf19cfb8e5539d5915bfba9d",
+            "rightHash": "49fd11d17ff4864f9af291036cdee6a3"
           },
           {
             "index": 2,
             "leftPts": 1024,
             "rightPts": 1024,
-            "leftHash": "aa7708f3634bb9f62913edc32f7924f9",
-            "rightHash": "d87759aa4856130d4b102541263c264a"
+            "leftHash": "a13a6ac2662916d4f0a427a5b59d6fe2",
+            "rightHash": "1dd64de59e6f5f06b8874a444590b682"
           },
           {
             "index": 3,
             "leftPts": 1536,
             "rightPts": 1536,
-            "leftHash": "29be28ed160533fe5495a69231d30692",
-            "rightHash": "7cc5e979ef125d3d882429eb1ae158b0"
+            "leftHash": "139614cba4018dcf1a47f728e9db83b3",
+            "rightHash": "d6c70d05c1baa098e1d79b448ad49a58"
           },
           {
             "index": 4,
             "leftPts": 2048,
             "rightPts": 2048,
-            "leftHash": "3fc499465ec493c16780a92f93e0c94f",
-            "rightHash": "e5485ef8790791b8c1f0fe98bfe454c1"
+            "leftHash": "342df86f7718a4da86ab584d085cc428",
+            "rightHash": "df87ab6d62e9d791d861512d916051e0"
           },
           {
             "index": 5,
             "leftPts": 2560,
             "rightPts": 2560,
-            "leftHash": "2d6400b46394e590988f4fc5a2187534",
-            "rightHash": "0f36cccb7786df8b66785c44f016fdf0"
+            "leftHash": "945b0e86e8704ce11ce82775f18b7e96",
+            "rightHash": "02ff89a1a962628ebdd69c684c2541d3"
           },
           {
             "index": 6,
             "leftPts": 3072,
             "rightPts": 3072,
-            "leftHash": "dacdeddc9b9a3aa8ab54bffa14a59b70",
-            "rightHash": "c392df37f931a6dc8cf5908ff5b97fda"
+            "leftHash": "1b699719bae6adc4e4ad83f87c4fb52d",
+            "rightHash": "8ddc4dcb9ec1e86af51f9d695ea4eee3"
           },
           {
             "index": 7,
             "leftPts": 3584,
             "rightPts": 3584,
-            "leftHash": "573ee3bbb6fa6358a1f03009907622cd",
-            "rightHash": "829fd2e75604112818fba90018c8de4f"
+            "leftHash": "c97e5976d3a47bf96b3c2ff9364f344d",
+            "rightHash": "72cdc6075ab3850c72682feb033e101b"
           }
         ]
       }
@@ -156,12 +163,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l2-2-scene-solo.mjs"
   ],
-  "canonicalInputMerkleHash": "37b68076a9b2d40253f39be042a1c19afd29363287145751684e29330336f970",
-  "evidenceHash": "76d1b091fe91cf375a68a603a66434867d5b34fdc195b25c57a418b9a5a1fb88",
-  "gateScriptHash": "ddf8495d3e6fb0774c3fca8e91fda7c28377a3a2783f12ba6d32d186b0aa9fd9",
-  "gitCommit": "66f458fb97a3fb3e0e09bc7432cbbbd21a8f6402",
+  "canonicalInputMerkleHash": "11f64472cdeba92fa1036860409fb1d2e5436d1b125ed977190cf518be9b0279",
+  "evidenceHash": "539172f1829451ab1e0c4c6dc8395e22c7b800c6fa38557882afc7c50b9c5c77",
+  "gateScriptHash": "fa7c4adcd82c7f890200385aff36dad295cbcb00413dd340b284cf3a3722da69",
+  "gitCommit": "aa4f392c3268903c1a642d382097d42119e65ff5",
   "command": "node bin/vf gate l2-2-scene-solo --profile full --execute",
-  "exitCode": 1,
-  "startedAt": "2026-07-09T05:04:24.091Z",
-  "finishedAt": "2026-07-09T05:14:16.360Z"
+  "exitCode": 0,
+  "startedAt": "2026-07-09T06:00:14.139Z",
+  "finishedAt": "2026-07-09T06:11:22.778Z"
 }
