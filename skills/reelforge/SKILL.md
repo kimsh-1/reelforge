@@ -1,191 +1,180 @@
 ---
 name: reelforge
-description: Author and run ReelForge narration-video projects from a brief, script, or batch of briefs. Use when the user asks in Korean or English to make a video with ReelForge, including triggers such as "영상 만들어", "릴포지", "ReelForge", "브리프로 영상", "대본으로 영상", "쇼츠 만들어", "나레이션 영상", "faceless video", or "run the ReelForge pipeline".
+description: Author and run ReelForge motion-graphic video projects from a brief, script, or batch of briefs. Use when the user asks in Korean or English to make a video with ReelForge, including triggers such as "영상 만들어", "릴포지", "ReelForge", "브리프로 영상", "대본으로 영상", "쇼츠 만들어", "나레이션 영상", "faceless video", or "run the ReelForge pipeline".
 ---
 
 # ReelForge
 
-Use this skill to turn a brief into a valid ReelForge `scene_specs.json`, run the pipeline, check gates, and guide Studio edits. ReelForge's authoring boundary is `scene_specs.json`; generated composition HTML is a read-only build artifact.
+ReelForge turns one brief into a **full-bleed motion-graphic video**. The product is the
+feel: kinetic typography, mood-driven color, living motion — never a slide deck. The skill's
+core loop is **Direction Freeze -> Scene Swarm -> Assemble -> Render -> Strip QC**. Every
+scene is an authored `layout:"free"` HTML fragment; the engine owns timing, subtitles,
+transitions, tokens, and deterministic rendering.
 
-For production work, follow **Brief Interview -> Authoring Workflow -> Pipeline And Gate -> Studio Edit Loop**. Quick Start is only a fixture smoke path.
+Do not start from `scene_specs.json`. Data comes last; direction comes first.
 
-## Quick Start
+## Step 0 — Brief
 
-1. For a data-block smoke path, create or choose a project directory under an ext4 path and seed it from the eight-block fixture:
+Collect only missing production facts, then move on:
 
-```bash
-PROJECT_DIR=~/reelforge-full8
-mkdir -p "$PROJECT_DIR"
-cp fixtures/golden-specs/full-8types/scene_specs.json "$PROJECT_DIR/scene_specs.json"
-```
+- `audience` / `goal`: who watches, what should change after watching.
+- `duration target` and `format`: shorts, demo, explainer, report.
+- `tone`: one or two mood words — this drives preset choice and mood escalation.
+- `assets`: brand, product, screenshots, music track, whether generated images are allowed.
+- `constraints`: language, claims to avoid, must-include terms.
 
-2. Treat `fixtures/golden-specs/full-8types/scene_specs.json` as the quickest complete example of the eight data-block layouts: `bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, `quote`. It is a fixture smoke path, not the default for video authoring.
-3. Validate `scene_specs.json` through the write path:
+When underspecified, propose defaults and proceed (confirm in checkpoint at Step 1).
 
-```bash
-node bin/vf write "$PROJECT_DIR/scene_specs.json" --project-root "$PROJECT_DIR" --schema scene-specs < "$PROJECT_DIR/scene_specs.json"
-```
+## Step 1 — Direction Freeze (the stage that decides quality)
 
-4. Run the local pipeline:
+Produce three small artifacts under `<projectDir>/direction/` and freeze them before any
+scene is authored. This is a user checkpoint: show the summary, then continue.
 
-```bash
-node bin/vf pipeline run "$PROJECT_DIR" --profile mock
-```
+1. **`frame.md`** — the visual spine: chosen preset (one of the 16-video-preset catalog —
+   read `references/design-direction.md` for the selection tree, `docs/design-presets.md`
+   for contrast tables; do not invent a palette when a preset fits), mood escalation arc
+   (which scenes flash hot accents, where the scarce success color lands), recurring chrome,
+   typography scale rules.
+2. **`copy.md`** — every on-screen line, polished before visuals (gn-voice-style pass).
+   Sellable Korean headlines of 12 characters or fewer; concrete nouns, numbers, contrast,
+   payoff. Model lines: `한 줄만 던져`, `누르면 렌더`, `키도 0, 돈도 0`, `말 대신 렌더`.
+3. **`STORYBOARD.md`** — the scene table: `sceneId`, duration target (2–4.5s each), the
+   one-line intent ("what must the viewer feel"), scene idiom (kinetic typo / image+motion /
+   data moment / CTA), and the transition semantic into the next scene (shared-object
+   continuity, hard cut for new section, dissolve for time passing).
 
-Use `--profile real` only when real TTS/image generation is desired. For generated images, the real profile may stop with `WAIT` until PNG results are written under `assets/images/runner/results`.
+**Timing authority**: if the project has music, analyze it first and snap scene boundaries
+to the beat grid (`audiomap.json`, music-to-video interop). Otherwise scene durations come
+from audio metadata — for silent/music-only scenes use mock narration (see Step 3).
 
-5. Verify the project report:
+## Step 2 — Scene Swarm
 
-```bash
-node bin/vf verify-report "$PROJECT_DIR/reports/pipeline-gate-report.json"
-```
-
-6. Open Studio for local review and edits:
-
-```bash
-node bin/vf studio "$PROJECT_DIR" --port 4317
-```
-
-## Brief Interview
-
-First ask only for missing production facts. Force the answer into this pattern:
-
-```text
-Act as a <role> specialist. Design my video: audience, offer/message, structure, visual style.
-```
-
-For Korean users, keep the same structure:
+Dispatch **one worker per scene**, in parallel. Each worker authors exactly one fragment at
+`<projectDir>/scenes-src/<sceneId>-free.html` and touches nothing else. Worker context:
 
 ```text
-<역할> 전문가로 행동해. 영상 설계를 확정해: 대상, 핵심 메시지, 장면 구조, 비주얼 스타일.
+PROJECT_DIR, sceneId, its STORYBOARD row, direction/frame.md, direction/copy.md (frozen copy
+for this scene), the fragment contract below, and one approved sibling fragment as the
+house-style reference.
 ```
 
-Collect these fields before authoring:
+Run a **pilot scene first**, review it against the storyboard intent, correct the shared
+brief once, then fan out the rest. Workers never run the CLI, never render, never edit
+`scene_specs.json` or generated HTML.
 
-- `audience`: who must understand or buy in.
-- `goal`: what should change after watching.
-- `duration target`: rough total length, not a JSON field.
-- `format`: desired output context such as shorts, demo, explainer, report.
-- `tone`: one or two mood words.
-- `assets`: brand, product, source data, screenshots, or whether generated images are allowed.
-- `constraints`: language, claims to avoid, must-include terms, delivery path.
+**Fragment contract** (lint-enforced): a full HTML document whose `<body>` contains one
+`<template>` with `<style>`, one root element carrying a unique `data-composition-id`
+(use `free-<sceneId>`), and one `<script>` that synchronously registers exactly one
+`gsap.timeline({paused:true})` at `window.__timelines["<that id>"]` and ends with
+`tl.seek(0)`.
 
-When the brief is underspecified, propose defaults and ask for confirmation. For agency/batch work, keep a reusable brand/tone block and vary only the message and scene plan per video.
+- Consume preset colors only through `var(--rf-*)` with fallbacks: `--rf-text`,
+  `--rf-muted-text`, `--rf-accent`, `--rf-bg`, `--rf-surface-2`, `--rf-surface-3`,
+  `--rf-hairline`, `--rf-hairline-strong`, `--rf-ink-subtle`, `--rf-ink-tertiary`,
+  `--rf-accent-alt`, `--rf-on-accent`, `--rf-success`.
+- Living motion: CSS keyframes with `infinite alternate`, delay
+  `calc(var(--rf-scene-start, 0s) + 1.2s)`, `filter`/`opacity` only — visible change must
+  survive a 1fps strip (frozen scenes fail QC).
+- Entrance completes within 0.4s of scene start; count-ups finish within 1.2s.
+- **De-slide hard rule**: no card frames, no panel-in-panel, no header/footer masters, no
+  title+bullets skeleton. If a frame reads as a presentation slide, the scene fails.
 
-## Authoring Workflow
+## Step 3 — Assemble
 
-Work in this order; do not jump straight from brief to JSON:
+`scene_specs.json` is a **thin manifest**, not an authoring surface. For each scene:
+`sceneId`, `sceneNumber`, `layout:"free"`, `sourceHtml`, authored `altText`, `headline`
+(display copy), `mood`, `reveal`, `emphasis`, `items: []`, `visual_kind`, `kenBurns`
+(disabled unless image scene), `subtitleMode`, and narration fields. Root:
+`version`, `projectId`, `scenes`, `transitions[]{from,to,type,duration}`.
 
-1. **Copy polish**: rewrite all on-screen copy with a gn-voice-style pass before visual authoring. No empty placeholders, raw English labels, fixture text, or dummy copy. Target sellable Korean headlines of 12 characters or fewer; prefer concrete nouns, numbers, contrast, and a payoff. Good model lines: `한 줄만 던져`, `빈 칸만 되묻기`, `누르면 렌더`, `키도 0, 돈도 0`, `말 대신 렌더`.
-2. **Design selection**: choose one preset from the 비디오 전용 16종 카탈로그 + fixture/demo 변형 3종(총 19파일), then keep it stable for the project. Read `references/design-direction.md` for the brief-type selection tree and consult `docs/design-presets.md` for the full preset catalog and contrast constraints. Do not invent a custom look when a catalog preset fits.
-3. **Step 1 content**: produce the narrative arc, scene count, `sceneId`, `sceneNumber`, polished `headline`, `narration`, `narration_tts`, `items`, `values`, `unit`, and `source`.
-4. **Step 2 visuals**: default every scene to `layout: "free"` and author its project-relative `sourceHtml` fragment; then assign `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, authored `altText`, and `transitions`. Choose a data block only when real quantitative data needs a structured presentation.
-5. **Viewer QC**: after render, run machine checks and inspect frames as a viewer. Reject if any 1.5s stretch feels frozen, generated images are absent from the actual frame, headline contrast is weak, or the first three seconds would not stop a feed scroll.
+- Narrated scene: `narration_tts` drives duration through TTS. Spell out symbols for Korean
+  TTS (`37%` -> `삼십칠 퍼센트`).
+- Silent/music-only scene: set `narration`/`narration_tts` to `" "`, generate mock audio of
+  the target duration (`ffmpeg -f lavfi -i anullsrc=r=24000:cl=mono -t <dur> -q:a 9
+  assets/audio/<sceneId>.mock.mp3`) and list it in `audio_meta.json` with
+  `sourceHash` = sha256 of `" "` (`36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068`).
+- BGM: place `assets/audio/bgm.mp3`; the compiler wires it when any scene requests OST.
 
-Every scene must include authored `altText`. Do not infer it from narration and do not leave it for a later pass.
+Compile and lint:
 
-Primary layout selection:
+```bash
+node bin/vf compile <projectDir> --preset fixtures/presets/<preset>.json
+```
 
-Default to `layout: "free"` with `sourceHtml: "<project-relative .html path>"` for every scene. This is the full-bleed motion-graphic path for kinetic typography, image-plus-motion, and promo-grade scenes. The compiler copies the fragment to `build/blocks/free/<sceneId>.html` with transport inlining and runtime-ready injection, then mounts it as a track-3 sub-composition; timing, subtitles, transitions, `--rf-*` token injection, Ken Burns, and render-lint remain engine-owned.
+Compilation fails loudly on schema violations; render-lint rejects `fetch()`,
+`Math.random()`, `Date.now()`, `performance.now()`, and non-paused timelines in every
+composition fragment. A free scene with a missing/invalid fragment degrades to
+`headline_only` with a `free-missing-source`/`free-missing`/`free-invalid` warning — treat
+any of those warnings as a build failure and fix the fragment.
 
-Author a free fragment to the BLOCK fragment contract: a full HTML document whose `<body>` contains a `<template>` with `<style>`, one root element carrying `data-composition-id`, and a `<script>`. That script must synchronously register exactly one `gsap.timeline({paused:true})` at `window.__timelines["<that id>"]` and end with `tl.seek(0)`; make the ID unique per scene, preferably `free-<sceneId>`.
+## Step 4 — Render
 
-Consume preset colors in free fragments through `var(--rf-*)` with fallbacks: `--rf-text`, `--rf-muted-text`, `--rf-accent`, `--rf-bg`, `--rf-surface-2`, `--rf-surface-3`, `--rf-hairline`, `--rf-hairline-strong`, `--rf-ink-subtle`, `--rf-ink-tertiary`, `--rf-accent-alt`, `--rf-on-accent`, and `--rf-success`. Keep living motion to CSS keyframes using `infinite alternate`, `calc(var(--rf-scene-start, 0s) + 1.2s)`, and `filter` or `opacity` only.
+Render serially (one render at a time per machine). On capable machines raise throughput:
 
-Use one of the eight blocks as a recommended option only when the scene carries real quantitative data that benefits from a structured data view:
+```bash
+cd <projectDir>/build
+PRODUCER_LOW_MEMORY_MODE=false PRODUCER_MAX_WORKERS=3 PRODUCER_BROWSER_GPU_MODE=hardware \
+  npx hyperframes render . --workers 3 --quality draft -o ../renders/draft.mp4
+```
 
-- `bar`: compare ranked quantities.
-- `pie`: show part-to-whole shares that sum cleanly.
-- `line`: show a sequence over time.
-- `list`: show checklist, bullets, status, or grouped facts.
-- `numbered`: show ordered steps or priorities.
-- `statistic`: make one key number dominate.
-- `compare`: show before/after, A/B, old/new, or tradeoffs.
-- `quote`: show a cited phrase, user voice, testimonial, or insight.
+Measured reference: 42s / 1253 frames ≈ 6 min at 3 workers (vs 30+ min clamped). On a
+sub-8GB box the engine defaults to 1 worker + software GL; the env overrides above lift the
+clamp — watch available RAM and fall back to `--workers 2` if pressured. Kill stray
+`chrome-headless` processes between renders. Use `--quality high` only for the final export.
 
-`headline_only` is schema-valid for title or closing cards. If a free scene omits `sourceHtml`, its file is missing, or its fragment has no `data-composition-id`, compilation warns with `free-missing-source`, `free-missing`, or `free-invalid` respectively and degrades it to `headline_only`.
+## Step 5 — Strip QC Loop (max 2 rounds)
 
-## Contract Rules
+1. Machine pass: `node scripts/craft-contact-sheet.mjs` for per-scene checks, or build a
+   1fps strip of the draft (`ffmpeg -i draft.mp4 -vf "fps=1,scale=480:-1" strip/f%02d.png`)
+   and tile it. Blank frames, low contrast, and frozen motion (no pixel change between
+   consecutive strip frames after entrance) are automatic failures.
+2. Viewer pass on the full strip — never judge from isolated stills: de-slide hard rule,
+   no 1.5s stretch that feels frozen, first 3 seconds must stop a feed scroll, generated
+   images actually appear in-frame, small labels readable at mobile size.
+3. Re-dispatch **only the failing scenes** with the failure reason appended to their brief.
+   Two failed rounds on the same scene → escalate to the user with the strip.
 
-`scene_specs.json` must contain:
-
-- Root: `version`, `projectId`, `scenes`, `transitions`.
-- Each scene: `sceneId`, `sceneNumber`, `narration`, `narration_tts`, `altText`, `layout`, `mood`, `reveal`, `emphasis`, `headline`, `items`, `source`, `visual_kind`, `kenBurns`, `subtitleMode`.
-- `sourceHtml` is required if and only if `layout` is `free`; use a project-relative `.html` path and omit it for every other layout.
-- `values` and `unit` are required only for `bar`, `pie`, `line`, and `statistic`; other layouts may include them only when the visible copy needs them.
-- Scene IDs: stable `s01`, `s02`, ... keys. Do not reuse an ID for a different scene.
-- Transitions: edges only, `transitions[]{from,to,type,duration}`.
-
-Hard prohibitions:
-
-- Do not add `duration` inside a scene. Scene timing is derived from `narration_tts` through TTS/audio metadata and compiler frame quantization.
-- Do not edit generated composition HTML or files under `build/` as source.
-- Do not write selected image paths into `scene_specs`; selected assets belong to `image-manifest.json` and `versions.json`.
-- Do not use extra fields. Contracts are closed and reject unknown keys.
-- Do not make `mood.speed` or visual pacing imply audio duration changes.
-- Do not edit schemas as part of video authoring.
-- Do not author per-scene motion timelines, mood badges, chrome, or scrim overlays in `scene_specs`. Block scenes retain the renderer-owned three-stage motion: entrance, living/develop motion, and exit/hand-off. Author free-scene motion only in its `sourceHtml` fragment; timing, subtitles, transitions, tokens, Ken Burns, and lint stay engine-owned.
-- Do not use `fetch()`, `Math.random()`, `Date.now()`, or `performance.now()` in any block or free composition HTML. Render-lint rejects them, along with non-paused timelines, because deterministic seek renders cannot depend on network or wall-clock state.
-
-Use `narration_tts` to control speech. Keep `narration` as display/editor copy when different. For Korean TTS, spell out symbols and compact numbers when needed: `37%` -> `삼십칠 퍼센트`, `184ms` -> `백팔십사 밀리초`.
-
-Estimate scene duration only as an authoring sense check: one short Korean sentence is usually a compact scene; two clauses are medium; three or more clauses should usually split. Never persist that estimate as a scene field.
-
-For image scenes, set `visual_kind`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText` so the asset is actually used. Image scrims are automatically applied by image-aware blocks; free fragments should use the injected `--rf-*` tokens and must not add extra schema fields or hand-edit generated HTML.
-
-## Pipeline And Gate
-
-Run:
+Verify the pipeline report when using the full pipeline:
 
 ```bash
 node bin/vf pipeline run <projectDir> --profile mock
-```
-
-Expected graph:
-
-```text
-tts -> images -> compile -> render -> gate
-```
-
-The pipeline writes `audio_meta.json`, `image-manifest.json`, `versions.json`, `build/`, `out/main.mp4`, and a report under `reports/`. If `versions.json` is dirty, reconcile edits or rerun with `--force-dirty` only when intentional.
-
-Check reports through the supervisor path:
-
-```bash
 node bin/vf verify-report <projectDir>/reports/pipeline-gate-report.json
-node bin/vf gate list
 ```
-
-For broader regression evidence use `npm run gate`; for expensive PoC execution use an explicit gate command with `--execute`.
-
-For demo/showcase visual quality, run the full-profile visual QC gate:
-
-```bash
-node bin/vf gate demo-visual-qc --profile full
-```
-
-Current full-profile QC measures 씬 콘텐츠 29행 + 모션 88쌍 + 이미지 행 + supervisor 4 checks. Then inspect snapshot grids or rendered frames manually. The viewer standard is stricter than gate pass: no static holds, generated images must appear in-frame, small labels must remain readable, and contrast must pass the runtime `contrast >= 3` or central-edge rule at mobile feed size.
-
-No-narration demos may rely on a project BGM file at `assets/audio/bgm.mp3`; the compiler wires that file automatically when any scene requests OST. Scenes with empty narration and no timed words emit no subtitle container.
 
 ## Studio Edit Loop
-
-Start Studio with:
 
 ```bash
 node bin/vf studio <projectDir> --port <port>
 ```
 
-Guide edits by impact class:
+- `E1` presentation-field edits (headline, mood, altText, subtitleMode): save, recompile, preview.
+- `E2` `narration_tts` changes: re-run TTS for affected scenes, then full compile (global timing shifts).
+- `E3` scene order/insert/delete/transition changes: full compile and final render.
+- Fragment edits (`scenes-src/*.html`) recompile like `E1` but re-run the strip QC for that scene.
 
-- `E1`: presentation fields such as headline, layout, mood, reveal, altText, image prompt, or subtitle mode. Save `scene_specs.json`, recompile, preview.
-- `E2`: `narration_tts` changes. Re-run TTS for affected scenes, then full compile because global timing can shift.
-- `E3`: scene order, insertion, deletion, or transition changes. Full compile and final render.
+Preview is for local checks; final quality comes from the full render path.
 
-Warn users that preview is for local visual checks; final export quality comes from the full render path.
+## Hard prohibitions
+
+- Do not author per-scene `duration` fields — timing derives from audio metadata only.
+- Do not edit generated HTML under `build/` as source; fragments in `scenes-src/` are the source.
+- Do not add unknown keys to `scene_specs.json` — contracts are closed.
+- Do not edit schemas as part of video authoring.
+- Do not put motion, chrome, or scrims in `scene_specs` — free-scene motion lives only in
+  its fragment; timing, subtitles, transitions, tokens, and lint stay engine-owned.
+
+## Appendix — optional data blocks
+
+Eight legacy data-block layouts (`bar`, `pie`, `line`, `list`, `numbered`, `statistic`,
+`compare`, `quote`) remain available as an **optional library** for a scene carrying real
+quantitative data (they render full-bleed, no card chrome; `values`+`unit` required for
+`bar`/`pie`/`line`/`statistic`). Default is zero block scenes per video; use one only when
+authoring the same data moment as a free fragment is clearly worse. `headline_only` remains
+schema-valid for bare title cards. The eight-block golden fixture
+(`fixtures/golden-specs/full-8types/`) is a compile smoke path, not a video-authoring model.
 
 ## References
 
-- Read `references/scene-authoring.md` when authoring or repairing `scene_specs.json`.
-- Read `references/design-direction.md` before choosing a preset, motion strength, reveal palette, or scene emphasis.
-- Read `references/codex-runner.md` for batch jobs, parallel brief-to-spec production, or real image runner handoff.
+- `references/scene-authoring.md` — fragment contract details and manifest field reference.
+- `references/design-direction.md` — preset selection tree, free-scene motion grammar, mood escalation.
+- `references/codex-runner.md` — batch jobs, parallel scene-swarm production, image runner handoff.
