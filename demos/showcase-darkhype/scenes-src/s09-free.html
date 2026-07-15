@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>showcase s09 — hype interstitial</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s09-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          font-family: "Pretendard", system-ui, sans-serif;
+          color: var(--rf-text, #ffffff);
+        }
+        .free-s09-rootbox .f9-line {
+          position: absolute;
+          left: 6%;
+          font-size: 176px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1.02;
+          word-break: keep-all;
+        }
+        .free-s09-rootbox .f9-line1 { top: 26%; }
+        .free-s09-rootbox .f9-line2 { top: 44%; }
+        .free-s09-rootbox .f9-line2 .f9-accent {
+          color: var(--rf-accent, #ff48a0);
+          text-shadow: var(--rf-glow, none);
+        }
+        .free-s09-rootbox .f9-count {
+          position: absolute;
+          right: 5%;
+          top: 18%;
+          font-size: 460px;
+          font-weight: 800;
+          letter-spacing: -0.05em;
+          line-height: 1;
+          color: transparent;
+          -webkit-text-stroke: 2px var(--rf-accent, #ff48a0);
+          opacity: 0.55;
+          font-variant-numeric: tabular-nums;
+        }
+        .free-s09-rootbox .f9-tags {
+          position: absolute;
+          left: 6.1%;
+          bottom: 16%;
+          display: flex;
+          gap: 18px;
+          font-size: 26px;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          color: var(--rf-ink-subtle, #8a8f98);
+        }
+        .free-s09-rootbox .f9-tags span {
+          border: 1px solid var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          padding: 8px 18px;
+        }
+        @keyframes f9-living {
+          from { filter: brightness(1); opacity: 0.55; }
+          to { filter: brightness(1.35); opacity: 0.75; }
+        }
+        .free-s09-rootbox .f9-count {
+          animation: f9-living 1.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        @keyframes f9-living-accent {
+          from { filter: brightness(1); }
+          to { filter: brightness(1.22); }
+        }
+        .free-s09-rootbox .f9-line2 {
+          animation: f9-living-accent 1.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s09-rootbox" data-composition-id="free-s09">
+        <div class="f9-line f9-line1">블록 8종.</div>
+        <div class="f9-line f9-line2"><span class="f9-accent">전부 시각화다.</span></div>
+        <div class="f9-count">8</div>
+        <div class="f9-tags">
+          <span>bar</span><span>line</span><span>pie</span><span>stat</span>
+          <span>list</span><span>steps</span><span>vs</span><span>quote</span>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s09"]');
+          if (!root) return;
+          const l1 = root.querySelector(".f9-line1");
+          const l2 = root.querySelector(".f9-line2");
+          const count = root.querySelector(".f9-count");
+          const tags = Array.from(root.querySelectorAll(".f9-tags span"));
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          tl.set([l1, l2, count], { opacity: 0 })
+            .set(tags, { opacity: 0, y: 14 })
+            .fromTo(l1, { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.32, ease: "power3.out" }, 0)
+            .fromTo(l2, { opacity: 0, x: -70 }, { opacity: 1, x: 0, duration: 0.32, ease: "power3.out" }, 0.12)
+            .fromTo(count, { opacity: 0, scale: 1.25 }, { opacity: 0.55, scale: 1, duration: 0.4, ease: "expo.out" }, 0.2)
+            .to(tags, { opacity: 1, y: 0, duration: 0.28, ease: "power2.out", stagger: 0.05 }, 0.42);
+          tl.seek(0);
+          window.__timelines["free-s09"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

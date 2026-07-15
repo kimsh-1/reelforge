@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>showcase s10 — CTA</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s10-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          font-family: "Pretendard", system-ui, sans-serif;
+          color: var(--rf-text, #ffffff);
+          text-align: center;
+        }
+        .free-s10-rootbox .f10-stack {
+          position: absolute;
+          left: 50%;
+          top: 38%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+        }
+        .free-s10-rootbox .f10-hero {
+          font-size: 150px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+          line-height: 1.06;
+          word-break: keep-all;
+        }
+        .free-s10-rootbox .f10-hero .f10-green {
+          color: var(--rf-success, #3fb950);
+          text-shadow: var(--rf-glow, none);
+        }
+        .free-s10-rootbox .f10-repo {
+          position: absolute;
+          left: 50%;
+          top: 62%;
+          transform: translateX(-50%);
+          font-family: ui-monospace, "JetBrains Mono", monospace;
+          font-size: 40px;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          color: var(--rf-muted-text, #8a8f98);
+        }
+        .free-s10-rootbox .f10-underline {
+          position: absolute;
+          left: 50%;
+          top: 70%;
+          transform: translateX(-50%);
+          width: 520px;
+          height: 2px;
+          background: var(--rf-success, #3fb950);
+          transform-origin: center;
+        }
+        @keyframes f10-living {
+          from { filter: brightness(1); }
+          to { filter: brightness(1.25); }
+        }
+        .free-s10-rootbox .f10-hero {
+          animation: f10-living 1.5s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s10-rootbox" data-composition-id="free-s10">
+        <div class="f10-stack">
+          <div class="f10-hero">AI 영상 자동화,<br /><span class="f10-green">ReelForge.</span></div>
+        </div>
+        <div class="f10-repo">github.com/kimsh-1/reelforge</div>
+        <div class="f10-underline"></div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s10"]');
+          if (!root) return;
+          const hero = root.querySelector(".f10-hero");
+          const repo = root.querySelector(".f10-repo");
+          const line = root.querySelector(".f10-underline");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+          tl.set([hero, repo], { opacity: 0 })
+            .set(line, { scaleX: 0 })
+            .fromTo(hero, { opacity: 0, y: 46, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "power3.out" }, 0)
+            .to(repo, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.3)
+            .to(line, { scaleX: 1, duration: 0.45, ease: "expo.out" }, 0.4);
+          tl.seek(0);
+          window.__timelines["free-s10"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

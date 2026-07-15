@@ -11,7 +11,7 @@ For production work, follow **Brief Interview -> Authoring Workflow -> Pipeline 
 
 ## Quick Start
 
-1. Create or choose a project directory under an ext4 path and seed it from the full eight-layout fixture:
+1. For a data-block smoke path, create or choose a project directory under an ext4 path and seed it from the eight-block fixture:
 
 ```bash
 PROJECT_DIR=~/reelforge-full8
@@ -19,7 +19,7 @@ mkdir -p "$PROJECT_DIR"
 cp fixtures/golden-specs/full-8types/scene_specs.json "$PROJECT_DIR/scene_specs.json"
 ```
 
-2. Treat `fixtures/golden-specs/full-8types/scene_specs.json` as the quickest complete example of all eight primary scene layouts: `bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, `quote`.
+2. Treat `fixtures/golden-specs/full-8types/scene_specs.json` as the quickest complete example of the eight data-block layouts: `bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, `quote`. It is a fixture smoke path, not the default for video authoring.
 3. Validate `scene_specs.json` through the write path:
 
 ```bash
@@ -79,12 +79,20 @@ Work in this order; do not jump straight from brief to JSON:
 1. **Copy polish**: rewrite all on-screen copy with a gn-voice-style pass before visual authoring. No empty placeholders, raw English labels, fixture text, or dummy copy. Target sellable Korean headlines of 12 characters or fewer; prefer concrete nouns, numbers, contrast, and a payoff. Good model lines: `한 줄만 던져`, `빈 칸만 되묻기`, `누르면 렌더`, `키도 0, 돈도 0`, `말 대신 렌더`.
 2. **Design selection**: choose one preset from the 비디오 전용 16종 카탈로그 + fixture/demo 변형 3종(총 19파일), then keep it stable for the project. Read `references/design-direction.md` for the brief-type selection tree and consult `docs/design-presets.md` for the full preset catalog and contrast constraints. Do not invent a custom look when a catalog preset fits.
 3. **Step 1 content**: produce the narrative arc, scene count, `sceneId`, `sceneNumber`, polished `headline`, `narration`, `narration_tts`, `items`, `values`, `unit`, and `source`.
-4. **Step 2 visuals**: assign `layout`, `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, authored `altText`, and `transitions`.
+4. **Step 2 visuals**: default every scene to `layout: "free"` and author its project-relative `sourceHtml` fragment; then assign `mood`, `reveal`, `emphasis`, `visual_kind`, optional `imageAsset`, `kenBurns`, `subtitleMode`, authored `altText`, and `transitions`. Choose a data block only when real quantitative data needs a structured presentation.
 5. **Viewer QC**: after render, run machine checks and inspect frames as a viewer. Reject if any 1.5s stretch feels frozen, generated images are absent from the actual frame, headline contrast is weak, or the first three seconds would not stop a feed scroll.
 
 Every scene must include authored `altText`. Do not infer it from narration and do not leave it for a later pass.
 
 Primary layout selection:
+
+Default to `layout: "free"` with `sourceHtml: "<project-relative .html path>"` for every scene. This is the full-bleed motion-graphic path for kinetic typography, image-plus-motion, and promo-grade scenes. The compiler copies the fragment to `build/blocks/free/<sceneId>.html` with transport inlining and runtime-ready injection, then mounts it as a track-3 sub-composition; timing, subtitles, transitions, `--rf-*` token injection, Ken Burns, and render-lint remain engine-owned.
+
+Author a free fragment to the BLOCK fragment contract: a full HTML document whose `<body>` contains a `<template>` with `<style>`, one root element carrying `data-composition-id`, and a `<script>`. That script must synchronously register exactly one `gsap.timeline({paused:true})` at `window.__timelines["<that id>"]` and end with `tl.seek(0)`; make the ID unique per scene, preferably `free-<sceneId>`.
+
+Consume preset colors in free fragments through `var(--rf-*)` with fallbacks: `--rf-text`, `--rf-muted-text`, `--rf-accent`, `--rf-bg`, `--rf-surface-2`, `--rf-surface-3`, `--rf-hairline`, `--rf-hairline-strong`, `--rf-ink-subtle`, `--rf-ink-tertiary`, `--rf-accent-alt`, `--rf-on-accent`, and `--rf-success`. Keep living motion to CSS keyframes using `infinite alternate`, `calc(var(--rf-scene-start, 0s) + 1.2s)`, and `filter` or `opacity` only.
+
+Use one of the eight blocks as a recommended option only when the scene carries real quantitative data that benefits from a structured data view:
 
 - `bar`: compare ranked quantities.
 - `pie`: show part-to-whole shares that sum cleanly.
@@ -95,7 +103,7 @@ Primary layout selection:
 - `compare`: show before/after, A/B, old/new, or tradeoffs.
 - `quote`: show a cited phrase, user voice, testimonial, or insight.
 
-`headline_only` is schema-valid for title or closing cards, but prefer the eight primary layouts when the scene carries substantive content.
+`headline_only` is schema-valid for title or closing cards. If a free scene omits `sourceHtml`, its file is missing, or its fragment has no `data-composition-id`, compilation warns with `free-missing-source`, `free-missing`, or `free-invalid` respectively and degrades it to `headline_only`.
 
 ## Contract Rules
 
@@ -103,6 +111,7 @@ Primary layout selection:
 
 - Root: `version`, `projectId`, `scenes`, `transitions`.
 - Each scene: `sceneId`, `sceneNumber`, `narration`, `narration_tts`, `altText`, `layout`, `mood`, `reveal`, `emphasis`, `headline`, `items`, `source`, `visual_kind`, `kenBurns`, `subtitleMode`.
+- `sourceHtml` is required if and only if `layout` is `free`; use a project-relative `.html` path and omit it for every other layout.
 - `values` and `unit` are required only for `bar`, `pie`, `line`, and `statistic`; other layouts may include them only when the visible copy needs them.
 - Scene IDs: stable `s01`, `s02`, ... keys. Do not reuse an ID for a different scene.
 - Transitions: edges only, `transitions[]{from,to,type,duration}`.
@@ -115,13 +124,14 @@ Hard prohibitions:
 - Do not use extra fields. Contracts are closed and reject unknown keys.
 - Do not make `mood.speed` or visual pacing imply audio duration changes.
 - Do not edit schemas as part of video authoring.
-- Do not author per-scene motion timelines, mood badges, chrome, or scrim overlays in `scene_specs`. The renderer blocks already own the three-stage motion: entrance, living/develop motion, and exit/hand-off. For living motion itself, authors choose only `mood` and `reveal`; use `layout`, `emphasis`, image fields, and transitions only for content structure and scene wiring.
+- Do not author per-scene motion timelines, mood badges, chrome, or scrim overlays in `scene_specs`. Block scenes retain the renderer-owned three-stage motion: entrance, living/develop motion, and exit/hand-off. Author free-scene motion only in its `sourceHtml` fragment; timing, subtitles, transitions, tokens, Ken Burns, and lint stay engine-owned.
+- Do not use `fetch()`, `Math.random()`, `Date.now()`, or `performance.now()` in any block or free composition HTML. Render-lint rejects them, along with non-paused timelines, because deterministic seek renders cannot depend on network or wall-clock state.
 
 Use `narration_tts` to control speech. Keep `narration` as display/editor copy when different. For Korean TTS, spell out symbols and compact numbers when needed: `37%` -> `삼십칠 퍼센트`, `184ms` -> `백팔십사 밀리초`.
 
 Estimate scene duration only as an authoring sense check: one short Korean sentence is usually a compact scene; two clauses are medium; three or more clauses should usually split. Never persist that estimate as a scene field.
 
-For image scenes, set `visual_kind`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText` so the asset is actually used. Image scrims are automatically applied by image-aware blocks; do not add extra schema fields or hand-edit HTML to darken images.
+For image scenes, set `visual_kind`, `imageAsset.prompt`, `imageAsset.placement`, `kenBurns`, and `altText` so the asset is actually used. Image scrims are automatically applied by image-aware blocks; free fragments should use the injected `--rf-*` tokens and must not add extra schema fields or hand-edit generated HTML.
 
 ## Pipeline And Gate
 

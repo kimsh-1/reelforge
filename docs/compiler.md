@@ -46,7 +46,7 @@ Scene `startFrame` is the cumulative sum of prior scene `durationFrames`. Transi
 
 ## Block Interface
 
-`headline_only` is implemented natively. Other layouts (`bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, `quote`) delegate to:
+`headline_only` is implemented natively. For scenes with real quantitative data, the optional data layouts (`bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, `quote`) delegate to:
 
 ```text
 blocks/<layout>/block.html
@@ -78,6 +78,26 @@ Block HTML contract:
 - Create exactly one synchronous `gsap.timeline({ paused: true })`.
 - Do not include `<audio>` or `<video>` inside the block; media belongs to `index.html`.
 - Treat variables as read-only initialization data from `window.__hyperframes.getVariables()`.
+
+## Free Scene Interface
+
+Free scenes are the default scene idiom for full-bleed motion-graphic authorship: kinetic typography, image-plus-motion, and promo-grade energy. Declare one with `layout: "free"` and a project-relative `sourceHtml` path. The schema requires `sourceHtml` if and only if the layout is `free`.
+
+```json
+{
+  "sceneId": "s01",
+  "layout": "free",
+  "sourceHtml": "scenes-src/s01-free.html"
+}
+```
+
+The authored source is a full HTML document. Its `<body>` contains a `<template>` with a `<style>`, exactly one root element carrying `data-composition-id`, and a `<script>`. The script must synchronously create exactly one `gsap.timeline({ paused: true })`, register it at `window.__timelines["<composition id>"]`, and finish with `tl.seek(0)`. The composition id must be unique per scene; `free-<sceneId>` is recommended.
+
+The compiler copies the fragment to `build/blocks/free/<sceneId>.html`, using the same transport inlining and runtime-ready injection as block fragments, and mounts it as a sub-composition on track 3 of the generated scene wrapper. The engine continues to own timing, subtitles, transitions, `--rf-*` token injection, Ken Burns, and render lint.
+
+If a free scene has no `sourceHtml`, its source file is not found, or the fragment has no `data-composition-id`, compilation emits `free-missing-source`, `free-missing`, or `free-invalid`, respectively, and degrades to `headline_only`.
+
+Author free fragments with preset-color variables and fallbacks: `--rf-text`, `--rf-muted-text`, `--rf-accent`, `--rf-bg`, `--rf-surface-2`, `--rf-surface-3`, `--rf-hairline`, `--rf-hairline-strong`, `--rf-ink-subtle`, `--rf-ink-tertiary`, `--rf-accent-alt`, `--rf-on-accent`, and `--rf-success`. For living motion, use CSS keyframes with `infinite alternate`, a `calc(var(--rf-scene-start, 0s) + 1.2s)` delay, and `filter` or `opacity` only.
 
 ## Subtitle Interface
 
@@ -153,3 +173,4 @@ Compilation ends by running `hyperframes lint` plus ReelForge checks:
 - Scene `#root` must not depend on a root class selector.
 - Inline `fetch()` is forbidden.
 - Every `gsap.timeline()` must be `paused: true`.
+- Render lint rejects `Math.random()`, `Date.now()`, and `performance.now()` in all composition HTML, including copied block and free fragments, because wall-clock or random calls break deterministic seek renders.

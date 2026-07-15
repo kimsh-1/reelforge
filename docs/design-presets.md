@@ -79,3 +79,23 @@ Use `broadcast-news` and `data-journal` for information hierarchy, lower thirds,
 Use `cinematic-trailer`, `mono-impact`, or `wrapped-bold` when the first-screen job is impact: trailer hits, monochrome campaign rhythm, or social-stat card energy.
 
 Use `k-variety` and `k-broadcast` for Korean-language caption systems, where subtitle stroke, line length, color semantics, and tabular count/readability rules are part of the style contract.
+
+## Extended craft color keys (2026-07 block surgery)
+
+Beyond the base `colors` roles, the compiler injects these **optional** preset keys as CSS
+variables when present (`src/compiler/compiler.mjs` `blockFrameStyle()`). Blocks consume them
+with `var(--rf-*, <fallback>)`, so presets that omit them stay fully valid:
+
+| Preset key | CSS variable | Role |
+|---|---|---|
+| `background` | `--rf-bg` | scene canvas (near-black/near-white, never pure #000/#fff) |
+| `surface2` / `surface3` | `--rf-surface-2/-3` | dark surface ladder steps (adjacent delta >= 8) |
+| `hairline` / `hairlineStrong` | `--rf-hairline(-strong)` | 1px structural borders — the only allowed "frame" |
+| `inkSubtle` / `inkTertiary` | `--rf-ink-subtle/-tertiary` | secondary/tertiary text below `mutedText` |
+| `accentAlt` | `--rf-accent-alt` | hover/glow companion to `accent` |
+| `onAccent` (or `onPrimary`) | `--rf-on-accent` | text on accent fills |
+| `success` | `--rf-success` | earned/true/zero-cost beats — keep scarce |
+
+`mutedText` now feeds `--rf-muted-text` through the same contrast guard as `text`
+(previously it was erroneously injected as a copy of `text`). Reference implementation of the
+full key set: `fixtures/presets/linear.json` and `fixtures/presets/dark-hype.json`.

@@ -13,14 +13,12 @@ Each scene is closed-schema and must use only contract fields:
   "narration": "사용자에게 보일 수 있는 문장입니다.",
   "narration_tts": "티 티 에스가 읽을 문장입니다.",
   "altText": "장면의 핵심 시각 정보를 설명한다.",
-  "layout": "statistic",
+  "layout": "free",
+  "sourceHtml": "scenes/s01.html",
   "mood": "informative",
   "reveal": "count_up",
   "emphasis": "number",
   "headline": "핵심 수치",
-  "items": ["평균 응답 시간", "목표 대비 개선"],
-  "values": [184, 16],
-  "unit": "ms",
   "source": "brief:user",
   "visual_kind": "none",
   "kenBurns": {
@@ -35,7 +33,64 @@ Each scene is closed-schema and must use only contract fields:
 
 Never add `duration` to a scene. Only transition edges own `duration`.
 
-## Items And Values
+## Free Scene Authoring Contract
+
+`free` is the default scene idiom for ReelForge video generation: author a full-bleed motion graphic when the beat needs kinetic type, image-led motion, or promo-grade energy. The eight data blocks remain a recommended option when a scene carries real quantitative data.
+
+Declare `layout: "free"` and a project-relative `sourceHtml` path. `sourceHtml` is required if and only if the layout is `free`. A free scene has no `items`/`values` content contract: the authored fragment owns all visible content.
+
+The source file is a full HTML document whose `<body>` contains one `<template>` wrapper. The template contains a `<style>`, one root element with a scene-unique `data-composition-id` (recommend `free-<sceneId>`), and a `<script>`. Build exactly one synchronous paused GSAP timeline, register it at `window.__timelines["<that id>"]`, and end with `tl.seek(0)`:
+
+```html
+<!doctype html>
+<html lang="en">
+  <body>
+    <template>
+      <style>
+        .free-s01 {
+          color: var(--rf-text, #f8f7f2);
+          background: var(--rf-bg, #111216);
+        }
+      </style>
+      <main class="free-s01" data-composition-id="free-s01">
+        <!-- The free scene author owns all scene content. -->
+      </main>
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        // Add seek-safe animation synchronously.
+        window.__timelines["free-s01"] = tl;
+        tl.seek(0);
+      </script>
+    </template>
+  </body>
+</html>
+```
+
+Consume preset colors with `var(--rf-*)` and a local fallback rather than hardcoding a preset. Available tokens are `--rf-text`, `--rf-muted-text`, `--rf-accent`, `--rf-bg`, `--rf-surface-2`, `--rf-surface-3`, `--rf-hairline`, `--rf-hairline-strong`, `--rf-ink-subtle`, `--rf-ink-tertiary`, `--rf-accent-alt`, `--rf-on-accent`, and `--rf-success`.
+
+For living motion, use CSS keyframes with `infinite alternate`, delay them with `calc(var(--rf-scene-start, 0s) + 1.2s)`, and animate only `filter` and `opacity`:
+
+```css
+@keyframes free-breathe {
+  from { opacity: 0.72; filter: brightness(0.92); }
+  to { opacity: 1; filter: brightness(1.08); }
+}
+
+.free-s01 .glow {
+  animation: free-breathe 2.4s ease-in-out infinite alternate;
+  animation-delay: calc(var(--rf-scene-start, 0s) + 1.2s);
+}
+```
+
+Render lint applies to every composition HTML file, including free fragments. Do not use `Math.random()`, `Date.now()`, `performance.now()`, or `fetch()`; they break deterministic seek renders or violate the runtime contract.
+
+The compiler copies a valid fragment to `build/blocks/free/<sceneId>.html`, performs transport inlining and runtime-ready injection, and mounts it as a sub-composition on track 3 of the generated scene wrapper. Scene timing, subtitles, transitions, `--rf-*` token injection, Ken Burns, and render lint remain engine-owned, exactly as they do for block scenes. `narration_tts` and `audio_meta` still determine scene duration; use mock silence when a music-only free scene needs duration without narration.
+
+If `sourceHtml` is missing, unavailable, or has no `data-composition-id`, compilation emits `free-missing-source`, `free-missing`, or `free-invalid` respectively and degrades the scene to `headline_only`.
+
+## Block Items And Values
+
+This table applies to data blocks only, not to `free` scenes.
 
 | Layout | Use for | `items` | `values` | Notes |
 |---|---|---|---|---|
