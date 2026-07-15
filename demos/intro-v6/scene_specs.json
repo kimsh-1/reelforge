@@ -1,0 +1,235 @@
+{
+  "version": "1.0.0",
+  "projectId": "intro-v6",
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "sceneNumber": 1,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s01-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "네 단어가 비트마다 슬램되고 며칠에 마젠타 취소선이 그어진다",
+      "mood": "urgent",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "편집 · 자막 · 렌더 · 며칠",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword",
+      "ost": 1
+    },
+    {
+      "sceneId": "s02",
+      "sceneNumber": 2,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s02-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "딸깍이 글리치 디코드로 꽂히고 마침표가 펀치로 착지한다",
+      "mood": "dramatic",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "딸깍, 영상 끝.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s03",
+      "sceneNumber": 3,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s03-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "며칠이 붕괴하고 몇 분이 확대되는 스케일 시소와 화살표 드로우온",
+      "mood": "informative",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "며칠 → 몇 분",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s04",
+      "sceneNumber": 4,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s04-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "커서가 한 줄을 타이핑하면 글자가 무대 조명처럼 공간을 밝힌다",
+      "mood": "dramatic",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "한 줄만 던져.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s05",
+      "sceneNumber": 5,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s05-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "프리셋 팔레트 스와치들이 비트마다 배경을 리컬러하는 마젠타 스트로브",
+      "mood": "urgent",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "컨셉? 다 돼.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s06",
+      "sceneNumber": 6,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s06-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "거대한 0 두 개가 시안 링 게이지로 착지한다",
+      "mood": "suspense",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "키 0, 돈 0.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s07",
+      "sceneNumber": 7,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s07-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "파일트리와 워커 라벨이 점등되며 산출물임을 고백한다",
+      "mood": "contemplative",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "이 영상도, 이 스킬로.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    },
+    {
+      "sceneId": "s08",
+      "sceneNumber": 8,
+      "layout": "free",
+      "sourceHtml": "scenes-src/s08-free.html",
+      "narration": " ",
+      "narration_tts": " ",
+      "altText": "그린 CTA 락업과 레포 주소, 언더라인 드로우",
+      "mood": "triumphant",
+      "reveal": "build_up",
+      "emphasis": "keyword",
+      "headline": "AI 영상 자동화, 이거 쓰세요.",
+      "items": [],
+      "source": "ReelForge",
+      "visual_kind": "none",
+      "kenBurns": {
+        "enabled": false,
+        "zoomFactor": 1.0,
+        "zoomDirection": "in",
+        "panDirection": "right"
+      },
+      "subtitleMode": "keyword"
+    }
+  ],
+  "transitions": [
+    {
+      "from": "s01",
+      "to": "s02",
+      "type": "cut",
+      "duration": 0.0
+    },
+    {
+      "from": "s02",
+      "to": "s03",
+      "type": "zoom-punch",
+      "duration": 0.25
+    },
+    {
+      "from": "s03",
+      "to": "s04",
+      "type": "cut",
+      "duration": 0.0
+    },
+    {
+      "from": "s04",
+      "to": "s05",
+      "type": "fade",
+      "duration": 0.2
+    },
+    {
+      "from": "s05",
+      "to": "s06",
+      "type": "flash-cut",
+      "duration": 0.15
+    },
+    {
+      "from": "s06",
+      "to": "s07",
+      "type": "crossfade",
+      "duration": 0.2
+    },
+    {
+      "from": "s07",
+      "to": "s08",
+      "type": "fade",
+      "duration": 0.25
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s01 — pain</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s01-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #08080b);
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s01-rootbox .s1-stage {
+          position: absolute;
+          inset: 0;
+          will-change: transform;
+        }
+        .free-s01-rootbox .s1-kicker {
+          position: absolute;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+        }
+        .free-s01-rootbox .s1-copy {
+          position: absolute;
+          top: 18.5%;
+          left: 8.2%;
+          display: flex;
+          flex-direction: column;
+          gap: 0;
+          font-size: clamp(140px, 9.2vw, 176px);
+          font-weight: 800;
+          letter-spacing: -0.065em;
+          line-height: 0.98;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s01-rootbox .s1-word {
+          position: relative;
+          width: max-content;
+          will-change: transform, opacity;
+        }
+        .free-s01-rootbox .s1-word::after {
+          content: "·";
+          position: absolute;
+          right: -0.48em;
+          bottom: 0.06em;
+          color: var(--rf-hairline-strong, rgba(255, 255, 255, 0.36));
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.33em;
+          font-weight: 400;
+          letter-spacing: 0;
+        }
+        .free-s01-rootbox .s1-word--days {
+          margin-top: 0.04em;
+          color: var(--rf-text, #ffffff);
+        }
+        .free-s01-rootbox .s1-word--days::after {
+          display: none;
+        }
+        .free-s01-rootbox .s1-strike {
+          position: absolute;
+          left: -0.03em;
+          right: -0.09em;
+          top: 51%;
+          height: 0.09em;
+          background: var(--rf-accent, #ff48a0);
+          box-shadow: 0 0 0.14em var(--rf-accent, #ff48a0);
+          transform: scaleX(0);
+          transform-origin: left center;
+          will-change: transform;
+        }
+        .free-s01-rootbox .s1-ghost {
+          position: absolute;
+          top: 13.5%;
+          right: 7.2%;
+          color: transparent;
+          -webkit-text-stroke: 2px var(--rf-hairline-strong, rgba(255, 255, 255, 0.18));
+          font-size: clamp(320px, 25.5vw, 490px);
+          font-weight: 800;
+          letter-spacing: -0.09em;
+          line-height: 0.8;
+          opacity: 0.48;
+          pointer-events: none;
+          white-space: nowrap;
+          will-change: filter, opacity;
+        }
+        .free-s01-rootbox .s1-running {
+          position: absolute;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+        }
+        .free-s01-rootbox .s1-running::before {
+          content: "";
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+        }
+        @keyframes s1-days-breathe {
+          from { filter: brightness(1); opacity: 1; }
+          to { filter: brightness(1.38); opacity: 0.82; }
+        }
+        @keyframes s1-ghost-breathe {
+          from { filter: brightness(1); }
+          to { filter: brightness(1.38); }
+        }
+        .free-s01-rootbox .s1-word--days {
+          animation: s1-days-breathe 1.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s01-rootbox .s1-ghost {
+          animation: s1-ghost-breathe 1.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s01-rootbox" data-composition-id="free-s01">
+        <div class="s1-stage">
+          <div class="s1-kicker">REELFORGE / s01</div>
+          <div class="s1-copy" aria-label="편집 · 자막 · 렌더 · 며칠">
+            <div class="s1-word">편집</div>
+            <div class="s1-word">자막</div>
+            <div class="s1-word">렌더</div>
+            <div class="s1-word s1-word--days">며칠<span class="s1-strike" aria-hidden="true"></span></div>
+          </div>
+          <div class="s1-ghost" aria-hidden="true">72h</div>
+          <div class="s1-running">PAIN / 01</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s01"]');
+          if (!root) return;
+          const stage = root.querySelector(".s1-stage");
+          const words = Array.from(root.querySelectorAll(".s1-word"));
+          const strike = root.querySelector(".s1-strike");
+          const ghost = root.querySelector(".s1-ghost");
+          const kicker = root.querySelector(".s1-kicker");
+          const running = root.querySelector(".s1-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          tl.set([words, kicker, running, ghost], { opacity: 0 })
+            .set(words, { x: -76, scale: 0.92, transformOrigin: "left center" })
+            .set(strike, { scaleX: 0, transformOrigin: "left center" })
+            .fromTo(kicker, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .to(words[0], { opacity: 1, x: 0, scale: 1, duration: 0.25, ease: "power3.out" }, 0.15)
+            .to(ghost, { opacity: 0.48, duration: 0.25, ease: "power3.out" }, 0.7)
+            .to(words[1], { opacity: 1, x: 0, scale: 1, duration: 0.25, ease: "power3.out" }, 0.7)
+            .to(words[2], { opacity: 1, x: 0, scale: 1, duration: 0.25, ease: "power3.out" }, 1.25)
+            .to(words[3], { opacity: 1, x: 0, scale: 1, duration: 0.25, ease: "power3.out" }, 1.8)
+            .to(strike, { scaleX: 1, duration: 0.18, ease: "power3.out" }, 2.03)
+            .to(stage, { x: -13, y: 7, duration: 0.035, ease: "none" }, 2.03)
+            .to(stage, { x: 11, y: -6, duration: 0.04, ease: "none" }, 2.065)
+            .to(stage, { x: -8, y: 4, duration: 0.04, ease: "none" }, 2.105)
+            .to(stage, { x: 5, y: -3, duration: 0.04, ease: "none" }, 2.145)
+            .to(stage, { x: 0, y: 0, duration: 0.07, ease: "power2.out" }, 2.185);
+
+          window.__timelines["free-s01"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

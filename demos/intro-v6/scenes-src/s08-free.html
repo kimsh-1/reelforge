@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s08 — CTA lockup</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s08-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg);
+          color: var(--rf-text);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s08-rootbox .s8-stage {
+          position: absolute;
+          inset: 0;
+          isolation: isolate;
+        }
+        .free-s08-rootbox .s8-kicker {
+          position: absolute;
+          z-index: 2;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+          white-space: nowrap;
+        }
+        .free-s08-rootbox .s8-rail {
+          position: absolute;
+          z-index: 1;
+          right: 7.3%;
+          top: 12.8%;
+          bottom: 12.8%;
+          width: 1px;
+          background: var(--rf-hairline);
+          transform-origin: center top;
+          will-change: transform, opacity;
+        }
+        .free-s08-rootbox .s8-rail::before,
+        .free-s08-rootbox .s8-rail::after {
+          content: "";
+          position: absolute;
+          right: 0;
+          width: 235px;
+          height: 1px;
+          background: var(--rf-hairline);
+        }
+        .free-s08-rootbox .s8-rail::before {
+          top: 0;
+        }
+        .free-s08-rootbox .s8-rail::after {
+          bottom: 0;
+        }
+        .free-s08-rootbox .s8-ghost {
+          position: absolute;
+          right: 8.4%;
+          top: 12.4%;
+          z-index: 0;
+          color: var(--rf-bg);
+          font-size: clamp(510px, 40vw, 770px);
+          font-weight: 800;
+          letter-spacing: -0.12em;
+          line-height: 0.8;
+          -webkit-text-stroke: 2px var(--rf-hairline-strong);
+          text-rendering: geometricPrecision;
+          will-change: transform, opacity, filter;
+          animation: s8-ghost-breathe 1.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s08-rootbox .s8-copy {
+          position: absolute;
+          top: 25.4%;
+          left: 7.8%;
+          z-index: 1;
+          font-size: clamp(122px, 9.3vw, 179px);
+          font-weight: 800;
+          letter-spacing: -0.065em;
+          line-height: 0.98;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s08-rootbox .s8-line {
+          position: relative;
+          width: max-content;
+          will-change: transform, opacity;
+        }
+        .free-s08-rootbox .s8-line--success {
+          margin-top: 0.04em;
+          color: var(--rf-success);
+        }
+        .free-s08-rootbox .s8-underline {
+          position: absolute;
+          left: 0.01em;
+          right: -0.04em;
+          bottom: -0.125em;
+          height: 0.062em;
+          background: var(--rf-success);
+          box-shadow: 0 0 0.16em var(--rf-success);
+          transform: scaleX(0);
+          transform-origin: left center;
+          will-change: transform, opacity;
+        }
+        .free-s08-rootbox .s8-url {
+          position: absolute;
+          z-index: 2;
+          left: 8.2%;
+          bottom: 16.2%;
+          color: var(--rf-muted-text);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: clamp(21px, 1.45vw, 28px);
+          font-weight: 700;
+          letter-spacing: -0.035em;
+          line-height: 1;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+        .free-s08-rootbox .s8-url::before {
+          content: "↗";
+          margin-right: 0.52em;
+          color: var(--rf-success);
+        }
+        .free-s08-rootbox .s8-running {
+          position: absolute;
+          z-index: 2;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+        .free-s08-rootbox .s8-running::before {
+          content: "";
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline);
+        }
+        @keyframes s8-ghost-breathe {
+          from {
+            filter: brightness(0.9) drop-shadow(0 0 0 var(--rf-success));
+            opacity: 0.16;
+          }
+          to {
+            filter: brightness(1.42) drop-shadow(0 0 22px var(--rf-success));
+            opacity: 0.29;
+          }
+        }
+      </style>
+      <div class="free-s08-rootbox" data-composition-id="free-s08">
+        <div class="s8-stage">
+          <div class="s8-kicker">REELFORGE / s08</div>
+          <div class="s8-rail" aria-hidden="true"></div>
+          <div class="s8-ghost" aria-hidden="true">R</div>
+          <div class="s8-copy" aria-label="AI 영상 자동화, 이거 쓰세요.">
+            <div class="s8-line">AI 영상 자동화,</div>
+            <div class="s8-line s8-line--success">이거 쓰세요.<span class="s8-underline" aria-hidden="true"></span></div>
+          </div>
+          <div class="s8-url">github.com/kimsh-1/reelforge</div>
+          <div class="s8-running">CTA LOCK / 08</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s08"]');
+          if (!root) return;
+          const kicker = root.querySelector(".s8-kicker");
+          const rail = root.querySelector(".s8-rail");
+          const ghost = root.querySelector(".s8-ghost");
+          const lines = Array.from(root.querySelectorAll(".s8-line"));
+          const underline = root.querySelector(".s8-underline");
+          const url = root.querySelector(".s8-url");
+          const running = root.querySelector(".s8-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({paused:true});
+
+          tl.set([kicker, rail, ghost, lines, underline, url, running], { opacity: 0 })
+            .set(rail, { scaleY: 0, transformOrigin: "center top" })
+            .set(underline, { scaleX: 0, transformOrigin: "left center" })
+            .fromTo(kicker, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .fromTo(rail, { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.32, ease: "power3.out" }, 0.02)
+            .fromTo(ghost, { opacity: 0, x: 84, rotation: 3 }, { opacity: 0.2, x: 0, rotation: 0, duration: 0.36, ease: "power3.out" }, 0.02)
+            .fromTo(lines, { opacity: 0, x: -68, y: 15 }, { opacity: 1, x: 0, y: 0, duration: 0.28, stagger: 0.06, ease: "power4.out" }, 0.04)
+            .to(underline, { opacity: 1, scaleX: 1, duration: 0.22, ease: "power3.out" }, 0.18)
+            .fromTo(url, { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.25, ease: "power3.out" }, 0.12)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 0.06);
+
+          window.__timelines["free-s08"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

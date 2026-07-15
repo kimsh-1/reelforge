@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s03 — speed</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s03-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #08080b);
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s03-rootbox .s3-stage {
+          position: absolute;
+          inset: 0;
+          will-change: transform;
+        }
+        .free-s03-rootbox .s3-kicker {
+          position: absolute;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+        }
+        .free-s03-rootbox .s3-ghost-hours {
+          position: absolute;
+          top: 13%;
+          left: -1.7%;
+          color: var(--rf-bg, #08080b);
+          font-size: clamp(310px, 27vw, 520px);
+          font-weight: 800;
+          letter-spacing: -0.1em;
+          line-height: 0.78;
+          -webkit-text-stroke: 1px var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          opacity: 0.58;
+          pointer-events: none;
+          user-select: none;
+        }
+        .free-s03-rootbox .s3-grid {
+          position: absolute;
+          top: 17.5%;
+          right: 7.6%;
+          bottom: 15.5%;
+          width: 43.6%;
+          background-image: linear-gradient(90deg, var(--rf-hairline, rgba(255, 255, 255, 0.14)) 1px, var(--rf-bg, #08080b) 1px);
+          background-size: 16.66% 100%;
+          border-top: 1px solid var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          border-bottom: 1px solid var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          opacity: 0.56;
+          pointer-events: none;
+        }
+        .free-s03-rootbox .s3-days {
+          position: absolute;
+          top: 29.5%;
+          left: 7.4%;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-size: clamp(190px, 16.6vw, 318px);
+          font-weight: 800;
+          letter-spacing: -0.09em;
+          line-height: 0.82;
+          white-space: nowrap;
+          word-break: keep-all;
+          will-change: transform, opacity;
+        }
+        .free-s03-rootbox .s3-days::after {
+          content: "72H";
+          display: block;
+          margin: 0.42em 0 0 0.18em;
+          color: var(--rf-ink-tertiary, #5b6069);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.12em;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          line-height: 1;
+        }
+        .free-s03-rootbox .s3-minutes {
+          position: absolute;
+          top: 29.5%;
+          left: 48.3%;
+          color: var(--rf-text, #ffffff);
+          font-size: clamp(202px, 18.1vw, 347px);
+          font-weight: 800;
+          letter-spacing: -0.105em;
+          line-height: 0.82;
+          white-space: nowrap;
+          word-break: keep-all;
+          text-shadow: 0 0 0.1em var(--rf-accent, #a98cff);
+          will-change: transform, opacity;
+        }
+        .free-s03-rootbox .s3-minutes .s3-unit {
+          display: block;
+          margin: 0.47em 0 0 0.29em;
+          color: var(--rf-accent, #a98cff);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.1em;
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          line-height: 1;
+        }
+        .free-s03-rootbox .s3-arrow {
+          position: absolute;
+          top: 51.5%;
+          left: 35.5%;
+          width: 26.4%;
+          height: 130px;
+          overflow: visible;
+          pointer-events: none;
+        }
+        .free-s03-rootbox .s3-arrow-path {
+          fill: none;
+          stroke: var(--rf-accent, #a98cff);
+          stroke-linecap: square;
+          stroke-width: 8;
+          filter: drop-shadow(0 0 10px var(--rf-accent, #a98cff));
+        }
+        .free-s03-rootbox .s3-arrow-tip {
+          fill: var(--rf-accent, #a98cff);
+          filter: drop-shadow(0 0 10px var(--rf-accent, #a98cff));
+        }
+        .free-s03-rootbox .s3-velocity {
+          position: absolute;
+          right: 6.1%;
+          top: 21.3%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 13px;
+          width: 21%;
+          pointer-events: none;
+        }
+        .free-s03-rootbox .s3-streak {
+          display: block;
+          height: 2px;
+          background: var(--rf-hairline-strong, rgba(255, 255, 255, 0.36));
+          transform-origin: right center;
+          will-change: transform, opacity;
+        }
+        .free-s03-rootbox .s3-streak:nth-child(1) { width: 100%; }
+        .free-s03-rootbox .s3-streak:nth-child(2) { width: 67%; }
+        .free-s03-rootbox .s3-streak:nth-child(3) { width: 35%; }
+        .free-s03-rootbox .s3-running {
+          position: absolute;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+        }
+        .free-s03-rootbox .s3-running::before {
+          content: "";
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+        }
+        @keyframes s3-speed-breathe {
+          from { filter: brightness(1); opacity: 0.92; }
+          to { filter: brightness(1.48); opacity: 1; }
+        }
+        @keyframes s3-grid-breathe {
+          from { filter: brightness(0.9); opacity: 0.36; }
+          to { filter: brightness(1.6); opacity: 0.72; }
+        }
+        .free-s03-rootbox .s3-minutes {
+          animation: s3-speed-breathe 1.05s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s03-rootbox .s3-grid {
+          animation: s3-grid-breathe 1.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s03-rootbox" data-composition-id="free-s03">
+        <div class="s3-stage">
+          <div class="s3-kicker">REELFORGE / s03</div>
+          <div class="s3-ghost-hours" aria-hidden="true">72</div>
+          <div class="s3-grid" aria-hidden="true"></div>
+          <div class="s3-days">며칠</div>
+          <svg class="s3-arrow" viewBox="0 0 520 130" aria-hidden="true">
+            <path class="s3-arrow-path" pathLength="1" d="M 10 66 H 461" />
+            <path class="s3-arrow-tip" d="M 450 30 L 510 66 L 450 102 Z" />
+          </svg>
+          <div class="s3-minutes">몇 분<span class="s3-unit">MINUTES, NOT DAYS</span></div>
+          <div class="s3-velocity" aria-hidden="true"><i class="s3-streak"></i><i class="s3-streak"></i><i class="s3-streak"></i></div>
+          <div class="s3-running">SPEED / 03</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s03"]');
+          if (!root) return;
+          const stage = root.querySelector(".s3-stage");
+          const kicker = root.querySelector(".s3-kicker");
+          const days = root.querySelector(".s3-days");
+          const minutes = root.querySelector(".s3-minutes");
+          const arrowPath = root.querySelector(".s3-arrow-path");
+          const arrowTip = root.querySelector(".s3-arrow-tip");
+          const ghost = root.querySelector(".s3-ghost-hours");
+          const grid = root.querySelector(".s3-grid");
+          const streaks = Array.from(root.querySelectorAll(".s3-streak"));
+          const running = root.querySelector(".s3-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          tl.set([kicker, running, grid], { opacity: 0 })
+            .set(days, { opacity: 1, x: 0, y: 0, scale: 1, transformOrigin: "left center" })
+            .set(minutes, { opacity: 0, x: 86, scale: 0.74, transformOrigin: "left center" })
+            .set(ghost, { opacity: 0, x: -72 })
+            .set(arrowPath, { strokeDasharray: 1, strokeDashoffset: 1 })
+            .set(arrowTip, { opacity: 0, scale: 0.3, transformOrigin: "center center" })
+            .set(streaks, { opacity: 0, scaleX: 0, transformOrigin: "right center" })
+            .fromTo(kicker, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, 0)
+            .to(ghost, { opacity: 0.58, x: 0, duration: 0.36, ease: "power3.out" }, 0)
+            .to(days, { x: -54, y: 116, scale: 0.43, opacity: 0.54, duration: 0.5, ease: "power4.inOut" }, 0.13)
+            .to(minutes, { opacity: 1, x: 0, scale: 1, duration: 0.36, ease: "power4.out" }, 0.18)
+            .to(grid, { opacity: 0.56, duration: 0.25, ease: "power2.out" }, 0.22)
+            .to(arrowPath, { strokeDashoffset: 0, duration: 0.37, ease: "power2.inOut" }, 0.43)
+            .to(arrowTip, { opacity: 1, scale: 1, duration: 0.16, ease: "back.out(2)" }, 0.73)
+            .to(streaks, { opacity: 1, scaleX: 1, duration: 0.2, stagger: 0.055, ease: "power3.out" }, 0.79)
+            .to(stage, { x: -7, duration: 0.035, ease: "none" }, 0.9)
+            .to(stage, { x: 5, duration: 0.04, ease: "none" }, 0.935)
+            .to(stage, { x: 0, duration: 0.075, ease: "power2.out" }, 0.975);
+
+          window.__timelines["free-s03"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

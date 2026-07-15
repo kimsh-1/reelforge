@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s07 — made with the skill</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s07-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #08080b);
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s07-rootbox .s7-stage {
+          position: absolute;
+          inset: 0;
+          will-change: transform;
+        }
+        .free-s07-rootbox .s7-kicker {
+          position: absolute;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+        }
+        .free-s07-rootbox .s7-ghost {
+          position: absolute;
+          top: 8%;
+          right: 5.5%;
+          color: var(--rf-bg, #08080b);
+          font-size: clamp(300px, 31vw, 600px);
+          font-weight: 800;
+          letter-spacing: -0.11em;
+          line-height: 0.82;
+          -webkit-text-stroke: 1px var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          opacity: 0.72;
+          user-select: none;
+        }
+        .free-s07-rootbox .s7-copy {
+          position: absolute;
+          top: 27.3%;
+          left: 8.1%;
+          z-index: 2;
+          font-size: clamp(124px, 9.7vw, 186px);
+          font-weight: 800;
+          letter-spacing: -0.072em;
+          line-height: 0.92;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s07-rootbox .s7-copy-line {
+          display: block;
+          will-change: transform, opacity;
+        }
+        .free-s07-rootbox .s7-copy-line--second {
+          margin-left: 0.82em;
+          color: var(--rf-accent-alt, #afa3ff);
+        }
+        .free-s07-rootbox .s7-equals {
+          position: absolute;
+          top: 54.5%;
+          left: 7.85%;
+          z-index: 2;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+          will-change: transform, opacity;
+        }
+        .free-s07-rootbox .s7-equals::before {
+          content: "";
+          display: inline-block;
+          width: 70px;
+          height: 1px;
+          margin: 0 16px 5px 0;
+          background: var(--rf-accent-alt, #afa3ff);
+          vertical-align: middle;
+        }
+        .free-s07-rootbox .s7-tree {
+          position: absolute;
+          top: 15.5%;
+          right: 8.2%;
+          bottom: 18%;
+          width: 35%;
+          z-index: 1;
+          opacity: 0.95;
+        }
+        .free-s07-rootbox .s7-trunk,
+        .free-s07-rootbox .s7-branch {
+          position: absolute;
+          background: var(--rf-hairline-strong, rgba(255, 255, 255, 0.36));
+          transform-origin: left center;
+          will-change: transform, opacity;
+        }
+        .free-s07-rootbox .s7-trunk {
+          top: 3%;
+          bottom: 0;
+          left: 9%;
+          width: 1px;
+          transform-origin: center top;
+        }
+        .free-s07-rootbox .s7-branch {
+          left: 9%;
+          width: 18%;
+          height: 1px;
+        }
+        .free-s07-rootbox .s7-branch--a { top: 15%; }
+        .free-s07-rootbox .s7-branch--b { top: 38%; width: 31%; }
+        .free-s07-rootbox .s7-branch--c { top: 61%; width: 23%; }
+        .free-s07-rootbox .s7-branch--d { top: 84%; width: 36%; }
+        .free-s07-rootbox .s7-node {
+          position: absolute;
+          left: 9%;
+          width: 9px;
+          height: 9px;
+          border: 1px solid var(--rf-accent-alt, #afa3ff);
+          border-radius: 50%;
+          background: var(--rf-bg, #08080b);
+          box-sizing: border-box;
+          transform: translate(-4px, -4px);
+          will-change: opacity, filter;
+        }
+        .free-s07-rootbox .s7-node--a { top: 15%; }
+        .free-s07-rootbox .s7-node--b { top: 38%; }
+        .free-s07-rootbox .s7-node--c { top: 61%; }
+        .free-s07-rootbox .s7-node--d { top: 84%; }
+        .free-s07-rootbox .s7-label {
+          position: absolute;
+          left: 31%;
+          color: var(--rf-text, #ffffff);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: clamp(16px, 1.2vw, 23px);
+          font-weight: 700;
+          letter-spacing: 0.055em;
+          line-height: 1;
+          white-space: nowrap;
+          will-change: transform, opacity;
+        }
+        .free-s07-rootbox .s7-label--a { top: 12.6%; }
+        .free-s07-rootbox .s7-label--b { top: 35.6%; left: 44%; }
+        .free-s07-rootbox .s7-label--c { top: 58.6%; left: 36%; }
+        .free-s07-rootbox .s7-label--d { top: 81.6%; left: 49%; }
+        .free-s07-rootbox .s7-label span {
+          color: var(--rf-ink-tertiary, #666b75);
+          font-weight: 600;
+        }
+        .free-s07-rootbox .s7-running {
+          position: absolute;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+          will-change: transform, opacity;
+        }
+        .free-s07-rootbox .s7-running::before {
+          content: "";
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+        }
+        @keyframes s7-node-breathe {
+          from { filter: brightness(1); opacity: 0.5; }
+          to { filter: brightness(1.72); opacity: 1; }
+        }
+        @keyframes s7-proof-breathe {
+          from { filter: brightness(1); opacity: 0.76; }
+          to { filter: brightness(1.34); opacity: 1; }
+        }
+        .free-s07-rootbox .s7-node,
+        .free-s07-rootbox .s7-label {
+          animation: s7-node-breathe 1.25s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s07-rootbox .s7-copy-line--second {
+          animation: s7-proof-breathe 1.45s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s07-rootbox" data-composition-id="free-s07">
+        <div class="s7-stage">
+          <div class="s7-kicker">REELFORGE / s07</div>
+          <div class="s7-ghost" aria-hidden="true">=</div>
+          <div class="s7-copy" aria-label="이 영상도, 이 스킬로.">
+            <span class="s7-copy-line">이 영상도,</span>
+            <span class="s7-copy-line s7-copy-line--second">이 스킬로.</span>
+          </div>
+          <div class="s7-equals">NOW WATCHING = OUTPUT</div>
+          <div class="s7-tree" aria-label="ReelForge 작업 트리">
+            <div class="s7-trunk"></div>
+            <div class="s7-branch s7-branch--a"></div>
+            <div class="s7-branch s7-branch--b"></div>
+            <div class="s7-branch s7-branch--c"></div>
+            <div class="s7-branch s7-branch--d"></div>
+            <div class="s7-node s7-node--a"></div>
+            <div class="s7-node s7-node--b"></div>
+            <div class="s7-node s7-node--c"></div>
+            <div class="s7-node s7-node--d"></div>
+            <div class="s7-label s7-label--a"><span>SCENE</span> / s07-free.html</div>
+            <div class="s7-label s7-label--b"><span>WORKER</span> / motion</div>
+            <div class="s7-label s7-label--c"><span>BUILD</span> / composition</div>
+            <div class="s7-label s7-label--d"><span>RENDER</span> / you_are_here</div>
+          </div>
+          <div class="s7-running">PROOF / 07</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s07"]');
+          if (!root) return;
+          const kicker = root.querySelector(".s7-kicker");
+          const copy = Array.from(root.querySelectorAll(".s7-copy-line"));
+          const proof = root.querySelector(".s7-equals");
+          const tree = root.querySelector(".s7-tree");
+          const trunk = root.querySelector(".s7-trunk");
+          const branches = Array.from(root.querySelectorAll(".s7-branch"));
+          const nodes = Array.from(root.querySelectorAll(".s7-node"));
+          const labels = Array.from(root.querySelectorAll(".s7-label"));
+          const running = root.querySelector(".s7-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          tl.set([kicker, copy, proof, tree, running], { opacity: 0 })
+            .set(copy, { x: -42, y: 20 })
+            .set(trunk, { scaleY: 0, transformOrigin: "center top" })
+            .set(branches, { scaleX: 0, transformOrigin: "left center" })
+            .set(nodes, { opacity: 0, scale: 0.35, transformOrigin: "center center" })
+            .set(labels, { opacity: 0, x: -18 })
+            .fromTo(kicker, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .to(copy[0], { opacity: 1, x: 0, y: 0, duration: 0.26, ease: "power4.out" }, 0.04)
+            .to(copy[1], { opacity: 1, x: 0, y: 0, duration: 0.26, ease: "power4.out" }, 0.1)
+            .to(tree, { opacity: 1, duration: 0.1, ease: "none" }, 0.1)
+            .to(trunk, { scaleY: 1, duration: 0.22, ease: "power3.out" }, 0.05)
+            .to(branches, { scaleX: 1, duration: 0.13, stagger: 0.035, ease: "power3.out" }, 0.16)
+            .to(nodes, { opacity: 1, scale: 1, duration: 0.1, stagger: 0.035, ease: "back.out(2)" }, 0.18)
+            .to(labels, { opacity: 1, x: 0, duration: 0.1, stagger: 0.035, ease: "power3.out" }, 0.16)
+            .fromTo(proof, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.16, ease: "power3.out" }, 0.24);
+
+          window.__timelines["free-s07"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

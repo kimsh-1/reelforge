@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s04 — one line</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s04-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #08080b);
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s04-rootbox .s4-stage {
+          position: absolute;
+          inset: 0;
+          transform-origin: 44% 54%;
+          will-change: transform;
+        }
+        .free-s04-rootbox .s4-kicker {
+          position: absolute;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+        }
+        .free-s04-rootbox .s4-ghost-number {
+          position: absolute;
+          top: -10.5%;
+          right: 3.5%;
+          color: transparent;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: min(66vw, 1260px);
+          font-weight: 700;
+          letter-spacing: -0.12em;
+          line-height: 1;
+          -webkit-text-stroke: 1px var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          text-stroke: 1px var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          opacity: 0.58;
+          pointer-events: none;
+        }
+        .free-s04-rootbox .s4-light {
+          position: absolute;
+          top: -7%;
+          bottom: 18%;
+          width: 8.6%;
+          background: linear-gradient(
+            to bottom,
+            var(--rf-accent, #b99cff),
+            transparent 72%
+          );
+          filter: blur(20px);
+          opacity: 0;
+          transform: skewX(-6deg);
+          transform-origin: top center;
+          pointer-events: none;
+        }
+        .free-s04-rootbox .s4-light--a { left: 20.8%; }
+        .free-s04-rootbox .s4-light--b { left: 38.4%; width: 12.2%; }
+        .free-s04-rootbox .s4-light--c { left: 63.4%; width: 7%; }
+        .free-s04-rootbox .s4-light--d { left: 82.6%; width: 10.4%; }
+        .free-s04-rootbox .s4-horizon {
+          position: absolute;
+          right: 5.8%;
+          bottom: 24.8%;
+          left: 5.8%;
+          height: 1px;
+          background: var(--rf-hairline-strong, rgba(255, 255, 255, 0.36));
+          opacity: 0.82;
+          transform-origin: left center;
+        }
+        .free-s04-rootbox .s4-floor {
+          position: absolute;
+          right: -8%;
+          bottom: -22%;
+          left: -8%;
+          height: 49%;
+          background-image:
+            linear-gradient(var(--rf-hairline, rgba(255, 255, 255, 0.14)) 1px, transparent 1px),
+            linear-gradient(90deg, var(--rf-hairline, rgba(255, 255, 255, 0.14)) 1px, transparent 1px);
+          background-size: 100% 72px, 128px 100%;
+          opacity: 0.38;
+          transform: perspective(620px) rotateX(60deg) scaleX(1.22);
+          transform-origin: center top;
+          will-change: transform, opacity;
+        }
+        .free-s04-rootbox .s4-floor::after {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: linear-gradient(to bottom, transparent 18%, var(--rf-bg, #08080b) 88%);
+          content: "";
+        }
+        .free-s04-rootbox .s4-prompt-line {
+          position: absolute;
+          top: 58.7%;
+          left: 8.1%;
+          width: min(66%, 1210px);
+          height: 3px;
+          background: var(--rf-accent, #b99cff);
+          box-shadow: 0 0 28px var(--rf-accent, #b99cff);
+          transform: scaleX(0);
+          transform-origin: left center;
+          will-change: transform;
+        }
+        .free-s04-rootbox .s4-copy {
+          position: absolute;
+          top: 25.8%;
+          left: 7.5%;
+          display: flex;
+          align-items: baseline;
+          color: var(--rf-text, #ffffff);
+          font-size: clamp(150px, 12.35vw, 237px);
+          font-weight: 800;
+          letter-spacing: -0.07em;
+          line-height: 0.98;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s04-rootbox .s4-character {
+          display: inline-block;
+          will-change: transform, opacity, filter;
+        }
+        .free-s04-rootbox .s4-gap { width: 0.17em; }
+        .free-s04-rootbox .s4-cursor {
+          display: inline-block;
+          width: 0.07em;
+          height: 0.91em;
+          margin: 0 0 0 0.075em;
+          background: var(--rf-accent, #b99cff);
+          box-shadow: 0 0 0.18em var(--rf-accent, #b99cff);
+          vertical-align: -0.08em;
+          will-change: transform, opacity;
+        }
+        .free-s04-rootbox .s4-running {
+          position: absolute;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+        }
+        .free-s04-rootbox .s4-running::before {
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          content: "";
+        }
+        @keyframes s4-light-breathe {
+          from { filter: brightness(0.82) blur(20px); opacity: 0.17; }
+          to { filter: brightness(1.42) blur(25px); opacity: 0.53; }
+        }
+        @keyframes s4-ghost-breathe {
+          from { filter: brightness(0.86); opacity: 0.29; }
+          to { filter: brightness(1.35); opacity: 0.66; }
+        }
+        .free-s04-rootbox .s4-light {
+          animation: s4-light-breathe 1.16s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s04-rootbox .s4-ghost-number {
+          animation: s4-ghost-breathe 1.5s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s04-rootbox" data-composition-id="free-s04">
+        <div class="s4-stage">
+          <div class="s4-kicker">REELFORGE / s04</div>
+          <div class="s4-ghost-number" aria-hidden="true">01</div>
+          <div class="s4-light s4-light--a" aria-hidden="true"></div>
+          <div class="s4-light s4-light--b" aria-hidden="true"></div>
+          <div class="s4-light s4-light--c" aria-hidden="true"></div>
+          <div class="s4-light s4-light--d" aria-hidden="true"></div>
+          <div class="s4-horizon" aria-hidden="true"></div>
+          <div class="s4-floor" aria-hidden="true"></div>
+          <div class="s4-copy" aria-label="한 줄만 던져.">
+            <span class="s4-character">한</span><span class="s4-gap" aria-hidden="true"></span><span class="s4-character">줄</span><span class="s4-character">만</span><span class="s4-gap" aria-hidden="true"></span><span class="s4-character">던</span><span class="s4-character">져</span><span class="s4-character">.</span><span class="s4-cursor" aria-hidden="true"></span>
+          </div>
+          <div class="s4-prompt-line" aria-hidden="true"></div>
+          <div class="s4-running">PROMPT / 04</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s04"]');
+          if (!root) return;
+          const stage = root.querySelector(".s4-stage");
+          const kicker = root.querySelector(".s4-kicker");
+          const running = root.querySelector(".s4-running");
+          const cursor = root.querySelector(".s4-cursor");
+          const promptLine = root.querySelector(".s4-prompt-line");
+          const horizon = root.querySelector(".s4-horizon");
+          const floor = root.querySelector(".s4-floor");
+          const lights = Array.from(root.querySelectorAll(".s4-light"));
+          const characters = Array.from(root.querySelectorAll(".s4-character"));
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({paused:true});
+
+          tl.set([kicker, running, horizon], { opacity: 0 })
+            .set(lights, { opacity: 0, scaleY: 0.14, transformOrigin: "top center" })
+            .set(floor, { opacity: 0, y: 44 })
+            .set(characters, { opacity: 0, y: 30, filter: "brightness(2.8)" })
+            .set(cursor, { opacity: 0, scaleY: 0, transformOrigin: "bottom center" })
+            .set(promptLine, { scaleX: 0, transformOrigin: "left center" })
+            .fromTo(kicker, { opacity: 0, y: -13 }, { opacity: 1, y: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 0)
+            .to(horizon, { opacity: 0.82, duration: 0.3, ease: "power2.out" }, 0.02)
+            .to(floor, { opacity: 0.38, y: 0, duration: 0.38, ease: "power3.out" }, 0.02)
+            .to(lights, { opacity: 0.44, scaleY: 1, duration: 0.34, stagger: 0.035, ease: "power3.out" }, 0.06)
+            .to(cursor, { opacity: 1, scaleY: 1, duration: 0.16, ease: "power3.out" }, 0.16)
+            .to(characters, { opacity: 1, y: 0, filter: "brightness(1)", duration: 0.17, stagger: 0.105, ease: "power3.out" }, 0.29)
+            .to(promptLine, { scaleX: 1, duration: 0.26, ease: "power3.out" }, 0.88)
+            .to(cursor, { opacity: 0.24, duration: 0.12, repeat: 7, yoyo: true, ease: "none" }, 1.12)
+            .to(stage, { x: -7, y: 3, duration: 0.035, ease: "none" }, 0.88)
+            .to(stage, { x: 4, y: -2, duration: 0.04, ease: "none" }, 0.915)
+            .to(stage, { x: 0, y: 0, duration: 0.08, ease: "power2.out" }, 0.955);
+
+          window.__timelines["free-s04"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

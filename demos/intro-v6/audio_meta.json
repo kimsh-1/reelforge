@@ -1,0 +1,76 @@
+{
+  "scenes": [
+    {
+      "sceneId": "s01",
+      "audioPath": "./assets/audio/s01.mock.mp3",
+      "audioDurationSec": 3.6,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s02",
+      "audioPath": "./assets/audio/s02.mock.mp3",
+      "audioDurationSec": 3.6,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s03",
+      "audioPath": "./assets/audio/s03.mock.mp3",
+      "audioDurationSec": 3.6,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s04",
+      "audioPath": "./assets/audio/s04.mock.mp3",
+      "audioDurationSec": 3.8,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s05",
+      "audioPath": "./assets/audio/s05.mock.mp3",
+      "audioDurationSec": 3.8,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s06",
+      "audioPath": "./assets/audio/s06.mock.mp3",
+      "audioDurationSec": 3.8,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s07",
+      "audioPath": "./assets/audio/s07.mock.mp3",
+      "audioDurationSec": 4.2,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    },
+    {
+      "sceneId": "s08",
+      "audioPath": "./assets/audio/s08.mock.mp3",
+      "audioDurationSec": 4.4,
+      "words": [],
+      "sourceHash": "36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068",
+      "provider": "ffmpeg-anullsrc",
+      "voice": "silent-mock"
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s05 — concept range</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s05-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s05-rootbox .s5-stage {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #010102);
+          isolation: isolate;
+          will-change: transform;
+        }
+        .free-s05-rootbox .s5-stage::before,
+        .free-s05-rootbox .s5-stage::after {
+          position: absolute;
+          z-index: 1;
+          content: "";
+          background: var(--rf-hairline, #26272e);
+          opacity: 0.9;
+        }
+        .free-s05-rootbox .s5-stage::before {
+          top: 13.5%;
+          right: 6.2%;
+          width: 1px;
+          height: 69%;
+        }
+        .free-s05-rootbox .s5-stage::after {
+          top: 82.5%;
+          left: 6.2%;
+          width: 87.6%;
+          height: 1px;
+        }
+        .free-s05-rootbox .s5-tint,
+        .free-s05-rootbox .s5-bloom {
+          position: absolute;
+          pointer-events: none;
+        }
+        .free-s05-rootbox .s5-tint {
+          z-index: 0;
+          inset: -8%;
+          background: var(--rf-accent, #ff48a0);
+          opacity: 0;
+          will-change: opacity;
+        }
+        .free-s05-rootbox .s5-bloom {
+          z-index: 0;
+          top: 16%;
+          right: -6%;
+          width: 52vw;
+          height: 52vw;
+          border-radius: 50%;
+          background: var(--rf-accent, #ff48a0);
+          filter: blur(108px);
+          opacity: 0.16;
+          will-change: filter, opacity;
+        }
+        .free-s05-rootbox .s5-kicker {
+          position: absolute;
+          z-index: 4;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+          will-change: transform, opacity;
+        }
+        .free-s05-rootbox .s5-index {
+          position: absolute;
+          z-index: 3;
+          top: 14.2%;
+          left: 8.2%;
+          color: var(--rf-muted-text, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: clamp(18px, 1.35vw, 26px);
+          font-weight: 700;
+          letter-spacing: 0.22em;
+          line-height: 1;
+          will-change: transform, opacity;
+        }
+        .free-s05-rootbox .s5-copy {
+          position: absolute;
+          z-index: 3;
+          top: 28%;
+          left: 7.6%;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          font-size: clamp(190px, 15.4vw, 296px);
+          font-weight: 800;
+          letter-spacing: -0.075em;
+          line-height: 0.84;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s05-rootbox .s5-line {
+          display: block;
+          will-change: transform, opacity;
+        }
+        .free-s05-rootbox .s5-line--all {
+          margin-top: 0.15em;
+          padding-left: 0.3em;
+          color: var(--rf-accent, #ff48a0);
+          text-shadow: 0 0 0.12em var(--rf-accent, #ff48a0);
+        }
+        .free-s05-rootbox .s5-line--all::before {
+          display: inline-block;
+          width: 0.18em;
+          margin-right: 0.14em;
+          content: "";
+          border-top: 0.065em solid var(--rf-accent, #ff48a0);
+          vertical-align: 0.18em;
+        }
+        .free-s05-rootbox .s5-ghost {
+          position: absolute;
+          z-index: 1;
+          right: 3.5%;
+          bottom: -13%;
+          color: var(--rf-bg, #010102);
+          font-size: clamp(710px, 64vw, 1220px);
+          font-weight: 800;
+          letter-spacing: -0.16em;
+          line-height: 0.8;
+          -webkit-text-stroke: 3px var(--rf-hairline-strong, #3a3c46);
+          opacity: 0.52;
+          will-change: filter, opacity, transform;
+          animation: s5-ghost-breathe 1.18s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s05-rootbox .s5-rain {
+          position: absolute;
+          z-index: 2;
+          top: 16%;
+          right: 6.2%;
+          width: 36%;
+          height: 61%;
+          will-change: transform, filter, opacity;
+        }
+        .free-s05-rootbox .s5-swatch {
+          position: absolute;
+          right: 0;
+          height: 8.5%;
+          background: var(--s5-swatch);
+          box-shadow: 0 0 28px var(--s5-swatch);
+          opacity: 0;
+          transform-origin: right center;
+          will-change: transform, opacity;
+        }
+        .free-s05-rootbox .s5-swatch--01 { top: 0; width: 42%; }
+        .free-s05-rootbox .s5-swatch--02 { top: 12.4%; width: 79%; }
+        .free-s05-rootbox .s5-swatch--03 { top: 24.8%; width: 57%; }
+        .free-s05-rootbox .s5-swatch--04 { top: 37.2%; width: 92%; }
+        .free-s05-rootbox .s5-swatch--05 { top: 49.6%; width: 66%; }
+        .free-s05-rootbox .s5-swatch--06 { top: 62%; width: 35%; }
+        .free-s05-rootbox .s5-swatch--07 { top: 74.4%; width: 84%; }
+        .free-s05-rootbox .s5-swatch--08 { top: 86.8%; width: 51%; }
+        .free-s05-rootbox .s5-rain::before,
+        .free-s05-rootbox .s5-rain::after {
+          position: absolute;
+          left: -5.5%;
+          color: var(--rf-ink-tertiary, #62666d);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 18px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          writing-mode: vertical-rl;
+        }
+        .free-s05-rootbox .s5-rain::before {
+          top: 0;
+          content: "PALETTE";
+        }
+        .free-s05-rootbox .s5-rain::after {
+          bottom: 0;
+          content: "08 / 08";
+        }
+        .free-s05-rootbox .s5-running {
+          position: absolute;
+          z-index: 4;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+          will-change: transform, opacity;
+        }
+        .free-s05-rootbox .s5-running::before {
+          width: 148px;
+          height: 1px;
+          content: "";
+          background: var(--rf-hairline, #26272e);
+        }
+        @keyframes s5-ghost-breathe {
+          from {
+            filter: brightness(1) saturate(1);
+            opacity: 0.38;
+          }
+          to {
+            filter: brightness(1.75) saturate(1.45);
+            opacity: 0.68;
+          }
+        }
+      </style>
+      <div class="free-s05-rootbox" data-composition-id="free-s05">
+        <div class="s5-stage">
+          <div class="s5-tint" aria-hidden="true"></div>
+          <div class="s5-bloom" aria-hidden="true"></div>
+          <div class="s5-kicker">REELFORGE / s05</div>
+          <div class="s5-index">CONCEPT RANGE / ∞</div>
+          <div class="s5-copy" aria-label="컨셉? 다 돼.">
+            <span class="s5-line s5-line--question">컨셉?</span>
+            <span class="s5-line s5-line--all">다 돼.</span>
+          </div>
+          <div class="s5-ghost" aria-hidden="true">?</div>
+          <div class="s5-rain" aria-label="eight concept palette swatches">
+            <span class="s5-swatch s5-swatch--01" style="--s5-swatch: var(--rf-text, #ffffff)"></span>
+            <span class="s5-swatch s5-swatch--02" style="--s5-swatch: var(--rf-accent-alt, #828fff)"></span>
+            <span class="s5-swatch s5-swatch--03" style="--s5-swatch: var(--rf-surface-3, #1a1c22)"></span>
+            <span class="s5-swatch s5-swatch--04" style="--s5-swatch: var(--rf-accent, #ff48a0)"></span>
+            <span class="s5-swatch s5-swatch--05" style="--s5-swatch: var(--rf-muted-text, #8a8f98)"></span>
+            <span class="s5-swatch s5-swatch--06" style="--s5-swatch: var(--rf-surface-2, #121317)"></span>
+            <span class="s5-swatch s5-swatch--07" style="--s5-swatch: var(--rf-hairline-strong, #3a3c46)"></span>
+            <span class="s5-swatch s5-swatch--08" style="--s5-swatch: var(--rf-accent, #ff48a0)"></span>
+          </div>
+          <div class="s5-running">CONCEPT / ALL-IN</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s05"]');
+          if (!root) return;
+          const kicker = root.querySelector(".s5-kicker");
+          const index = root.querySelector(".s5-index");
+          const question = root.querySelector(".s5-line--question");
+          const all = root.querySelector(".s5-line--all");
+          const ghost = root.querySelector(".s5-ghost");
+          const rain = root.querySelector(".s5-rain");
+          const swatches = Array.from(root.querySelectorAll(".s5-swatch"));
+          const tint = root.querySelector(".s5-tint");
+          const bloom = root.querySelector(".s5-bloom");
+          const running = root.querySelector(".s5-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          tl.set([kicker, index, question, all, ghost, rain, running], { opacity: 0 })
+            .set(question, { x: -96, scale: 0.9, transformOrigin: "left center" })
+            .set(all, { x: -132, scale: 0.78, transformOrigin: "left center" })
+            .set(ghost, { x: 120, scale: 0.84, transformOrigin: "center center" })
+            .set(rain, { x: 138 })
+            .set(swatches, { x: 210, scaleX: 0.12, transformOrigin: "right center" })
+            .set(tint, { opacity: 0 })
+            .fromTo(kicker, { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, 0)
+            .fromTo(index, { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.22, ease: "power2.out" }, 0.03)
+            .to(question, { opacity: 1, x: 0, scale: 1, duration: 0.28, ease: "back.out(1.5)" }, 0.04)
+            .to(all, { opacity: 1, x: 0, scale: 1, duration: 0.27, ease: "back.out(1.9)" }, 0.12)
+            .to(ghost, { opacity: 0.52, x: 0, scale: 1, duration: 0.34, ease: "power3.out" }, 0.03)
+            .to(rain, { opacity: 1, x: 0, duration: 0.26, ease: "power3.out" }, 0.08)
+            .to(swatches, { opacity: 1, x: 0, scaleX: 1, duration: 0.13, stagger: 0.02, ease: "power4.out" }, 0.1)
+            .fromTo(running, { opacity: 0, x: 26 }, { opacity: 1, x: 0, duration: 0.22, ease: "power3.out" }, 0.15)
+            .to(tint, { opacity: 0.34, duration: 0.055, ease: "none" }, 0.62)
+            .to(tint, { opacity: 0.04, duration: 0.11, ease: "power2.out" }, 0.675)
+            .to(tint, { opacity: 0.28, duration: 0.05, ease: "none" }, 1.05)
+            .to(tint, { opacity: 0.03, duration: 0.11, ease: "power2.out" }, 1.1)
+            .to(tint, { opacity: 0.38, duration: 0.06, ease: "none" }, 1.48)
+            .to(tint, { opacity: 0.05, duration: 0.14, ease: "power2.out" }, 1.54)
+            .to(bloom, { opacity: 0.29, scale: 1.1, duration: 0.3, ease: "power2.out" }, 1.48)
+            .to(bloom, { opacity: 0.16, scale: 1, duration: 0.42, ease: "sine.inOut" }, 1.78);
+
+          window.__timelines["free-s05"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

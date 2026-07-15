@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>intro v6 s02 — click</title>
+  </head>
+  <body>
+    <template>
+      <style>
+        .free-s02-rootbox {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: var(--rf-bg, #08080b);
+          color: var(--rf-text, #ffffff);
+          font-family: "Pretendard", system-ui, sans-serif;
+        }
+        .free-s02-rootbox .s2-stage {
+          position: absolute;
+          inset: 0;
+          will-change: transform;
+        }
+        .free-s02-rootbox .s2-kicker {
+          position: absolute;
+          top: 5.8%;
+          left: 5.8%;
+          color: var(--rf-ink-subtle, #8a8f98);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 20px;
+          font-weight: 700;
+          letter-spacing: 0.12em;
+          line-height: 1;
+        }
+        .free-s02-rootbox .s2-ghost {
+          position: absolute;
+          top: -14.5%;
+          right: 1.5%;
+          color: transparent;
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: clamp(660px, 58vw, 1120px);
+          font-weight: 700;
+          letter-spacing: -0.12em;
+          line-height: 0.8;
+          -webkit-text-stroke: 1px var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          opacity: 0.72;
+          user-select: none;
+        }
+        .free-s02-rootbox .s2-axis {
+          position: absolute;
+          top: 17.7%;
+          right: 5.8%;
+          width: 31%;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+          transform-origin: right center;
+        }
+        .free-s02-rootbox .s2-axis::after {
+          content: "01 / INSTANT";
+          position: absolute;
+          top: 16px;
+          right: 0;
+          color: var(--rf-ink-tertiary, #656b75);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          white-space: nowrap;
+        }
+        .free-s02-rootbox .s2-copy {
+          position: absolute;
+          top: 24.4%;
+          left: 8.15%;
+          display: flex;
+          flex-direction: column;
+          letter-spacing: -0.07em;
+          line-height: 0.87;
+          white-space: nowrap;
+          word-break: keep-all;
+        }
+        .free-s02-rootbox .s2-click-wrap {
+          position: relative;
+          width: max-content;
+          font-size: clamp(205px, 15.6vw, 300px);
+          font-weight: 800;
+          will-change: transform, opacity;
+        }
+        .free-s02-rootbox .s2-click,
+        .free-s02-rootbox .s2-scramble {
+          display: block;
+        }
+        .free-s02-rootbox .s2-scramble {
+          position: absolute;
+          inset: 0;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 0.72em;
+          font-weight: 700;
+          letter-spacing: -0.12em;
+          line-height: 1.18;
+        }
+        .free-s02-rootbox .s2-finish {
+          display: flex;
+          align-items: baseline;
+          margin-top: 0.08em;
+          font-size: clamp(180px, 14.1vw, 271px);
+          font-weight: 800;
+          will-change: transform, opacity;
+        }
+        .free-s02-rootbox .s2-period {
+          position: relative;
+          margin-left: 0.025em;
+          color: var(--rf-accent, #b993ff);
+          text-shadow: 0 0 0.17em var(--rf-accent, #b993ff);
+          transform-origin: 50% 72%;
+          will-change: transform, filter, opacity;
+        }
+        .free-s02-rootbox .s2-aura {
+          position: absolute;
+          left: 48.2%;
+          bottom: -22%;
+          width: 47%;
+          height: 72%;
+          border-radius: 50%;
+          background: var(--rf-accent-alt, #9d7cff);
+          filter: blur(88px);
+          opacity: 0.15;
+          pointer-events: none;
+          will-change: filter, opacity;
+        }
+        .free-s02-rootbox .s2-running {
+          position: absolute;
+          right: 5.8%;
+          bottom: 6.4%;
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          color: var(--rf-muted-text, #b4b8c0);
+          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 0.14em;
+          line-height: 1;
+        }
+        .free-s02-rootbox .s2-running::before {
+          content: "";
+          width: 148px;
+          height: 1px;
+          background: var(--rf-hairline, rgba(255, 255, 255, 0.14));
+        }
+        @keyframes s2-aura-breathe {
+          from { filter: blur(78px); opacity: 0.1; }
+          to { filter: blur(116px); opacity: 0.28; }
+        }
+        @keyframes s2-period-breathe {
+          from { filter: brightness(1); opacity: 0.92; }
+          to { filter: brightness(1.62); opacity: 1; }
+        }
+        .free-s02-rootbox .s2-aura {
+          animation: s2-aura-breathe 1.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+        .free-s02-rootbox .s2-period {
+          animation: s2-period-breathe 0.72s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+      </style>
+      <div class="free-s02-rootbox" data-composition-id="free-s02">
+        <div class="s2-stage">
+          <div class="s2-aura" aria-hidden="true"></div>
+          <div class="s2-ghost" aria-hidden="true">02</div>
+          <div class="s2-axis" aria-hidden="true"></div>
+          <div class="s2-kicker">REELFORGE / s02</div>
+          <div class="s2-copy" aria-label="딸깍, 영상 끝.">
+            <div class="s2-click-wrap">
+              <span class="s2-click">딸깍,</span>
+              <span class="s2-scramble" aria-hidden="true">ㄸㅏ⌁ㄲㅏㄱ</span>
+            </div>
+            <div class="s2-finish">영상 끝<span class="s2-period">.</span></div>
+          </div>
+          <div class="s2-running">FLIP / 02</div>
+        </div>
+      </div>
+      <script>
+        (() => {
+          const root = document.querySelector('[data-composition-id="free-s02"]');
+          if (!root) return;
+          const stage = root.querySelector(".s2-stage");
+          const kicker = root.querySelector(".s2-kicker");
+          const axis = root.querySelector(".s2-axis");
+          const click = root.querySelector(".s2-click");
+          const scramble = root.querySelector(".s2-scramble");
+          const finish = root.querySelector(".s2-finish");
+          const period = root.querySelector(".s2-period");
+          const running = root.querySelector(".s2-running");
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          tl.set([kicker, axis, click, finish, running], { opacity: 0 })
+            .set(click, { x: -54, skewX: -8, transformOrigin: "left center" })
+            .set(finish, { x: 56, scaleX: 0.88, transformOrigin: "left center" })
+            .set(period, { scale: 0, transformOrigin: "50% 72%" })
+            .set(scramble, { opacity: 0, x: -18 })
+            .fromTo(kicker, { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" }, 0)
+            .fromTo(axis, { opacity: 0, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.28, ease: "power3.out" }, 0.02)
+            .fromTo(running, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.24, ease: "power3.out" }, 0.04)
+            .to(scramble, { opacity: 1, x: 0, duration: 0.08, ease: "steps(2)" }, 0.08)
+            .to(scramble, { opacity: 0, x: 18, duration: 0.07, ease: "steps(2)" }, 0.17)
+            .to(click, { opacity: 1, x: 0, skewX: 0, duration: 0.16, ease: "power4.out" }, 0.18)
+            .to(finish, { opacity: 1, x: 0, scaleX: 1, duration: 0.19, ease: "power4.out" }, 0.2)
+            .to(period, { scale: 1.32, duration: 0.08, ease: "power4.out" }, 0.29)
+            .to(period, { scale: 1, duration: 0.03, ease: "back.out(3)" }, 0.37)
+            .to(stage, { x: -15, y: 5, duration: 0.025, ease: "none" }, 0.3)
+            .to(stage, { x: 12, y: -4, duration: 0.025, ease: "none" }, 0.325)
+            .to(stage, { x: -6, y: 2, duration: 0.025, ease: "none" }, 0.35)
+            .to(stage, { x: 0, y: 0, duration: 0.04, ease: "power2.out" }, 0.375);
+
+          window.__timelines["free-s02"] = tl;
+          tl.seek(0);
+        })();
+      </script>
+    </template>
+  </body>
+</html>

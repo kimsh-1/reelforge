@@ -1,76 +1,102 @@
 <p align="center"><a href="README.md">한국어</a> | English | <a href="README-ja.md">日本語</a></p>
 
 <p align="center"><img src="docs/assets/hero.gif" alt="ReelForge demo highlights" width="720"></p>
-<p align="center">
-  <img src="docs/images/studio-scenes.png" alt="ReelForge Studio scene editor" width="900">
-</p>
 
-<p align="center"><strong>ReelForge is a keyless AI video loop: write `scene_specs.json`, run the local pipeline, then refine the result in Studio.</strong></p>
+<p align="center"><strong>ReelForge is a keyless AI video-generation loop that turns a one-line brief into a full-bleed motion-graphics video.</strong></p>
 
-## [quick-start] Quick Start(first video in 3 minutes)
+The output is a video, not a slide deck.
+Kinetic typography, mood-driven color systems, and continuous living motion are its default language,
+and every scene is an HTML motion-graphics fragment authored directly by an agent (or a person).
 
-Run this from the repository root. The `vf` function is only a short local CLI name for this shell.
+## [loop] Core Loop (v6)
+
+```
+One-line brief
+  → 1. Freeze direction       Establish the feel as a contract first: frame (palette, type, mood arc) + copy + storyboard
+  → 2. Scene swarm            One worker per scene authors a free HTML fragment directly (in parallel)
+  → 3. Assemble and validate  Thin manifest → compile → deterministic lint (blocks wall-clock and nondeterministic code)
+  → 4. Render                 Deterministic headless-Chrome render (multi-worker and GPU options)
+  → 5. Strip QC               Mechanical inspection of the full 1 fps strip + viewer review → reauthor only failed scenes locally
+```
+
+Design principle: direction—the feel—comes before the data contract.
+Scenes are authored works, not automatically generated layouts; the engine owns only timing, captions, transitions, tokens, and validation.
+See [docs/v6-architecture.md](docs/v6-architecture.md) for the complete design and what was discarded from v5, and why.
+
+## [quick-start] Quick Start
+
+Recommended agent path: open this repository in Claude Code, register `skills/reelforge/SKILL.md` as a skill,
+then make a request such as “Create a 30-second brand intro with ReelForge.”
+The skill runs the loop above exactly as written, from freezing the direction through strip QC.
+
+Local smoke test (to verify the pipeline):
 
 ```bash
-cd ~/reelforge
+cd <repo>
 npm ci
 ./node_modules/.bin/hyperframes doctor
 
-PROJECT_DIR="tmp/quickstart-reel-$(date +%Y%m%d-%H%M%S)"
+PROJECT_DIR="tmp/smoke-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$PROJECT_DIR"
 cp fixtures/golden-specs/minimal-3scene/scene_specs.json "$PROJECT_DIR/scene_specs.json"
 
-vf() { node bin/vf "$@"; }
-vf pipeline run "$PROJECT_DIR" --profile mock
-vf studio "$PROJECT_DIR" --port 4317
+node bin/vf pipeline run "$PROJECT_DIR" --profile mock
+node bin/vf studio "$PROJECT_DIR" --port 4317
 ```
 
-When the terminal prints `studio: http://127.0.0.1:4317/panel/`, open it in a browser and edit scene copy, layouts, and subtitle modes. The rendered video is written to `$PROJECT_DIR/out/main.mp4`.
+The final video is created at `$PROJECT_DIR/out/main.mp4`.
 
 ## [features] Key Features
 
-### Studio edit loop
-`vf studio` shows the scene list, preview, schema-driven form, and version state in one local surface.
-Copy/layout edits are E1, TTS text edits are E2, and scene order or transition edits are E3, so the UI can show the needed rerun scope.
-<!-- SCREENSHOT: docs/images/studio-scenes.png -->
+### Free scenes — the motion-graphics authoring unit
+Each scene is an authored HTML fragment (`layout: "free"` + `sourceHtml`).
+Paused GSAP timelines and CSS living loops are safe for deterministic seek rendering,
+and consuming color solely through preset tokens (`--rf-*`) lets the same scene render again in any preset.
 
-### Eight scene blocks
-Choose `bar`, `pie`, `line`, `list`, `numbered`, `statistic`, `compare`, or `quote` through the `layout` field in `scene_specs.json`.
-`headline_only` is available for title and closing cards, but content scenes usually start faster with one of the eight primary blocks.
-<!-- SCREENSHOT: docs/images/blocks-8.png — add block gallery after demo render -->
+### Seventeen design presets
+From linear, vercel, stripe, and apple to dark-hype and Korean broadcast/variety-show tones.
+A single preset controls the surface ladder, hairlines, mood-specific accents and glows, and caption tokens,
+while a minimum contrast threshold is enforced at compile time. See the catalog in [docs/design-presets.md](docs/design-presets.md).
 
-### Multi-format
-The compiler supports `16:9`, `9:16`, and `1:1` canvases with format-aware subtitle safe zones and overrides.
-Example: `vf compile "$PROJECT_DIR" --format 9:16 --json`.
-<!-- SCREENSHOT: docs/images/multiformat.png — add 16:9/9:16/1:1 comparison -->
+### Deterministic rendering and validation
+Rendering is seek-based and deterministic, so identical inputs produce identical pixels.
+render-lint rejects fetch, Math.random, Date.now, performance.now, and non-paused timelines,
+while mechanical inspection of the 1 fps strip (blank frames, low contrast, frozen motion) underpins the QC loop.
 
-### Free keyless stack
-The default path uses mock TTS, mock images, local Chrome/ffmpeg, and `hyperframes@0.7.26`, so it can run without API keys.
-Real TTS and image runners are optional; rights and service terms stay in project-level provenance.
-<!-- SCREENSHOT: docs/images/keyless-stack.png — add local artifact flow -->
+### Audio-authoritative timing
+Audio metadata is the sole authority for scene duration.
+With narration, TTS determines scene boundaries; for music-led work, a beat grid or silent mock does.
+The default stack is reproducible without API keys using mock TTS and local Chrome/ffmpeg.
 
-## [demos] Three Demos
+### Studio editing loop
+Use `vf studio` to preview scenes and refine them with guidance on the scope of a change: E1 expression, E2 dialogue, or E3 structure.
 
-| Demo | Use | Spec | Release |
-|---|---|---|---|
-| D1 Usage | Tutorial video for install, pipeline run, and Studio review | `demos/d1-usage/scene_specs.json` | [d1-usage.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d1-usage.mp4) |
-| D2 Engine | Short engine explainer for HTML compilation, seek determinism, and gates | `demos/d2-engine/scene_specs.json` | [d2-engine.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d2-engine.mp4) |
-| D3 Intro | Brand/product intro for people seeing ReelForge for the first time | `demos/d3-intro/scene_specs.json` | [d3-intro.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d3-intro.mp4) |
+### Appendix — eight data blocks (optional)
+An option only for the rare scene that truly needs quantitative data (`bar`, `pie`, `line`, `list`,
+`numbered`, `statistic`, `compare`, `quote` — full-bleed render). The default is zero blocks;
+do not start body scenes with blocks.
 
-## [skill] Using The Skill In Claude Code
+## [demos] Demos
 
-Open this repository in Claude Code and register or reference `skills/reelforge/SKILL.md` as the project skill.
-Start with a request like "Use the ReelForge skill to turn this brief into `scene_specs.json` and run the mock pipeline."
-The skill guides brief intake, scene authoring, `vf pipeline run`, gate checks, and Studio review.
+| Demo | Purpose | Release |
+|---|---|---|
+| D1 Usage | Usage-flow tutorial | [d1-usage.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d1-usage.mp4) |
+| D2 Engine | Introduction to compilation, determinism, and gates | [d2-engine.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d2-engine.mp4) |
+| D3 Intro | Brand/product intro | [d3-intro.mp4](https://github.com/kimsh-1/reelforge/releases/download/v0.1.0/reelforge-d3-intro.mp4) |
 
-## [reference] Settings Reference
+The current release is an output of the v5 pipeline. It will be replaced as soon as demos generated with the v6 loop are ready.
 
-CLI options and settings live in [docs/usage.md](docs/usage.md). See [docs/studio.md](docs/studio.md) for Studio behavior and [docs/pipeline.md](docs/pipeline.md) for resume and dirty-guard details.
+## [reference] Configuration Reference
 
-## [validation] How The Project Was Verified
+For CLI options and configuration, see [docs/usage.md](docs/usage.md); for Studio details, see [docs/studio.md](docs/studio.md);
+for pipeline resumption and the dirty guard, see [docs/pipeline.md](docs/pipeline.md); and for the compiler contract (blocks and the free interface),
+see [docs/compiler.md](docs/compiler.md).
 
-P0~P3 proof results, gate details, and architecture notes moved to [docs/build-journey.md](docs/build-journey.md).
+## [validation] How the Project Was Validated
 
-## [license-disclaimer] License And Disclaimer
+P0–P3 proof results, gate details, and architecture records are in [docs/build-journey.md](docs/build-journey.md).
 
-Code is Apache-2.0. Fonts, audio, images, and TTS outputs follow their own licenses and service terms; check project-level provenance before public distribution or commercial use.
+## [license-disclaimer] License and Disclaimer
+
+The code is Apache-2.0. Fonts, audio, images, and TTS outputs follow their respective licenses and service terms;
+check project-level provenance before public distribution or commercial use.
