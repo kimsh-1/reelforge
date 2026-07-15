@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"count"},
     {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"list"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -29,296 +30,254 @@
           height: 1080px;
           box-sizing: border-box;
           overflow: hidden;
-          color: var(--rf-text, currentColor);
+          color: var(--list-ink);
           font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          --list-accent: var(--rf-accent, Highlight);
           --list-ink: var(--rf-text, currentColor);
-          --list-muted: var(--rf-muted-text, color-mix(in srgb, var(--list-ink) 62%, transparent));
-          --list-surface: var(--rf-surface, color-mix(in srgb, Canvas 94%, transparent));
-          --list-panel: var(--rf-panel, color-mix(in srgb, var(--list-ink) 7%, transparent));
-          --list-line: color-mix(in srgb, var(--list-accent) 32%, transparent);
-          --list-line-soft: color-mix(in srgb, var(--list-ink) 14%, transparent);
-          --list-accent-soft: color-mix(in srgb, var(--list-accent) 14%, transparent);
-          --list-shadow: var(--rf-shadow, var(--list-ink));
+          --list-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+          --list-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+          --list-accent: var(--rf-accent, var(--rf-text, currentColor));
+          --list-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+          --list-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+          --list-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent)));
+          --list-type-small: 1.55rem;
+          --list-type-label: 3.85rem;
+          --list-type-marker: 11rem;
           --list-row-count: 3;
         }
 
         .list-stage {
           position: absolute;
-          inset: 6.65% 6.85% 13.25%;
-          display: grid;
-          grid-template-columns: minmax(0, 0.72fr) minmax(44rem, 1.28fr);
-          align-items: stretch;
-          gap: 4.5rem;
+          inset: 7.2% 6.25%;
           box-sizing: border-box;
-        }
-
-        .list-header {
           min-width: 0;
-          display: grid;
-          align-content: center;
-          gap: 1.65rem;
+          min-height: 0;
         }
 
-        .list-kicker {
+        .list-caption {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: baseline;
+          gap: 1.35rem;
+          min-width: 0;
+          padding: 0 0 1.65rem;
+          border-bottom: 1px solid var(--list-hairline);
+          opacity: 0;
+        }
+
+        .list-title,
+        .list-count,
+        .list-source {
           margin: 0;
-          width: 5.5rem;
-          height: 0.35rem;
-          box-sizing: border-box;
-          padding: 0;
-          border: 0;
-          border-radius: 0.1rem;
-          background: var(--list-accent);
-          color: var(--list-muted);
-          font-size: 1.45rem;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
+          min-width: 0;
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: var(--list-type-small);
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          overflow-wrap: anywhere;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .list-title {
-          margin: 0;
-          color: var(--list-ink);
-          font-size: 5.45rem;
-          font-weight: 920;
-          line-height: 1.04;
-          letter-spacing: -0.03em;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-        }
-
-        .list-source {
-          margin: 0;
-          max-width: 36rem;
+          flex: 0 1 auto;
           color: var(--list-muted);
-          font-size: 1.42rem;
-          font-weight: 650;
-          line-height: 1.36;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
         }
 
         .list-count {
-          width: fit-content;
-          margin: 0;
-          box-sizing: border-box;
-          padding: 1rem 1.25rem;
-          border: 0.1rem solid var(--list-line);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(90deg, var(--list-accent-soft), transparent 60%),
-            var(--list-panel);
-          color: var(--list-ink);
-          font-size: 1.7rem;
-          font-weight: 860;
-          line-height: 1;
-          letter-spacing: 0;
-          white-space: nowrap;
-          box-shadow: 0 0.8rem 2rem color-mix(in srgb, var(--list-shadow) 12%, transparent);
+          flex: 0 0 auto;
+          color: var(--list-accent);
+          font-variant-numeric: tabular-nums;
+        }
+
+        .list-source {
+          flex: 0 1 auto;
+          margin-inline-start: auto;
+          color: var(--list-tertiary);
+          letter-spacing: 0.03em;
+          text-align: end;
+          text-transform: none;
         }
 
         .list-stack {
+          position: absolute;
+          inset: 7.4rem 0 0;
+          display: grid;
+          grid-template-rows: repeat(var(--list-row-count), minmax(0, 1fr));
           min-width: 0;
           min-height: 0;
           margin: 0;
           padding: 0;
-          display: grid;
-          grid-template-rows: repeat(var(--list-row-count), minmax(9.9rem, 1fr));
-          align-content: stretch;
-          gap: 1.25rem;
           list-style: none;
-          counter-reset: list-item-count;
         }
 
-        .list-item {
+        .list-row {
           position: relative;
-          min-width: 0;
-          min-height: 9.9rem;
           display: grid;
-          grid-template-columns: 4.75rem minmax(0, 1fr) auto;
           align-items: center;
-          gap: 1.35rem;
-          box-sizing: border-box;
-          padding: 1.42rem 1.6rem;
-          border: 0.1rem solid var(--list-line-soft);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(90deg, var(--list-accent-soft), transparent 38%),
-            var(--list-surface);
-          box-shadow: 0 1.15rem 2.8rem color-mix(in srgb, var(--list-shadow) 12%, transparent);
+          min-width: 0;
+          min-height: 0;
+          border-bottom: 1px solid var(--list-hairline);
           opacity: 0;
-          counter-increment: list-item-count;
-          overflow: hidden;
-          transform-origin: 50% 50%;
           will-change: transform, filter, opacity;
         }
 
-        .list-icon {
-          position: relative;
-          width: 4.75rem;
-          aspect-ratio: 1;
-          display: grid;
-          place-items: center;
-          border: 0.12rem solid var(--list-line);
-          border-radius: 0.5rem;
-          background: var(--list-panel);
-          overflow: hidden;
-          transform-origin: 50% 50%;
-          will-change: transform, filter;
+        .list-row:first-child {
+          border-top: 1px solid var(--list-hairline);
         }
 
-        .list-icon::before {
-          content: "";
-          width: 1.15rem;
-          aspect-ratio: 1;
-          border-radius: 50%;
+        .list-index {
+          display: block;
+          min-width: 0;
+          color: var(--list-tertiary);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: var(--list-type-marker);
+          font-weight: 740;
+          font-variant-numeric: tabular-nums;
+          line-height: 0.78;
+          letter-spacing: -0.07em;
+          white-space: nowrap;
+        }
+
+        .list-marker {
+          display: block;
+          width: 0.35rem;
+          height: min(68%, 7rem);
           background: var(--list-accent);
-          box-shadow: 0 0 1.1rem var(--list-accent-soft);
-        }
-
-        .list-icon::after {
-          content: counter(list-item-count, decimal-leading-zero);
-          position: absolute;
-          right: 0.38rem;
-          bottom: 0.32rem;
-          color: var(--list-muted);
-          font-size: 0.95rem;
-          font-weight: 820;
-          line-height: 1;
-          letter-spacing: 0;
+          opacity: 0.94;
         }
 
         .list-copy {
-          min-width: 0;
           display: grid;
-          gap: 0.48rem;
+          align-content: center;
+          gap: 0.75rem;
+          min-width: 0;
         }
 
-        .list-label {
+        .list-label,
+        .list-value {
+          display: block;
           min-width: 0;
-          color: var(--list-ink);
-          font-size: 3.05rem;
-          font-weight: 850;
-          line-height: 1.14;
-          letter-spacing: 0;
+          margin: 0;
+          font-size: var(--list-type-label);
+          font-weight: 760;
+          line-height: 1.05;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
         }
 
-        .list-meta {
-          min-width: 0;
-          color: var(--list-muted);
-          font-size: 1.32rem;
-          font-weight: 720;
-          line-height: 1.15;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
+        .list-label {
+          color: var(--list-ink);
         }
 
-        .list-value {
-          max-width: 18rem;
-          box-sizing: border-box;
-          padding: 0.7rem 1rem;
-          border: 0.1rem solid var(--list-line);
-          border-radius: 0.5rem;
-          background: var(--list-accent-soft);
-          color: var(--list-ink);
-          font-size: 2rem;
-          font-weight: 900;
-          line-height: 1;
-          letter-spacing: 0;
-          text-align: center;
+        .list-meta {
+          display: block;
+          min-width: 0;
+          color: var(--list-muted);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: var(--list-type-small);
+          font-weight: 650;
+          line-height: 1.1;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+
+        .list-value {
+          max-width: 29rem;
+          color: var(--list-accent);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
           font-variant-numeric: tabular-nums;
-          opacity: 0;
+          text-align: end;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
-        .list-sweep {
+        .list-signal {
           position: absolute;
-          inset: 0;
-          background: linear-gradient(100deg, transparent 0 38%, color-mix(in srgb, var(--list-accent) 24%, transparent) 50%, transparent 62% 100%);
-          opacity: 0;
-          transform: translateX(-120%);
           pointer-events: none;
+          animation: list-signal-breathe 2.2s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
-        .list-item[data-hot="true"] {
-          border-color: var(--list-line);
+        .list-rootbox[data-variant="rail"] .list-signal {
+          top: 7.4rem;
+          bottom: 0;
+          left: 11.45rem;
+          width: 0.35rem;
+          background: var(--list-accent);
+          opacity: 0.44;
         }
 
-        .list-rootbox[data-has-values="false"] .list-item {
-          grid-template-columns: 4.75rem minmax(0, 1fr);
+        .list-rootbox[data-variant="ledger"] .list-signal {
+          right: 0;
+          bottom: 0;
+          width: 26%;
+          height: 0.35rem;
+          background: var(--list-accent-alt);
+          opacity: 0.44;
         }
 
-        .list-item[data-has-value="false"] {
-          grid-template-columns: 4.75rem minmax(0, 1fr);
-        }
-
-        .list-rootbox[data-has-values="false"] .list-value {
-          display: none;
-        }
-
-        .list-item[data-has-value="false"] .list-value {
-          display: none;
-        }
-
-        @keyframes list-row-living {
+        @keyframes list-signal-breathe {
           0% {
-            transform: translateY(-0.72rem) scale(1.006);
-            filter: brightness(1.04);
+            opacity: 0.3;
+            filter: brightness(0.96);
           }
           100% {
-            transform: translateY(0.72rem) scale(1.018);
+            opacity: 0.8;
             filter: brightness(1.16);
           }
         }
 
-        @keyframes list-icon-pulse {
-          0% {
-            transform: scale(1.02);
-            filter: brightness(1.06);
-          }
-          100% {
-            transform: scale(1.16);
-            filter: brightness(1.24);
-          }
+        .list-rootbox[data-variant="rail"] .list-stack {
+          padding-inline-start: 0;
         }
 
-        @keyframes list-sweep-living {
-          0% {
-            opacity: 0;
-            transform: translateX(-120%);
-          }
-          28%,
-          62% {
-            opacity: 0.88;
-          }
-          100% {
-            opacity: 0;
-            transform: translateX(120%);
-          }
+        .list-rootbox[data-variant="rail"] .list-row {
+          grid-template-columns: 10.5rem 1.3rem minmax(0, 1fr) minmax(14rem, auto);
+          column-gap: 1.65rem;
         }
 
-        .list-item {
-          animation: list-row-living 2.18s ease-in-out calc(var(--rf-scene-start, 0s) + 1s) infinite alternate;
+        .list-rootbox[data-variant="rail"] .list-index {
+          text-align: end;
         }
 
-        .list-item:nth-child(2n) {
-          animation-delay: calc(var(--rf-scene-start, 0s) + 1.22s);
-          animation-direction: alternate-reverse;
+        .list-rootbox[data-variant="ledger"] .list-row {
+          grid-template-columns: 13rem minmax(0, 1fr) minmax(14rem, auto);
+          column-gap: 2.1rem;
         }
 
-        .list-icon {
-          animation: list-icon-pulse 1.64s ease-in-out calc(var(--rf-scene-start, 0s) + 0.92s) infinite alternate;
+        .list-rootbox[data-variant="ledger"] .list-index {
+          color: var(--list-accent);
+          opacity: 0.82;
         }
 
-        .list-sweep {
-          animation: list-sweep-living 1.48s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite;
+        .list-rootbox[data-variant="ledger"] .list-row::after {
+          content: "";
+          position: absolute;
+          top: -1px;
+          left: 0;
+          width: 7.5rem;
+          height: 0.35rem;
+          background: var(--list-accent);
+          opacity: 0.9;
+        }
+
+        .list-rootbox[data-has-values="false"] .list-row,
+        .list-row[data-has-value="false"] {
+          grid-template-columns: 10.5rem 1.3rem minmax(0, 1fr);
+        }
+
+        .list-rootbox[data-variant="ledger"][data-has-values="false"] .list-row,
+        .list-rootbox[data-variant="ledger"] .list-row[data-has-value="false"] {
+          grid-template-columns: 13rem minmax(0, 1fr);
         }
       </style>
       <div
@@ -332,12 +291,12 @@
         aria-label=""
       >
         <section class="list-stage">
-          <header class="list-header">
-            <p class="list-kicker" data-list-mood></p>
-            <h1 class="list-title" data-list-title></h1>
-            <p class="list-source" data-list-source></p>
+          <header class="list-caption">
+            <p class="list-title" data-list-title></p>
             <p class="list-count" data-list-count></p>
+            <p class="list-source" data-list-source></p>
           </header>
+          <span class="list-signal" aria-hidden="true"></span>
           <ol class="list-stack" data-list-items aria-label="목록 항목"></ol>
         </section>
       </div>
@@ -356,7 +315,6 @@
             root.closest("[data-composition-id]") ||
             root;
           const titleEl = root.querySelector("[data-list-title]");
-          const moodEl = root.querySelector("[data-list-mood]");
           const sourceEl = root.querySelector("[data-list-source]");
           const countEl = root.querySelector("[data-list-count]");
           const listEl = root.querySelector("[data-list-items]");
@@ -364,128 +322,91 @@
 
           const title = stringValue(variables.title, "목록");
           const source = stringValue(variables.source, "");
-          const unit = stringValue(variables.unit, "");
+          const unit = displayUnit(variables.unit);
           const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
-          const duration = blockDuration(root, 4);
-          const phases = phaseTimes(duration);
+          const repeatIndex = Math.max(0, Math.floor(numericValue(variables.repeatIndex)));
+          const variant = repeatIndex % 2 === 0 ? "rail" : "ledger";
 
           root.style.setProperty("--list-accent", safeColor(variables.accent));
           root.style.setProperty("--list-row-count", String(Math.max(1, rows.length)));
+          root.style.setProperty("--list-type-label", rows.length > 5 ? "2.8rem" : "3.85rem");
+          root.style.setProperty("--list-type-marker", rows.length > 5 ? "5rem" : "11rem");
+          root.dataset.variant = variant;
+          root.dataset.mood = stringValue(variables.mood, "informative");
           root.dataset.hasValues = rows.some((row) => row.value.length > 0) ? "true" : "false";
           titleEl.textContent = title;
-          moodEl.textContent = "";
-          moodEl.setAttribute("aria-hidden", "true");
-          sourceEl.textContent = source;
-          sourceEl.style.opacity = source ? "1" : "0";
-          countEl.textContent = `${rows.length}개 항목`;
+          countEl.textContent = String(rows.length).padStart(2, "0");
+          if (source) {
+            sourceEl.textContent = source;
+          } else {
+            sourceEl.remove();
+          }
           root.setAttribute("aria-label", ariaLabel(title, rows, unit));
 
           rows.forEach((row, index) => {
             const item = document.createElement("li");
-            const icon = document.createElement("span");
+            const marker = document.createElement("span");
+            const itemIndex = document.createElement("span");
             const copy = document.createElement("span");
             const label = document.createElement("span");
             const meta = document.createElement("span");
-            const value = document.createElement("span");
-            const sweep = document.createElement("span");
 
-            item.className = "list-item";
-            icon.className = "list-icon";
+            item.className = "list-row";
+            marker.className = "list-marker";
+            itemIndex.className = "list-index";
             copy.className = "list-copy";
             label.className = "list-label";
             meta.className = "list-meta";
-            value.className = "list-value";
-            sweep.className = "list-sweep";
-            item.dataset.hot = index === 0 ? "true" : "false";
             item.dataset.hasValue = row.value.length > 0 ? "true" : "false";
 
-            icon.setAttribute("aria-hidden", "true");
+            marker.setAttribute("aria-hidden", "true");
+            itemIndex.setAttribute("aria-hidden", "true");
+            itemIndex.textContent = String(index + 1).padStart(2, "0");
             label.textContent = row.label;
-            meta.textContent = unit ? `${unit} · ${index + 1}/${rows.length}` : `${index + 1}/${rows.length}`;
-            value.textContent = row.value;
+            meta.textContent = unit ? `${unit} / ${String(index + 1).padStart(2, "0")}` : String(index + 1).padStart(2, "0");
 
             copy.append(label, meta);
-            item.append(sweep, icon, copy);
-            if (row.value.length > 0) item.append(value);
+            item.append(itemIndex);
+            if (variant === "rail") item.append(marker);
+            item.append(copy);
+            if (row.value.length > 0) {
+              const value = document.createElement("span");
+              value.className = "list-value";
+              value.textContent = row.value;
+              item.append(value);
+            }
             listEl.appendChild(item);
           });
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
-          const items = gsap.utils.toArray(root.querySelectorAll(".list-item"));
-          const icons = gsap.utils.toArray(root.querySelectorAll(".list-icon"));
-          const values = gsap.utils.toArray(root.querySelectorAll(".list-value"));
+          const caption = root.querySelector(".list-caption");
+          const items = gsap.utils.toArray(root.querySelectorAll(".list-row"));
+          const rowStagger = items.length > 1 ? 0.28 / (items.length - 1) : 0;
 
           tl.fromTo(
-            root.querySelector(".list-header"),
-            { opacity: 0, y: 16 },
-            { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" },
+            caption,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" },
             0
           );
-          tl.fromTo(
-            items,
-            { opacity: 0, y: 16, scale: 0.995 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.18, ease: "power3.out", stagger: 0.035 },
-            0.1
-          );
-          tl.fromTo(
-            icons,
-            { opacity: 0, scale: 0.9 },
-            { opacity: 1, scale: 1, duration: 0.16, ease: "back.out(1.4)", stagger: 0.035 },
-            0.13
-          );
-          tl.fromTo(
-            values,
-            { opacity: 0, x: 10 },
-            { opacity: 1, x: 0, duration: 0.14, ease: "power2.out", stagger: 0.035 },
-            0.18
-          );
-          const sweeps = gsap.utils.toArray(root.querySelectorAll(".list-sweep"));
-          tl.to(root.querySelector(".list-stack"), {
-            y: -18,
-            duration: 0.94,
-            ease: "sine.inOut",
-            repeat: loopRepeat(0.94),
-            yoyo: true
-          }, phases.livingStart);
-          sweeps.forEach((sweep, index) => {
-            tl.fromTo(
-              sweep,
-              { opacity: 0, x: "-120%" },
-              {
-                opacity: 0.88,
-                x: "120%",
-                duration: 0.56,
-                ease: "power2.inOut",
-                repeat: loopRepeat(0.56, rows.length * 0.2),
-                repeatDelay: rows.length * 0.2
-              },
-              phases.livingStart + index * 0.2
-            );
-          });
           items.forEach((item, index) => {
-            const rowStart = phases.livingStart + index * 0.08;
-            tl.to(item, {
-              y: index % 2 === 0 ? -16 : 16,
-              scale: 1.018,
-              filter: "brightness(1.15)",
-              duration: 0.7,
-              ease: "sine.inOut",
-              repeat: loopRepeat(0.7, 0.18),
-              repeatDelay: 0.18,
-              yoyo: true
-            }, rowStart);
+            const start = 0.12 + index * rowStagger;
+            tl.fromTo(
+              item,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" },
+              start
+            );
+            if (index > 0) {
+              tl.to(
+                items.slice(0, index),
+                { opacity: 0.58, filter: "brightness(0.94)", duration: 0.12, ease: "power2.out" },
+                start + 0.04
+              );
+            }
           });
-          tl.to(icons, {
-            scale: 1.16,
-            filter: "brightness(1.22)",
-            duration: 0.82,
-            ease: "sine.inOut",
-            repeat: loopRepeat(0.82),
-            yoyo: true
-          }, phases.livingStart + 0.06);
-          tl.to(root.querySelector(".list-stage"), { y: -20, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          tl.addLabel("final", duration);
+          tl.addLabel("final", blockDuration(root, 4));
           timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
           });
@@ -546,6 +467,20 @@
             return text.length > 0 ? text : fallback;
           }
 
+          function numericValue(value) {
+            const numeric = Number(value);
+            return Number.isFinite(numeric) ? numeric : 0;
+          }
+
+          function displayUnit(value) {
+            const text = stringValue(value, "");
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
+          }
+
           function normalizeRows(labels, rawValues, fallbackTitle) {
             const count = Math.max(labels.length, rawValues.length);
             if (count === 0) {
@@ -576,8 +511,10 @@
           }
 
           function safeColor(value) {
-            const text = stringValue(value, "Highlight");
-            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "Highlight";
+            const text = stringValue(value, "");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "var(--rf-accent, var(--rf-text, currentColor))";
           }
 
           function blockDuration(element, fallback) {
@@ -589,19 +526,6 @@
             }
             const own = Number(element.getAttribute("data-duration"));
             return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
-
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.42, Math.max(0.3, total * 0.1));
-            const exitStart = Math.max(1.15, total - exitDuration);
-            const livingStart = Math.min(exitStart - 0.42, Math.max(0.72, total * 0.2));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return { exitStart, exitDuration, livingStart, livingDuration };
-          }
-
-          function loopRepeat(cycleDuration, repeatDelay = 0) {
-            const span = Math.max(0.1, cycleDuration + repeatDelay);
-            return Math.max(2, Math.ceil(72 / span));
           }
         })();
       </script>

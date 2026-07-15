@@ -13,30 +13,37 @@
     "primary": "#0066cc",
     "primaryFocus": "#0071e3",
     "primaryOnDark": "#2997ff",
+    "onAccent": "#ffffff",
     "ink": "#1d1d1f",
     "body": "#1d1d1f",
     "bodyOnDark": "#f5f5f7",
     "bodyMuted": "#cccccc",
     "inkMuted80": "#333333",
     "inkMuted48": "#7a7a7a",
+    "inkSubtle": "#7a7a7a",
+    "inkTertiary": "#cccccc",
     "dividerSoft": "#e3e3e6",
     "hairline": "#e0e0e0",
+    "hairlineStrong": "#d2d2d7",
     "canvas": "#fafafa",
     "canvasParchment": "#f5f5f7",
     "surfacePearl": "#fafafc",
+    "surface2": "#232326",
+    "surface3": "#2c2c30",
     "surfaceTile1": "#232326",
     "surfaceTile2": "#2c2c30",
     "surfaceTile3": "#1c1c1f",
     "surfaceBlack": "#0a0a0c",
     "surfaceChipTranslucent": "#d2d2d7",
     "onPrimary": "#ffffff",
-    "onDark": "#f5f5f7"
+    "onDark": "#f5f5f7",
+    "success": "#34c759"
   },
   "moods": {
     "dramatic": {
       "accent": "#0066cc",
       "speed": "slow",
-      "glow": "0 18px 44px rgba(10,10,12,0.22)"
+      "glow": "0 18px 44px #0a0a0c38"
     },
     "urgent": {
       "accent": "#0071e3",

@@ -9,6 +9,11 @@
     "mutedText": "#5d5b54",
     "accent": "#5645d4",
     "accentAlt": "#f9e79f",
+    "onAccent": "#ffffff",
+    "inkSubtle": "#787671",
+    "inkTertiary": "#a4a097",
+    "surface2": "#eeecea",
+    "surface3": "#e6e3e0",
     "shadow": "#0a0b0e",
     "primary": "#5645d4",
     "primaryPressed": "#4534b3",
@@ -41,7 +46,7 @@
     "cardTintGray": "#f0eeec",
     "canvas": "#fafafa",
     "surfaceSoft": "#fafaf9",
-    "hairline": "#d8d5cf",
+    "hairline": "#e5e3df",
     "hairlineSoft": "#e2ded8",
     "hairlineStrong": "#c8c4be",
     "inkDeep": "#0a0b0e",
@@ -71,7 +76,7 @@
     "somber": {
       "accent": "#0f1c3d",
       "speed": "slow",
-      "glow": "0 18px 44px rgba(10,11,14,0.2)"
+      "glow": "0 18px 44px #0a0b0e33"
     },
     "informative": {
       "accent": "#0075de",
@@ -105,7 +110,7 @@
     "keywordStrokeColor": "#fafafa",
     "backgroundColor": "#f6f5f4",
     "borderRadius": 8,
-    "boxShadow": "0 4px 12px rgba(10,11,14,0.08), 0 0 0 1px #d8d5cf",
+    "boxShadow": "0 4px 12px #0a0b0e14, 0 0 0 1px #e5e3df",
     "bottomOffset": 96,
     "maxWidth": 940,
     "lineHeight": 1.2,

@@ -14,6 +14,7 @@
     "primaryHover": "#828fff",
     "primaryFocus": "#5e69d1",
     "onPrimary": "#ffffff",
+    "onAccent": "#ffffff",
     "inkSubtle": "#8a8f98",
     "inkTertiary": "#62666d",
     "surface2": "#1a1b20",
@@ -34,27 +35,27 @@
     "dramatic": {
       "accent": "#828fff",
       "speed": "slow",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(130,143,255,0.46), 0 0 0.45em rgba(130,143,255,0.2)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #828fff75, 0 0 0.45em #828fff33"
     },
     "urgent": {
       "accent": "#5e6ad2",
       "speed": "fast",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(94,106,210,0.42), 0 0 0.45em rgba(94,106,210,0.18)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #5e6ad26b, 0 0 0.45em #5e6ad22e"
     },
     "somber": {
       "accent": "#7a7fad",
       "speed": "slow",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(122,127,173,0.24), 0 0 0.45em rgba(122,127,173,0.08)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #7a7fad3d, 0 0 0.45em #7a7fad14"
     },
     "informative": {
       "accent": "#5e6ad2",
       "speed": "normal",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(94,106,210,0.34), 0 0 0.45em rgba(94,106,210,0.12)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #5e6ad257, 0 0 0.45em #5e6ad21f"
     },
     "contemplative": {
       "accent": "#5e69d1",
       "speed": "slow",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(94,105,209,0.3), 0 0 0.45em rgba(94,105,209,0.1)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #5e69d14d, 0 0 0.45em #5e69d11a"
     },
     "suspense": {
       "accent": "#62666d",
@@ -64,7 +65,7 @@
     "triumphant": {
       "accent": "#828fff",
       "speed": "fast",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(130,143,255,0.5), 0 0 0.45em rgba(130,143,255,0.22)"
+      "glow": "0 0 2px #f7f8f8bf, 0 0 0.18em #828fff80, 0 0 0.45em #828fff38"
     }
   },
   "subtitle": {
@@ -78,7 +79,7 @@
     "keywordStrokeColor": "#0a0b0e",
     "backgroundColor": "#121317",
     "borderRadius": 6,
-    "boxShadow": "0 0 0 1px #34363e, 0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(94,106,210,0.28), 0 0 0.45em rgba(94,106,210,0.1)",
+    "boxShadow": "0 0 0 1px #34363e, 0 0 2px #f7f8f8bf, 0 0 0.18em #5e6ad247, 0 0 0.45em #5e6ad21a",
     "bottomOffset": 92,
     "maxWidth": 980,
     "lineHeight": 1.15,

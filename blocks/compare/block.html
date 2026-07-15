@@ -24,501 +24,6 @@
   </head>
   <body>
     <template>
-      <style>
-        #compare-root {
-          position: absolute;
-          inset: 0;
-          width: 1920px;
-          height: 1080px;
-          box-sizing: border-box;
-          overflow: hidden;
-          color: var(--compare-ink);
-          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          --compare-accent: var(--rf-accent, Highlight);
-          --compare-ink: var(--rf-text, currentColor);
-          --compare-muted: var(--rf-muted-text, color-mix(in srgb, var(--compare-ink) 62%, transparent));
-          --compare-surface: var(--rf-surface, color-mix(in srgb, var(--compare-ink) 6%, transparent));
-          --compare-panel: var(--rf-panel, color-mix(in srgb, var(--compare-ink) 9%, transparent));
-          --compare-line: color-mix(in srgb, var(--compare-accent) 34%, transparent);
-          --compare-line-soft: color-mix(in srgb, var(--compare-ink) 15%, transparent);
-          --compare-accent-soft: color-mix(in srgb, var(--compare-accent) 16%, transparent);
-          --compare-accent-faint: color-mix(in srgb, var(--compare-accent) 8%, transparent);
-          --compare-shadow: var(--rf-shadow, var(--compare-ink));
-        }
-
-        .compare-stage {
-          position: absolute;
-          inset: 7.778% 7.083% 15.741%;
-          display: grid;
-          grid-template-rows: auto minmax(0, 1fr) auto;
-          gap: 2.55rem;
-          box-sizing: border-box;
-        }
-
-        .compare-header {
-          min-width: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: end;
-          gap: 2rem;
-        }
-
-        .compare-title-group {
-          min-width: 0;
-          display: grid;
-          gap: 0.85rem;
-        }
-
-        .compare-kicker,
-        .compare-source {
-          margin: 0;
-          color: var(--compare-muted);
-          font-size: 1.35rem;
-          font-weight: 760;
-          line-height: 1.16;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
-        }
-
-        .compare-kicker {
-          width: 5.5rem;
-          height: 0.35rem;
-          box-sizing: border-box;
-          padding: 0;
-          border: 0;
-          border-radius: 0.1rem;
-          background: var(--compare-accent);
-          overflow: hidden;
-        }
-
-        .compare-title {
-          margin: 0;
-          color: var(--compare-ink);
-          font-size: 5.35rem;
-          font-weight: 930;
-          line-height: 1.04;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--compare-shadow) 34%, transparent);
-        }
-
-        .compare-source {
-          max-width: 30rem;
-          text-align: right;
-        }
-
-        .compare-body {
-          position: relative;
-          min-width: 0;
-          min-height: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) 10.5rem minmax(0, 1fr);
-          align-items: stretch;
-          gap: 2.1rem;
-        }
-
-        #compare-root[data-variant="stack"] .compare-stage {
-          inset: 6.944% 8.125% 15.741%;
-          gap: 1.45rem;
-        }
-
-        #compare-root[data-variant="stack"] .compare-body {
-          grid-template-columns: minmax(0, 1fr);
-          grid-template-rows: minmax(0, 1fr) 5.6rem minmax(0, 1fr);
-          gap: 1.2rem;
-        }
-
-        .compare-panel {
-          min-width: 0;
-          display: grid;
-          grid-template-rows: auto minmax(0, 1fr);
-          gap: 1.45rem;
-          box-sizing: border-box;
-          padding: 2.55rem 2.35rem 2.35rem;
-          border: 0.125rem solid var(--compare-line-soft);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(135deg, var(--compare-accent-faint), transparent 44%),
-            var(--compare-surface);
-          box-shadow: 0 1.25rem 3.4rem color-mix(in srgb, var(--compare-shadow) 14%, transparent);
-          opacity: 0;
-        }
-
-        #compare-root[data-variant="stack"] .compare-panel {
-          padding: 1.65rem 2.15rem;
-        }
-
-        .compare-panel[data-side="right"] {
-          border-color: var(--compare-line);
-          background:
-            linear-gradient(135deg, var(--compare-accent-soft), transparent 42%),
-            var(--compare-surface);
-        }
-
-        .compare-panel-head {
-          min-width: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1rem;
-          padding-bottom: 1.3rem;
-          border-bottom: 0.1rem solid var(--compare-line-soft);
-        }
-
-        .compare-side-title {
-          margin: 0;
-          color: var(--compare-ink);
-          font-size: 2.35rem;
-          font-weight: 900;
-          line-height: 1;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
-        }
-
-        .compare-side-tag {
-          display: inline-grid;
-          place-items: center;
-          min-width: 3.2rem;
-          height: 3.2rem;
-          box-sizing: border-box;
-          border: 0.1rem solid var(--compare-line);
-          border-radius: 0.5rem;
-          background: var(--compare-panel);
-          color: var(--compare-accent);
-          font-size: 1.25rem;
-          font-weight: 900;
-          line-height: 1;
-          letter-spacing: 0;
-          font-variant-numeric: tabular-nums;
-          transform-origin: 50% 50%;
-          will-change: transform, filter;
-        }
-
-        .compare-list {
-          min-width: 0;
-          min-height: 0;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          align-content: center;
-          gap: 1.15rem;
-          list-style: none;
-        }
-
-        .compare-item {
-          position: relative;
-          min-width: 0;
-          min-height: 8.25rem;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1.3rem;
-          box-sizing: border-box;
-          padding: 1.15rem 1.2rem;
-          border: 0.1rem solid var(--compare-line-soft);
-          border-radius: 0.5rem;
-          background: var(--compare-panel);
-          opacity: 0;
-          overflow: hidden;
-          transform-origin: 50% 50%;
-          will-change: transform, filter, opacity;
-        }
-
-        .compare-item::before {
-          content: "";
-          position: absolute;
-          top: 0.9rem;
-          right: 1rem;
-          width: 5rem;
-          height: 2.05rem;
-          background-image: radial-gradient(circle, var(--compare-accent) 0 0.12rem, transparent 0.145rem);
-          background-size: 0.78rem 0.78rem;
-          opacity: 0.24;
-          pointer-events: none;
-        }
-
-        .compare-copy {
-          min-width: 0;
-          display: grid;
-          gap: 0.52rem;
-        }
-
-        .compare-label {
-          min-width: 0;
-          color: var(--compare-ink);
-          font-size: 2.15rem;
-          font-weight: 840;
-          line-height: 1.12;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
-
-        .compare-description {
-          min-width: 0;
-          color: var(--compare-muted);
-          font-size: 1.54rem;
-          font-weight: 780;
-          line-height: 1.18;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
-
-        .compare-meter {
-          position: relative;
-          width: 100%;
-          height: 0.62rem;
-          overflow: hidden;
-          background: color-mix(in srgb, var(--compare-muted) 22%, transparent);
-        }
-
-        .compare-meter-fill {
-          position: absolute;
-          inset: 0 auto 0 0;
-          width: var(--compare-width);
-          min-width: 0.65rem;
-          transform: scaleX(0);
-          transform-origin: left center;
-          background: var(--compare-accent);
-        }
-
-        .compare-value {
-          color: var(--compare-ink);
-          font-size: 2.65rem;
-          font-weight: 940;
-          line-height: 1;
-          letter-spacing: 0;
-          text-align: right;
-          white-space: nowrap;
-          font-variant-numeric: tabular-nums;
-          opacity: 0;
-        }
-
-        .compare-item[data-value-kind="text"],
-        .compare-item[data-value-kind="empty"] {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .compare-item[data-value-kind="text"] .compare-meter,
-        .compare-item[data-value-kind="empty"] .compare-meter,
-        .compare-item[data-value-kind="text"] .compare-value,
-        .compare-item[data-value-kind="empty"] .compare-value {
-          display: none;
-        }
-
-        .compare-item[data-value-kind="text"] .compare-description {
-          color: var(--compare-ink);
-          font-size: 2.05rem;
-          font-weight: 900;
-        }
-
-        .compare-list[data-row-count="1"] {
-          align-content: stretch;
-        }
-
-        .compare-list[data-row-count="1"] .compare-item {
-          min-height: 100%;
-          grid-template-columns: minmax(0, 1fr);
-          grid-template-rows: minmax(0, 1fr) auto;
-          align-items: center;
-          justify-items: center;
-          gap: 1.1rem;
-          padding: 2.1rem 2rem 2.35rem;
-          text-align: center;
-        }
-
-        .compare-item[data-card-mode="hero"] .compare-copy {
-          order: 2;
-          justify-items: center;
-          align-self: start;
-          gap: 0.65rem;
-        }
-
-        .compare-item[data-card-mode="hero"] .compare-label {
-          font-size: 2.46rem;
-          line-height: 1.08;
-        }
-
-        .compare-item[data-card-mode="hero"] .compare-description,
-        .compare-item[data-card-mode="hero"] .compare-meter {
-          display: none;
-        }
-
-        .compare-item[data-card-mode="hero"] .compare-value {
-          order: 1;
-          display: block;
-          align-self: end;
-          justify-self: center;
-          max-width: 100%;
-          color: var(--compare-ink);
-          font-size: 10.4rem;
-          font-weight: 960;
-          line-height: 1.06;
-          text-align: center;
-          white-space: normal;
-          overflow-wrap: anywhere;
-        }
-
-        .compare-item[data-card-mode="hero"] .compare-value::before {
-          content: "";
-          display: block;
-          width: 4.8rem;
-          height: 0.58rem;
-          margin: 0 auto 1rem;
-          border-left: 1rem solid var(--compare-accent);
-          background: repeating-linear-gradient(90deg, var(--compare-accent) 0 0.36rem, transparent 0.36rem 0.78rem);
-          opacity: 0.88;
-        }
-
-        .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value,
-        .compare-item[data-card-mode="hero"][data-value-kind="empty"] .compare-value {
-          display: block;
-          color: var(--compare-ink);
-          font-size: 8.2rem;
-          line-height: 1.08;
-          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--compare-shadow) 28%, transparent);
-        }
-
-        .compare-divider {
-          position: relative;
-          min-width: 0;
-          display: grid;
-          place-items: center;
-          opacity: 0;
-        }
-
-        .compare-divider-line {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 50%;
-          width: 0.16rem;
-          transform: translateX(-50%) scaleY(0);
-          transform-origin: center center;
-          background: var(--compare-line);
-        }
-
-        #compare-root[data-variant="stack"] .compare-divider-line {
-          top: 50%;
-          right: 0;
-          bottom: auto;
-          left: 0;
-          width: 100%;
-          height: 0.16rem;
-          transform: translateY(-50%) scaleX(0);
-        }
-
-        .compare-vs {
-          position: relative;
-          z-index: 1;
-          width: 7rem;
-          aspect-ratio: 1;
-          display: grid;
-          place-items: center;
-          box-sizing: border-box;
-          border: 0.14rem solid var(--compare-line);
-          border-radius: 50%;
-          background:
-            radial-gradient(circle, var(--compare-accent) 0 0.58rem, transparent 0.62rem),
-            var(--compare-surface);
-          color: var(--compare-accent);
-          box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
-          font-size: 2rem;
-          font-weight: 950;
-          line-height: 1;
-          letter-spacing: 0;
-          opacity: 0;
-          transform: scale(0.9);
-          transform-origin: 50% 50%;
-          will-change: transform, filter, opacity;
-        }
-
-        #compare-root[data-variant="stack"] .compare-vs {
-          width: 5.3rem;
-          font-size: 1.55rem;
-        }
-
-        @keyframes compare-row-living {
-          0% {
-            transform: translateY(-0.78rem) scale(1.006);
-            filter: brightness(1.04);
-          }
-          100% {
-            transform: translateY(0.78rem) scale(1.018);
-            filter: brightness(1.18);
-          }
-        }
-
-        @keyframes compare-pill-pulse {
-          0% {
-            transform: translateY(-0.22rem) scale(1.02);
-            filter: brightness(1.06);
-          }
-          100% {
-            transform: translateY(0.18rem) scale(1.16);
-            filter: brightness(1.24);
-          }
-        }
-
-        .compare-item {
-          animation: compare-row-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite alternate;
-        }
-
-        .compare-item:nth-child(2n) {
-          animation-delay: calc(var(--rf-scene-start, 0s) + 1.28s);
-          animation-direction: alternate-reverse;
-        }
-
-        .compare-side-tag,
-        .compare-vs {
-          animation: compare-pill-pulse 1.72s ease-in-out calc(var(--rf-scene-start, 0s) + 0.88s) infinite alternate;
-        }
-
-        #compare-root[data-has-side-titles="false"] .compare-panel {
-          grid-template-rows: minmax(0, 1fr);
-        }
-
-        #compare-root[data-has-side-titles="false"] .compare-panel-head {
-          display: none;
-        }
-
-        #compare-root[data-card-mode="hero"] .compare-panel {
-          grid-template-rows: minmax(0, 1fr);
-        }
-
-        #compare-root[data-card-mode="hero"] .compare-panel-head {
-          display: none;
-        }
-
-        .compare-footer {
-          min-width: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1.5rem;
-          color: var(--compare-muted);
-          font-size: 1.24rem;
-          font-weight: 690;
-          line-height: 1.2;
-          letter-spacing: 0;
-        }
-
-        .compare-footnote {
-          min-width: 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .compare-unit {
-          color: var(--compare-accent);
-          font-weight: 840;
-          white-space: nowrap;
-        }
-      </style>
       <div
         id="compare-root"
         data-composition-id="compare"
@@ -538,360 +43,261 @@
             overflow: hidden;
             color: var(--compare-ink);
             font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            --compare-accent: var(--rf-accent, Highlight);
             --compare-ink: var(--rf-text, currentColor);
-            --compare-muted: var(--rf-muted-text, color-mix(in srgb, var(--compare-ink) 62%, transparent));
-            --compare-surface: var(--rf-surface, color-mix(in srgb, var(--compare-ink) 6%, transparent));
-            --compare-panel: var(--rf-panel, color-mix(in srgb, var(--compare-ink) 9%, transparent));
-            --compare-line: color-mix(in srgb, var(--compare-accent) 34%, transparent);
-            --compare-line-soft: color-mix(in srgb, var(--compare-ink) 15%, transparent);
-            --compare-accent-soft: color-mix(in srgb, var(--compare-accent) 16%, transparent);
-            --compare-accent-faint: color-mix(in srgb, var(--compare-accent) 8%, transparent);
-            --compare-shadow: var(--rf-shadow, var(--compare-ink));
+            --compare-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+            --compare-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+            --compare-accent: var(--rf-accent, var(--rf-text, currentColor));
+            --compare-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+            --compare-success: var(--rf-success, var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor))));
+            --compare-surface: var(--rf-surface-2, color-mix(in srgb, var(--rf-text, currentColor) 7%, transparent));
+            --compare-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+            --compare-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 34%, transparent)));
+            --compare-type-small: 1.45rem;
+            --compare-type-title: 4.5rem;
+            --compare-type-display: 11.5rem;
           }
 
           .compare-stage {
             position: absolute;
-            inset: 7.778% 7.083% 15.741%;
+            inset: 7.2% 6.25%;
             display: grid;
-            grid-template-rows: auto minmax(0, 1fr) auto;
-            gap: 2.55rem;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 2.5rem;
+            min-width: 0;
+            min-height: 0;
             box-sizing: border-box;
+          }
+
+          .compare-ghost {
+            position: absolute;
+            top: 10%;
+            right: 3%;
+            z-index: 0;
+            margin: 0;
+            color: var(--compare-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--compare-type-display);
+            font-weight: 700;
+            line-height: 0.78;
+            letter-spacing: -0.11em;
+            opacity: 0.055;
+            pointer-events: none;
+            transform: scale(2.6);
+            transform-origin: top right;
+          }
+
+          .compare-header,
+          .compare-body {
+            position: relative;
+            z-index: 1;
+            min-width: 0;
           }
 
           .compare-header {
-            min-width: 0;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 29rem);
             align-items: end;
-            gap: 2rem;
+            gap: 3rem;
           }
 
-          .compare-title-group {
-            min-width: 0;
-            display: grid;
-            gap: 0.85rem;
+          .compare-eyebrow,
+          .compare-context,
+          .compare-side-index,
+          .compare-side-title,
+          .compare-label,
+          .compare-delta,
+          .compare-vs {
+            font-size: var(--compare-type-small);
           }
 
-          .compare-kicker,
-          .compare-source {
-            margin: 0;
+          .compare-eyebrow,
+          .compare-context,
+          .compare-side-index,
+          .compare-delta,
+          .compare-vs {
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+          }
+
+          .compare-eyebrow {
+            width: max-content;
+            max-width: 100%;
+            margin: 0 0 1.05rem;
             color: var(--compare-muted);
-            font-size: 1.35rem;
-            font-weight: 760;
-            line-height: 1.16;
-            letter-spacing: 0;
-            overflow-wrap: anywhere;
-          }
-
-          .compare-kicker {
-            width: 5.5rem;
-            height: 0.35rem;
-            box-sizing: border-box;
-            padding: 0;
-            border: 0;
-            border-radius: 0.1rem;
-            background: var(--compare-accent);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .compare-title {
+            max-width: 100%;
             margin: 0;
             color: var(--compare-ink);
-            font-size: 5.35rem;
-            font-weight: 930;
-            line-height: 1.04;
-            letter-spacing: 0;
+            font-size: var(--compare-type-title);
+            font-weight: 820;
+            line-height: 0.98;
+            letter-spacing: -0.03em;
             word-break: keep-all;
             overflow-wrap: anywhere;
-            text-wrap: balance;
-            text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--compare-shadow) 34%, transparent);
           }
 
-          .compare-source {
-            max-width: 30rem;
+          .compare-context {
+            justify-self: end;
+            max-width: 29rem;
+            margin: 0 0 0.25rem;
+            color: var(--compare-tertiary);
+            font-weight: 620;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
             text-align: right;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
           }
 
           .compare-body {
-            position: relative;
-            min-width: 0;
-            min-height: 0;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 10.5rem minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr) 11rem minmax(0, 1fr);
             align-items: stretch;
-            gap: 2.1rem;
+            min-height: 0;
           }
 
-          #compare-root[data-variant="stack"] .compare-stage {
-            inset: 6.944% 8.125% 15.741%;
-            gap: 1.45rem;
-          }
-
-          #compare-root[data-variant="stack"] .compare-body {
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: minmax(0, 1fr) 5.6rem minmax(0, 1fr);
-            gap: 1.2rem;
-          }
-
-          .compare-panel {
-            min-width: 0;
+          .compare-side {
             display: grid;
             grid-template-rows: auto minmax(0, 1fr);
-            gap: 1.45rem;
-            box-sizing: border-box;
-            padding: 2.55rem 2.35rem 2.35rem;
-            border: 0.125rem solid var(--compare-line-soft);
-            border-radius: 0.5rem;
-            background:
-              linear-gradient(135deg, var(--compare-accent-faint), transparent 44%),
-              var(--compare-surface);
-            box-shadow: 0 1.25rem 3.4rem color-mix(in srgb, var(--compare-shadow) 14%, transparent);
-            opacity: 0;
-          }
-
-          #compare-root[data-variant="stack"] .compare-panel {
-            padding: 1.65rem 2.15rem;
-          }
-
-          .compare-panel[data-side="right"] {
-            border-color: var(--compare-line);
-            background:
-              linear-gradient(135deg, var(--compare-accent-soft), transparent 42%),
-              var(--compare-surface);
-          }
-
-          .compare-panel-head {
+            align-items: stretch;
             min-width: 0;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
+            min-height: 0;
+          }
+
+          .compare-side[data-side="left"] {
+            padding-right: 5.4rem;
+          }
+
+          .compare-side[data-side="right"] {
+            padding-left: 5.4rem;
+          }
+
+          .compare-side-header {
+            display: flex;
+            align-items: baseline;
             gap: 1rem;
-            padding-bottom: 1.3rem;
-            border-bottom: 0.1rem solid var(--compare-line-soft);
+            min-width: 0;
+            padding-bottom: 1.45rem;
+            border-bottom: 1px solid var(--compare-hairline);
+          }
+
+          .compare-side-index {
+            flex: 0 0 auto;
+            color: var(--compare-accent);
+            font-weight: 740;
+            line-height: 1;
+            letter-spacing: 0.08em;
+          }
+
+          .compare-side[data-side="right"] .compare-side-index {
+            color: var(--compare-success);
           }
 
           .compare-side-title {
+            min-width: 0;
             margin: 0;
-            color: var(--compare-ink);
-            font-size: 2.35rem;
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: 0;
+            color: var(--compare-muted);
+            font-weight: 700;
+            line-height: 1.12;
+            letter-spacing: -0.02em;
+            word-break: keep-all;
             overflow-wrap: anywhere;
           }
 
-          .compare-side-tag {
-            display: inline-grid;
-            place-items: center;
-            min-width: 3.2rem;
-            height: 3.2rem;
-            box-sizing: border-box;
-            border: 0.1rem solid var(--compare-line);
-            border-radius: 0.5rem;
-            background: var(--compare-panel);
-            color: var(--compare-accent);
-            font-size: 1.25rem;
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: 0;
-            font-variant-numeric: tabular-nums;
-            transform-origin: 50% 50%;
-            will-change: transform, filter;
-          }
-
           .compare-list {
+            display: grid;
+            align-content: end;
+            gap: 1.4rem;
             min-width: 0;
             min-height: 0;
             margin: 0;
-            padding: 0;
-            display: grid;
-            align-content: center;
-            gap: 1.15rem;
+            padding: 2rem 0 0;
             list-style: none;
           }
 
           .compare-item {
-            position: relative;
-            min-width: 0;
-            min-height: 8.25rem;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 1.3rem;
-            box-sizing: border-box;
-            padding: 1.15rem 1.2rem;
-            border: 0.1rem solid var(--compare-line-soft);
-            border-radius: 0.5rem;
-            background: var(--compare-panel);
-            opacity: 0;
-            overflow: hidden;
-            transform-origin: 50% 50%;
-            will-change: transform, filter, opacity;
+            align-content: end;
+            gap: 0.72rem;
+            min-width: 0;
+            opacity: 1;
           }
 
-          .compare-item::before {
-            content: "";
-            position: absolute;
-            top: 0.9rem;
-            right: 1rem;
-            width: 5rem;
-            height: 2.05rem;
-            background-image: radial-gradient(circle, var(--compare-accent) 0 0.12rem, transparent 0.145rem);
-            background-size: 0.78rem 0.78rem;
-            opacity: 0.24;
-            pointer-events: none;
+          .compare-item + .compare-item {
+            padding-top: 1.35rem;
+            border-top: 1px solid var(--compare-hairline);
           }
 
-          .compare-copy {
-            min-width: 0;
-            display: grid;
-            gap: 0.52rem;
+          .compare-item[data-priority="hero"] {
+            min-height: 27rem;
+            padding-bottom: 1.1rem;
           }
 
           .compare-label {
             min-width: 0;
-            color: var(--compare-ink);
-            font-size: 2.15rem;
-            font-weight: 840;
-            line-height: 1.12;
-            letter-spacing: 0;
-            word-break: keep-all;
-            overflow-wrap: anywhere;
-          }
-
-          .compare-description {
-            min-width: 0;
+            margin: 0;
             color: var(--compare-muted);
-            font-size: 1.54rem;
-            font-weight: 780;
-            line-height: 1.18;
-            letter-spacing: 0;
+            font-weight: 650;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
             word-break: keep-all;
             overflow-wrap: anywhere;
-          }
-
-          .compare-meter {
-            position: relative;
-            width: 100%;
-            height: 0.62rem;
-            overflow: hidden;
-            background: color-mix(in srgb, var(--compare-muted) 22%, transparent);
-          }
-
-          .compare-meter-fill {
-            position: absolute;
-            inset: 0 auto 0 0;
-            width: var(--compare-width);
-            min-width: 0.65rem;
-            transform: scaleX(0);
-            transform-origin: left center;
-            background: var(--compare-accent);
           }
 
           .compare-value {
-            color: var(--compare-ink);
-            font-size: 2.65rem;
-            font-weight: 940;
-            line-height: 1;
-            letter-spacing: 0;
-            text-align: right;
-            white-space: nowrap;
-            font-variant-numeric: tabular-nums;
-            opacity: 0;
-          }
-
-          .compare-item[data-value-kind="text"],
-          .compare-item[data-value-kind="empty"] {
-            grid-template-columns: minmax(0, 1fr);
-          }
-
-          .compare-item[data-value-kind="text"] .compare-meter,
-          .compare-item[data-value-kind="empty"] .compare-meter,
-          .compare-item[data-value-kind="text"] .compare-value,
-          .compare-item[data-value-kind="empty"] .compare-value {
-            display: none;
-          }
-
-          .compare-item[data-value-kind="text"] .compare-description {
-            color: var(--compare-ink);
-            font-size: 2.05rem;
-            font-weight: 900;
-          }
-
-          .compare-list[data-row-count="1"] {
-            align-content: stretch;
-          }
-
-          .compare-list[data-row-count="1"] .compare-item {
-            min-height: 100%;
-            grid-template-columns: minmax(0, 1fr);
-            grid-template-rows: minmax(0, 1fr) auto;
-            align-items: center;
-            justify-items: center;
-            gap: 1.1rem;
-            padding: 2.1rem 2rem 2.35rem;
-            text-align: center;
-          }
-
-          .compare-item[data-card-mode="hero"] .compare-copy {
-            order: 2;
-            justify-items: center;
-            align-self: start;
-            gap: 0.65rem;
-          }
-
-          .compare-item[data-card-mode="hero"] .compare-label {
-            font-size: 2.46rem;
-            line-height: 1.08;
-          }
-
-          .compare-item[data-card-mode="hero"] .compare-description,
-          .compare-item[data-card-mode="hero"] .compare-meter {
-            display: none;
-          }
-
-          .compare-item[data-card-mode="hero"] .compare-value {
-            order: 1;
             display: block;
-            align-self: end;
-            justify-self: center;
-            max-width: 100%;
-            color: var(--compare-ink);
-            font-size: 10.4rem;
-            font-weight: 960;
-            line-height: 0.9;
-            text-align: center;
-            white-space: normal;
+            min-width: 0;
+            color: var(--compare-accent);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--compare-type-small);
+            font-weight: 750;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            word-break: keep-all;
             overflow-wrap: anywhere;
           }
 
-          .compare-item[data-card-mode="hero"] .compare-value::before {
-            content: "";
-            display: block;
-            width: 4.8rem;
-            height: 0.58rem;
-            margin: 0 auto 1rem;
-            border-left: 1rem solid var(--compare-accent);
-            background: repeating-linear-gradient(90deg, var(--compare-accent) 0 0.36rem, transparent 0.36rem 0.78rem);
-            opacity: 0.88;
+          .compare-item[data-priority="hero"] .compare-value {
+            color: var(--compare-ink);
+            font-size: var(--compare-type-display);
+            font-weight: 760;
+            line-height: 0.9;
+            letter-spacing: -0.055em;
+            white-space: nowrap;
           }
 
-          .compare-item[data-card-mode="hero"][data-value-kind="text"] .compare-value,
-          .compare-item[data-card-mode="hero"][data-value-kind="empty"] .compare-value {
-            display: block;
-            color: var(--compare-ink);
-            font-size: 8.2rem;
-            line-height: 0.95;
-            text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--compare-shadow) 28%, transparent);
+          .compare-side[data-side="right"] .compare-item[data-priority="hero"] .compare-value {
+            color: var(--compare-accent);
+          }
+
+          .compare-item[data-priority="hero"][data-value-kind="text"] .compare-value,
+          .compare-item[data-priority="hero"][data-value-kind="empty"] .compare-value {
+            max-width: 100%;
+            font-family: "Pretendard", "Pretendard Variable", system-ui, sans-serif;
+            font-variant-numeric: normal;
+            line-height: 0.96;
+            letter-spacing: -0.04em;
+            white-space: normal;
           }
 
           .compare-divider {
             position: relative;
-            min-width: 0;
             display: grid;
-            place-items: center;
-            opacity: 0;
+            grid-template-rows: 1fr auto auto 1fr;
+            justify-items: center;
+            align-items: center;
+            min-width: 0;
+            min-height: 0;
           }
 
           .compare-divider-line {
@@ -899,10 +305,125 @@
             top: 0;
             bottom: 0;
             left: 50%;
-            width: 0.16rem;
+            display: block;
+            width: 1px;
+            background: var(--compare-hairline-strong);
             transform: translateX(-50%) scaleY(0);
-            transform-origin: center center;
-            background: var(--compare-line);
+            transform-origin: center;
+          }
+
+          .compare-vs,
+          .compare-delta {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            min-width: 4.25rem;
+            min-height: 2.5rem;
+            padding: 0.45rem 0.72rem;
+            border: 1px solid var(--compare-hairline-strong);
+            border-radius: 999px;
+            background: var(--compare-surface);
+            font-weight: 760;
+            line-height: 1;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+          }
+
+          .compare-vs {
+            grid-row: 2;
+            color: var(--compare-accent);
+          }
+
+          .compare-delta {
+            grid-row: 3;
+            margin-top: 0.75rem;
+            color: var(--compare-success);
+          }
+
+          @keyframes compare-value-living {
+            0% {
+              opacity: 0.82;
+              filter: brightness(0.98);
+            }
+            100% {
+              opacity: 1;
+              filter: brightness(1.14);
+            }
+          }
+
+          @keyframes compare-chip-living {
+            0% {
+              opacity: 0.82;
+              filter: brightness(0.98);
+            }
+            100% {
+              opacity: 1;
+              filter: brightness(1.2);
+            }
+          }
+
+          .compare-item[data-priority="hero"] .compare-value {
+            animation: compare-value-living 1.8s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          .compare-delta,
+          .compare-vs {
+            animation: compare-chip-living 1.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          #compare-root[data-variant="stack"] {
+            --compare-type-display: 8.5rem;
+          }
+
+          #compare-root[data-variant="stack"] .compare-stage {
+            inset: 6.5% 6.25%;
+            gap: 1.4rem;
+          }
+
+          #compare-root[data-variant="stack"] .compare-header {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 25rem);
+          }
+
+          #compare-root[data-variant="stack"] .compare-body {
+            grid-template-columns: minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr) 7.25rem minmax(0, 1fr);
+          }
+
+          #compare-root[data-variant="stack"] .compare-side[data-side="left"],
+          #compare-root[data-variant="stack"] .compare-side[data-side="right"] {
+            padding: 0;
+          }
+
+          #compare-root[data-variant="stack"] .compare-side {
+            grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr);
+            column-gap: 2.1rem;
+          }
+
+          #compare-root[data-variant="stack"] .compare-side-header {
+            display: grid;
+            align-content: end;
+            gap: 0.7rem;
+            padding: 0 2.1rem 1.3rem 0;
+            border-right: 1px solid var(--compare-hairline);
+            border-bottom: 0;
+          }
+
+          #compare-root[data-variant="stack"] .compare-list {
+            padding: 0 0 0 0.2rem;
+          }
+
+          #compare-root[data-variant="stack"] .compare-item[data-priority="hero"] {
+            min-height: 15rem;
+            padding-bottom: 0;
+          }
+
+          #compare-root[data-variant="stack"] .compare-divider {
+            grid-template-columns: 1fr auto auto 1fr;
+            grid-template-rows: minmax(0, 1fr);
           }
 
           #compare-root[data-variant="stack"] .compare-divider-line {
@@ -910,600 +431,470 @@
             right: 0;
             bottom: auto;
             left: 0;
-            width: 100%;
-            height: 0.16rem;
+            width: auto;
+            height: 1px;
             transform: translateY(-50%) scaleX(0);
           }
 
-          .compare-vs {
-            position: relative;
-            z-index: 1;
-            width: 7rem;
-            aspect-ratio: 1;
-            display: grid;
-            place-items: center;
-            box-sizing: border-box;
-            border: 0.14rem solid var(--compare-line);
-            border-radius: 50%;
-            background:
-              radial-gradient(circle, var(--compare-accent) 0 0.58rem, transparent 0.62rem),
-              var(--compare-surface);
-            color: var(--compare-accent);
-            box-shadow: 0 1rem 2.6rem color-mix(in srgb, var(--compare-shadow) 16%, transparent);
-            font-size: 2rem;
-            font-weight: 950;
-            line-height: 1;
-            letter-spacing: 0;
-            opacity: 0;
-            transform: scale(0.9);
-            transform-origin: 50% 50%;
-            will-change: transform, filter, opacity;
-          }
-
           #compare-root[data-variant="stack"] .compare-vs {
-            width: 5.3rem;
-            font-size: 1.55rem;
+            grid-column: 2;
+            grid-row: 1;
           }
 
-          @keyframes compare-row-living {
-            0% {
-              transform: translateY(-0.78rem) scale(1.006);
-              filter: brightness(1.04);
-            }
-            100% {
-              transform: translateY(0.78rem) scale(1.018);
-              filter: brightness(1.18);
-            }
-          }
-
-          @keyframes compare-pill-pulse {
-            0% {
-              transform: translateY(-0.22rem) scale(1.02);
-              filter: brightness(1.06);
-            }
-            100% {
-              transform: translateY(0.18rem) scale(1.16);
-              filter: brightness(1.24);
-            }
-          }
-
-          .compare-item {
-            animation: compare-row-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite alternate;
-          }
-
-          .compare-item:nth-child(2n) {
-            animation-delay: calc(var(--rf-scene-start, 0s) + 1.28s);
-            animation-direction: alternate-reverse;
-          }
-
-          .compare-side-tag,
-          .compare-vs {
-            animation: compare-pill-pulse 1.72s ease-in-out calc(var(--rf-scene-start, 0s) + 0.88s) infinite alternate;
-          }
-
-          #compare-root[data-has-side-titles="false"] .compare-panel {
-            grid-template-rows: minmax(0, 1fr);
-          }
-
-          #compare-root[data-has-side-titles="false"] .compare-panel-head {
-            display: none;
-          }
-
-          #compare-root[data-card-mode="hero"] .compare-panel {
-            grid-template-rows: minmax(0, 1fr);
-          }
-
-          #compare-root[data-card-mode="hero"] .compare-panel-head {
-            display: none;
-          }
-
-          .compare-footer {
-            min-width: 0;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            align-items: center;
-            gap: 1.5rem;
-            color: var(--compare-muted);
-            font-size: 1.24rem;
-            font-weight: 690;
-            line-height: 1.2;
-            letter-spacing: 0;
-          }
-
-          .compare-footnote {
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-
-          .compare-unit {
-            color: var(--compare-accent);
-            font-weight: 840;
-            white-space: nowrap;
+          #compare-root[data-variant="stack"] .compare-delta {
+            grid-column: 3;
+            grid-row: 1;
+            margin: 0 0 0 0.75rem;
           }
         </style>
+
+        <span class="compare-ghost" aria-hidden="true">Δ</span>
         <section class="compare-stage">
           <header class="compare-header">
-            <div class="compare-title-group">
-              <p class="compare-kicker" data-compare-mood></p>
+            <div>
+              <p class="compare-eyebrow" data-compare-mood></p>
               <h1 class="compare-title" data-compare-title></h1>
             </div>
-            <p class="compare-source" data-compare-source></p>
+            <p class="compare-context" data-compare-context></p>
           </header>
+
           <div class="compare-body">
-            <article class="compare-panel" data-side="left">
-              <header class="compare-panel-head">
+            <article class="compare-side" data-side="left">
+              <header class="compare-side-header">
+                <span class="compare-side-index">01</span>
                 <h2 class="compare-side-title" data-compare-left-title></h2>
-                <span class="compare-side-tag">01</span>
               </header>
               <ol class="compare-list" data-compare-left-list></ol>
             </article>
+
             <div class="compare-divider" aria-hidden="true">
               <span class="compare-divider-line"></span>
-              <span class="compare-vs" aria-hidden="true"></span>
+              <span class="compare-vs">VS</span>
+              <span class="compare-delta" data-compare-delta></span>
             </div>
-            <article class="compare-panel" data-side="right">
-              <header class="compare-panel-head">
+
+            <article class="compare-side" data-side="right">
+              <header class="compare-side-header">
+                <span class="compare-side-index">02</span>
                 <h2 class="compare-side-title" data-compare-right-title></h2>
-                <span class="compare-side-tag">02</span>
               </header>
               <ol class="compare-list" data-compare-right-list></ol>
             </article>
           </div>
-          <footer class="compare-footer">
-            <div class="compare-footnote" data-compare-footnote></div>
-            <div class="compare-unit" data-compare-unit></div>
-          </footer>
         </section>
+
         <script>
-        (function () {
-          const root =
-            document.querySelector("#compare-root") ||
-            document.querySelector('[data-hf-authored-id="compare-root"]') ||
-            document.querySelector('[data-hf-inner-root="true"]');
-          const host =
-            root.parentElement?.closest("[data-variable-values]") ||
-            root.closest("[data-variable-values]") ||
-            root.closest("[data-composition-id]") ||
-            root;
-          const scopedHyperframes = typeof __hyperframes === "undefined" ? null : __hyperframes;
-          const hostCompositionId = host.getAttribute("data-composition-id");
-          const variables = {
-            ...(window.__hyperframes?.getVariables?.() ?? {}),
-            ...(scopedHyperframes?.getVariables?.() ?? {}),
-            ...((hostCompositionId && globalThis.__hfVariablesByComp?.[hostCompositionId]) || {}),
-            ...readHostVariables(host)
-          };
+          (function () {
+            const root =
+              document.querySelector("#compare-root") ||
+              document.querySelector('[data-hf-authored-id="compare-root"]') ||
+              document.querySelector('[data-hf-inner-root="true"]');
+            const host =
+              root.parentElement?.closest("[data-variable-values]") ||
+              root.closest("[data-variable-values]") ||
+              root.closest("[data-composition-id]") ||
+              root;
+            const scopedHyperframes = typeof __hyperframes === "undefined" ? null : __hyperframes;
+            const hostCompositionId = host.getAttribute("data-composition-id");
+            const variables = {
+              ...(window.__hyperframes?.getVariables?.() ?? {}),
+              ...(scopedHyperframes?.getVariables?.() ?? {}),
+              ...((hostCompositionId && globalThis.__hfVariablesByComp?.[hostCompositionId]) || {}),
+              ...readHostVariables(host)
+            };
 
-          const title = stringValue(variables.title, "비교");
-          const source = stringValue(variables.source, "");
-          const unit = displayUnit(variables.unit);
-          const sideLabels = {
-            left: stringValue(variables.leftLabel, ""),
-            right: stringValue(variables.rightLabel, "")
-          };
-          const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title, sideLabels);
-          const numericRows = groups.left.concat(groups.right).filter((row) => row.valueKind === "number");
-          const maxValue = Math.max(1, ...numericRows.map((row) => Math.abs(row.numeric)));
-          const duration = blockDuration(root, 5);
-          const phases = phaseTimes(duration);
-          const repeatIndex = numberValue(variables.repeatIndex, 0);
-          const isStackVariant = repeatIndex % 2 === 1;
-          const enterAt = (time) => Number((time * phases.enterScale).toFixed(4));
-          const enterDuration = (time) => Number(Math.max(0.12, time * phases.enterScale).toFixed(4));
-          const enterGap = (time) => Number(Math.max(0.015, time * phases.enterScale).toFixed(4));
+            const title = stringValue(variables.title, "비교");
+            const source = stringValue(variables.source, "");
+            const unit = displayUnit(variables.unit);
+            const sideLabels = {
+              left: stringValue(variables.leftLabel, ""),
+              right: stringValue(variables.rightLabel, "")
+            };
+            const groups = groupRows(arrayValue(variables.items), arrayValue(variables.values), title, sideLabels);
+            const duration = blockDuration(root, 5);
+            const phases = phaseTimes(duration);
+            const repeatIndex = numberValue(variables.repeatIndex, 0);
+            const isStackVariant = repeatIndex % 2 === 1;
 
-          root.style.setProperty("--compare-accent", safeColor(variables.accent));
-          root.querySelector("[data-compare-title]").textContent = title;
-          root.querySelector("[data-compare-mood]").textContent = "";
-          root.querySelector("[data-compare-mood]").setAttribute("aria-hidden", "true");
-          root.querySelector("[data-compare-source]").textContent = "";
-          root.querySelector("[data-compare-source]").style.opacity = "0";
-          root.dataset.hasSideTitles = groups.leftTitle || groups.rightTitle ? "true" : "false";
-          root.dataset.cardMode = groups.left.length === 1 && groups.right.length === 1 ? "hero" : "list";
-          root.dataset.variant = isStackVariant ? "stack" : "split";
-          root.querySelector("[data-compare-left-title]").textContent = groups.leftTitle;
-          root.querySelector("[data-compare-right-title]").textContent = groups.rightTitle;
-          root.querySelector("[data-compare-footnote]").textContent = source;
-          root.querySelector("[data-compare-unit]").textContent = unit ? `단위 ${unit}` : "";
-          root.setAttribute("aria-label", ariaLabel(title, groups, unit));
+            root.style.setProperty("--compare-accent", safeColor(variables.accent));
+            root.dataset.variant = isStackVariant ? "stack" : "split";
+            root.dataset.hasContext = source ? "true" : "false";
+            root.querySelector("[data-compare-title]").textContent = title;
+            root.querySelector("[data-compare-mood]").textContent = String(variables.mood || "compare").toUpperCase();
+            root.querySelector("[data-compare-context]").textContent = source;
+            if (!source) root.querySelector(".compare-context").remove();
+            root.querySelector("[data-compare-left-title]").textContent = groups.leftTitle;
+            root.querySelector("[data-compare-right-title]").textContent = groups.rightTitle;
+            root.setAttribute("aria-label", ariaLabel(title, groups, unit));
 
-          renderRows(root.querySelector("[data-compare-left-list]"), groups.left, unit, maxValue, groups.leftTitle);
-          renderRows(root.querySelector("[data-compare-right-list]"), groups.right, unit, maxValue, groups.rightTitle);
-
-          window.__timelines = window.__timelines || {};
-          const tl = gsap.timeline({ paused: true });
-          const header = root.querySelector(".compare-header");
-          const leftPanel = root.querySelector('[data-side="left"]');
-          const rightPanel = root.querySelector('[data-side="right"]');
-          const divider = root.querySelector(".compare-divider");
-          const dividerLine = root.querySelector(".compare-divider-line");
-          const vs = root.querySelector(".compare-vs");
-          const leftRows = gsap.utils.toArray(root.querySelectorAll('[data-side="left"] .compare-item'));
-          const rightRows = gsap.utils.toArray(root.querySelectorAll('[data-side="right"] .compare-item'));
-          const fills = gsap.utils.toArray(root.querySelectorAll(".compare-meter-fill"));
-          const values = gsap.utils.toArray(root.querySelectorAll(".compare-value"));
-          const footer = root.querySelector(".compare-footer");
-          const allRows = leftRows.concat(rightRows);
-          const sideTags = gsap.utils.toArray(root.querySelectorAll(".compare-side-tag"));
-          const dividerFrom = isStackVariant ? { scaleX: 0 } : { scaleY: 0 };
-          const dividerTo = isStackVariant ? { scaleX: 1, duration: enterDuration(0.2), ease: "expo.out" } : { scaleY: 1, duration: enterDuration(0.2), ease: "expo.out" };
-          const leftPanelFrom = isStackVariant ? { opacity: 0, y: -24 } : { opacity: 0, x: -34 };
-          const leftPanelTo = isStackVariant ? { opacity: 1, y: 0, duration: enterDuration(0.22), ease: "power3.out" } : { opacity: 1, x: 0, duration: enterDuration(0.22), ease: "power3.out" };
-          const rightPanelFrom = isStackVariant ? { opacity: 0, y: 24 } : { opacity: 0, x: 34 };
-          const rightPanelTo = isStackVariant ? { opacity: 1, y: 0, duration: enterDuration(0.22), ease: "power3.out" } : { opacity: 1, x: 0, duration: enterDuration(0.22), ease: "power3.out" };
-
-          tl.fromTo(header, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: enterDuration(0.22), ease: "power3.out" }, 0);
-          tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: enterDuration(0.1), ease: "none" }, enterAt(0.05));
-          tl.fromTo(dividerLine, dividerFrom, dividerTo, enterAt(0.06));
-          tl.fromTo(vs, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: enterDuration(0.18), ease: "back.out(1.4)" }, enterAt(0.12));
-          tl.fromTo(leftPanel, leftPanelFrom, leftPanelTo, enterAt(0.06));
-          tl.fromTo(leftRows, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: enterDuration(0.16), ease: "power2.out", stagger: enterGap(0.02) }, enterAt(0.14));
-          tl.fromTo(rightPanel, rightPanelFrom, rightPanelTo, enterAt(0.1));
-          tl.fromTo(rightRows, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: enterDuration(0.16), ease: "power2.out", stagger: enterGap(0.02) }, enterAt(0.18));
-          tl.fromTo(fills, { scaleX: 0 }, { scaleX: 1, duration: enterDuration(0.18), ease: "power3.out", stagger: enterGap(0.018) }, enterAt(0.2));
-          tl.fromTo(values, { opacity: 0, x: 8 }, { opacity: 1, x: 0, duration: enterDuration(0.14), ease: "power2.out", stagger: enterGap(0.018) }, enterAt(0.22));
-          values.forEach((valueEl) => {
-            const row = valueEl.__rfRow;
-            if (!row) return;
-            const counter = { value: 0 };
-            valueEl.textContent = `${formatNumber(0, row.decimals)}${unit}`;
-            tl.to(
-              counter,
-              {
-                value: row.numeric,
-                duration: phases.countDuration,
-                ease: "power4.out",
-                onUpdate: function () {
-                  valueEl.textContent = `${formatNumber(counter.value, row.decimals)}${unit}`;
-                },
-                onComplete: function () {
-                  valueEl.textContent = formatDisplayValue(row, unit);
-                }
-              },
-              phases.countStart
+            const leftEntries = renderRows(
+              root.querySelector("[data-compare-left-list]"),
+              groups.left,
+              unit,
+              groups.leftTitle
             );
-            tl.set(valueEl, { textContent: formatDisplayValue(row, unit) }, phases.countEnd);
-          });
-          tl.fromTo(footer, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: enterDuration(0.12), ease: "power2.out" }, enterAt(0.3));
-          tl.to(leftPanel, {
-            opacity: 0.92,
-            y: 16,
-            scale: 0.99,
-            duration: 0.94,
-            ease: "sine.inOut",
-            repeat: loopRepeat(0.94),
-            yoyo: true
-          }, phases.livingStart);
-          tl.to(rightPanel, {
-            y: -20,
-            scale: 1.034,
-            duration: 1.03,
-            ease: "sine.inOut",
-            repeat: loopRepeat(1.03),
-            yoyo: true
-          }, phases.livingStart + 0.06);
-          tl.to(sideTags.concat(vs), {
-            scale: 1.16,
-            y: -5,
-            filter: "brightness(1.22)",
-            duration: 0.63,
-            ease: "sine.inOut",
-            repeat: loopRepeat(0.63),
-            yoyo: true
-          }, phases.livingStart + 0.03);
-          allRows.forEach((row, index) => {
-            const rowStart = phases.livingStart + index * 0.11;
-            tl.to(row, {
-              y: index % 2 === 0 ? -18 : 18,
-              scale: 1.018,
-              filter: "brightness(1.18)",
-              duration: 0.74,
-              ease: "sine.inOut",
-              repeat: loopRepeat(0.74, 0.16),
-              repeatDelay: 0.16,
-              yoyo: true
-            }, rowStart);
-          });
-          tl.to(root.querySelector(".compare-stage"), { y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          tl.addLabel("final", duration);
-          timelineIds(root).forEach((id) => {
-            if (id) window.__timelines[id] = tl;
-          });
-          globalThis.__timelines = window.__timelines;
-          timelineIds(root).forEach((id) => {
-            if (id) globalThis.__timelines[id] = tl;
-          });
-          signalRuntimeReady();
+            const rightEntries = renderRows(
+              root.querySelector("[data-compare-right-list]"),
+              groups.right,
+              unit,
+              groups.rightTitle
+            );
+            const delta = deltaText(leftEntries[0]?.row, rightEntries[0]?.row, unit);
+            root.querySelector("[data-compare-delta]").textContent = delta;
 
-          function renderRows(list, rows, suffix, maxNumeric, panelTitle) {
-            list.dataset.rowCount = String(rows.length);
-            rows.forEach((row) => {
-              const heroMode = rows.length === 1;
-              const item = document.createElement("li");
-              const copy = document.createElement("span");
-              const label = document.createElement("span");
-              const description = document.createElement("span");
-              const meter = document.createElement("span");
-              const fill = document.createElement("span");
-              const value = document.createElement("span");
-              const showLabel =
-                row.valueKind === "empty" || !(rows.length === 1 && normalizedText(row.label) === normalizedText(panelTitle));
+            window.__timelines = window.__timelines || {};
+            const tl = gsap.timeline({ paused: true });
+            const header = root.querySelector(".compare-header");
+            const leftHeader = root.querySelector('[data-side="left"] .compare-side-header');
+            const rightHeader = root.querySelector('[data-side="right"] .compare-side-header');
+            const leftHero = leftEntries[0];
+            const rightHero = rightEntries[0];
+            const divider = root.querySelector(".compare-divider");
+            const dividerLine = root.querySelector(".compare-divider-line");
+            const vs = root.querySelector(".compare-vs");
+            const deltaEl = root.querySelector(".compare-delta");
+            const supportingRows = leftEntries.slice(1).concat(rightEntries.slice(1));
+            const dividerFrom = isStackVariant ? { scaleX: 0 } : { scaleY: 0 };
+            const dividerTo = isStackVariant
+              ? { scaleX: 1, duration: 0.18, ease: "expo.out" }
+              : { scaleY: 1, duration: 0.18, ease: "expo.out" };
 
-              item.className = "compare-item";
-              copy.className = "compare-copy";
-              label.className = "compare-label";
-              description.className = "compare-description";
-              meter.className = "compare-meter";
-              fill.className = "compare-meter-fill";
-              value.className = "compare-value";
-              item.dataset.valueKind = row.valueKind;
-              item.dataset.cardMode = heroMode ? "hero" : "list";
-
-              label.textContent = row.label;
-              if (!heroMode && !showLabel) {
-                label.hidden = true;
-                label.style.display = "none";
-              }
-
-              copy.append(label);
-              if (heroMode) {
-                value.textContent = heroDisplayText(row, suffix);
-                if (row.valueKind === "number") value.__rfRow = row;
-                if (row.valueKind === "empty") {
-                  label.hidden = true;
-                  label.style.display = "none";
-                  item.append(value);
-                } else {
-                  item.append(value, copy);
-                }
-              } else if (row.valueKind === "text") {
-                description.textContent = row.description;
-                copy.append(description);
-                item.append(copy);
-              } else if (row.valueKind === "number") {
-                fill.style.setProperty("--compare-width", `${Math.max(8, (Math.abs(row.numeric) / maxNumeric) * 100).toFixed(3)}%`);
-                value.textContent = formatDisplayValue(row, suffix);
-                value.__rfRow = row;
-                meter.appendChild(fill);
-                copy.append(meter);
-                item.append(copy, value);
-              } else {
-                item.append(copy);
-              }
-              list.appendChild(item);
+            tl.addLabel("start", 0);
+            tl.fromTo(header, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, 0);
+            tl.fromTo(leftHeader, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.16, ease: "power2.out" }, 0.08);
+            if (leftHero) {
+              tl.fromTo(
+                leftHero.item,
+                { opacity: 0, y: 24, scale: 0.985 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.24, ease: "power3.out" },
+                0.16
+              );
+            }
+            tl.fromTo(divider, { opacity: 0 }, { opacity: 1, duration: 0.1, ease: "power2.out" }, 0.29);
+            tl.fromTo(dividerLine, dividerFrom, dividerTo, 0.3);
+            tl.fromTo(vs, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.16, ease: "power2.out" }, 0.38);
+            tl.fromTo(rightHeader, { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.16, ease: "power2.out" }, 0.38);
+            if (rightHero) {
+              tl.fromTo(
+                rightHero.item,
+                { opacity: 0, y: 24, scale: 0.985 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.24, ease: "power3.out" },
+                0.46
+              );
+            }
+            tl.fromTo(deltaEl, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" }, 0.58);
+            if (leftHero) {
+              tl.to(leftHero.item, { opacity: 0.74, duration: 0.12, ease: "power2.out" }, 0.52);
+            }
+            supportingRows.forEach((entry, index) => {
+              const start = 0.72 + index * 0.1;
+              tl.fromTo(
+                entry.item,
+                { opacity: 0, y: 12 },
+                { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" },
+                start
+              );
             });
-          }
 
-          function groupRows(labels, rawValues, fallbackTitle, sideLabels) {
-            const rows = normalizeRows(labels, rawValues, fallbackTitle);
-            const left = [];
-            const right = [];
-            for (const row of rows) {
-              const side = sideForLabel(row.label);
-              if (side === "left") left.push(row);
-              else if (side === "right") right.push(row);
+            if (leftHero?.row.valueKind === "number") {
+              addCountUp(leftHero.row, leftHero.value, phases.leftCountStart);
+            }
+            if (rightHero?.row.valueKind === "number") {
+              addCountUp(rightHero.row, rightHero.value, phases.rightCountStart);
             }
 
-            if (left.length > 0 && right.length > 0) {
+            tl.addLabel("final", duration);
+            timelineIds(root).forEach((id) => {
+              if (id) window.__timelines[id] = tl;
+            });
+            globalThis.__timelines = window.__timelines;
+            timelineIds(root).forEach((id) => {
+              if (id) globalThis.__timelines[id] = tl;
+            });
+            signalRuntimeReady();
+
+            function addCountUp(row, target, start) {
+              const counter = { value: 0 };
+              const halfDuration = phases.countDuration / 2;
+              const update = function () {
+                target.textContent = formatNumber(counter.value, row.decimals) + unit;
+              };
+              tl.to(
+                counter,
+                {
+                  value: row.numeric * 0.5,
+                  duration: halfDuration,
+                  ease: "power2.out",
+                  onUpdate: update
+                },
+                start
+              );
+              tl.to(
+                counter,
+                {
+                  value: row.numeric,
+                  duration: halfDuration,
+                  ease: "power2.out",
+                  onUpdate: update,
+                  onComplete: function () {
+                    target.textContent = formatDisplayValue(row, unit);
+                  }
+                },
+                start + halfDuration
+              );
+            }
+
+            function renderRows(list, rows, suffix, sideTitle) {
+              list.dataset.rowCount = String(rows.length);
+              return rows.map((row, index) => {
+                const item = document.createElement("li");
+                const label = document.createElement("p");
+                const value = document.createElement("span");
+                const priority = index === 0 ? "hero" : "support";
+                const showLabel =
+                  row.valueKind !== "empty" && normalizedText(row.label) !== normalizedText(sideTitle);
+
+                item.className = "compare-item";
+                item.dataset.priority = priority;
+                item.dataset.valueKind = row.valueKind;
+                label.className = "compare-label";
+                value.className = "compare-value";
+                label.textContent = row.label;
+                value.textContent =
+                  row.valueKind === "number" && priority === "hero"
+                    ? formatNumber(0, row.decimals) + suffix
+                    : displayValue(row, suffix);
+                if (row.valueKind === "number" && priority === "hero") value.__rfRow = row;
+                if (showLabel) item.append(label);
+                item.append(value);
+                list.appendChild(item);
+                return { item, value, row };
+              });
+            }
+
+            function groupRows(labels, rawValues, fallbackTitle, suppliedSideLabels) {
+              const rows = normalizeRows(labels, rawValues, fallbackTitle);
+              const left = [];
+              const right = [];
+              const neutral = [];
+              for (const row of rows) {
+                const side = sideForLabel(row.label);
+                if (side === "left") left.push(row);
+                else if (side === "right") right.push(row);
+                else neutral.push(row);
+              }
+
+              if (left.length > 0 && right.length > 0) {
+                neutral.forEach((row, index) => {
+                  (index % 2 === 0 ? left : right).push(row);
+                });
+              } else if (left.length > 0) {
+                right.push(...neutral);
+              } else if (right.length > 0) {
+                left.push(...neutral);
+              } else {
+                const midpoint = Math.max(1, Math.ceil(rows.length / 2));
+                left.push(...rows.slice(0, midpoint));
+                right.push(...rows.slice(midpoint));
+              }
+
+              const leftTitle = stringValue(suppliedSideLabels.left, titleForRows(left, "기존"));
+              const rightTitle = stringValue(suppliedSideLabels.right, titleForRows(right, "신규"));
+              if (left.length === 0) {
+                left.push(emptyRow(leftTitle || "비교 대상"));
+              }
+              if (right.length === 0) {
+                right.push(emptyRow(rightTitle || "비교 대상"));
+              }
+
+              return { left, right, leftTitle, rightTitle };
+            }
+
+            function emptyRow(label) {
+              return { label, raw: "", description: "", valueKind: "empty", numeric: 0, decimals: 0 };
+            }
+
+            function normalizeRows(labels, rawValues, fallbackTitle) {
+              const count = Math.max(labels.length, rawValues.length);
+              if (count === 0) return [emptyRow(fallbackTitle)];
+              const rows = [];
+              for (let index = 0; index < count; index += 1) {
+                const raw = rawValues[index];
+                const value = valueMeta(raw, labels[index]);
+                rows.push({
+                  label: stringValue(labels[index], "항목 " + String(index + 1)),
+                  raw,
+                  description: value.description,
+                  valueKind: value.kind,
+                  numeric: value.numeric,
+                  decimals: value.decimals
+                });
+              }
+              return rows;
+            }
+
+            function sideForLabel(label) {
+              const text = String(label).toLowerCase();
+              if (/(기존|이전|현재|전|old|previous|before|baseline)/i.test(text)) return "left";
+              if (/(신규|새|개선|후|new|after|target|next)/i.test(text)) return "right";
+              return "none";
+            }
+
+            function titleForRows(rows, fallback) {
+              const labels = rows.map((row) => row.label);
+              if (labels.some((label) => /(기존|이전|old|previous|before|baseline)/i.test(label))) return "기존";
+              if (labels.some((label) => /(신규|새|new|after|target|next)/i.test(label))) return "신규";
+              return fallback;
+            }
+
+            function deltaText(leftRow, rightRow, suffix) {
+              if (leftRow?.valueKind === "number" && rightRow?.valueKind === "number") {
+                const amount = rightRow.numeric - leftRow.numeric;
+                const decimals = Math.max(leftRow.decimals, rightRow.decimals);
+                const sign = amount > 0 ? "+" : amount < 0 ? "−" : "±";
+                return "Δ " + sign + formatNumber(Math.abs(amount), decimals) + suffix;
+              }
+              return "Δ 비교";
+            }
+
+            function arrayValue(value) {
+              return Array.isArray(value) ? value : [];
+            }
+
+            function readHostVariables(element) {
+              const raw = element?.getAttribute("data-variable-values");
+              if (!raw) return {};
+              try {
+                const parsed = JSON.parse(raw);
+                return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+              } catch {
+                return {};
+              }
+            }
+
+            function stringValue(value, fallback) {
+              if (value === undefined || value === null) return fallback;
+              const text = String(value).trim();
+              return text.length > 0 ? text : fallback;
+            }
+
+            function displayUnit(value) {
+              const text = stringValue(value, "");
+              if (!text) return "";
+              const normalized = text === "％" ? "%" : text.toLowerCase();
+              return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+                ? normalized
+                : "";
+            }
+
+            function normalizedText(value) {
+              return String(value ?? "").trim();
+            }
+
+            function numberValue(value, fallback) {
+              const number = Number(value);
+              return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : fallback;
+            }
+
+            function valueMeta(value, label) {
+              if (value === undefined || value === null) {
+                return { kind: "empty", description: "", numeric: 0, decimals: 0 };
+              }
+              const text = String(value).trim();
+              if (!text || text === normalizedText(label)) {
+                return { kind: "empty", description: "", numeric: 0, decimals: 0 };
+              }
+              if (typeof value === "number" && Number.isFinite(value)) {
+                return { kind: "number", description: "", numeric: value, decimals: decimalPlaces(value) };
+              }
+              const numericMatch = text.replace(/,/g, "").match(/^-?\d+(?:\.\d+)?$/);
+              if (numericMatch) {
+                return { kind: "number", description: "", numeric: Number(numericMatch[0]), decimals: decimalPlaces(text) };
+              }
+              return { kind: "text", description: text, numeric: 0, decimals: 0 };
+            }
+
+            function decimalPlaces(value) {
+              if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+                return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+              }
+              const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
+              return match ? Math.min(2, match[1].length) : 0;
+            }
+
+            function formatNumber(value, decimals) {
+              const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
+              return new Intl.NumberFormat("ko-KR", {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+              }).format(Number(fixed));
+            }
+
+            function formatDisplayValue(row, suffix) {
+              if (row.valueKind === "text") return row.description;
+              if (row.valueKind === "empty") return row.label;
+              return formatNumber(row.numeric, row.decimals) + suffix;
+            }
+
+            function displayValue(row, suffix) {
+              return formatDisplayValue(row, suffix) || row.label || "항목";
+            }
+
+            function ariaLabel(compareTitle, comparisonGroups, suffix) {
+              const rowText = (row) => row.label + " " + formatDisplayValue(row, suffix);
+              const leftText = comparisonGroups.left.map(rowText).join(", ");
+              const rightText = comparisonGroups.right.map(rowText).join(", ");
+              return compareTitle + ": " + comparisonGroups.leftTitle + " " + leftText + "; " + comparisonGroups.rightTitle + " " + rightText;
+            }
+
+            function safeColor(value) {
+              const text = stringValue(value, "");
+              return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+                ? text
+                : "var(--rf-accent, var(--rf-text, currentColor))";
+            }
+
+            function blockDuration(element, fallback) {
+              let node = element.parentElement;
+              while (node) {
+                const value = Number(node.getAttribute?.("data-duration"));
+                if (Number.isFinite(value) && value > 0) return value;
+                node = node.parentElement;
+              }
+              const own = Number(element.getAttribute("data-duration"));
+              return Number.isFinite(own) && own > 0 ? own : fallback;
+            }
+
+            function phaseTimes(total) {
+              const maxStart = Math.max(0.24, Math.min(0.46, total - 0.74));
               return {
-                left,
-                right,
-                leftTitle: titleForRows(left, "기존"),
-                rightTitle: titleForRows(right, "신규")
+                leftCountStart: 0.24,
+                rightCountStart: maxStart,
+                countDuration: 0.7
               };
             }
 
-            const midpoint = Math.max(1, Math.ceil(rows.length / 2));
-            const splitLeft = rows.slice(0, midpoint);
-            const splitRight = rows.slice(midpoint);
-            return {
-              left: splitLeft,
-              right: splitRight,
-              leftTitle: stringValue(sideLabels.left, stringValue(labels[0], "")),
-              rightTitle: stringValue(sideLabels.right, stringValue(labels[midpoint], ""))
-            };
-          }
-
-          function normalizeRows(labels, rawValues, fallbackTitle) {
-            const count = Math.max(labels.length, rawValues.length);
-            if (count === 0) {
-              return [{ label: fallbackTitle, raw: "", description: "", valueKind: "empty", numeric: 0, decimals: 0 }];
+            function timelineIds(rootElement) {
+              const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+              if (runtimeId) return new Set([runtimeId]);
+              return new Set([
+                rootElement?.getAttribute("data-composition-id") || "",
+                rootElement?.getAttribute("data-hf-original-composition-id") || "",
+                "compare"
+              ]);
             }
-            const rows = [];
-            for (let index = 0; index < count; index += 1) {
-              const raw = rawValues[index];
-              const value = valueMeta(raw, labels[index]);
-              rows.push({
-                label: stringValue(labels[index], `항목 ${index + 1}`),
-                raw,
-                description: value.description,
-                valueKind: value.kind,
-                numeric: value.numeric,
-                decimals: value.decimals
-              });
+
+            function signalRuntimeReady() {
+              if (typeof window.__hfForceTimelineRebind === "function") {
+                window.__hfForceTimelineRebind();
+              }
+              if (typeof window.__hfFlushSync === "function") {
+                window.__hfFlushSync();
+              }
+              window.__playerReady = true;
+              window.__renderReady = true;
             }
-            return rows;
-          }
-
-          function sideForLabel(label) {
-            const text = String(label).toLowerCase();
-            if (/(기존|이전|현재|전|old|previous|before|baseline)/i.test(text)) return "left";
-            if (/(신규|새|개선|후|new|after|target|next)/i.test(text)) return "right";
-            return "none";
-          }
-
-          function titleForRows(rows, fallback) {
-            const labels = rows.map((row) => row.label);
-            if (labels.some((label) => /(기존|이전|old|previous|before|baseline)/i.test(label))) return "기존";
-            if (labels.some((label) => /(신규|새|new|after|target|next)/i.test(label))) return "신규";
-            return fallback;
-          }
-
-          function arrayValue(value) {
-            return Array.isArray(value) ? value : [];
-          }
-
-          function readHostVariables(element) {
-            const raw = element?.getAttribute("data-variable-values");
-            if (!raw) return {};
-            try {
-              const parsed = JSON.parse(raw);
-              return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
-            } catch {
-              return {};
-            }
-          }
-
-          function stringValue(value, fallback) {
-            if (value === undefined || value === null) return fallback;
-            const text = String(value).trim();
-            return text.length > 0 ? text : fallback;
-          }
-
-          function displayUnit(value) {
-            const text = stringValue(value, "");
-            if (!text) return "";
-            const normalized = text === "％" ? "%" : text.toLowerCase();
-            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
-              ? normalized
-              : "";
-          }
-
-          function normalizedText(value) {
-            return String(value ?? "").trim();
-          }
-
-          function numberValue(value, fallback) {
-            const number = Number(value);
-            return Number.isFinite(number) ? Math.max(0, Math.floor(number)) : fallback;
-          }
-
-          function valueMeta(value, label) {
-            if (value === undefined || value === null) {
-              return { kind: "empty", description: "", numeric: 0, decimals: 0 };
-            }
-            const text = String(value).trim();
-            if (!text || text === normalizedText(label)) {
-              return { kind: "empty", description: "", numeric: 0, decimals: 0 };
-            }
-            if (typeof value === "number" && Number.isFinite(value)) {
-              return { kind: "number", description: "", numeric: value, decimals: decimalPlaces(value) };
-            }
-            const numericMatch = text.replace(/,/g, "").match(/^-?\d+(?:\.\d+)?$/);
-            if (numericMatch) {
-              return { kind: "number", description: "", numeric: Number(numericMatch[0]), decimals: decimalPlaces(text) };
-            }
-            return { kind: "text", description: text, numeric: 0, decimals: 0 };
-          }
-
-          function numericValue(value) {
-            if (typeof value === "number" && Number.isFinite(value)) return value;
-            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
-            return match ? Number(match[0]) : 0;
-          }
-
-          function decimalPlaces(value) {
-            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
-              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
-            }
-            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
-            return match ? Math.min(2, match[1].length) : 0;
-          }
-
-          function formatNumber(value, decimals) {
-            const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
-            return new Intl.NumberFormat("ko-KR", {
-              minimumFractionDigits: decimals,
-              maximumFractionDigits: decimals
-            }).format(Number(fixed));
-          }
-
-          function formatDisplayValue(row, suffix) {
-            if (row.valueKind === "text") return row.description;
-            if (row.valueKind === "empty") return "";
-            return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
-          }
-
-          function heroDisplayText(row, suffix) {
-            return formatDisplayValue(row, suffix) || row.label || "항목";
-          }
-
-          function ariaLabel(compareTitle, groups, suffix) {
-            const rowText = (row) => {
-              const value = formatDisplayValue(row, suffix);
-              return value ? `${row.label} ${value}` : row.label;
-            };
-            const leftText = groups.left.map(rowText).join(", ");
-            const rightText = groups.right.map(rowText).join(", ");
-            return `${compareTitle}: ${groups.leftTitle} ${leftText}; ${groups.rightTitle} ${rightText}`;
-          }
-
-          function safeColor(value) {
-            const text = stringValue(value, "Highlight");
-            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
-              ? text
-              : "Highlight";
-          }
-
-          function blockDuration(element, fallback) {
-            let node = element.parentElement;
-            while (node) {
-              const value = Number(node.getAttribute?.("data-duration"));
-              if (Number.isFinite(value) && value > 0) return value;
-              node = node.parentElement;
-            }
-            const own = Number(element.getAttribute("data-duration"));
-            return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
-
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.44, Math.max(0.32, total * 0.1));
-            const exitStart = Math.max(1.35, total - exitDuration);
-            const enterScale = 1;
-            const countStart = 0.24;
-            const countEnd = Math.min(0.98, Math.max(countStart + 0.3, exitStart - 0.12));
-            const livingStart = Math.min(exitStart - 0.42, Math.max(countEnd + 0.08, 1.08));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return {
-              enterScale,
-              exitStart,
-              exitDuration,
-              livingStart,
-              livingDuration,
-              countStart,
-              countEnd,
-              countDuration: Math.max(0.3, countEnd - countStart)
-            };
-          }
-
-          function loopRepeat(cycleDuration, repeatDelay = 0) {
-            const span = Math.max(0.1, cycleDuration + repeatDelay);
-            return Math.max(2, Math.ceil(72 / span));
-          }
-
-          function timelineIds(rootElement) {
-            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
-            if (runtimeId) return new Set([runtimeId]);
-            return new Set([
-              rootElement?.getAttribute("data-composition-id") || "",
-              rootElement?.getAttribute("data-hf-original-composition-id") || "",
-              "compare"
-            ]);
-          }
-
-          function signalRuntimeReady() {
-            if (typeof window.__hfForceTimelineRebind === "function") {
-              window.__hfForceTimelineRebind();
-            }
-            if (typeof window.__hfFlushSync === "function") {
-              window.__hfFlushSync();
-            }
-            window.__playerReady = true;
-            window.__renderReady = true;
-          }
-        })();
+          })();
         </script>
       </div>
     </template>

@@ -7,8 +7,11 @@
     "panel": "#141414",
     "text": "#f5f2ea",
     "mutedText": "#b8b5ae",
+    "inkSubtle": "#8a8882",
+    "inkTertiary": "#625f5a",
     "accent": "#e10600",
     "accentAlt": "#e5484d",
+    "onAccent": "#fff3e4",
     "shadow": "#0a0a0c",
     "primary": "#e10600",
     "onPrimary": "#fff3e4",
@@ -17,7 +20,12 @@
     "safeRed": "#e5484d",
     "bloodOrange": "#ff4d00",
     "cyan": "#00e5ff",
-    "gold": "#d4af37"
+    "gold": "#d4af37",
+    "surface2": "#1c1c1e",
+    "surface3": "#242426",
+    "hairline": "#202022",
+    "hairlineStrong": "#262628",
+    "success": "#22c55e"
   },
   "moods": {
     "dramatic": {

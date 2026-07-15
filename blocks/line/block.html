@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":""},
     {"id":"reveal","type":"string","label":"Reveal","default":""},
     {"id":"visualKind","type":"string","label":"Visual Kind","default":""},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -27,662 +28,758 @@
         data-width="1920"
         data-height="1080"
         data-duration="4"
+        role="img"
+        aria-label=""
       >
         <style>
-        #line-root {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          box-sizing: border-box;
-          color: inherit;
-          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          overflow: hidden;
-          --line-accent: currentColor;
-          --line-text: var(--rf-text, currentColor);
-          --line-muted: color-mix(in srgb, var(--line-text) 68%, transparent);
-          --line-subtle: color-mix(in srgb, var(--line-text) 18%, transparent);
-          --line-faint: color-mix(in srgb, var(--line-text) 9%, transparent);
-          --line-panel: color-mix(in srgb, var(--line-text) 7%, transparent);
-          --line-shadow: var(--rf-shadow, currentColor);
-          --line-accent-soft: color-mix(in srgb, var(--line-accent) 20%, transparent);
-          --line-accent-faint: color-mix(in srgb, var(--line-accent) 10%, transparent);
-        }
-
-        .line-stage {
-          position: absolute;
-          inset: 0;
-          display: grid;
-          grid-template-rows: auto 1fr;
-          gap: 2rem;
-          box-sizing: border-box;
-          padding: 4.75rem 6rem 8.5rem;
-        }
-
-        .line-heading {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: end;
-          gap: 2rem;
-        }
-
-        .line-kicker {
-          margin: 0 0 0.75rem;
-          width: 5.5rem;
-          height: 0.35rem;
-          background: var(--line-accent);
-          color: var(--line-muted);
-          font-size: 1.625rem;
-          font-weight: 760;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .line-title {
-          margin: 0;
-          color: var(--line-text);
-          font-family: "Pretendard", "Pretendard Variable", system-ui, sans-serif;
-          font-size: 5.65rem;
-          font-weight: 900;
-          line-height: 1.05;
-          letter-spacing: -0.03em;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--line-shadow) 34%, transparent);
-        }
-
-        .line-unit {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-width: 8.5rem;
-          min-height: 3.75rem;
-          box-sizing: border-box;
-          padding: 0.75rem 1.5rem;
-          border: 0.125rem solid var(--line-subtle);
-          color: var(--line-text);
-          background: var(--line-panel);
-          font-size: 1.875rem;
-          font-weight: 850;
-          line-height: 1.05;
-          letter-spacing: 0;
-          white-space: nowrap;
-        }
-
-        .line-chart-shell {
-          position: relative;
-          min-height: 0;
-          border: 0.125rem solid var(--line-subtle);
-          background:
-            linear-gradient(90deg, var(--line-accent-faint), transparent 44%),
-            var(--line-panel);
-          box-shadow: 0 1.5rem 4rem color-mix(in srgb, var(--line-text) 14%, transparent);
-          overflow: hidden;
-          transform-origin: 50% 50%;
-          will-change: transform, opacity;
-        }
-
-        .line-chart-shell::before {
-          content: "";
-          position: absolute;
-          inset: 1.5rem;
-          border: 0.0625rem solid var(--line-faint);
-          pointer-events: none;
-        }
-
-        .line-chart-shell::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: -18%;
-          width: 18%;
-          background: linear-gradient(90deg, transparent, var(--line-accent-soft), transparent);
-          opacity: 0;
-          transform: skewX(-12deg);
-          pointer-events: none;
-          animation: line-scan-living 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.05s) infinite;
-        }
-
-        @keyframes line-scan-living {
-          0% {
-            left: -18%;
-            opacity: 0;
+          #line-root {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: var(--rf-text, currentColor);
+            font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --line-ink: var(--rf-text, currentColor);
+            --line-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+            --line-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+            --line-accent: var(--rf-accent, var(--rf-text, currentColor));
+            --line-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+            --line-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+            --line-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent)));
+            --line-grid: color-mix(in srgb, var(--rf-text, currentColor) 8%, transparent);
+            --line-area: color-mix(in srgb, var(--line-accent) 10%, transparent);
+            --line-type-small: 1.4rem;
+            --line-type-display: 5.5rem;
+            --line-type-value: 10.5rem;
           }
-          24%,
-          58% {
-            opacity: 0.78;
+
+          .line-stage {
+            position: absolute;
+            inset: 7.2% 6.25%;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            gap: 2.1rem;
+            min-width: 0;
+            min-height: 0;
           }
-          100% {
-            left: 104%;
-            opacity: 0;
+
+          .line-heading {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 2.5rem;
+            min-width: 0;
+            padding-bottom: 1.4rem;
+            border-bottom: 1px solid var(--line-hairline);
           }
-        }
 
-        .line-svg {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          overflow: visible;
-        }
+          .line-eyebrow,
+          .line-unit,
+          .line-endpoint-label,
+          .line-delta-label,
+          .line-x-label,
+          .line-y-label {
+            color: var(--line-muted);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--line-type-small);
+            font-weight: 680;
+            line-height: 1.1;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+          }
 
-        .line-grid {
-          stroke: var(--line-faint);
-          stroke-width: 2;
-          vector-effect: non-scaling-stroke;
-        }
+          .line-eyebrow {
+            margin: 0 0 0.85rem;
+            color: var(--line-tertiary);
+          }
 
-        .line-axis {
-          stroke: var(--line-subtle);
-          stroke-width: 3;
-          vector-effect: non-scaling-stroke;
-        }
+          .line-title {
+            max-width: 72rem;
+            margin: 0;
+            color: var(--line-ink);
+            font-size: var(--line-type-display);
+            font-weight: 780;
+            line-height: 0.98;
+            letter-spacing: -0.03em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
 
-        .line-area {
-          fill: var(--line-accent-soft);
-          opacity: 0.55;
-        }
+          .line-unit {
+            align-self: end;
+            padding-bottom: 0.55rem;
+            color: var(--line-muted);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+          }
 
-        .line-path {
-          fill: none;
-          stroke: var(--line-accent);
-          stroke-width: 10;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-          filter: drop-shadow(0 0.5rem 1rem var(--line-accent-soft));
-        }
+          .line-visual {
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+          }
 
-        .line-marker {
-          display: none;
-        }
+          .line-visual--trend {
+            display: block;
+          }
 
-        .line-point {
-          fill: var(--line-accent);
-          stroke: color-mix(in srgb, var(--line-text) 96%, transparent);
-          stroke-width: 7;
-          transform-box: fill-box;
-          transform-origin: center;
-          filter: drop-shadow(0 0.35rem 0.7rem var(--line-accent-soft));
-          will-change: transform, opacity;
-        }
+          .line-visual--delta-focus {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 25rem;
+            align-items: stretch;
+            gap: 3rem;
+          }
 
-        .line-point[data-highlight="false"] {
-          fill: color-mix(in srgb, var(--line-muted) 45%, transparent);
-          stroke: var(--line-faint);
-          filter: none;
-        }
+          .line-chart {
+            position: relative;
+            min-width: 0;
+            min-height: 0;
+            height: 100%;
+          }
 
-        .line-value,
-        .line-label,
-        .line-y-label,
-        .line-source {
-          fill: var(--line-text);
-          font-family: "Pretendard", "Pretendard Variable", system-ui, sans-serif;
-          letter-spacing: 0;
-        }
+          .line-svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+          }
 
-        .line-value {
-          font-size: 44px;
-          font-weight: 900;
-          text-anchor: middle;
-        }
+          .line-grid {
+            stroke: var(--line-grid);
+            stroke-width: 2;
+            stroke-dasharray: 1 15;
+            stroke-linecap: round;
+            vector-effect: non-scaling-stroke;
+          }
 
-        .line-value[data-anchor="start"],
-        .line-label[data-anchor="start"] {
-          text-anchor: start;
-        }
+          .line-baseline,
+          .line-endpoint-rule {
+            stroke: var(--line-hairline-strong);
+            stroke-width: 2;
+            vector-effect: non-scaling-stroke;
+          }
 
-        .line-value[data-anchor="end"],
-        .line-label[data-anchor="end"] {
-          text-anchor: end;
-        }
+          .line-area {
+            fill: var(--line-accent);
+            opacity: 0.08;
+            animation: line-area-breathe 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
 
-        .line-label {
-          fill: var(--line-muted);
-          font-size: 34px;
-          font-weight: 760;
-          text-anchor: middle;
-        }
+          @keyframes line-area-breathe {
+            0% {
+              filter: brightness(0.94);
+              opacity: 0.08;
+            }
+            100% {
+              filter: brightness(1.16);
+              opacity: 0.16;
+            }
+          }
 
-        .line-y-label {
-          fill: var(--line-muted);
-          font-size: 28px;
-          font-weight: 720;
-          text-anchor: start;
-        }
+          .line-path {
+            fill: none;
+            stroke: var(--line-accent);
+            stroke-width: 11;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+          }
 
-        .line-source {
-          fill: var(--line-muted);
-          font-size: 26px;
-          font-weight: 650;
-          text-anchor: end;
-        }
+          .line-terminal-dot {
+            fill: var(--line-accent);
+            stroke: var(--line-ink);
+            stroke-width: 6;
+            vector-effect: non-scaling-stroke;
+            animation: line-terminal-breathe 1.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
 
-        .line-end-label {
-          fill: var(--line-text);
-          font-size: 34px;
-          font-weight: 900;
-          text-anchor: end;
-          font-variant-numeric: tabular-nums;
-        }
+          @keyframes line-terminal-breathe {
+            0% {
+              filter: brightness(1);
+              opacity: 0.82;
+            }
+            100% {
+              filter: brightness(1.35);
+              opacity: 1;
+            }
+          }
 
-        .line-empty {
-          position: absolute;
-          inset: 0;
-          display: none;
-          align-items: center;
-          justify-content: center;
-          padding: 4rem;
-          color: var(--line-muted);
-          font-size: 3rem;
-          font-weight: 800;
-          line-height: 1.15;
-          letter-spacing: 0;
-          text-align: center;
-          word-break: keep-all;
-        }
+          .line-x-label,
+          .line-y-label {
+            fill: var(--line-muted);
+            font-variant-numeric: tabular-nums;
+          }
 
-        #line-root[data-empty="true"] .line-svg {
-          display: none;
-        }
+          .line-x-label {
+            text-anchor: middle;
+          }
 
-        #line-root[data-empty="true"] .line-empty {
-          display: flex;
-        }
-      </style>
+          .line-x-label[data-anchor="start"] {
+            text-anchor: start;
+          }
+
+          .line-y-label {
+            text-anchor: start;
+          }
+
+          .line-endpoint {
+            position: absolute;
+            display: grid;
+            align-content: start;
+            gap: 0.8rem;
+            width: 20rem;
+            min-width: 0;
+            pointer-events: none;
+          }
+
+          .line-endpoint,
+          .line-delta-callout {
+            animation: line-callout-breathe 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          @keyframes line-callout-breathe {
+            0% {
+              filter: brightness(0.94);
+              opacity: 0.86;
+            }
+            100% {
+              filter: brightness(1.16);
+              opacity: 1;
+            }
+          }
+
+          .line-endpoint-value,
+          .line-delta-value {
+            color: var(--line-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--line-type-value);
+            font-weight: 760;
+            line-height: 0.88;
+            letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+          }
+
+          .line-endpoint-label {
+            color: var(--line-muted);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .line-delta-callout {
+            display: grid;
+            align-content: center;
+            gap: 1.7rem;
+            min-width: 0;
+            padding-inline-start: 3rem;
+            border-inline-start: 1px solid var(--line-hairline);
+          }
+
+          .line-delta-change {
+            color: var(--line-accent-alt);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--line-type-display);
+            font-weight: 740;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+          }
+
+          .line-delta-label {
+            margin: 0 0 0.65rem;
+          }
+
+          .line-empty-state {
+            display: grid;
+            place-items: center start;
+            height: 100%;
+            min-height: 0;
+            padding-inline: 6%;
+            border-inline-start: 1px solid var(--line-hairline-strong);
+          }
+
+          .line-empty-object {
+            max-width: 78%;
+            margin: 0;
+            color: var(--line-ink);
+            font-size: var(--line-type-value);
+            font-weight: 760;
+            line-height: 0.92;
+            letter-spacing: -0.03em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .line-empty-note {
+            margin: 1.2rem 0 0;
+            color: var(--line-muted);
+            font-size: var(--line-type-small);
+            font-weight: 650;
+            letter-spacing: -0.01em;
+          }
+        </style>
+
         <section class="line-stage" aria-label="라인차트">
-          <header class="line-heading">
+          <header class="line-heading" data-line-heading>
             <div>
-              <p id="line-kicker" class="line-kicker" aria-hidden="true"></p>
-              <h1 id="line-title" class="line-title"></h1>
+              <p class="line-eyebrow" data-line-eyebrow></p>
+              <h1 class="line-title" data-line-title></h1>
             </div>
-            <div id="line-unit" class="line-unit"></div>
+            <p class="line-unit" data-line-unit></p>
           </header>
-          <figure class="line-chart-shell">
-            <svg
-              id="line-svg"
-              class="line-svg"
-              viewBox="0 0 1440 620"
-              role="img"
-              aria-labelledby="line-title"
-              preserveAspectRatio="none"
-            ></svg>
-            <div class="line-empty">표시할 데이터가 없습니다</div>
-          </figure>
+          <div data-line-visual></div>
         </section>
-      <script>
-        (function () {
-          window.__timelines = window.__timelines || {};
 
-          const root = document.getElementById("line-root");
-          const svg = document.getElementById("line-svg");
-          const title = document.getElementById("line-title");
-          const unitBadge = document.getElementById("line-unit");
-          const kicker = document.getElementById("line-kicker");
-          const isVariableBag = (value) => value && typeof value === "object" && !Array.isArray(value);
-          const hasChartData = (value) => isVariableBag(value) && Array.isArray(value.items) && Array.isArray(value.values);
-          const decodeAttr = (value) =>
-            String(value || "")
-              .replaceAll("&quot;", '"')
-              .replaceAll("&#34;", '"')
-              .replaceAll("&#39;", "'")
-              .replaceAll("&apos;", "'")
-              .replaceAll("&amp;", "&");
-          const parseVariableJson = (value) => {
-            try {
-              const parsed = JSON.parse(decodeAttr(value));
-              return isVariableBag(parsed) ? parsed : {};
-            } catch {
-              return {};
+        <script>
+          (function () {
+            window.__timelines = window.__timelines || {};
+
+            const root =
+              document.querySelector('[data-composition-id="line"]') ??
+              document.querySelector('[data-hf-original-composition-id="line"]');
+            if (!root) {
+              window.__timelines.line = gsap.timeline({ paused: true });
+              return;
             }
-          };
-          const hostVariables = () => {
-            let node = root;
-            while (node) {
-              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
-                return parseVariableJson(node.getAttribute("data-variable-values"));
-              }
-              node = node.parentElement;
+
+            const titleEl = root.querySelector("[data-line-title]");
+            const eyebrowEl = root.querySelector("[data-line-eyebrow]");
+            const unitEl = root.querySelector("[data-line-unit]");
+            const visualEl = root.querySelector("[data-line-visual]");
+            const vars = readVariables(root);
+            const title = textOf(vars.title).trim() || "추세";
+            const unit = displayUnit(vars.unit);
+            const source = textOf(vars.source).trim();
+            const repeatIndex = Math.max(0, Math.floor(numericValue(vars.repeatIndex)));
+            const variant = repeatIndex % 2 === 0 ? "trend" : "delta-focus";
+            const rows = normalizeRows(listOf(vars.items), listOf(vars.values));
+
+            root.style.setProperty("--line-accent", tokenAccent(vars.accent));
+            root.dataset.variant = variant;
+            root.dataset.empty = rows.length < 2 ? "true" : "false";
+            titleEl.textContent = title;
+            eyebrowEl.textContent = variant === "trend" ? "TREND / LIVE SERIES" : "TREND / DELTA FOCUS";
+            unitEl.textContent = unit;
+            unitEl.hidden = !unit;
+            root.setAttribute("aria-label", ariaLabel(title, rows, unit, source));
+
+            let lineLength = 0;
+            let chartShell = null;
+            let path = null;
+            let terminalDot = null;
+            let endpoint = null;
+            let area = null;
+            let gridRows = [];
+
+            if (rows.length < 2) {
+              visualEl.appendChild(makeEmptyVisual(rows, title));
+            } else {
+              const built = makeChartVisual(rows, unit, variant);
+              visualEl.appendChild(built.visual);
+              chartShell = built.chartShell;
+              path = built.path;
+              terminalDot = built.terminalDot;
+              endpoint = built.endpoint;
+              area = built.area;
+              gridRows = built.gridRows;
+              lineLength = path.getTotalLength();
+              path.style.strokeDasharray = String(lineLength);
+              path.style.strokeDashoffset = String(lineLength);
             }
-            return {};
-          };
-          const registryVariables = () => {
-            const byComp = window.__hfVariablesByComp;
-            if (!isVariableBag(byComp)) return {};
-            const hostId = root && root.parentElement ? root.parentElement.getAttribute("data-composition-id") : "";
-            for (const key of ["line", hostId]) {
-              if (key && hasChartData(byComp[key])) return byComp[key];
+
+            const tl = gsap.timeline({ paused: true });
+            const heading = root.querySelector("[data-line-heading]");
+            tl.fromTo(heading, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.18, ease: "power3.out" }, 0);
+
+            if (chartShell && path && terminalDot && endpoint && area) {
+              tl.fromTo(chartShell, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.2, ease: "power3.out" }, 0.06);
+              tl.to(heading, { opacity: 0.72, duration: 0.12, ease: "power2.out" }, 0.2);
+              tl.fromTo(gridRows, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 0.1);
+              tl.fromTo(area, { opacity: 0 }, { opacity: 0.08, duration: 0.22, ease: "power2.out" }, 0.18);
+              tl.fromTo("#line-path", { strokeDashoffset: lineLength }, { strokeDashoffset: 0, duration: 0.48, ease: "power3.out" }, 0.12);
+              tl.fromTo(terminalDot, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.22, ease: "expo.out" }, 0.38);
+              tl.fromTo(endpoint, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.28, ease: "power3.out" }, 0.26);
+            } else {
+              const emptyObject = root.querySelector(".line-empty-object");
+              tl.fromTo(emptyObject, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" }, 0.16);
             }
-            for (const value of Object.values(byComp)) {
-              if (hasChartData(value)) return value;
-            }
-            return {};
-          };
-          const documentHostVariables = () => {
-            const docs = [document, window.document].filter(Boolean);
-            for (const doc of docs) {
-              if (typeof doc.querySelectorAll !== "function") continue;
-              const hosts = Array.from(doc.querySelectorAll("[data-variable-values]"));
-              for (const host of hosts) {
-                const source = host.getAttribute("data-composition-src") || "";
-                const hostId = host.getAttribute("data-composition-id") || "";
-                const candidate = parseVariableJson(host.getAttribute("data-variable-values"));
-                if (hasChartData(candidate) && (hostId === "line" || source.includes("line/block.html") || !root || host.contains(root))) {
-                  return candidate;
-                }
-              }
-            }
-            return {};
-          };
-          const hyperframeVars =
-            window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-              ? window.__hyperframes.getVariables()
-              : {};
-          const vars = { ...documentHostVariables(), ...registryVariables(), ...hostVariables(), ...hyperframeVars };
 
-          const textOf = (value) => (value === null || value === undefined ? "" : String(value));
-          const listOf = (value) => {
-            if (Array.isArray(value)) return value;
-            if (typeof value === "string" && value.trim().startsWith("[")) {
-              try {
-                const parsed = JSON.parse(value);
-                return Array.isArray(parsed) ? parsed : [];
-              } catch {
-                return [];
-              }
-            }
-            return [];
-          };
-          let lineLength = 0;
-          const items = listOf(vars.items).map(textOf);
-          const rawValues = listOf(vars.values);
-          const values = rawValues
-            .map((value) => {
-              if (typeof value === "number") return value;
-              const normalized = textOf(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
-              return normalized ? Number(normalized[0]) : NaN;
-            })
-            .filter((value) => Number.isFinite(value));
-          const count = Math.min(items.length, values.length);
-          const unit = displayUnit(vars.unit);
-          const source = textOf(vars.source);
-          const accent = textOf(vars.accent).trim() || "currentColor";
-          const duration = blockDuration(root, 4);
-          const phases = phaseTimes(duration);
+            timelineIds(root).forEach((id) => {
+              if (id) window.__timelines[id] = tl;
+            });
+            globalThis.__timelines = window.__timelines;
+            timelineIds(root).forEach((id) => {
+              if (id) globalThis.__timelines[id] = tl;
+            });
+            signalRuntimeReady();
 
-          root.style.setProperty("--line-accent", accent);
-          title.textContent = textOf(vars.title) || "라인차트";
-          unitBadge.textContent = "";
-          unitBadge.hidden = true;
-          unitBadge.style.display = "none";
-          kicker.textContent = "";
+            function makeChartVisual(data, suffix, selectedVariant) {
+              const visual = document.createElement("section");
+              visual.className = `line-visual line-visual--${selectedVariant}`;
+              const chartShell = document.createElement("div");
+              chartShell.className = "line-chart";
+              const svg = svgNode("svg", {
+                id: "line-svg",
+                class: "line-svg",
+                viewBox: selectedVariant === "trend" ? "0 0 1680 640" : "0 0 1120 640",
+                role: "img",
+                "aria-label": `${title} 추세선`,
+                preserveAspectRatio: "none"
+              });
+              const chart =
+                selectedVariant === "trend"
+                  ? { width: 1680, height: 640, left: 82, right: 360, top: 58, bottom: 108 }
+                  : { width: 1120, height: 640, left: 78, right: 58, top: 58, bottom: 108 };
+              const plotWidth = chart.width - chart.left - chart.right;
+              const plotHeight = chart.height - chart.top - chart.bottom;
+              const scale = niceScale(
+                Math.min(...data.map((row) => row.value)),
+                Math.max(...data.map((row) => row.value)),
+                4
+              );
+              const xFor = (index) => chart.left + (plotWidth * index) / Math.max(1, data.length - 1);
+              const yFor = (value) => chart.top + plotHeight - ((value - scale.min) / Math.max(1, scale.max - scale.min)) * plotHeight;
+              const points = data.map((row, index) => ({ ...row, x: xFor(index), y: yFor(row.value) }));
+              const gridGroup = svgNode("g", { class: "line-grid-group" });
+              const gridRows = [];
 
-          const svgNode = (name, attrs = {}) => {
-            const node = document.createElementNS("http://www.w3.org/2000/svg", name);
-            Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value)));
-            return node;
-          };
+              scale.ticks.forEach((tick) => {
+                const y = yFor(tick);
+                const row = svgNode("g", { class: "line-grid-row" });
+                row.appendChild(
+                  svgNode("line", {
+                    class: "line-grid",
+                    x1: chart.left,
+                    y1: y,
+                    x2: chart.width - chart.right,
+                    y2: y
+                  })
+                );
+                const tickLabel = svgNode("text", {
+                  class: "line-y-label",
+                  x: chart.left,
+                  y: y - 12
+                });
+                tickLabel.textContent = `${formatTick(tick)}${suffix}`;
+                row.appendChild(tickLabel);
+                gridGroup.appendChild(row);
+                gridRows.push(row);
+              });
 
-          const fmtValue = (value) => {
-            const rounded = Math.round(value * 10) / 10;
-            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
-          };
-          const fmtTick = (value) => String(Math.round(value));
-
-          if (count < 2) {
-            root.dataset.empty = "true";
-          } else {
-            const chart = {
-              width: 1440,
-              height: 620,
-              left: 132,
-              right: 78,
-              top: 118,
-              bottom: 78
-            };
-            const plotWidth = chart.width - chart.left - chart.right;
-            const plotHeight = chart.height - chart.top - chart.bottom;
-            const usedItems = items.slice(0, count);
-            const usedValues = values.slice(0, count);
-            const minValue = Math.min(...usedValues);
-            const maxValue = Math.max(...usedValues);
-            const scale = niceScale(minValue, maxValue, 4);
-            const yMin = scale.min;
-            const yMax = scale.max;
-            const yRange = Math.max(1, yMax - yMin);
-            const xFor = (index) => chart.left + (plotWidth * index) / Math.max(1, count - 1);
-            const yFor = (value) => chart.top + plotHeight - ((value - yMin) / yRange) * plotHeight;
-            const points = usedValues.map((value, index) => ({
-              x: xFor(index),
-              y: yFor(value),
-              label: usedItems[index],
-              value
-            }));
-
-            const gridGroup = svgNode("g", { class: "line-grid-group" });
-            const lineGroup = svgNode("g", { class: "line-series" });
-            const pointGroup = svgNode("g", { class: "line-points" });
-            const labelGroup = svgNode("g", { class: "line-labels" });
-            const axisRows = scale.ticks.map((value) => ({
-              value,
-              y: yFor(value)
-            }));
-
-            for (const tick of axisRows) {
-              const row = svgNode("g", { class: "line-grid-row" });
-              row.appendChild(
+              gridGroup.appendChild(
                 svgNode("line", {
-                  class: "line-grid",
+                  class: "line-baseline",
                   x1: chart.left,
-                  y1: tick.y,
+                  y1: chart.height - chart.bottom,
                   x2: chart.width - chart.right,
-                  y2: tick.y
+                  y2: chart.height - chart.bottom
                 })
               );
-              if (cleanNumber(tick.value) !== 0) {
-                const yLabel = svgNode("text", {
-                  class: "line-y-label",
-                  x: chart.left + 18,
-                  y: tick.y + 10
+
+              const pathD = points
+                .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+                .join(" ");
+              const baselineY = chart.height - chart.bottom;
+              const areaD = `${pathD} L ${points[points.length - 1].x.toFixed(2)} ${baselineY.toFixed(2)} L ${points[0].x.toFixed(2)} ${baselineY.toFixed(2)} Z`;
+              const area = svgNode("path", { class: "line-area", d: areaD });
+              const path = svgNode("path", { id: "line-path", class: "line-path", d: pathD });
+              const last = points[points.length - 1];
+              const terminalDot = svgNode("circle", {
+                class: "line-terminal-dot",
+                cx: last.x,
+                cy: last.y,
+                r: 15
+              });
+              const endpointRuleEnd = selectedVariant === "trend" ? chart.width - 52 : chart.width - chart.right;
+              const endpointRule = svgNode("line", {
+                class: "line-endpoint-rule",
+                x1: last.x + 24,
+                y1: last.y,
+                x2: endpointRuleEnd,
+                y2: last.y
+              });
+              const labels = svgNode("g", { class: "line-labels" });
+              labelIndexes(points.length).forEach((index) => {
+                if (index === points.length - 1) return;
+                const point = points[index];
+                const label = svgNode("text", {
+                  class: "line-x-label",
+                  "data-anchor": index === 0 ? "start" : "middle",
+                  x: point.x,
+                  y: chart.height - 42
                 });
-                yLabel.textContent = `${fmtTick(tick.value)}${unit}`;
-                row.appendChild(yLabel);
+                label.textContent = point.label;
+                labels.appendChild(label);
+              });
+
+              svg.append(gridGroup, area, path, endpointRule, terminalDot, labels);
+              chartShell.appendChild(svg);
+              visual.appendChild(chartShell);
+
+              let endpoint;
+              if (selectedVariant === "trend") {
+                endpoint = document.createElement("aside");
+                endpoint.className = "line-endpoint";
+                endpoint.style.left = `${(Math.min(chart.width - 332, last.x + 42) / chart.width) * 100}%`;
+                endpoint.style.top = `${(Math.max(28, Math.min(chart.height - 218, last.y - 92)) / chart.height) * 100}%`;
+                endpoint.append(makeEndpointValue(last, suffix));
+                chartShell.appendChild(endpoint);
+              } else {
+                endpoint = document.createElement("aside");
+                endpoint.className = "line-delta-callout";
+                endpoint.append(makeEndpointValue(last, suffix), makeDeltaValue(points, suffix));
+                visual.appendChild(endpoint);
               }
-              gridGroup.appendChild(row);
+
+              return { visual, chartShell, path, terminalDot, endpoint, area, gridRows };
             }
 
-            gridGroup.appendChild(
-              svgNode("line", {
-                class: "line-axis",
-                x1: chart.left,
-                y1: chart.top + plotHeight,
-                x2: chart.width - chart.right,
-                y2: chart.top + plotHeight
-              })
-            );
-
-            const pathD = points
-              .map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
-              .join(" ");
-            const areaD = `${pathD} L ${points[points.length - 1].x.toFixed(2)} ${(chart.top + plotHeight).toFixed(
-              2
-            )} L ${points[0].x.toFixed(2)} ${(chart.top + plotHeight).toFixed(2)} Z`;
-            const area = svgNode("path", { class: "line-area", d: areaD });
-            const path = svgNode("path", { id: "line-path", class: "line-path", d: pathD });
-
-            lineGroup.appendChild(area);
-            lineGroup.appendChild(path);
-
-            points.forEach((point, index) => {
-              const isFirst = index === 0;
-              const isLast = index === points.length - 1;
-              let valueAnchor = isFirst ? "start" : isLast ? "end" : "middle";
-              let valueX = isFirst ? point.x + 30 : isLast ? point.x - 18 : point.x;
-              const valueY = Math.max(40, point.y - 58);
-              const labelAnchor = isFirst ? "start" : isLast ? "end" : "middle";
-              const labelX = isFirst ? point.x + 4 : isLast ? point.x - 4 : point.x;
-              const labelY = Math.max(76, point.y - 22);
-              const circle = svgNode("circle", {
-                class: "line-point",
-                cx: point.x,
-                cy: point.y,
-                r: 14
-              });
-              circle.dataset.highlight = index === points.length - 1 ? "true" : "false";
-              const value = svgNode("text", {
-                class: "line-value",
-                "data-anchor": valueAnchor,
-                x: valueX,
-                y: valueY
-              });
-              const label = svgNode("text", {
-                class: "line-label",
-                "data-anchor": labelAnchor,
-                x: labelX,
-                y: labelY
-              });
-              value.textContent = `${fmtValue(point.value)}${unit}`;
-              label.textContent = point.label;
-              pointGroup.appendChild(circle);
-              labelGroup.appendChild(value);
-              labelGroup.appendChild(label);
-            });
-
-            if (source) {
-              const sourceText = svgNode("text", {
-                class: "line-source",
-                x: chart.width - chart.right,
-                y: chart.height - 18
-              });
-              sourceText.textContent = source;
-              labelGroup.appendChild(sourceText);
+            function makeEndpointValue(last, suffix) {
+              const wrap = document.createElement("div");
+              const label = document.createElement("p");
+              const value = document.createElement("p");
+              label.className = "line-endpoint-label";
+              value.className = "line-endpoint-value";
+              label.textContent = last.label;
+              value.textContent = `${formatValue(last.value)}${suffix}`;
+              wrap.append(label, value);
+              return wrap;
             }
 
-            svg.appendChild(gridGroup);
-            svg.appendChild(lineGroup);
-            svg.appendChild(pointGroup);
-            svg.appendChild(labelGroup);
-
-            lineLength = path.getTotalLength();
-            path.style.strokeDasharray = String(lineLength);
-            path.style.strokeDashoffset = String(lineLength);
-          }
-
-          const tl = gsap.timeline({ paused: true });
-          const chartShell = "#line-root .line-chart-shell";
-          const detailText = gsap.utils.toArray("#line-root .line-value, #line-root .line-label, #line-root .line-source, #line-root .line-end-label");
-          tl.fromTo("#line-root .line-heading", { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.58, ease: "power3.out" }, 0);
-          tl.fromTo(chartShell, { opacity: 0, y: 38, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 0.72, ease: "power4.out" }, 0.08);
-          tl.fromTo("#line-root .line-grid-row", { opacity: 0 }, { opacity: 1, duration: 0.36, stagger: 0.05, ease: "power2.out" }, 0.24);
-          tl.fromTo("#line-root .line-area", { opacity: 0 }, { opacity: 0.42, duration: 0.62, ease: "power1.out" }, 0.58);
-          tl.fromTo("#line-path", { strokeDashoffset: lineLength }, { strokeDashoffset: 0, duration: Math.min(1.35, phases.livingStart), ease: "power3.inOut" }, 0.62);
-          tl.fromTo(
-            "#line-root .line-point",
-            { opacity: 0, scale: 0 },
-            { opacity: 1, scale: 1, duration: 0.32, stagger: 0.12, ease: "back.out(1.4)" },
-            0.92
-          );
-          tl.fromTo(detailText, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.34, stagger: 0.05, ease: "power2.out" }, 1.04);
-          tl.to(chartShell, { y: -10, scale: 1.008, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to("#line-root .line-point[data-highlight='true']", { scale: 1.18, duration: 1.35, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.35)), yoyo: true }, phases.livingStart);
-          tl.to("#line-root .line-end-label", { y: -6, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to("#line-root .line-stage", { y: -24, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          timelineIds(root).forEach((id) => {
-            if (id) window.__timelines[id] = tl;
-          });
-          globalThis.__timelines = window.__timelines;
-          timelineIds(root).forEach((id) => {
-            if (id) globalThis.__timelines[id] = tl;
-          });
-          signalRuntimeReady();
-
-          function timelineIds(rootElement) {
-            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
-            if (runtimeId) return new Set([runtimeId]);
-            return new Set([
-              rootElement?.getAttribute("data-composition-id") || "",
-              rootElement?.getAttribute("data-hf-original-composition-id") || "",
-              "line"
-            ]);
-          }
-
-          function signalRuntimeReady() {
-            if (typeof window.__hfForceTimelineRebind === "function") {
-              window.__hfForceTimelineRebind();
+            function makeDeltaValue(points, suffix) {
+              const delta = points[points.length - 1].value - points[0].value;
+              const wrap = document.createElement("div");
+              const label = document.createElement("p");
+              const value = document.createElement("p");
+              label.className = "line-delta-label";
+              value.className = "line-delta-change";
+              label.textContent = "CHANGE";
+              value.textContent = `${delta > 0 ? "+" : ""}${formatValue(delta)}${suffix}`;
+              wrap.append(label, value);
+              return wrap;
             }
-            if (typeof window.__hfFlushSync === "function") {
-              window.__hfFlushSync();
+
+            function makeEmptyVisual(data, fallbackTitle) {
+              const visual = document.createElement("section");
+              const state = document.createElement("div");
+              const object = document.createElement("p");
+              const note = document.createElement("p");
+              visual.className = "line-visual";
+              state.className = "line-empty-state";
+              object.className = "line-empty-object";
+              note.className = "line-empty-note";
+              object.textContent = data[0]?.label || fallbackTitle;
+              note.textContent = "표시할 수치가 준비되면 추세선으로 전환됩니다";
+              state.append(object, note);
+              visual.appendChild(state);
+              return visual;
             }
-            window.__playerReady = true;
-            window.__renderReady = true;
-          }
 
-          function blockDuration(element, fallback) {
-            let node = element.parentElement;
-            while (node) {
-              const value = Number(node.getAttribute?.("data-duration"));
-              if (Number.isFinite(value) && value > 0) return value;
-              node = node.parentElement;
+            function svgNode(name, attrs = {}) {
+              const node = document.createElementNS("http://www.w3.org/2000/svg", name);
+              Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, String(value)));
+              return node;
             }
-            const own = Number(element.getAttribute("data-duration"));
-            return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
 
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.44, Math.max(0.32, total * 0.1));
-            const exitStart = Math.max(1.2, total - exitDuration);
-            const livingStart = Math.min(exitStart - 0.42, Math.max(1.22, total * 0.3));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return { exitStart, exitDuration, livingStart, livingDuration };
-          }
-
-          function niceScale(minValue, maxValue, targetSteps) {
-            const startAtZero = minValue >= 0;
-            const minBase = startAtZero ? 0 : minValue;
-            const rawSpan = Math.max(1, maxValue - minBase);
-            const step = Math.max(1, niceStep(rawSpan / Math.max(1, targetSteps)));
-            const min = startAtZero ? 0 : Math.floor(minBase / step) * step;
-            let max = Math.ceil(maxValue / step) * step;
-            if (max <= min) max = min + step * Math.max(1, targetSteps);
-            const ticks = [];
-            for (let value = min; value <= max + step * 0.5; value += step) {
-              ticks.push(cleanNumber(value));
+            function labelIndexes(count) {
+              if (count <= 5) return Array.from({ length: count }, (_, index) => index);
+              const step = Math.max(1, Math.ceil((count - 1) / 4));
+              const indexes = [0];
+              for (let index = step; index < count - 1; index += step) indexes.push(index);
+              indexes.push(count - 1);
+              return [...new Set(indexes)];
             }
-            return { min: cleanNumber(min), max: cleanNumber(max), step, ticks };
-          }
 
-          function niceStep(rawStep) {
-            if (!Number.isFinite(rawStep) || rawStep <= 0) return 1;
-            const exponent = Math.floor(Math.log10(rawStep));
-            const base = 10 ** exponent;
-            const fraction = rawStep / base;
-            const niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
-            return niceFraction * base;
-          }
+            function niceScale(minValue, maxValue, targetSteps) {
+              const minBase = minValue >= 0 ? 0 : minValue;
+              const rawSpan = Math.max(1, maxValue - minBase);
+              const step = Math.max(1, niceStep(rawSpan / Math.max(1, targetSteps)));
+              const min = minValue >= 0 ? 0 : Math.floor(minBase / step) * step;
+              let max = Math.ceil(maxValue / step) * step;
+              if (max <= min) max = min + step * Math.max(1, targetSteps);
+              const ticks = [];
+              for (let value = min; value <= max + step * 0.5; value += step) ticks.push(cleanNumber(value));
+              return { min: cleanNumber(min), max: cleanNumber(max), ticks };
+            }
 
-          function cleanNumber(value) {
-            return Math.round(value * 1e6) / 1e6;
-          }
+            function niceStep(rawStep) {
+              const exponent = Math.floor(Math.log10(rawStep));
+              const base = 10 ** exponent;
+              const fraction = rawStep / base;
+              return (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10) * base;
+            }
 
-          function axisLabelCollision({ axisRows, valueX, valueY, chart }) {
-            const nearAxis = valueX < chart.left + 132 || valueX > chart.width - chart.right - 132;
-            if (!nearAxis) return false;
-            return axisRows.some((row) => Math.abs(row.y + 10 - valueY) < 46);
-          }
+            function normalizeRows(rawItems, rawValues) {
+              const rows = [];
+              const count = Math.max(rawItems.length, rawValues.length);
+              for (let index = 0; index < count; index += 1) {
+                const value = numberValue(rawValues[index]);
+                if (!Number.isFinite(value)) continue;
+                rows.push({
+                  label: textOf(rawItems[index]).trim() || `항목 ${index + 1}`,
+                  value
+                });
+              }
+              return rows;
+            }
 
-          function displayUnit(value) {
-            const text = textOf(value).trim();
-            if (!text) return "";
-            const normalized = text === "％" ? "%" : text.toLowerCase();
-            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
-              ? normalized
-              : "";
-          }
-        })();
-      </script>
+            function listOf(value) {
+              if (Array.isArray(value)) return value;
+              if (typeof value === "string" && value.trim().startsWith("[")) {
+                try {
+                  const parsed = JSON.parse(value);
+                  return Array.isArray(parsed) ? parsed : [];
+                } catch {
+                  return [];
+                }
+              }
+              return [];
+            }
+
+            function numberValue(value) {
+              if (typeof value === "number" && Number.isFinite(value)) return value;
+              const match = textOf(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+              return match ? Number(match[0]) : NaN;
+            }
+
+            function numericValue(value) {
+              const result = numberValue(value);
+              return Number.isFinite(result) ? result : 0;
+            }
+
+            function cleanNumber(value) {
+              return Math.round(value * 1e6) / 1e6;
+            }
+
+            function formatValue(value) {
+              const rounded = Math.round(value * 10) / 10;
+              return new Intl.NumberFormat("ko-KR", {
+                minimumFractionDigits: Number.isInteger(rounded) ? 0 : 1,
+                maximumFractionDigits: 1
+              }).format(rounded);
+            }
+
+            function formatTick(value) {
+              const rounded = Math.round(value * 10) / 10;
+              return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+            }
+
+            function displayUnit(value) {
+              const text = textOf(value).trim();
+              if (!text) return "";
+              const normalized = text === "％" ? "%" : text.toLowerCase();
+              return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+                ? normalized
+                : "";
+            }
+
+            function tokenAccent(value) {
+              const text = textOf(value).trim();
+              return /^var\(--rf-[A-Za-z0-9_-]+\)$/.test(text)
+                ? text
+                : "var(--rf-accent, var(--rf-text, currentColor))";
+            }
+
+            function textOf(value) {
+              return value === null || value === undefined ? "" : String(value);
+            }
+
+            function ariaLabel(chartTitle, data, suffix, chartSource) {
+              const detail = data.map((row) => `${row.label} ${formatValue(row.value)}${suffix}`).join(", ");
+              return [chartTitle, detail, chartSource ? `출처 ${chartSource}` : ""].filter(Boolean).join(": ");
+            }
+
+            function readVariables(rootElement) {
+              const direct =
+                window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+                  ? window.__hyperframes.getVariables()
+                  : {};
+              const scoped =
+                typeof __hyperframes === "undefined" || !__hyperframes ? {} : __hyperframes.getVariables?.() ?? {};
+              const host =
+                rootElement.parentElement?.closest("[data-variable-values]") ||
+                rootElement.closest("[data-variable-values]") ||
+                rootElement;
+              const runtimeId = host?.getAttribute("data-composition-id") || "";
+              const authoredId =
+                rootElement.getAttribute("data-hf-original-composition-id") ||
+                host?.getAttribute("data-hf-original-composition-id") ||
+                "line";
+              const registry = {
+                ...(globalThis.__hfVariablesByComp?.[authoredId] || {}),
+                ...(globalThis.__hfVariablesByComp?.[runtimeId] || {}),
+                ...(globalThis.__hfVariablesByComp?.line || {})
+              };
+              const hostVars = readHostVariables(host, rootElement);
+              const merged = { ...registry, ...direct, ...scoped };
+              for (const [key, value] of Object.entries(hostVars)) {
+                if (value !== undefined && value !== null && value !== "") merged[key] = value;
+              }
+              return merged;
+            }
+
+            function readHostVariables(host, rootElement) {
+              const direct = parseVariableJson(host?.getAttribute?.("data-variable-values"));
+              if (hasLineData(direct)) return direct;
+              const hosts = Array.from(document.querySelectorAll("[data-variable-values]"));
+              for (const node of hosts) {
+                const candidate = parseVariableJson(node.getAttribute("data-variable-values"));
+                if (!hasLineData(candidate)) continue;
+                const source = node.getAttribute("data-composition-src") || "";
+                const id = node.getAttribute("data-composition-id") || "";
+                if (node.contains(rootElement) || id === "line" || source.includes("line/block.html")) return candidate;
+              }
+              return {};
+            }
+
+            function hasLineData(value) {
+              return value && typeof value === "object" && !Array.isArray(value) && (value.items !== undefined || value.values !== undefined);
+            }
+
+            function parseVariableJson(value) {
+              try {
+                const parsed = JSON.parse(decodeAttr(value));
+                return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
+              } catch {
+                return {};
+              }
+            }
+
+            function decodeAttr(value) {
+              return String(value || "")
+                .replaceAll("&quot;", '"')
+                .replaceAll("&#34;", '"')
+                .replaceAll("&#39;", "'")
+                .replaceAll("&apos;", "'")
+                .replaceAll("&amp;", "&");
+            }
+
+            function timelineIds(rootElement) {
+              const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+              if (runtimeId) return new Set([runtimeId]);
+              return new Set([
+                rootElement?.getAttribute("data-composition-id") || "",
+                rootElement?.getAttribute("data-hf-original-composition-id") || "",
+                "line"
+              ]);
+            }
+
+            function signalRuntimeReady() {
+              if (typeof window.__hfForceTimelineRebind === "function") {
+                window.__hfForceTimelineRebind();
+              }
+              if (typeof window.__hfFlushSync === "function") {
+                window.__hfFlushSync();
+              }
+              window.__playerReady = true;
+              window.__renderReady = true;
+            }
+          })();
+        </script>
       </div>
     </template>
   </body>

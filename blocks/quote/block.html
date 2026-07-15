@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"quote"},
     {"id":"reveal","type":"string","label":"Reveal","default":"typewriter"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"none"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -31,426 +32,202 @@
           overflow: hidden;
           color: var(--quote-ink);
           font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          --quote-accent: var(--rf-accent, Highlight);
           --quote-ink: var(--rf-text, currentColor);
-          --quote-muted: var(--rf-muted-text, color-mix(in srgb, var(--quote-ink) 62%, transparent));
-          --quote-surface: var(--rf-surface, color-mix(in srgb, Canvas 94%, transparent));
-          --quote-panel: var(--rf-panel, color-mix(in srgb, var(--quote-ink) 7%, transparent));
-          --quote-line: color-mix(in srgb, var(--quote-accent) 34%, transparent);
-          --quote-line-soft: color-mix(in srgb, var(--quote-ink) 14%, transparent);
-          --quote-accent-soft: color-mix(in srgb, var(--quote-accent) 14%, transparent);
-          --quote-accent-faint: color-mix(in srgb, var(--quote-accent) 7%, transparent);
-          --quote-shadow: var(--rf-shadow, var(--quote-ink));
-        }
-
-        .quote-impact-flash,
-        .quote-impact-vignette,
-        .quote-letterbox {
-          position: absolute;
-          pointer-events: none;
-        }
-
-        .quote-impact-flash {
-          inset: 0;
-          z-index: 30;
-          background: var(--rf-flash, #fff7ea);
-          opacity: 0;
-          mix-blend-mode: screen;
-        }
-
-        .quote-impact-vignette {
-          inset: 0;
-          z-index: 20;
-          background: radial-gradient(ellipse 120% 90% at 50% 45%, transparent 52%, rgba(0, 0, 0, 0.68) 100%);
-          opacity: 0;
-        }
-
-        .quote-letterbox {
-          left: 0;
-          right: 0;
-          height: 8.5%;
-          z-index: 22;
-          background: #05080b;
-          transform: scaleY(0);
-        }
-
-        .quote-letterbox-top {
-          top: 0;
-          transform-origin: top center;
-        }
-
-        .quote-letterbox-bottom {
-          bottom: 0;
-          transform-origin: bottom center;
+          --quote-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+          --quote-accent: var(--rf-accent, var(--rf-text, currentColor));
+          --quote-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+          --quote-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+          --quote-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent)));
         }
 
         .quote-stage {
           position: absolute;
-          inset: 7.963% 7.083% 17.963%;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(25rem, 0.38fr);
-          gap: 2.75rem;
-          box-sizing: border-box;
-        }
-
-        .quote-frame,
-        .quote-details {
-          min-width: 0;
-          box-sizing: border-box;
-          border: 0.125rem solid var(--quote-line);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(135deg, var(--quote-accent-faint), transparent 46%),
-            var(--quote-surface);
-          box-shadow: 0 1.45rem 4rem color-mix(in srgb, var(--quote-shadow) 14%, transparent);
-        }
-
-        .quote-frame {
-          position: relative;
+          inset: 7.2% 6.25%;
           display: grid;
           grid-template-rows: auto minmax(0, 1fr) auto;
-          gap: 2.2rem;
-          padding: 3.55rem 4.25rem 3.15rem;
-          overflow: hidden;
-          animation: quote-frame-living 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.15s) infinite alternate;
+          box-sizing: border-box;
+          min-width: 0;
+          min-height: 0;
         }
 
-        .quote-frame::before {
-          content: "“";
+        .quote-ghost {
           position: absolute;
-          top: -2.4rem;
-          right: 3rem;
-          color: var(--quote-accent-soft);
-          font-size: 18rem;
-          font-weight: 950;
-          line-height: 1;
+          z-index: 0;
+          color: var(--quote-accent-alt);
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 38rem;
+          font-weight: 800;
+          line-height: 0.72;
           pointer-events: none;
-          display: none;
+          user-select: none;
+          opacity: 0.16;
+          animation: quote-ghost-living 2.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
-        .quote-glyph {
-          position: absolute;
-          top: -2.4rem;
-          right: 3rem;
-          color: var(--quote-accent-soft);
-          font-size: 18rem;
-          font-weight: 950;
-          line-height: 1;
-          pointer-events: none;
-          will-change: transform, opacity;
-          animation: quote-glyph-drift 2.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.15s) infinite alternate;
-        }
-
-        @keyframes quote-glyph-drift {
+        @keyframes quote-ghost-living {
           0% {
-            transform: translate3d(0, 0, 0) rotate(0deg);
+            filter: brightness(0.92);
+            opacity: 0.12;
           }
           100% {
-            transform: translate3d(9px, -13px, 0) rotate(1.3deg);
+            filter: brightness(1.1);
+            opacity: 0.22;
           }
         }
 
-        @keyframes quote-frame-living {
+        @keyframes quote-copy-living {
           0% {
-            filter: brightness(1);
+            filter: brightness(0.98);
           }
           100% {
-            filter: brightness(1.09);
+            filter: brightness(1.06);
           }
         }
 
-        .quote-header {
+        .quote-header,
+        .quote-attribution {
           position: relative;
           z-index: 1;
           min-width: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: start;
-          gap: 1.5rem;
         }
 
-        .quote-title-group {
-          min-width: 0;
-          display: grid;
-          gap: 0.88rem;
+        .quote-header {
+          align-self: start;
         }
 
-        .quote-kicker,
-        .quote-chip {
+        .quote-title,
+        .quote-source {
+          margin: 0;
           color: var(--quote-muted);
-          font-size: 1.16rem;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.35rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
-        }
-
-        .quote-source-label,
-        .quote-detail-label {
-          color: var(--quote-ink);
-          font-size: 1.16rem;
-          font-weight: 820;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .quote-kicker {
-          width: 5.5rem;
-          height: 0.35rem;
-          box-sizing: border-box;
-          padding: 0;
-          border: 0;
-          border-radius: 0.1rem;
-          background: var(--quote-accent);
+          word-break: keep-all;
           overflow-wrap: anywhere;
         }
 
         .quote-title {
-          margin: 0;
-          color: var(--quote-ink);
-          font-size: 5.15rem;
-          font-weight: 930;
-          line-height: 1.04;
-          letter-spacing: -0.03em;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--quote-shadow) 34%, transparent);
+          width: max-content;
+          max-width: 100%;
         }
 
-        .quote-meta {
-          min-width: 0;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-          gap: 0.65rem;
-        }
-
-        .quote-chip {
-          max-width: 14rem;
-          box-sizing: border-box;
-          padding: 0.62rem 0.82rem;
-          border: 0.1rem solid var(--quote-line-soft);
-          border-radius: 0.5rem;
-          background: var(--quote-panel);
-          color: var(--quote-muted);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .quote-body {
+        .quote-copy {
           position: relative;
           z-index: 1;
+          align-self: center;
           min-width: 0;
-          min-height: 0;
-          display: grid;
-          align-content: center;
-          gap: 1.45rem;
-          transform-origin: 50% 50%;
-          will-change: transform;
-          animation: quote-body-float 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.12s) infinite alternate;
-        }
-
-        .quote-rule {
-          width: min(18rem, 44%);
-          height: 0.38rem;
-          background: var(--quote-accent);
-          transform-origin: left center;
+          max-width: 82rem;
+          animation: quote-copy-living 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
         .quote-text {
           margin: 0;
-          max-width: 69rem;
           color: var(--quote-ink);
-          font-size: 6.15rem;
-          font-weight: 900;
-          line-height: 1.08;
-          letter-spacing: 0;
+          font-size: clamp(5.5rem, 8.05vw, 9.15rem);
+          font-weight: 800;
+          line-height: 0.98;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
           text-wrap: balance;
         }
 
-        @keyframes quote-body-float {
-          0% {
-            transform: translate3d(0, -6px, 0);
-          }
-          100% {
-            transform: translate3d(0, 6px, 0);
-          }
-        }
-
-        .quote-char {
-          display: inline-block;
-          opacity: 1;
+        .quote-line {
+          display: block;
+          min-width: 0;
           will-change: transform, opacity;
         }
 
-        .quote-context {
-          margin: 0;
-          max-width: 52rem;
-          color: var(--quote-muted);
-          font-size: 2.05rem;
-          font-weight: 760;
-          line-height: 1.2;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
+        .quote-attribution {
+          display: grid;
+          grid-template-columns: minmax(7rem, 0.22fr) minmax(0, 1fr);
+          align-items: center;
+          gap: 1.25rem;
+          padding-top: 1.2rem;
+          border-top: 1px solid var(--quote-hairline);
         }
 
-        .quote-footer {
-          position: relative;
-          z-index: 1;
-          min-width: 0;
-          display: grid;
-          grid-template-columns: auto minmax(0, 1fr);
-          align-items: center;
-          gap: 0.9rem;
-          padding-top: 1.25rem;
-          border-top: 0.1rem solid var(--quote-line-soft);
+        .quote-source-label {
+          color: var(--quote-accent);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.35rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
         }
 
         .quote-source {
           min-width: 0;
-          color: var(--quote-muted);
-          font-size: 1.34rem;
-          font-weight: 680;
-          line-height: 1.2;
-          letter-spacing: 0;
           overflow: hidden;
+          text-align: end;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
 
-        .quote-details {
-          display: grid;
-          grid-template-rows: auto minmax(0, 1fr);
-          gap: 1.55rem;
-          padding: 3.1rem 2.55rem;
-          overflow: hidden;
+        .quote-rootbox[data-has-attribution="false"] .quote-attribution {
+          visibility: hidden;
         }
 
-        .quote-details-title {
-          margin: 0;
-          color: var(--quote-ink);
-          font-size: 1.38rem;
-          font-weight: 820;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
-
-        .quote-detail-list {
-          min-width: 0;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          align-content: center;
-          gap: 1.1rem;
-          list-style: none;
-        }
-
-        .quote-detail {
-          min-width: 0;
-          min-height: 8.2rem;
-          box-sizing: border-box;
-          display: grid;
-          align-content: center;
-          gap: 0.66rem;
-          padding: 1.25rem 1.25rem;
-          border: 0.1rem solid var(--quote-line-soft);
-          border-radius: 0.5rem;
-          background: var(--quote-panel);
-          opacity: 1;
-        }
-
-        .quote-detail:first-child {
-          border-color: var(--quote-line);
-          background:
-            linear-gradient(90deg, var(--quote-accent-soft), transparent 58%),
-            var(--quote-panel);
-        }
-
-        .quote-detail-value {
-          min-width: 0;
-          color: var(--quote-ink);
-          font-size: 2.28rem;
-          font-weight: 890;
-          line-height: 1.08;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
-
-        .quote-detail-note {
-          min-width: 0;
-          color: var(--quote-muted);
-          font-size: 1.28rem;
-          font-weight: 700;
-          line-height: 1.18;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
-        }
-
-        .quote-rootbox[data-detail-count="0"] .quote-stage {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .quote-rootbox[data-detail-count="0"] .quote-details {
-          display: none;
-        }
-
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-stage {
-          inset: 9.5% 7.083% 17.963%;
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-frame {
-          min-height: 42rem;
-          align-content: center;
-          border-color: color-mix(in srgb, var(--quote-accent) 58%, transparent);
-          background:
-            linear-gradient(135deg, color-mix(in srgb, var(--quote-accent) 14%, transparent), transparent 48%),
-            color-mix(in srgb, var(--quote-surface) 88%, transparent);
-        }
-
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-details {
-          display: none;
-        }
-
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-header {
-          grid-template-columns: minmax(0, 1fr);
+        .quote-rootbox[data-variant="center-impact"] .quote-stage {
           justify-items: center;
           text-align: center;
         }
 
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-title-group {
-          justify-items: center;
+        .quote-rootbox[data-variant="center-impact"] .quote-ghost {
+          top: 5%;
+          right: 0;
         }
 
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-title {
-          font-size: 8.35rem;
-          line-height: 0.95;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          text-align: center;
-          text-shadow: 0 0 1.4rem color-mix(in srgb, var(--quote-accent) 30%, transparent);
+        .quote-rootbox[data-variant="center-impact"] .quote-header {
+          justify-self: center;
         }
 
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-body,
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-footer {
-          justify-items: center;
+        .quote-rootbox[data-variant="center-impact"] .quote-copy {
           text-align: center;
         }
 
-        .quote-rootbox[data-reveal-mode="spotlight"] .quote-text {
-          max-width: 62rem;
-          font-size: 4.85rem;
-          letter-spacing: 0;
+        .quote-rootbox[data-variant="center-impact"] .quote-attribution {
+          width: min(74rem, 100%);
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-stage {
+          justify-items: stretch;
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-ghost {
+          top: 3%;
+          left: -5%;
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-header {
+          padding-inline-start: 12%;
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-copy {
+          max-width: 78rem;
+          padding-inline-start: 12%;
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-copy::before {
+          position: absolute;
+          top: 0.08em;
+          bottom: 0.06em;
+          left: 5.5%;
+          width: 1px;
+          background: var(--quote-hairline-strong);
+          content: "";
+        }
+
+        .quote-rootbox[data-variant="editorial"] .quote-attribution {
+          width: min(82rem, 100%);
+          margin-inline-start: 12%;
         }
       </style>
+
       <div
         id="root"
         class="quote-rootbox"
@@ -461,36 +238,21 @@
         role="img"
         aria-label=""
       >
-        <span class="quote-impact-vignette" aria-hidden="true"></span>
-        <span class="quote-letterbox quote-letterbox-top" aria-hidden="true"></span>
-        <span class="quote-letterbox quote-letterbox-bottom" aria-hidden="true"></span>
-        <span class="quote-impact-flash" aria-hidden="true"></span>
         <section class="quote-stage">
-          <article class="quote-frame">
-            <span class="quote-glyph" aria-hidden="true">“</span>
-            <header class="quote-header">
-              <div class="quote-title-group">
-                <p class="quote-kicker" data-quote-mood></p>
-                <h1 class="quote-title" data-quote-title></h1>
-              </div>
-              <div class="quote-meta" data-quote-meta></div>
-            </header>
-            <div class="quote-body">
-              <div class="quote-rule" aria-hidden="true"></div>
-              <p class="quote-text" data-quote-text></p>
-              <p class="quote-context" data-quote-context></p>
-            </div>
-            <footer class="quote-footer">
-              <span class="quote-source-label">출처</span>
-              <span class="quote-source" data-quote-source></span>
-            </footer>
+          <span class="quote-ghost" aria-hidden="true">“</span>
+          <header class="quote-header">
+            <p class="quote-title" data-quote-title></p>
+          </header>
+          <article class="quote-copy">
+            <p class="quote-text" data-quote-text></p>
           </article>
-          <aside class="quote-details" aria-label="인용 세부 정보">
-            <p class="quote-details-title">인용 정보</p>
-            <ol class="quote-detail-list" data-quote-details></ol>
-          </aside>
+          <footer class="quote-attribution">
+            <span class="quote-source-label">Source</span>
+            <span class="quote-source" data-quote-source></span>
+          </footer>
         </section>
       </div>
+
       <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
       <script>
         (function () {
@@ -501,6 +263,13 @@
             scriptParent.querySelector(':scope > [data-hf-inner-root="true"][data-hf-authored-id="root"]') ||
             document.querySelector('.quote-rootbox[data-composition-id="quote"], .quote-rootbox[data-hf-original-composition-id="quote"]') ||
             document.querySelector('[data-composition-id="quote"], [data-hf-original-composition-id="quote"]');
+
+          if (!root) {
+            window.__timelines = window.__timelines || {};
+            window.__timelines.quote = gsap.timeline({ paused: true });
+            return;
+          }
+
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
             root.closest("[data-variable-values]") ||
@@ -509,178 +278,79 @@
             root;
           const variables = readVariables(host);
           const titleEl = root.querySelector("[data-quote-title]");
-          const moodEl = root.querySelector("[data-quote-mood]");
-          const metaEl = root.querySelector("[data-quote-meta]");
           const quoteEl = root.querySelector("[data-quote-text]");
-          const contextEl = root.querySelector("[data-quote-context]");
           const sourceEl = root.querySelector("[data-quote-source]");
-          const detailsEl = root.querySelector("[data-quote-details]");
+          const attribution = root.querySelector(".quote-attribution");
 
           const title = stringValue(variables.title, "인용");
           const items = arrayValue(variables.items).map((item) => stringValue(item, ""));
-          const values = arrayValue(variables.values).map((value) => valueText(value));
-          const unit = displayUnit(variables.unit);
-          const emphasis = stringValue(variables.emphasis, "quote");
-          const reveal = stringValue(variables.reveal, "typewriter");
-          const revealMode = reveal.toLowerCase();
           const source = stringValue(variables.source, "");
+          const unit = displayUnit(variables.unit);
           const quoteText = stringValue(items[1] || items[0], title);
-          const context = stringValue(items[0], unit || title);
-          const detailRows = buildDetailRows({ items, values });
+          const context = items[0] && normalizeText(items[0]) !== normalizeText(quoteText) ? items[0] : "";
+          const attributionText = source || context || unit;
+          const repeatIndex = Math.max(0, Math.floor(numericValue(variables.repeatIndex)));
+          const variant = repeatIndex % 2 === 0 ? "center-impact" : "editorial";
+          const revealMode = stringValue(variables.reveal, "typewriter").toLowerCase();
+          const titleText = normalizeText(title) === normalizeText(quoteText) ? "Quote" : title;
           const duration = blockDuration(root, 5);
-          const phases = phaseTimes(duration);
 
           root.style.setProperty("--quote-accent", safeColor(variables.accent));
-          root.dataset.detailCount = String(detailRows.length);
+          root.dataset.variant = variant;
           root.dataset.revealMode = revealMode;
-          titleEl.textContent = title;
-          moodEl.textContent = "";
-          moodEl.setAttribute("aria-hidden", "true");
-          renderMeta(metaEl, []);
-          renderQuoteText(quoteEl, quoteText);
-          contextEl.textContent = context;
-          sourceEl.textContent = source ? (context && context !== source ? `${source} · ${context}` : source) : context;
-          root.setAttribute("aria-label", ariaLabel({ title, quoteText, context, source, detailRows }));
-
-          detailRows.forEach((row) => {
-            const item = document.createElement("li");
-            const label = document.createElement("span");
-            const value = document.createElement("span");
-            const note = document.createElement("span");
-            item.className = "quote-detail";
-            label.className = "quote-detail-label";
-            value.className = "quote-detail-value";
-            note.className = "quote-detail-note";
-            label.textContent = row.label;
-            value.textContent = row.value;
-            note.textContent = row.note;
-            item.append(label, value, note);
-            detailsEl.appendChild(item);
-          });
+          root.dataset.hasAttribution = attributionText ? "true" : "false";
+          titleEl.textContent = titleText;
+          sourceEl.textContent = attributionText;
+          renderQuoteLines(quoteEl, quoteText);
+          root.setAttribute("aria-label", ariaLabel(title, quoteText, attributionText));
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
-          const chars = gsap.utils.toArray(root.querySelectorAll(".quote-char"));
-          const details = gsap.utils.toArray(root.querySelectorAll(".quote-detail"));
-          const typewriter = revealMode.includes("type");
-          const spotlight = revealMode.includes("spotlight");
-          const beatFlash = revealMode.includes("flash");
-          const charStagger = chars.length > 0 ? Math.min(0.012, Math.max(0.004, 0.18 / chars.length)) : 0.01;
-          const detailStagger = beatFlash ? 0.025 : 0.035;
-          const glyph = root.querySelector(".quote-glyph");
-          const stage = root.querySelector(".quote-stage");
-          const frame = root.querySelector(".quote-frame");
-          const rule = root.querySelector(".quote-rule");
-          const footer = root.querySelector(".quote-footer");
-          const detailsPanel = root.querySelector(".quote-details");
-          const flash = root.querySelector(".quote-impact-flash");
-          const vignette = root.querySelector(".quote-impact-vignette");
-          const letterboxes = gsap.utils.toArray(root.querySelectorAll(".quote-letterbox"));
-
-          if (spotlight) {
-            buildSpotlightTimeline();
-            registerTimeline(tl);
-            return;
-          }
+          const lines = gsap.utils.toArray(root.querySelectorAll(".quote-line"));
 
           tl.addLabel("start", 0);
-          tl.fromTo(
-            frame,
-            { opacity: 0, y: 18, scale: 0.992 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "power4.out" },
-            0
-          );
-          tl.fromTo(glyph, { opacity: 0, scale: 0.88, y: 8 }, { opacity: 1, scale: 1, y: 0, duration: 0.18, ease: "power3.out" }, 0.04);
-          tl.fromTo(
-            root.querySelector(".quote-details"),
-            { opacity: 0, x: 16 },
-            { opacity: detailRows.length > 0 ? 1 : 0, x: 0, duration: 0.2, ease: "power3.out" },
-            0.08
-          );
-          tl.fromTo(
-            rule,
-            { scaleX: 0, opacity: 0 },
-            { scaleX: 1, opacity: 1, duration: 0.18, ease: "power3.inOut" },
-            0.1
-          );
-          tl.fromTo(
-            chars,
-            { opacity: 0, y: typewriter ? 10 : 18 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: typewriter ? 0.045 : 0.16,
-              ease: typewriter ? "none" : "power2.out",
-              stagger: typewriter ? charStagger : 0.006
-            },
-            0.13
-          );
-          tl.fromTo(
-            contextEl,
-            { opacity: 0, y: 10 },
-            { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" },
-            0.24
-          );
-          tl.fromTo(
-            details,
-            { opacity: 0, y: 12 },
-            { opacity: 1, y: 0, duration: 0.14, ease: "power3.out", stagger: detailStagger },
-            0.22
-          );
-          tl.fromTo(
-            footer,
-            { opacity: 0, y: 8 },
-            { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" },
-            0.3
-          );
-          if (beatFlash) {
-            addBeatFlashHits();
+          tl.fromTo(titleEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.16, ease: "power2.out" }, 0);
+          tl.to(titleEl, { opacity: 0.64, duration: 0.12, ease: "power2.out" }, 0.18);
+          lines.forEach((line, index) => {
+            const at = 0.1 + index * (revealMode.includes("type") ? 0.15 : 0.18);
+            tl.fromTo(
+              line,
+              { opacity: 0, y: 22 },
+              { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" },
+              at
+            );
+          });
+          if (attributionText) {
+            tl.fromTo(
+              attribution,
+              { opacity: 0, y: 10 },
+              { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" },
+              0.48
+            );
           }
-          tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(frame, { y: -8, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(rule, { scaleX: 0.72, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
-          tl.to(stage, { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
           tl.addLabel("final", duration);
           registerTimeline(tl);
 
-          function buildSpotlightTimeline() {
-            const hit = Math.min(0.3, Math.max(0.2, duration * 0.08));
-            const holdDrift = Math.max(0.8, duration - hit - 0.64);
-            tl.addLabel("start", 0);
-            tl.set([frame, titleEl, quoteEl, contextEl, rule, footer, glyph, detailsPanel], { opacity: 0 }, 0);
-            tl.set(stage, { x: 0, y: 0, scale: 1 }, 0);
-            tl.fromTo(letterboxes, { scaleY: 0 }, { scaleY: 1, duration: 0.18, ease: "power3.inOut" }, 0);
-            tl.to(vignette, { opacity: 0.62, duration: 0.1, ease: "power2.in" }, Math.max(0, hit - 0.12));
-            tl.set(flash, { opacity: 1 }, hit);
-            tl.set(frame, { opacity: 1, y: 0, scale: 1.12 }, hit);
-            tl.set([titleEl, quoteEl], { opacity: 1 }, hit);
-            tl.set(glyph, { opacity: 0.72, scale: 1.04, y: 0 }, hit);
-            tl.to(flash, { opacity: 0, duration: 0.12, ease: "power3.out" }, hit);
-            tl.to(frame, { scale: 1, duration: 0.22, ease: "power4.out" }, hit);
-            tl.fromTo(stage, { x: 5, y: -3 }, { x: 0, y: 0, duration: 0.12, ease: "power3.out" }, hit);
-            tl.fromTo(rule, { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.14, ease: "power3.out" }, hit + 0.06);
-            tl.fromTo(contextEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" }, hit + 0.12);
-            tl.fromTo(footer, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.1, ease: "power2.out" }, hit + 0.18);
-            tl.to(vignette, { opacity: 0.36, duration: 0.5, ease: "power2.out" }, hit + 0.04);
-            tl.to(titleEl, { scale: 1.018, duration: holdDrift, ease: "sine.inOut" }, hit + 0.24);
-            tl.to(glyph, { y: -12, x: 8, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-            tl.to(stage, { y: -16, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-            tl.addLabel("final", duration);
+          function renderQuoteLines(container, text) {
+            splitQuoteLines(text).forEach((lineText) => {
+              const line = document.createElement("span");
+              line.className = "quote-line";
+              line.textContent = lineText;
+              container.appendChild(line);
+            });
           }
 
-          function addBeatFlashHits() {
-            const targets = details.length > 0 ? details : chars.slice(0, 4);
-            const beatStart = 0.82;
-            const beatGap = 0.16;
-            targets.slice(0, 4).forEach((target, index) => {
-              const at = beatStart + index * beatGap;
-              tl.set(flash, { opacity: index % 2 === 0 ? 0.58 : 0.42 }, at);
-              tl.to(flash, { opacity: 0, duration: 0.07, ease: "power2.out" }, at);
-              tl.fromTo(target, { scale: 0.97 }, { scale: 1.045, duration: 0.08, ease: "power3.out", repeat: 1, yoyo: true }, at);
-            });
-            tl.fromTo(stage, { x: -10 }, { x: 0, duration: 0.2, ease: "power3.out" }, beatStart);
-            tl.to(vignette, { opacity: 0.26, duration: 0.1, ease: "none" }, beatStart);
-            tl.to(vignette, { opacity: 0, duration: 0.42, ease: "power2.out" }, beatStart + 0.12);
+          function splitQuoteLines(text) {
+            const explicit = String(text)
+              .split(/\r?\n/)
+              .map((line) => line.trim())
+              .filter(Boolean);
+            if (explicit.length > 1) return [explicit[0], explicit.slice(1).join(" ")];
+
+            const words = String(text).trim().split(/\s+/).filter(Boolean);
+            if (words.length < 5) return [String(text).trim()];
+            const pivot = Math.ceil(words.length / 2);
+            return [words.slice(0, pivot).join(" "), words.slice(pivot).join(" ")];
           }
 
           function registerTimeline(timeline) {
@@ -703,6 +373,15 @@
             return text.length > 0 ? text : fallback;
           }
 
+          function normalizeText(value) {
+            return String(value ?? "").trim().replace(/\s+/g, " ");
+          }
+
+          function numericValue(value) {
+            const parsed = Number(value);
+            return Number.isFinite(parsed) ? parsed : 0;
+          }
+
           function displayUnit(value) {
             const text = stringValue(value, "");
             if (!text) return "";
@@ -710,63 +389,6 @@
             return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
               ? normalized
               : "";
-          }
-
-          function valueText(value) {
-            if (value === undefined || value === null) return "";
-            return String(value).trim();
-          }
-
-          function buildDetailRows({ items: itemTexts, values: valueTexts }) {
-            if (itemTexts.length === 0) return [];
-            const rows = [];
-            const max = Math.max(itemTexts.length, valueTexts.length);
-            for (let index = 0; index < max; index += 1) {
-              const itemText = stringValue(itemTexts[index], "");
-              const rawValue = valueTexts[index] || "";
-              const displayValue = rawValue || itemText;
-              if (!displayValue) continue;
-              rows.push({
-                label: quoteDetailLabel(rows.length),
-                value: displayValue,
-                note: rawValue && itemText && normalizeDetailText(rawValue) !== normalizeDetailText(itemText) ? itemText : ""
-              });
-            }
-            return rows.slice(0, 4);
-          }
-
-          function quoteDetailLabel(index) {
-            if (index === 0) return "맥락";
-            if (index === 1) return "문장";
-            return `근거 ${index + 1}`;
-          }
-
-          function normalizeDetailText(value) {
-            return String(value ?? "").trim().replace(/\s+/g, " ");
-          }
-
-          function renderMeta(container, entries) {
-            entries
-              .map((entry) => stringValue(entry, ""))
-              .filter(Boolean)
-              .slice(0, 3)
-              .forEach((entry) => {
-                const chip = document.createElement("span");
-                chip.className = "quote-chip";
-                chip.textContent = entry;
-                container.appendChild(chip);
-              });
-          }
-
-          function renderQuoteText(container, text) {
-            container.setAttribute("aria-label", text);
-            Array.from(text).forEach((char) => {
-              const span = document.createElement("span");
-              span.className = "quote-char";
-              span.setAttribute("aria-hidden", "true");
-              span.textContent = char === " " ? "\u00a0" : char;
-              container.appendChild(span);
-            });
           }
 
           function readVariables(hostElement) {
@@ -813,16 +435,15 @@
             ]);
           }
 
-          function ariaLabel({ title: labelTitle, quoteText: labelQuote, context: labelContext, source: labelSource, detailRows: rows }) {
-            const details = rows.map((row) => `${row.label} ${row.value} ${row.note}`).join(", ");
-            return `${labelTitle}: ${labelQuote}. ${labelContext}. ${labelSource}. ${details}`;
+          function ariaLabel(labelTitle, labelQuote, labelSource) {
+            return labelSource ? `${labelTitle}: ${labelQuote}. ${labelSource}` : `${labelTitle}: ${labelQuote}`;
           }
 
           function safeColor(value) {
-            const text = stringValue(value, "Highlight");
+            const text = stringValue(value, "");
             return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
               ? text
-              : "Highlight";
+              : "var(--rf-accent, var(--rf-text, currentColor))";
           }
 
           function blockDuration(element, fallback) {
@@ -834,14 +455,6 @@
             }
             const own = Number(element.getAttribute("data-duration"));
             return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
-
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.44, Math.max(0.32, total * 0.1));
-            const exitStart = Math.max(1.2, total - exitDuration);
-            const livingStart = Math.min(exitStart - 0.42, Math.max(1.1, total * 0.28));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return { exitStart, exitDuration, livingStart, livingDuration };
           }
         })();
       </script>

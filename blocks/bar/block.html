@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"number"},
     {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"chart"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -27,251 +28,339 @@
           inset: 0;
           width: 1920px;
           height: 1080px;
-          overflow: hidden;
           box-sizing: border-box;
-          color: var(--rf-text, CanvasText);
+          overflow: hidden;
+          color: var(--bar-ink);
           font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          --bar-accent: var(--rf-accent, Highlight);
-          --bar-surface: var(--rf-surface, Canvas);
-          --bar-panel: var(--rf-panel, color-mix(in srgb, CanvasText 8%, Canvas));
-          --bar-muted: var(--rf-muted-text, color-mix(in srgb, CanvasText 60%, Canvas));
-          --bar-shadow: var(--rf-shadow, CanvasText);
-          --bar-track: color-mix(in srgb, var(--bar-muted) 18%, transparent);
-          --bar-grid: color-mix(in srgb, var(--bar-muted) 20%, transparent);
+          --bar-ink: var(--rf-text, currentColor);
+          --bar-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+          --bar-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+          --bar-accent: var(--rf-accent, var(--rf-text, currentColor));
+          --bar-surface-2: var(--rf-surface-2, var(--rf-surface, var(--rf-bg, transparent)));
+          --bar-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+          --bar-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent)));
+          --bar-track: color-mix(in srgb, var(--bar-surface-2) 76%, transparent);
+          --bar-muted-fill: color-mix(in srgb, var(--bar-muted) 48%, transparent);
+          --bar-value-glow: color-mix(in srgb, var(--bar-accent) 28%, transparent);
+          -webkit-font-smoothing: antialiased;
         }
 
-        .bar-frame {
+        .bar-stage {
           position: absolute;
-          inset: 8.889% 7.083% 15.741%;
+          inset: 7.2% 6.25%;
           display: grid;
-          grid-template-rows: auto 1fr auto;
+          grid-template-rows: auto minmax(0, 1fr);
           gap: 3.25rem;
+          min-width: 0;
+          min-height: 0;
           box-sizing: border-box;
-          padding: 4rem 4.5rem 3.25rem;
-          background: color-mix(in srgb, var(--bar-surface) 92%, transparent);
-          border: 0.125rem solid color-mix(in srgb, var(--bar-accent) 32%, transparent);
-          box-shadow: 0 1.5rem 4.375rem color-mix(in srgb, var(--bar-shadow) 18%, transparent);
-          transform-origin: 50% 50%;
+        }
+
+        .bar-eyebrow {
+          width: max-content;
+          max-width: 100%;
+          margin: 0;
+          color: var(--bar-muted);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.55rem;
+          font-weight: 700;
+          line-height: 1.1;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .bar-viz {
+          position: relative;
+          min-width: 0;
+          min-height: 0;
+        }
+
+        .bar-race,
+        .bar-column {
+          width: 100%;
+          height: 100%;
+          min-width: 0;
+          min-height: 0;
+        }
+
+        .bar-race {
+          display: grid;
+          grid-template-rows: minmax(0, 1fr) auto;
+          gap: 2.2rem;
+        }
+
+        .bar-race-rows {
+          display: grid;
+          align-content: center;
+          gap: 1.3rem;
+          min-width: 0;
+          min-height: 0;
+        }
+
+        .bar-race-row {
+          display: grid;
+          grid-template-columns: minmax(12rem, 20%) minmax(0, 1fr);
+          align-items: center;
+          gap: 2.4rem;
+          min-height: 6.85rem;
+          opacity: 0;
           will-change: transform, opacity;
         }
 
-        .bar-header {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: end;
-          gap: 2rem;
+        .bar-race-label,
+        .bar-column-label {
+          color: var(--bar-ink);
+          font-size: 2.15rem;
+          font-weight: 760;
+          line-height: 1.1;
+          letter-spacing: -0.02em;
+          word-break: keep-all;
+          overflow-wrap: anywhere;
         }
 
-        .bar-title {
+        .bar-race-row[data-highlight="false"] .bar-race-label,
+        .bar-column-item[data-highlight="false"] .bar-column-label {
+          color: var(--bar-muted);
+        }
+
+        .bar-race-track {
+          position: relative;
+          height: 3.9rem;
+          background: var(--bar-track);
+          overflow: visible;
+        }
+
+        .bar-race-fill,
+        .bar-column-fill {
+          position: absolute;
+          display: block;
+          background: var(--bar-accent);
+          transform-origin: left center;
+          will-change: transform, filter, opacity;
+          animation: bar-fill-living 1.9s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+
+        .bar-race-row[data-highlight="false"] .bar-race-fill,
+        .bar-column-item[data-highlight="false"] .bar-column-fill {
+          background: var(--bar-muted-fill);
+        }
+
+        .bar-race-fill {
+          inset: 0 auto 0 0;
+          width: var(--bar-size);
+          transform: scaleX(0);
+        }
+
+        .bar-race-value,
+        .bar-column-value {
+          position: absolute;
+          z-index: 2;
+          color: var(--bar-ink);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.72rem;
+          font-weight: 760;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+          letter-spacing: -0.03em;
+          white-space: nowrap;
+          text-shadow: 0 0 0.8rem var(--bar-value-glow);
+          pointer-events: none;
+        }
+
+        .bar-race-value {
+          top: 50%;
+          left: var(--bar-size);
+          transform: translate(-100%, -50%);
+          padding: 0 0.75rem;
+          color: var(--rf-on-accent, var(--bar-ink));
+        }
+
+        .bar-race-row[data-highlight="false"] .bar-race-value {
+          color: var(--bar-ink);
+        }
+
+        .bar-race-axis {
+          position: relative;
+          height: 3.35rem;
+          margin-inline-start: calc(20% + 2.4rem);
+          border-top: 1px solid var(--bar-hairline-strong);
+          animation: bar-axis-living 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+
+        .bar-axis-tick {
+          position: absolute;
+          top: 0;
+          left: var(--bar-tick);
+          height: 0.8rem;
+          border-inline-start: 1px solid var(--bar-hairline);
+          color: var(--bar-tertiary);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.12rem;
+          font-weight: 600;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+          letter-spacing: -0.02em;
+        }
+
+        .bar-axis-tick > span {
+          position: absolute;
+          top: 1.15rem;
+          transform: translateX(-50%);
+          white-space: nowrap;
+        }
+
+        .bar-column {
+          display: grid;
+          grid-template-rows: minmax(0, 1fr) auto;
+          gap: 1.7rem;
+        }
+
+        .bar-column-plot {
+          position: relative;
+          min-width: 0;
+          min-height: 30rem;
+          overflow: visible;
+          border-bottom: 1px solid var(--bar-hairline-strong);
+          animation: bar-axis-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+
+        .bar-column-grid {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+        }
+
+        .bar-column-tick {
+          position: absolute;
+          right: 0;
+          bottom: var(--bar-tick);
+          left: 0;
+          border-top: 1px solid var(--bar-hairline);
+        }
+
+        .bar-column-tick > span {
+          position: absolute;
+          top: -0.7rem;
+          left: 0;
+          color: var(--bar-tertiary);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: 1.08rem;
+          font-weight: 600;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+          letter-spacing: -0.02em;
+          white-space: nowrap;
+        }
+
+        .bar-column-bars {
+          position: absolute;
+          inset: 0 0 0 7.25rem;
+          z-index: 1;
+          display: grid;
+          grid-template-columns: repeat(var(--bar-columns), minmax(0, 1fr));
+          align-items: end;
+          gap: 2rem;
+          min-width: 0;
+          min-height: 0;
+        }
+
+        .bar-column-item {
+          display: grid;
+          grid-template-rows: minmax(0, 1fr) auto;
+          justify-items: center;
+          min-width: 0;
+          height: 100%;
+          opacity: 0;
+          will-change: transform, opacity;
+        }
+
+        .bar-column-track {
+          position: relative;
+          align-self: end;
+          width: min(72%, 8.5rem);
+          height: 100%;
+          min-height: 0;
+          background: var(--bar-track);
+          overflow: visible;
+        }
+
+        .bar-column-fill {
+          right: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: var(--bar-size);
+          transform: scaleY(0);
+          transform-origin: center bottom;
+        }
+
+        .bar-column-value {
+          bottom: var(--bar-size);
+          left: 50%;
+          transform: translate(-50%, -0.85rem);
+        }
+
+        .bar-column-label {
+          width: 100%;
+          margin: 1.3rem 0 0;
+          color: var(--bar-muted);
+          font-size: 1.55rem;
+          line-height: 1.2;
+          text-align: center;
+        }
+
+        .bar-column-caption {
+          margin: 0 0 0 7.25rem;
+          color: var(--bar-muted);
+          font-size: 1.3rem;
+          font-weight: 650;
+          line-height: 1.25;
+          letter-spacing: -0.01em;
+          word-break: keep-all;
+        }
+
+        .bar-empty {
+          display: grid;
+          align-content: center;
+          min-height: 100%;
+        }
+
+        .bar-empty-title {
+          max-width: 75%;
           margin: 0;
-          color: var(--rf-text, CanvasText);
-          font-size: 5.5rem;
-          font-weight: 900;
-          line-height: 1.04;
+          color: var(--bar-ink);
+          font-size: 13.5rem;
+          font-weight: 820;
+          line-height: 0.92;
           letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
         }
 
-        .bar-kicker {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          min-width: 0;
-          color: var(--bar-muted);
-          font-size: 1.75rem;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-          white-space: nowrap;
-        }
-
-        .bar-kicker::before {
-          content: "";
-          display: block;
-          width: 0.875rem;
-          height: 0.875rem;
-          background: var(--bar-accent);
-        }
-
-        .bar-chart {
-          position: relative;
-          display: grid;
-          align-content: center;
-          gap: 2rem;
-          min-height: 0;
-        }
-
-        .bar-chart::before {
-          content: "";
-          position: absolute;
-          inset: 0 0 0 19.5rem;
-          background: none;
-          pointer-events: none;
-        }
-
-        .bar-row {
-          position: relative;
-          display: grid;
-          grid-template-columns: 16.5rem minmax(0, 1fr) 12rem;
-          align-items: center;
-          gap: 1.5rem;
-          min-height: 6.375rem;
-          opacity: 0;
-          transform-origin: 50% 50%;
-          will-change: transform, filter, opacity;
-        }
-
-        .bar-row[data-highlight="false"] .bar-label {
-          color: var(--bar-muted);
-        }
-
-        .bar-row[data-highlight="false"] .bar-fill {
-          background: color-mix(in srgb, var(--bar-muted) 44%, transparent);
-          box-shadow: none;
-        }
-
-        .bar-label {
-          color: var(--rf-text, CanvasText);
-          font-size: 2.5rem;
-          font-weight: 820;
-          line-height: 1.12;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
-
-        .bar-track {
-          position: relative;
-          height: 4.625rem;
-          overflow: hidden;
-          background: var(--bar-track);
-        }
-
-        .bar-fill {
-          position: absolute;
-          inset: 0 auto 0 0;
-          width: var(--bar-width);
-          min-width: 0.75rem;
-          transform: scaleX(0);
-          transform-origin: left center;
-          background:
-            linear-gradient(
-              90deg,
-              color-mix(in srgb, var(--bar-accent) 72%, var(--bar-surface)),
-              var(--bar-accent)
-            );
-          box-shadow: 0 0 1.625rem color-mix(in srgb, var(--bar-accent) 34%, transparent);
-          overflow: hidden;
-          will-change: transform, filter;
-        }
-
-        .bar-track-value {
-          position: absolute;
-          inset: 0 1rem 0 auto;
-          z-index: 2;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          min-width: 7.5rem;
-          color: var(--rf-text, CanvasText);
-          font-size: 2.05rem;
-          font-weight: 900;
-          line-height: 1;
-          letter-spacing: 0;
-          text-align: right;
-          white-space: nowrap;
-          font-variant-numeric: tabular-nums;
-          text-shadow: 0 0.08rem 0.4rem color-mix(in srgb, var(--bar-surface) 74%, transparent);
-          pointer-events: none;
-        }
-
-        .bar-sweep {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(100deg, transparent 0 36%, rgba(255, 255, 255, 0.42) 50%, transparent 64% 100%);
-          opacity: 0;
-          transform: translateX(-120%);
-          pointer-events: none;
-        }
-
-        .bar-value {
-          color: var(--rf-text, CanvasText);
-          font-variant-numeric: tabular-nums;
-          font-size: 2.75rem;
-          font-weight: 900;
-          line-height: 1;
-          letter-spacing: 0;
-          text-align: right;
-          opacity: 0;
-          white-space: nowrap;
-        }
-
-        .bar-footer {
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1.5rem;
-          color: var(--bar-muted);
-          font-size: 1.5rem;
-          font-weight: 680;
-          line-height: 1.2;
-          letter-spacing: 0;
-        }
-
-        .bar-source {
-          min-width: 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .bar-unit {
-          color: var(--bar-accent);
-          font-weight: 820;
-          white-space: nowrap;
-        }
-
-        @keyframes bar-row-living {
+        @keyframes bar-fill-living {
           0% {
-            transform: translateY(-0.45rem) scale(1.004);
-            filter: brightness(1.02);
+            filter: brightness(0.96);
+            opacity: 0.88;
           }
           100% {
-            transform: translateY(0.45rem) scale(1.014);
             filter: brightness(1.12);
+            opacity: 1;
           }
         }
 
-        @keyframes bar-sweep-living {
+        @keyframes bar-axis-living {
           0% {
-            opacity: 0;
-            transform: translateX(-125%);
-          }
-          28%,
-          62% {
-            opacity: 0.86;
+            opacity: 0.74;
           }
           100% {
-            opacity: 0;
-            transform: translateX(125%);
+            opacity: 1;
           }
-        }
-
-        .bar-row {
-          animation: bar-row-living 2.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1s) infinite alternate;
-        }
-
-        .bar-row:nth-child(2n) {
-          animation-delay: calc(var(--rf-scene-start, 0s) + 1.2s);
-          animation-direction: alternate-reverse;
-        }
-
-        .bar-sweep {
-          animation: bar-sweep-living 1.65s ease-in-out calc(var(--rf-scene-start, 0s) + 1.1s) infinite;
         }
       </style>
+
       <div
         id="root"
         class="bar-rootbox"
@@ -282,36 +371,32 @@
         role="img"
         aria-label=""
       >
-        <section class="bar-frame">
-          <header class="bar-header">
-            <h1 class="bar-title" data-bar-title></h1>
-            <div class="bar-kicker" data-bar-mood></div>
-          </header>
-          <div class="bar-chart" data-bar-chart></div>
-          <footer class="bar-footer">
-            <div class="bar-source" data-bar-source></div>
-            <div class="bar-unit" data-bar-unit></div>
-          </footer>
+        <section class="bar-stage">
+          <p class="bar-eyebrow" data-bar-title></p>
+          <div class="bar-viz" data-bar-viz></div>
         </section>
       </div>
+
       <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
       <script>
         (function () {
           const root =
             document.getElementById("root") ||
             document.querySelector('[data-composition-id="bar"], [data-hf-original-composition-id="bar"]');
+          if (!root) {
+            window.__timelines = window.__timelines || {};
+            window.__timelines.bar = gsap.timeline({ paused: true });
+            return;
+          }
+
           const host =
             root.parentElement?.closest("[data-variable-values]") ||
             root.closest("[data-variable-values]") ||
             root.parentElement?.closest("[data-composition-id]") ||
             root.closest("[data-composition-id]") ||
             root;
-          const frame = root.querySelector(".bar-frame");
-          const chart = root.querySelector("[data-bar-chart]");
           const titleEl = root.querySelector("[data-bar-title]");
-          const moodEl = root.querySelector("[data-bar-mood]");
-          const sourceEl = root.querySelector("[data-bar-source]");
-          const unitEl = root.querySelector("[data-bar-unit]");
+          const viz = root.querySelector("[data-bar-viz]");
           const scopedHyperframes = typeof __hyperframes === "undefined" ? null : __hyperframes;
           const hostCompositionId = host.getAttribute("data-composition-id");
           const variables = {
@@ -321,150 +406,66 @@
             ...readHostVariables(host)
           };
           const title = stringValue(variables.title, "가로 막대차트");
-          const unit = stringValue(variables.unit, "");
+          const unit = displayUnit(variables.unit);
           const source = stringValue(variables.source, "");
-          const items = arrayValue(variables.items);
-          const values = arrayValue(variables.values);
-          const rows = normalizeRows(items, values);
-          const maxValue = Math.max(1, ...rows.map((row) => Math.abs(row.numeric)));
-          const highlightIndex = rows.reduce((best, row, index) => (row.numeric > rows[best].numeric ? index : best), 0);
+          const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values)).filter((row) => row.hasValue).slice(0, 6);
+          const maxValue = Math.max(0, ...rows.map((row) => Math.abs(row.numeric)));
+          const scale = axisScale(maxValue);
+          const highlightIndex = rows.reduce(
+            (best, row, index) => (Math.abs(row.numeric) > Math.abs(rows[best]?.numeric ?? 0) ? index : best),
+            0
+          );
+          const repeatIndex = Math.max(0, Math.floor(numericInfo(variables.repeatIndex).value));
+          const variant = repeatIndex % 2 === 0 ? "race" : "column";
           const duration = blockDuration(root, 5);
-          const phases = phaseTimes(duration);
 
           root.style.setProperty("--rf-accent", safeColor(variables.accent));
+          root.dataset.variant = variant;
+          root.dataset.hasData = rows.length > 0 ? "true" : "false";
           titleEl.textContent = title;
-          moodEl.textContent = "";
-          moodEl.setAttribute("aria-hidden", "true");
-          sourceEl.textContent = source;
-          sourceEl.style.opacity = source ? "1" : "0";
-          unitEl.textContent = unit ? `단위 ${unit}` : "";
-          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
+          root.setAttribute("aria-label", ariaLabel(title, rows, unit, source));
 
-          rows.forEach((row, index) => {
-            const item = document.createElement("div");
-            const label = document.createElement("div");
-            const track = document.createElement("div");
-            const fill = document.createElement("div");
-            const sweep = document.createElement("span");
-            const trackValue = document.createElement("span");
-            const value = document.createElement("div");
-
-            item.className = "bar-row";
-            label.className = "bar-label";
-            track.className = "bar-track";
-            fill.className = "bar-fill";
-            sweep.className = "bar-sweep";
-            trackValue.className = "bar-track-value";
-            value.className = "bar-value";
-            item.dataset.highlight = index === highlightIndex ? "true" : "false";
-
-            label.textContent = row.label;
-            trackValue.textContent = formatValue(0, row, unit);
-            value.textContent = formatValue(0, row, unit);
-            fill.style.setProperty("--bar-width", `${Math.max(4, (Math.abs(row.numeric) / maxValue) * 100).toFixed(3)}%`);
-
-            fill.appendChild(sweep);
-            track.append(fill, trackValue);
-            item.append(label, track, value);
-            chart.appendChild(item);
-
-            row.elements = { item, fill, sweep, trackValue, value };
-          });
+          const entries = rows.length > 0
+            ? variant === "race"
+              ? buildRace(rows, scale, highlightIndex, unit)
+              : buildColumn(rows, scale, highlightIndex, unit)
+            : buildEmpty(title);
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
-          tl.fromTo(frame, { opacity: 0, y: 18, scale: 0.992 }, { opacity: 1, y: 0, scale: 1, duration: 0.22, ease: "power4.out" }, 0);
+          const eyebrow = root.querySelector(".bar-eyebrow");
 
-          rows.forEach((row, index) => {
-            const start = 0.08 + index * 0.025;
-            const counter = { value: 0 };
-            tl.fromTo(
-              row.elements.item,
-              { opacity: 0, y: 14 },
-              { opacity: 1, y: 0, duration: 0.16, ease: "power3.out" },
-              start
-            );
-            tl.fromTo(
-              row.elements.fill,
-              { scaleX: 0 },
-              { scaleX: 1, duration: 0.18, ease: "expo.out" },
-              start + 0.04
-            );
-            tl.to(
-              counter,
-              {
-                value: row.numeric,
-                duration: phases.countDuration,
-                ease: "power4.out",
-                onStart: function () {
-                  row.elements.value.style.opacity = "1";
-                },
-                onUpdate: function () {
-                  const text = formatValue(counter.value, row, unit);
-                  row.elements.trackValue.textContent = text;
-                  row.elements.value.textContent = text;
-                },
-                onComplete: function () {
-                  const text = formatValue(row.numeric, row, unit);
-                  row.elements.trackValue.textContent = text;
-                  row.elements.value.textContent = text;
+          if (rows.length === 0) {
+            const empty = entries[0];
+            tl.fromTo(empty.item, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" }, 0.04);
+          } else {
+            tl.fromTo(eyebrow, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.18, ease: "power2.out" }, 0);
+            entries.forEach((entry, index) => {
+              const start = 0.06 + index * 0.055;
+              tl.fromTo(
+                entry.item,
+                { opacity: 0, y: 18 },
+                { opacity: 1, y: 0, duration: 0.26, ease: "power3.out" },
+                start
+              );
+              tl.fromTo(
+                entry.fill,
+                entry.variant === "race" ? { scaleX: 0 } : { scaleY: 0 },
+                entry.variant === "race" ? { scaleX: 1, duration: 0.32, ease: "expo.out" } : { scaleY: 1, duration: 0.32, ease: "expo.out" },
+                start + 0.08
+              );
+              addCountUp(entry.row, entry.value, unit, start + 0.1);
+
+              if (index > 0) {
+                const previous = entries.slice(0, index).filter((prior) => !prior.highlight).map((prior) => prior.item);
+                if (previous.length > 0) {
+                  tl.to(previous, { opacity: 0.7, duration: 0.12, ease: "power2.out" }, start + 0.28);
                 }
-              },
-              start + 0.04
-            );
-          });
-          const highlight = rows[highlightIndex]?.elements;
-          if (highlight) {
-            tl.to(highlight.item, {
-              scale: 1.03,
-              y: -14,
-              filter: "brightness(1.16)",
-              duration: 0.78,
-              ease: "sine.inOut",
-              repeat: loopRepeat(0.78, 0.14),
-              repeatDelay: 0.14,
-              yoyo: true
-            }, phases.livingStart);
+              }
+            });
           }
-          rows.forEach((row, index) => {
-            tl.fromTo(
-              row.elements.sweep,
-              { opacity: 0, x: "-125%" },
-              {
-                opacity: index === highlightIndex ? 0.96 : 0.66,
-                x: "125%",
-                duration: 0.62,
-                ease: "power2.inOut",
-                repeat: loopRepeat(0.62, rows.length * 0.18),
-                repeatDelay: rows.length * 0.18
-              },
-              phases.livingStart + index * 0.18
-            );
-            if (index !== highlightIndex) {
-              const rowStart = phases.livingStart + 0.08 + index * 0.06;
-              tl.to(row.elements.item, {
-                y: index % 2 === 0 ? -10 : 10,
-                scale: 1.014,
-                filter: "brightness(1.1)",
-                duration: 0.72,
-                ease: "sine.inOut",
-                repeat: loopRepeat(0.72, 0.2),
-                repeatDelay: 0.2,
-                yoyo: true
-              }, rowStart);
-            }
-          });
-          tl.to(frame, {
-            y: -8,
-            scale: 1.006,
-            duration: 0.96,
-            ease: "sine.inOut",
-            repeat: loopRepeat(0.96),
-            yoyo: true
-          }, phases.livingStart);
-          tl.to(frame, { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          tl.addLabel("final", duration);
 
+          tl.addLabel("final", duration);
           timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
           });
@@ -473,15 +474,153 @@
             if (id) globalThis.__timelines[id] = tl;
           });
 
+          function buildRace(chartRows, chartScale, strongestIndex, suffix) {
+            const race = document.createElement("section");
+            const rowsEl = document.createElement("div");
+            const axis = document.createElement("div");
+            race.className = "bar-race";
+            rowsEl.className = "bar-race-rows";
+            axis.className = "bar-race-axis";
+
+            const entries = chartRows.map((row, index) => {
+              const item = document.createElement("article");
+              const label = document.createElement("div");
+              const track = document.createElement("div");
+              const fill = document.createElement("div");
+              const value = document.createElement("span");
+              const size = percentage(row.numeric, chartScale.max);
+              item.className = "bar-race-row";
+              label.className = "bar-race-label";
+              track.className = "bar-race-track";
+              fill.className = "bar-race-fill";
+              value.className = "bar-race-value";
+              item.dataset.highlight = index === strongestIndex ? "true" : "false";
+              fill.style.setProperty("--bar-size", size + "%");
+              value.style.setProperty("--bar-size", size + "%");
+              label.textContent = row.label;
+              value.textContent = formatValue(0, row, suffix);
+              track.append(fill, value);
+              item.append(label, track);
+              rowsEl.appendChild(item);
+              return { item, fill, value, row, highlight: index === strongestIndex, variant: "race" };
+            });
+
+            appendAxisTicks(axis, chartScale, "race");
+            race.append(rowsEl, axis);
+            viz.appendChild(race);
+            return entries;
+          }
+
+          function buildColumn(chartRows, chartScale, strongestIndex, suffix) {
+            const column = document.createElement("section");
+            const plot = document.createElement("div");
+            const grid = document.createElement("div");
+            const bars = document.createElement("div");
+            const caption = document.createElement("p");
+            column.className = "bar-column";
+            plot.className = "bar-column-plot";
+            grid.className = "bar-column-grid";
+            bars.className = "bar-column-bars";
+            bars.style.setProperty("--bar-columns", String(chartRows.length));
+            caption.className = "bar-column-caption";
+            caption.textContent = unit ? "단위 " + unit : "값";
+
+            appendAxisTicks(grid, chartScale, "column");
+            const entries = chartRows.map((row, index) => {
+              const item = document.createElement("article");
+              const track = document.createElement("div");
+              const fill = document.createElement("div");
+              const value = document.createElement("span");
+              const label = document.createElement("p");
+              const size = percentage(row.numeric, chartScale.max);
+              item.className = "bar-column-item";
+              track.className = "bar-column-track";
+              fill.className = "bar-column-fill";
+              value.className = "bar-column-value";
+              label.className = "bar-column-label";
+              item.dataset.highlight = index === strongestIndex ? "true" : "false";
+              fill.style.setProperty("--bar-size", size + "%");
+              value.style.setProperty("--bar-size", size + "%");
+              value.textContent = formatValue(0, row, suffix);
+              label.textContent = row.label;
+              track.append(fill, value);
+              item.append(track, label);
+              bars.appendChild(item);
+              return { item, fill, value, row, highlight: index === strongestIndex, variant: "column" };
+            });
+
+            plot.append(grid, bars);
+            column.append(plot, caption);
+            viz.appendChild(column);
+            return entries;
+          }
+
+          function buildEmpty(chartTitle) {
+            const empty = document.createElement("section");
+            const label = document.createElement("h1");
+            empty.className = "bar-empty";
+            label.className = "bar-empty-title";
+            label.textContent = chartTitle;
+            titleEl.hidden = true;
+            empty.appendChild(label);
+            viz.appendChild(empty);
+            return [{ item: label }];
+          }
+
+          function appendAxisTicks(target, chartScale, direction) {
+            chartScale.ticks.forEach((tick) => {
+              const marker = document.createElement("div");
+              const label = document.createElement("span");
+              const position = (tick / chartScale.max) * 100;
+              marker.className = direction === "race" ? "bar-axis-tick" : "bar-column-tick";
+              marker.style.setProperty("--bar-tick", position.toFixed(3) + "%");
+              label.textContent = formatTick(tick);
+              marker.appendChild(label);
+              target.appendChild(marker);
+            });
+          }
+
+          function addCountUp(row, target, suffix, start) {
+            const counter = { value: 0 };
+            const update = function () {
+              target.textContent = formatValue(counter.value, row, suffix);
+            };
+            tl.to(
+              counter,
+              { value: row.numeric * 0.5, duration: 0.34, ease: "power2.out", onUpdate: update },
+              start
+            );
+            tl.to(
+              counter,
+              {
+                value: row.numeric,
+                duration: 0.34,
+                ease: "power2.out",
+                onUpdate: update,
+                onComplete: function () {
+                  target.textContent = formatValue(row.numeric, row, suffix);
+                }
+              },
+              start + 0.34
+            );
+          }
+
           function arrayValue(value) {
             return Array.isArray(value) ? value : [];
           }
 
           function readHostVariables(element) {
+            const decode = (value) =>
+              String(value || "")
+                .replaceAll("&quot;", '"')
+                .replaceAll("&#34;", '"')
+                .replaceAll("&#39;", "'")
+                .replaceAll("&apos;", "'")
+                .replaceAll("&amp;", "&");
             const raw = element?.getAttribute("data-variable-values");
             if (!raw) return {};
             try {
-              const parsed = JSON.parse(raw);
+              const parsed = JSON.parse(decode(raw));
               return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
             } catch {
               return {};
@@ -494,81 +633,107 @@
             return text.length > 0 ? text : fallback;
           }
 
+          function displayUnit(value) {
+            const text = stringValue(value, "");
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
+          }
+
           function normalizeRows(labels, rawValues) {
             const count = Math.max(labels.length, rawValues.length);
             const next = [];
             for (let index = 0; index < count; index += 1) {
-              const raw = rawValues[index] ?? 0;
+              const numeric = numericInfo(rawValues[index]);
               next.push({
-                label: stringValue(labels[index], `항목 ${index + 1}`),
-                raw,
-                numeric: numericValue(raw),
-                decimals: decimalPlaces(raw)
+                label: stringValue(labels[index], "항목 " + String(index + 1)),
+                numeric: numeric.value,
+                decimals: numeric.hasValue ? decimalPlaces(rawValues[index]) : 0,
+                hasValue: numeric.hasValue
               });
             }
             return next;
           }
 
-          function numericValue(value) {
-            if (typeof value === "number" && Number.isFinite(value)) return value;
-            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
-            return match ? Number(match[0]) : 0;
+          function numericInfo(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return { value, hasValue: true };
+            const match = String(value ?? "").replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+            return match ? { value: Number(match[0]), hasValue: true } : { value: 0, hasValue: false };
           }
 
           function decimalPlaces(value) {
             if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
               return Math.min(2, String(value).split(".")[1]?.length ?? 0);
             }
-            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
+            const match = String(value ?? "").replace(/,/g, "").match(/-?\d+\.(\d+)/);
             return match ? Math.min(2, match[1].length) : 0;
           }
 
-          function formatValue(amount, row, unitText) {
-            const value = row.decimals > 0 ? Number(amount).toFixed(row.decimals) : String(Math.round(amount));
-            const formatted = new Intl.NumberFormat("ko-KR").format(Number(value));
-            return `${formatted}${unitText}`;
+          function percentage(value, maximum) {
+            if (!maximum) return 0;
+            return Math.max(0, Math.min(100, (Math.abs(value) / maximum) * 100));
           }
 
-          function ariaLabel(chartTitle, chartRows, unitText) {
-            const text = chartRows.map((row) => `${row.label} ${formatValue(row.numeric, row, unitText)}`).join(", ");
-            return `${chartTitle}: ${text}`;
+          function axisScale(maximum) {
+            const safeMaximum = Math.max(0, maximum);
+            const step = niceStep(safeMaximum > 0 ? safeMaximum / 4 : 0.25);
+            const max = Math.max(step, Math.ceil(safeMaximum / step) * step);
+            const ticks = [];
+            for (let tick = 0; tick <= max + step * 0.001; tick += step) {
+              ticks.push(Number(tick.toPrecision(12)));
+            }
+            return { max, ticks };
+          }
+
+          function niceStep(value) {
+            const exponent = Math.floor(Math.log10(Math.max(value, 0.000001)));
+            const base = Math.pow(10, exponent);
+            const fraction = value / base;
+            const multiplier = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 5 ? 5 : 10;
+            return multiplier * base;
+          }
+
+          function formatTick(value) {
+            const decimals = value !== 0 && Math.abs(value) < 1 ? 2 : 0;
+            return new Intl.NumberFormat("ko-KR", {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            }).format(value);
+          }
+
+          function formatValue(amount, row, suffix) {
+            const number = row.decimals > 0 ? Number(amount).toFixed(row.decimals) : String(Math.round(amount));
+            const formatted = new Intl.NumberFormat("ko-KR", {
+              minimumFractionDigits: row.decimals,
+              maximumFractionDigits: row.decimals
+            }).format(Number(number));
+            return formatted + suffix;
+          }
+
+          function ariaLabel(chartTitle, chartRows, suffix, chartSource) {
+            const text = chartRows.map((row) => row.label + " " + formatValue(row.numeric, row, suffix)).join(", ");
+            const sourceText = chartSource ? ". " + chartSource : "";
+            return chartRows.length > 0 ? chartTitle + ": " + text + sourceText : chartTitle;
           }
 
           function safeColor(value) {
-            const text = stringValue(value, "Highlight");
-            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$/.test(text) ? text : "Highlight";
+            const text = stringValue(value, "");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "var(--rf-accent, var(--rf-text, currentColor))";
           }
 
           function blockDuration(element, fallback) {
             let node = element.parentElement;
             while (node) {
-              const durationValue = Number(node.getAttribute?.("data-duration"));
-              if (Number.isFinite(durationValue) && durationValue > 0) return durationValue;
+              const value = Number(node.getAttribute?.("data-duration"));
+              if (Number.isFinite(value) && value > 0) return value;
               node = node.parentElement;
             }
             const own = Number(element.getAttribute("data-duration"));
             return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
-
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.46, Math.max(0.32, total * 0.1));
-            const exitStart = Math.max(1.2, total - exitDuration);
-            const enterEnd = 0.34;
-            const livingStart = Math.min(exitStart - 0.4, enterEnd + 0.12);
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return {
-              enterEnd,
-              exitStart,
-              exitDuration,
-              livingStart,
-              livingDuration,
-              countDuration: 0.72
-            };
-          }
-
-          function loopRepeat(cycleDuration, repeatDelay = 0) {
-            const span = Math.max(0.1, cycleDuration + repeatDelay);
-            return Math.max(2, Math.ceil(72 / span));
           }
 
           function timelineIds(hostElement, rootElement) {

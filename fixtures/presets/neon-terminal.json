@@ -9,6 +9,14 @@
     "mutedText": "#f8fafc",
     "accent": "#ff6d00",
     "accentAlt": "#58c4dd",
+    "onAccent": "#0a0b0e",
+    "inkSubtle": "#dddddd",
+    "inkTertiary": "#bbbbbb",
+    "surface2": "#28364d",
+    "surface3": "#344561",
+    "hairline": "#202226",
+    "hairlineStrong": "#2a2c31",
+    "success": "#c3e88d",
     "shadow": "#0a0b0e",
     "primary": "#58c4dd",
     "onPrimary": "#0a0b0e",
@@ -25,12 +33,12 @@
     "dramatic": {
       "accent": "#ff3d81",
       "speed": "fast",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(255,61,129,0.42), 0 0 0.45em rgba(255,61,129,0.18)"
+      "glow": "0 0 2px #f8fafcbf, 0 0 0.18em #ff3d816b, 0 0 0.45em #ff3d812e"
     },
     "urgent": {
       "accent": "#ff6d00",
       "speed": "fast",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(255,109,0,0.42), 0 0 0.45em rgba(255,109,0,0.18)"
+      "glow": "0 0 2px #f8fafcbf, 0 0 0.18em #ff6d006b, 0 0 0.45em #ff6d002e"
     },
     "somber": {
       "accent": "#444444",
@@ -40,7 +48,7 @@
     "informative": {
       "accent": "#58c4dd",
       "speed": "normal",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(88,196,221,0.34), 0 0 0.45em rgba(88,196,221,0.12)"
+      "glow": "0 0 2px #f8fafcbf, 0 0 0.18em #58c4dd57, 0 0 0.45em #58c4dd1f"
     },
     "contemplative": {
       "accent": "#236b8e",
@@ -50,12 +58,12 @@
     "suspense": {
       "accent": "#c792ea",
       "speed": "normal",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(199,146,234,0.34), 0 0 0.45em rgba(199,146,234,0.12)"
+      "glow": "0 0 2px #f8fafcbf, 0 0 0.18em #c792ea57, 0 0 0.45em #c792ea1f"
     },
     "triumphant": {
       "accent": "#f7d96f",
       "speed": "fast",
-      "glow": "0 0 2px rgba(247,248,248,0.75), 0 0 0.18em rgba(247,217,111,0.46), 0 0 0.45em rgba(247,217,111,0.2)"
+      "glow": "0 0 2px #f8fafcbf, 0 0 0.18em #f7d96f75, 0 0 0.45em #f7d96f33"
     }
   },
   "subtitle": {

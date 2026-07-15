@@ -9,6 +9,7 @@
     "mutedText": "#64748d",
     "accent": "#5b4bec",
     "accentAlt": "#d9366b",
+    "onAccent": "#ffffff",
     "shadow": "#003770",
     "primary": "#5b4bec",
     "primaryDeep": "#4b3ed8",
@@ -20,12 +21,18 @@
     "inkSecondary": "#273951",
     "inkMute": "#64748d",
     "inkMute2": "#61718a",
+    "inkSubtle": "#8494a7",
+    "inkTertiary": "#a5b2c1",
     "onPrimary": "#ffffff",
     "canvas": "#fbfcfe",
     "canvasSoft": "#f6f9fc",
     "canvasCream": "#f5e9d4",
     "hairline": "#e3e8ee",
+    "hairlineStrong": "#a8c3de",
     "hairlineInput": "#a8c3de",
+    "surface2": "#eef1f4",
+    "surface3": "#e6e9ec",
+    "success": "#0a7a4f",
     "ruby": "#d9366b",
     "magenta": "#e56bdb",
     "lemon": "#9b6829",
@@ -35,7 +42,7 @@
     "dramatic": {
       "accent": "#1c1e54",
       "speed": "slow",
-      "glow": "0 18px 44px rgba(0,55,112,0.18)"
+      "glow": "0 18px 44px #0037702e"
     },
     "urgent": {
       "accent": "#d9366b",
@@ -45,7 +52,7 @@
     "somber": {
       "accent": "#0d253d",
       "speed": "slow",
-      "glow": "0 18px 44px rgba(0,55,112,0.15)"
+      "glow": "0 18px 44px #00377026"
     },
     "informative": {
       "accent": "#5b4bec",
@@ -79,7 +86,7 @@
     "keywordStrokeColor": "#fbfcfe",
     "backgroundColor": "#fbfcfe",
     "borderRadius": 999,
-    "boxShadow": "0 8px 24px rgba(0,55,112,0.08), 0 2px 6px rgba(0,55,112,0.05)",
+    "boxShadow": "0 8px 24px #00377014, 0 2px 6px #0037700d",
     "bottomOffset": 96,
     "maxWidth": 940,
     "lineHeight": 1.12,

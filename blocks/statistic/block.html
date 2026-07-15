@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"number"},
     {"id":"reveal","type":"string","label":"Reveal","default":"count_up"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"none"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -32,682 +33,759 @@
         aria-label=""
       >
         <style>
-        .stat-rootbox {
-          position: absolute;
-          inset: 0;
-          width: 1920px;
-          height: 1080px;
-          box-sizing: border-box;
-          overflow: hidden;
-          color: var(--stat-ink);
-          font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-          --stat-accent: var(--rf-accent, Highlight);
-          --stat-ink: var(--rf-text, currentColor);
-          --stat-muted: var(--rf-muted-text, color-mix(in srgb, var(--stat-ink) 62%, transparent));
-          --stat-surface: var(--rf-panel, color-mix(in srgb, var(--stat-ink) 8%, transparent));
-          --stat-panel: color-mix(in srgb, var(--stat-ink) 8%, transparent);
-          --stat-line: color-mix(in srgb, var(--stat-accent) 34%, transparent);
-          --stat-line-soft: color-mix(in srgb, var(--stat-ink) 14%, transparent);
-          --stat-accent-soft: color-mix(in srgb, var(--stat-accent) 15%, transparent);
-          --stat-accent-faint: color-mix(in srgb, var(--stat-accent) 8%, transparent);
-          --stat-shadow: var(--rf-shadow, var(--stat-ink));
-        }
-
-        .stat-stage {
-          position: absolute;
-          inset: 8.148% 7.083% 15.926%;
-          display: grid;
-          grid-template-columns: minmax(0, 1.04fr) minmax(31rem, 0.64fr);
-          align-items: stretch;
-          gap: 4.25rem;
-          box-sizing: border-box;
-        }
-
-        .stat-hero,
-        .stat-details {
-          min-width: 0;
-          box-sizing: border-box;
-          border: 0.125rem solid var(--stat-line);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(135deg, var(--stat-accent-faint), transparent 42%),
-            var(--stat-surface);
-          box-shadow: 0 1.45rem 4.2rem color-mix(in srgb, var(--stat-shadow) 14%, transparent);
-        }
-
-        .stat-hero {
-          position: relative;
-          display: grid;
-          grid-template-rows: auto minmax(0, 1fr) auto;
-          gap: 2.1rem;
-          padding: 3.95rem 4.45rem 3.5rem;
-          overflow: hidden;
-          animation: stat-hero-living 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
-        }
-
-        @keyframes stat-hero-living {
-          0% {
-            filter: brightness(1);
+          .stat-rootbox {
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            box-sizing: border-box;
+            overflow: hidden;
+            color: var(--stat-ink);
+            font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --stat-ink: var(--rf-text, currentColor);
+            --stat-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+            --stat-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+            --stat-accent: var(--rf-accent, var(--rf-text, currentColor));
+            --stat-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+            --stat-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+            --stat-hairline-strong: var(--rf-hairline-strong, var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent)));
+            --stat-type-small: 1.55rem;
+            --stat-type-display: 18.5rem;
+            --stat-type-unit: 7rem;
           }
-          100% {
-            filter: brightness(1.13);
+
+          .stat-stage {
+            position: absolute;
+            inset: 7.2% 6.25%;
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            row-gap: 1.4rem;
+            box-sizing: border-box;
+            min-width: 0;
+            min-height: 0;
           }
-        }
 
-        @keyframes stat-inner-drift {
-          0% {
-            transform: translate3d(0, 0, 0);
+          .stat-glow {
+            position: absolute;
+            left: 12%;
+            top: 20%;
+            width: 58%;
+            height: 52%;
+            pointer-events: none;
+            opacity: 0.18;
+            background: radial-gradient(
+              ellipse at center,
+              color-mix(in srgb, var(--stat-accent-alt) 18%, transparent),
+              transparent 68%
+            );
+            animation: stat-glow-breathe 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
           }
-          100% {
-            transform: translate3d(0, -12px, 0);
+
+          @keyframes stat-glow-breathe {
+            0% {
+              opacity: 0.12;
+            }
+            100% {
+              opacity: 0.34;
+            }
           }
-        }
 
-        .stat-hero::before {
-          content: "";
-          position: absolute;
-          inset: 2rem;
-          border: 0.08rem solid var(--stat-line-soft);
-          border-radius: 0.5rem;
-          pointer-events: none;
-          animation: stat-inner-drift 2.6s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
-        }
-
-        .stat-header {
-          position: relative;
-          z-index: 1;
-          display: grid;
-          gap: 1.1rem;
-          min-width: 0;
-        }
-
-        .stat-kicker {
-          margin: 0;
-          width: 5.5rem;
-          height: 0.35rem;
-          box-sizing: border-box;
-          padding: 0;
-          border: 0;
-          border-radius: 0.1rem;
-          background: var(--stat-accent);
-          color: var(--stat-muted);
-          font-size: 1.35rem;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-          overflow-wrap: anywhere;
-        }
-
-        .stat-title {
-          margin: 0;
-          max-width: 100%;
-          color: var(--stat-ink);
-          font-size: 5.05rem;
-          font-weight: 920;
-          line-height: 1.05;
-          letter-spacing: -0.03em;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-          text-shadow: 0 0.18rem 1rem color-mix(in srgb, var(--stat-shadow) 34%, transparent);
-        }
-
-        .stat-main {
-          position: relative;
-          z-index: 1;
-          min-width: 0;
-          display: grid;
-          grid-template-rows: minmax(11.8rem, 14rem) auto;
-          align-content: center;
-          gap: 1.1rem;
-          overflow: hidden;
-          transform-origin: 50% 50%;
-          will-change: transform;
-          animation: stat-main-float 2.42s ease-in-out calc(var(--rf-scene-start, 0s) + 1.18s) infinite alternate;
-        }
-
-        @keyframes stat-main-float {
-          0% {
-            transform: translate3d(0, -6px, 0);
+          @keyframes stat-value-breathe {
+            0% {
+              filter: brightness(0.98);
+            }
+            100% {
+              filter: brightness(1.1);
+            }
           }
-          100% {
-            transform: translate3d(0, 6px, 0);
+
+          .stat-eyebrow {
+            position: relative;
+            z-index: 1;
+            align-self: start;
+            width: max-content;
+            max-width: 100%;
+            margin: 0;
+            color: var(--stat-muted);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--stat-type-small);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
-        }
 
-        .stat-glow {
-          position: absolute;
-          inset: 18% 10% 12%;
-          background: radial-gradient(ellipse at 40% 52%, color-mix(in srgb, var(--stat-accent) 28%, transparent), transparent 66%);
-          opacity: 0;
-          transform: scale(0.92);
-          pointer-events: none;
-          will-change: transform, opacity;
-          animation: stat-glow-living 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
-        }
-
-        @keyframes stat-glow-living {
-          0% {
-            opacity: 0.5;
-            transform: scale(0.97) translate3d(0, 0, 0);
+          .stat-solo,
+          .stat-kpi {
+            position: relative;
+            z-index: 1;
+            min-width: 0;
+            min-height: 0;
           }
-          100% {
-            opacity: 0.95;
-            transform: scale(1.08) translate3d(18px, -14px, 0);
+
+          .stat-variant-slot {
+            position: relative;
+            z-index: 1;
+            min-width: 0;
+            min-height: 0;
           }
-        }
 
-        .stat-number-line {
-          min-width: 0;
-          display: flex;
-          align-items: center;
-          gap: 1.1rem;
-          color: var(--stat-ink);
-          font-variant-numeric: tabular-nums;
-          white-space: nowrap;
-          overflow: hidden;
-          max-height: 14rem;
-          contain: paint;
-          transform-origin: left center;
-          will-change: transform, opacity;
-        }
+          .stat-variant-slot > .stat-solo,
+          .stat-variant-slot > .stat-kpi {
+            height: 100%;
+          }
 
-        .stat-number {
-          display: inline-block;
-          min-width: 0;
-          font-size: 14.2rem;
-          font-weight: 950;
-          line-height: 0.88;
-          letter-spacing: 0;
-        }
+          .stat-solo {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.62fr);
+            grid-template-rows: minmax(0, 1fr) auto;
+            column-gap: 4.5rem;
+            align-items: center;
+            padding-top: 3.2rem;
+          }
 
-        .stat-number[data-zero="true"] {
-          color: var(--stat-accent);
-        }
+          .stat-solo-core {
+            grid-column: 1;
+            grid-row: 1;
+            min-width: 0;
+            align-self: center;
+          }
 
-        .stat-unit {
-          display: inline-block;
-          color: var(--stat-accent);
-          font-size: 5.6rem;
-          font-weight: 920;
-          line-height: 1;
-          letter-spacing: 0;
-        }
+          .stat-number-line {
+            display: flex;
+            align-items: baseline;
+            min-width: 0;
+            color: var(--stat-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+          }
 
-        .stat-rootbox[data-has-unit="false"] .stat-number-line {
-          align-items: center;
-          white-space: nowrap;
-        }
+          .stat-number {
+            display: inline-block;
+            min-width: 0;
+            color: var(--stat-ink);
+            font-size: var(--stat-type-display);
+            font-weight: 760;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            animation: stat-value-breathe 2.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
 
-        .stat-rootbox[data-has-unit="false"] .stat-unit {
-          display: none;
-        }
+          .stat-number[data-zero="true"] {
+            color: var(--stat-accent);
+          }
 
-        .stat-caption {
-          margin: 0;
-          max-width: 54rem;
-          color: var(--stat-muted);
-          font-size: 2.35rem;
-          font-weight: 760;
-          line-height: 1.22;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
+          .stat-unit {
+            margin-inline-start: 1.2rem;
+            color: var(--stat-muted);
+            font-size: var(--stat-type-unit);
+            font-weight: 620;
+            line-height: 1;
+            letter-spacing: -0.03em;
+          }
 
-        .stat-source {
-          position: relative;
-          z-index: 1;
-          margin: 0;
-          max-width: 100%;
-          color: var(--stat-muted);
-          font-size: 1.25rem;
-          font-weight: 680;
-          line-height: 1.26;
-          letter-spacing: 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+          .stat-rootbox[data-has-unit="false"] .stat-unit {
+            display: none;
+          }
 
-        .stat-details {
-          display: grid;
-          grid-template-rows: auto 1fr;
-          gap: 1.6rem;
-          padding: 3.2rem 2.75rem;
-          overflow: hidden;
-        }
+          .stat-context {
+            max-width: 58rem;
+            margin: 2.15rem 0 0;
+            color: var(--stat-muted);
+            font-size: var(--stat-type-small);
+            font-weight: 620;
+            line-height: 1.45;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
 
-        .stat-details-title {
-          margin: 0;
-          color: var(--stat-muted);
-          font-size: 1.45rem;
-          font-weight: 800;
-          line-height: 1;
-          letter-spacing: 0;
-          text-transform: uppercase;
-        }
+          .stat-supplemental {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            display: flex;
+            align-items: baseline;
+            gap: 2.25rem;
+            min-width: 0;
+            margin: 0;
+            padding: 1.75rem 0 0;
+            border-top: 1px solid var(--stat-hairline);
+            list-style: none;
+            overflow: hidden;
+          }
 
-        .stat-list {
-          min-width: 0;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          align-content: center;
-          gap: 1.05rem;
-          list-style: none;
-        }
+          .stat-rootbox[data-has-supplemental="false"] .stat-supplemental {
+            display: none;
+          }
 
-        .stat-item {
-          min-width: 0;
-          min-height: 8.2rem;
-          box-sizing: border-box;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1.3rem;
-          padding: 1.22rem 1.3rem;
-          border: 0.1rem solid var(--stat-line-soft);
-          border-radius: 0.5rem;
-          background: var(--stat-panel);
-          opacity: 0;
-        }
+          .stat-supplemental-item {
+            display: inline-flex;
+            flex: 0 0 auto;
+            align-items: baseline;
+            gap: 0.65rem;
+            min-width: 0;
+            color: var(--stat-muted);
+            font-size: var(--stat-type-small);
+            font-weight: 620;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+          }
 
-        .stat-item-label {
-          min-width: 0;
-          color: var(--stat-ink);
-          font-size: 1.95rem;
-          font-weight: 820;
-          line-height: 1.14;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
+          .stat-supplemental-value {
+            color: var(--stat-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+            font-weight: 760;
+          }
 
-        .stat-item-value {
-          color: var(--stat-ink);
-          font-size: 2.5rem;
-          font-weight: 930;
-          line-height: 1;
-          letter-spacing: 0;
-          white-space: nowrap;
-          font-variant-numeric: tabular-nums;
-        }
+          .stat-solo-structure {
+            position: relative;
+            grid-column: 2;
+            grid-row: 1;
+            align-self: stretch;
+            min-width: 0;
+            margin: 1.2rem 0 3.2rem;
+            border-inline-start: 1px solid var(--stat-hairline-strong);
+          }
 
-        .stat-item:first-child {
-          border-color: var(--stat-line);
-          background:
-            linear-gradient(90deg, var(--stat-accent-soft), transparent 58%),
-            var(--stat-panel);
-        }
+          .stat-solo-structure::before,
+          .stat-solo-structure::after {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            content: "";
+            background: var(--stat-hairline);
+          }
 
-        .stat-item:first-child .stat-item-value {
-          color: var(--stat-accent);
-        }
+          .stat-solo-structure::before {
+            top: 21%;
+          }
 
-        .stat-rootbox[data-row-count="0"] .stat-stage {
-          grid-template-columns: minmax(0, 1fr);
-        }
+          .stat-solo-structure::after {
+            bottom: 18%;
+          }
 
-        .stat-rootbox[data-row-count="0"] .stat-details {
-          display: none;
-        }
-      </style>
+          .stat-solo-ghost {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            display: block;
+            color: var(--stat-accent-alt);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: 25rem;
+            font-weight: 700;
+            line-height: 0.78;
+            letter-spacing: -0.12em;
+            opacity: 0.15;
+            transform: translateY(-50%);
+            animation: stat-structure-breathe 2.8s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          @keyframes stat-structure-breathe {
+            0% {
+              opacity: 0.1;
+            }
+            100% {
+              opacity: 0.22;
+            }
+          }
+
+          .stat-kpi {
+            align-self: center;
+            display: grid;
+            grid-template-columns: repeat(var(--stat-kpi-count, 3), minmax(0, 1fr));
+            align-items: stretch;
+            min-height: 21rem;
+            padding-top: 3.2rem;
+          }
+
+          .stat-kpi-list {
+            display: contents;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          .stat-kpi-item {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            align-content: center;
+            min-width: 0;
+            padding: 0 3.2rem;
+          }
+
+          .stat-kpi-item:first-child {
+            padding-inline-start: 0;
+          }
+
+          .stat-kpi-item + .stat-kpi-item {
+            border-inline-start: 1px solid var(--stat-hairline-strong);
+          }
+
+          .stat-kpi-label {
+            margin: 0 0 1.35rem;
+            color: var(--stat-muted);
+            font-size: var(--stat-type-small);
+            font-weight: 680;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .stat-kpi-value-shell {
+            position: relative;
+            height: 12rem;
+            min-width: 0;
+          }
+
+          .stat-kpi-value-line {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            display: flex;
+            align-items: baseline;
+            width: max-content;
+            color: var(--stat-accent);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-variant-numeric: tabular-nums;
+            transform: scale(0.5);
+            transform-origin: left bottom;
+            white-space: nowrap;
+          }
+
+          .stat-kpi-number {
+            display: inline-block;
+            color: var(--stat-accent);
+            font-size: var(--stat-type-display);
+            font-weight: 760;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+            animation: stat-value-breathe 2.2s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          .stat-kpi-unit {
+            margin-inline-start: 1.2rem;
+            color: var(--stat-tertiary);
+            font-size: var(--stat-type-unit);
+            font-weight: 620;
+            line-height: 1;
+            letter-spacing: -0.03em;
+          }
+
+          .stat-rootbox[data-has-unit="false"] .stat-kpi-unit,
+          .stat-rootbox[data-has-unit="false"] .stat-unit {
+            display: none;
+          }
+        </style>
+
         <section class="stat-stage">
-          <article class="stat-hero">
-            <span class="stat-glow" aria-hidden="true"></span>
-            <header class="stat-header">
-              <p class="stat-kicker" data-stat-kicker></p>
-              <h1 class="stat-title" data-stat-title></h1>
-            </header>
-            <div class="stat-main">
+          <span class="stat-glow" aria-hidden="true"></span>
+          <h1 class="stat-eyebrow" data-stat-title></h1>
+          <div class="stat-variant-slot" data-stat-variant-slot></div>
+        </section>
+
+        <template id="statistic-solo-template">
+          <article class="stat-solo">
+            <div class="stat-solo-core">
               <div class="stat-number-line" aria-hidden="true">
                 <span class="stat-number" data-stat-number>0</span>
                 <span class="stat-unit" data-stat-unit></span>
               </div>
-              <p class="stat-caption" data-stat-caption></p>
+              <p class="stat-context" data-stat-context></p>
             </div>
-            <p class="stat-source" data-stat-source></p>
+            <aside class="stat-solo-structure" aria-hidden="true">
+              <span class="stat-solo-ghost">∑</span>
+            </aside>
+            <ol class="stat-supplemental" data-stat-supplemental></ol>
           </article>
-          <aside class="stat-details" aria-label="세부 지표">
-            <p class="stat-details-title">항목</p>
-            <ol class="stat-list" data-stat-list></ol>
-          </aside>
-        </section>
-      <script>
-        (function () {
-          const root =
-            document.querySelector('[data-composition-id="statistic"]') ??
-            document.querySelector('[data-hf-original-composition-id="statistic"]');
-          if (!root) {
-            window.__timelines = window.__timelines || {};
-            window.__timelines.statistic = gsap.timeline({ paused: true });
-            return;
-          }
-          const host =
-            root.parentElement?.closest("[data-variable-values]") ||
-            root.closest("[data-variable-values]") ||
-            root.parentElement?.closest("[data-composition-id]") ||
-            root.closest("[data-composition-id]") ||
-            root;
-          const variables = readVariables(host, root);
-          const titleEl = root.querySelector("[data-stat-title]");
-          const kickerEl = root.querySelector("[data-stat-kicker]");
-          const numberEl = root.querySelector("[data-stat-number]");
-          const unitEl = root.querySelector("[data-stat-unit]");
-          const captionEl = root.querySelector("[data-stat-caption]");
-          const sourceEl = root.querySelector("[data-stat-source]");
-          const listEl = root.querySelector("[data-stat-list]");
+        </template>
 
-          const title = stringValue(variables.title, "핵심 지표");
-          const unit = displayUnit(variables.unit);
-          const source = stringValue(variables.source, "");
-          const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
-          const main = rows[0];
-          const detailRows = rows.slice(1);
-          const duration = blockDuration(root, 4);
-          const phases = phaseTimes(duration);
-          const enterAt = (time) => Number((time * phases.enterScale).toFixed(4));
-          const enterDuration = (time) => Number(Math.max(0.12, time * phases.enterScale).toFixed(4));
-          const enterGap = (time) => Number(Math.max(0.02, time * phases.enterScale).toFixed(4));
+        <template id="statistic-kpi-template">
+          <section class="stat-kpi" aria-label="핵심 지표">
+            <ol class="stat-kpi-list" data-stat-kpi-list></ol>
+          </section>
+        </template>
 
-          root.style.setProperty("--stat-accent", safeColor(variables.accent));
-          root.dataset.rowCount = String(detailRows.length);
-          root.dataset.hasUnit = unit ? "true" : "false";
-          titleEl.textContent = title;
-          kickerEl.textContent = "";
-          kickerEl.setAttribute("aria-hidden", "true");
-          numberEl.textContent = formatNumber(0, main.decimals);
-          numberEl.dataset.zero = String(main.numeric === 0);
-          unitEl.textContent = unit;
-          captionEl.textContent = main.label;
-          sourceEl.textContent = source;
-          sourceEl.style.opacity = source ? "1" : "0";
-          root.setAttribute("aria-label", ariaLabel(title, rows, unit));
-
-          detailRows.forEach((row) => {
-            const item = document.createElement("li");
-            const label = document.createElement("span");
-            const value = document.createElement("span");
-            item.className = "stat-item";
-            label.className = "stat-item-label";
-            value.className = "stat-item-value";
-            label.textContent = row.label;
-            value.textContent = formatDisplayValue(row, unit);
-            item.append(label, value);
-            listEl.appendChild(item);
-          });
-
-          window.__timelines = window.__timelines || {};
-          const tl = gsap.timeline({ paused: true });
-          const hero = root.querySelector(".stat-hero");
-          const details = root.querySelector(".stat-details");
-          const header = root.querySelector(".stat-header");
-          const numberLine = root.querySelector(".stat-number-line");
-          const caption = root.querySelector(".stat-caption");
-          const glow = root.querySelector(".stat-glow");
-          const listItems = gsap.utils.toArray(root.querySelectorAll(".stat-item"));
-          const counter = { value: 0 };
-
-          tl.addLabel("start", 0);
-          tl.fromTo(hero, { opacity: 0, y: 18, scale: 0.992 }, { opacity: 1, y: 0, scale: 1, duration: enterDuration(0.22), ease: "power4.out" }, 0);
-          tl.fromTo(glow, { opacity: 0, scale: 0.94 }, { opacity: 0.5, scale: 1, duration: enterDuration(0.2), ease: "expo.out" }, enterAt(0.04));
-          tl.fromTo(details, { opacity: 0, x: 18 }, { opacity: detailRows.length > 0 ? 1 : 0, x: 0, duration: enterDuration(0.22), ease: "power3.out" }, enterAt(0.08));
-          tl.fromTo(header, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: enterDuration(0.18), ease: "power2.out" }, enterAt(0.08));
-          tl.fromTo(
-            numberLine,
-            { opacity: 0, y: 18, scale: 0.98 },
-            { opacity: 1, y: 0, scale: 1, duration: enterDuration(0.2), ease: "power4.out" },
-            enterAt(0.12)
-          );
-          tl.to(
-            counter,
-            {
-              value: main.numeric,
-              duration: phases.countDuration,
-              ease: "power4.out",
-              onUpdate: function () {
-                numberEl.textContent = formatNumber(counter.value, main.decimals);
-              },
-              onComplete: function () {
-                numberEl.textContent = formatNumber(main.numeric, main.decimals);
-              }
-            },
-            phases.countStart
-          );
-          tl.set(numberEl, { textContent: formatNumber(main.numeric, main.decimals) }, phases.countEnd);
-          tl.fromTo(caption, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: enterDuration(0.16), ease: "power2.out" }, enterAt(0.22));
-          tl.fromTo(
-            listItems,
-            { opacity: 0, y: 14 },
-            { opacity: 1, y: 0, duration: enterDuration(0.16), ease: "power3.out", stagger: enterGap(0.025) },
-            enterAt(0.2)
-          );
-          tl.fromTo(sourceEl, { opacity: 0, y: 8 }, { opacity: source ? 1 : 0, y: 0, duration: enterDuration(0.14), ease: "power2.out" }, enterAt(0.28));
-          tl.to(root.querySelector(".stat-stage"), { x: 96, duration, ease: "none" }, 0);
-          tl.to(numberLine, { scale: 1.012, duration: 1.25, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.25)), yoyo: true }, phases.livingStart);
-          tl.to(glow, { opacity: 0.68, scale: 1.08, duration: 1.45, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.45)), yoyo: true }, phases.livingStart);
-          tl.to(hero, { y: -26, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(details, { y: -18, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(root.querySelector(".stat-stage"), { y: -44, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          tl.addLabel("final", duration);
-          timelineIds(root).forEach((id) => {
-            if (id) window.__timelines[id] = tl;
-          });
-          globalThis.__timelines = window.__timelines;
-          timelineIds(root).forEach((id) => {
-            if (id) globalThis.__timelines[id] = tl;
-          });
-          signalRuntimeReady();
-
-          function arrayValue(value) {
-            return Array.isArray(value) ? value : [];
-          }
-
-          function readVariables(hostElement, rootElement) {
-            const direct =
-              window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-                ? window.__hyperframes.getVariables()
-                : {};
-            const scoped =
-              typeof __hyperframes === "undefined" || !__hyperframes
-                ? {}
-                : __hyperframes.getVariables?.() ?? {};
-            const runtimeId = hostElement?.getAttribute("data-composition-id") || "";
-            const authoredId =
-              hostElement?.getAttribute("data-hf-original-composition-id") ||
-              rootElement?.getAttribute("data-hf-original-composition-id") ||
-              "statistic";
-            const registry = {
-              ...(globalThis.__hfVariablesByComp?.[authoredId] || {}),
-              ...(globalThis.__hfVariablesByComp?.[runtimeId] || {}),
-              ...(globalThis.__hfVariablesByComp?.statistic || {})
-            };
-            const hostVars = readHostVariables(hostElement);
-            const merged = { ...registry, ...direct, ...scoped };
-            for (const [key, value] of Object.entries(hostVars)) {
-              if (value !== undefined && value !== null && value !== "") merged[key] = value;
+        <script>
+          (function () {
+            const root =
+              document.querySelector('[data-composition-id="statistic"]') ??
+              document.querySelector('[data-hf-original-composition-id="statistic"]');
+            if (!root) {
+              window.__timelines = window.__timelines || {};
+              window.__timelines.statistic = gsap.timeline({ paused: true });
+              return;
             }
-            return merged;
-          }
+            const host =
+              root.parentElement?.closest("[data-variable-values]") ||
+              root.closest("[data-variable-values]") ||
+              root.parentElement?.closest("[data-composition-id]") ||
+              root.closest("[data-composition-id]") ||
+              root;
+            const variables = readVariables(host, root);
+            const titleEl = root.querySelector("[data-stat-title]");
+            const variantSlot = root.querySelector("[data-stat-variant-slot]");
+            const soloTemplate = root.querySelector("#statistic-solo-template");
+            const kpiTemplate = root.querySelector("#statistic-kpi-template");
 
-          function readHostVariables(element) {
-            const decodeAttr = (value) =>
-              String(value || "")
-                .replaceAll("&quot;", '"')
-                .replaceAll("&#34;", '"')
-                .replaceAll("&#39;", "'")
-                .replaceAll("&apos;", "'")
-                .replaceAll("&amp;", "&");
-            const parseBag = (value) => {
-              try {
-                const parsed = JSON.parse(decodeAttr(value));
-                return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
-              } catch {
-                return null;
-              }
-            };
-            const hasStatData = (bag) => bag && (bag.title !== undefined || Array.isArray(bag.values));
-            let node = element;
-            while (node) {
-              if (node.getAttribute && node.hasAttribute("data-variable-values")) {
-                const bag = parseBag(node.getAttribute("data-variable-values"));
-                if (hasStatData(bag)) return bag;
-              }
-              node = node.parentElement;
+            const title = stringValue(variables.title, "핵심 지표");
+            const unit = displayUnit(variables.unit);
+            const source = stringValue(variables.source, "");
+            const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
+            const main = rows.find((row) => row.hasValue) || rows[0];
+            const supplementalRows = rows.filter((row) => row !== main && row.hasValue);
+            const kpiRows = rows.filter((row) => row.hasValue).slice(0, 3);
+            const kpiDisplayRows = kpiRows.length > 0 ? kpiRows : [main];
+            const repeatIndex = Math.max(0, Math.floor(numericValue(variables.repeatIndex)));
+            const variant = repeatIndex % 2 === 0 ? "solo-hero" : "kpi-row";
+            const selectedTemplate = variant === "solo-hero" ? soloTemplate : kpiTemplate;
+
+            if (variantSlot && selectedTemplate) {
+              variantSlot.replaceChildren(selectedTemplate.content.cloneNode(true));
             }
-            const anchor = element || root;
-            const hosts = Array.from(document.querySelectorAll("[data-variable-values]"));
-            let best = null;
-            for (const hostNode of hosts) {
-              const bag = parseBag(hostNode.getAttribute("data-variable-values"));
-              if (!hasStatData(bag)) continue;
-              const source = hostNode.getAttribute("data-composition-src") || "";
-              const hostId = hostNode.getAttribute("data-composition-id") || "";
-              const related = hostId === "statistic" || source.includes("statistic/block.html");
-              if (anchor && hostNode.contains(anchor)) {
-                if (!best || best.node.contains(hostNode)) best = { node: hostNode, bag };
-              } else if (related && !best) {
-                best = { node: hostNode, bag };
-              }
-            }
-            return best ? best.bag : {};
-          }
 
-          function stringValue(value, fallback) {
-            if (value === undefined || value === null) return fallback;
-            const text = String(value).trim();
-            return text.length > 0 ? text : fallback;
-          }
+            const numberEl = root.querySelector("[data-stat-number]");
+            const unitEl = root.querySelector("[data-stat-unit]");
+            const contextEl = root.querySelector("[data-stat-context]");
+            const supplementalEl = root.querySelector("[data-stat-supplemental]");
+            const kpiListEl = root.querySelector("[data-stat-kpi-list]");
 
-          function displayUnit(value) {
-            const text = stringValue(value, "");
-            if (!text) return "";
-            const normalized = text === "％" ? "%" : text.toLowerCase();
-            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
-              ? normalized
-              : "";
-          }
+            root.style.setProperty("--stat-accent", safeColor(variables.accent));
+            root.style.setProperty("--stat-kpi-count", String(kpiDisplayRows.length));
+            root.dataset.variant = variant;
+            root.dataset.hasUnit = main.hasValue && unit ? "true" : "false";
+            root.dataset.hasSupplemental = variant === "solo-hero" && supplementalRows.length > 0 ? "true" : "false";
+            titleEl.textContent = title;
+            root.setAttribute("aria-label", ariaLabel(title, variant === "solo-hero" ? [main, ...supplementalRows] : kpiDisplayRows, unit));
 
-          function normalizeRows(labels, rawValues, fallbackTitle) {
-            const count = Math.max(labels.length, rawValues.length);
-            if (count === 0) {
-              return [
-                {
-                  label: fallbackTitle,
-                  raw: 0,
-                  numeric: 0,
-                  decimals: 0
-                }
-              ];
-            }
-            const rows = [];
-            for (let index = 0; index < count; index += 1) {
-              const raw = rawValues[index] ?? 0;
-              rows.push({
-                label: stringValue(labels[index], `항목 ${index + 1}`),
-                raw,
-                numeric: numericValue(raw),
-                decimals: decimalPlaces(raw)
+            if (variant === "solo-hero") {
+              numberEl.textContent = main.hasValue ? formatNumber(0, main.decimals) : main.label;
+              numberEl.dataset.zero = String(main.hasValue && main.numeric === 0);
+              unitEl.textContent = main.hasValue ? unit : "";
+              contextEl.textContent = source || main.label || title;
+
+              supplementalRows.forEach((row) => {
+                const item = document.createElement("li");
+                const label = document.createElement("span");
+                const value = document.createElement("span");
+                item.className = "stat-supplemental-item";
+                label.textContent = row.label;
+                value.className = "stat-supplemental-value";
+                value.textContent = formatDisplayValue(row, unit);
+                item.append(label, value);
+                supplementalEl.appendChild(item);
               });
             }
-            return rows;
-          }
 
-          function numericValue(value) {
-            if (typeof value === "number" && Number.isFinite(value)) return value;
-            const match = String(value).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
-            return match ? Number(match[0]) : 0;
-          }
+            const kpiEntries =
+              variant === "kpi-row"
+                ? kpiDisplayRows.map((row) => {
+                    const item = document.createElement("li");
+                    const label = document.createElement("p");
+                    const shell = document.createElement("div");
+                    const line = document.createElement("div");
+                    const number = document.createElement("span");
+                    const kpiUnit = document.createElement("span");
+                    item.className = "stat-kpi-item";
+                    label.className = "stat-kpi-label";
+                    shell.className = "stat-kpi-value-shell";
+                    line.className = "stat-kpi-value-line";
+                    number.className = "stat-kpi-number";
+                    kpiUnit.className = "stat-kpi-unit";
+                    label.textContent = row.label;
+                    number.textContent = row.hasValue ? formatNumber(0, row.decimals) : row.label;
+                    kpiUnit.textContent = row.hasValue ? unit : "";
+                    line.append(number, kpiUnit);
+                    shell.append(line);
+                    item.append(label, shell);
+                    kpiListEl.appendChild(item);
+                    return { row, number, item };
+                  })
+                : [];
 
-          function decimalPlaces(value) {
-            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
-              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+            window.__timelines = window.__timelines || {};
+            const tl = gsap.timeline({ paused: true });
+            const eyebrow = root.querySelector(".stat-eyebrow");
+            const soloNumberLine = root.querySelector(".stat-number-line");
+            const context = root.querySelector(".stat-context");
+            const supplemental = root.querySelector(".stat-supplemental");
+
+            tl.addLabel("start", 0);
+            tl.fromTo(eyebrow, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.18, ease: "power2.out" }, 0);
+
+            if (variant === "solo-hero") {
+              tl.fromTo(
+                soloNumberLine,
+                { opacity: 0, y: 22, scale: 0.985 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.26, ease: "power3.out" },
+                0.08
+              );
+              tl.to(eyebrow, { opacity: 0.72, duration: 0.14, ease: "power2.out" }, 0.1);
+              tl.fromTo(context, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" }, 0.24);
+              if (supplementalRows.length > 0) {
+                tl.fromTo(
+                  supplemental,
+                  { opacity: 0, y: 8 },
+                  { opacity: 1, y: 0, duration: 0.12, ease: "power2.out" },
+                  0.28
+                );
+              }
+              addCountUp(main, numberEl, 0.28);
+            } else {
+              tl.fromTo(
+                kpiEntries.map((entry) => entry.item),
+                { opacity: 0, y: 18 },
+                { opacity: 1, y: 0, duration: 0.18, ease: "power3.out", stagger: 0.08 },
+                0.06
+              );
+              tl.to(eyebrow, { opacity: 0.72, duration: 0.14, ease: "power2.out" }, 0.1);
+              kpiEntries.forEach((entry, index) => {
+                addCountUp(entry.row, entry.number, 0.24 + index * 0.04);
+              });
             }
-            const match = String(value).replace(/,/g, "").match(/-?\d+\.(\d+)/);
-            return match ? Math.min(2, match[1].length) : 0;
-          }
 
-          function formatNumber(value, decimals) {
-            const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
-            return new Intl.NumberFormat("ko-KR", {
-              minimumFractionDigits: decimals,
-              maximumFractionDigits: decimals
-            }).format(Number(fixed));
-          }
+            tl.addLabel("final", blockDuration(root, 4));
+            timelineIds(root).forEach((id) => {
+              if (id) window.__timelines[id] = tl;
+            });
+            globalThis.__timelines = window.__timelines;
+            timelineIds(root).forEach((id) => {
+              if (id) globalThis.__timelines[id] = tl;
+            });
+            signalRuntimeReady();
 
-          function formatDisplayValue(row, suffix) {
-            return `${formatNumber(row.numeric, row.decimals)}${suffix}`;
-          }
-
-          function ariaLabel(statTitle, statRows, suffix) {
-            const detail = statRows.map((row) => `${row.label} ${formatDisplayValue(row, suffix)}`).join(", ");
-            return `${statTitle}: ${detail}`;
-          }
-
-          function safeColor(value) {
-            const text = stringValue(value, "Highlight");
-            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
-              ? text
-              : "Highlight";
-          }
-
-          function blockDuration(element, fallback) {
-            let node = element.parentElement;
-            while (node) {
-              const value = Number(node.getAttribute?.("data-duration"));
-              if (Number.isFinite(value) && value > 0) return value;
-              node = node.parentElement;
+            function addCountUp(row, target, start) {
+              if (!row.hasValue) return;
+              const counter = { value: 0 };
+              const update = function () {
+                target.textContent = formatNumber(counter.value, row.decimals);
+              };
+              tl.to(
+                counter,
+                {
+                  value: row.numeric * 0.5,
+                  duration: 0.4,
+                  ease: "power2.out",
+                  onUpdate: update
+                },
+                start
+              );
+              tl.to(
+                counter,
+                {
+                  value: row.numeric,
+                  duration: 0.4,
+                  ease: "power2.out",
+                  onUpdate: update,
+                  onComplete: function () {
+                    target.textContent = formatNumber(row.numeric, row.decimals);
+                  }
+                },
+                start + 0.4
+              );
             }
-            const own = Number(element.getAttribute("data-duration"));
-            return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
 
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.42, Math.max(0.3, total * 0.1));
-            const exitStart = Math.max(1.2, total - exitDuration);
-            const countStart = 0.18;
-            const countDeadline = Math.min(0.96, Math.max(countStart + 0.3, exitStart - 0.14));
-            const countDuration = Math.max(0.3, countDeadline - countStart);
-            const countEnd = countStart + countDuration;
-            const enterScale = 1;
-            const livingStart = Math.min(exitStart - 0.42, Math.max(countEnd + 0.08, 1.04));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return {
-              enterScale,
-              exitStart,
-              exitDuration,
-              livingStart,
-              livingDuration,
-              countStart,
-              countEnd,
-              countDuration
-            };
-          }
-
-          function timelineIds(rootElement) {
-            const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
-            if (runtimeId) return new Set([runtimeId]);
-            return new Set([
-              rootElement?.getAttribute("data-composition-id") || "",
-              rootElement?.getAttribute("data-hf-original-composition-id") || "",
-              "statistic"
-            ]);
-          }
-
-          function signalRuntimeReady() {
-            if (typeof window.__hfForceTimelineRebind === "function") {
-              window.__hfForceTimelineRebind();
+            function arrayValue(value) {
+              return Array.isArray(value) ? value : [];
             }
-            if (typeof window.__hfFlushSync === "function") {
-              window.__hfFlushSync();
+
+            function readVariables(hostElement, rootElement) {
+              const direct =
+                window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
+                  ? window.__hyperframes.getVariables()
+                  : {};
+              const scoped =
+                typeof __hyperframes === "undefined" || !__hyperframes
+                  ? {}
+                  : __hyperframes.getVariables?.() ?? {};
+              const runtimeId = hostElement?.getAttribute("data-composition-id") || "";
+              const authoredId =
+                hostElement?.getAttribute("data-hf-original-composition-id") ||
+                rootElement?.getAttribute("data-hf-original-composition-id") ||
+                "statistic";
+              const registry = {
+                ...(globalThis.__hfVariablesByComp?.[authoredId] || {}),
+                ...(globalThis.__hfVariablesByComp?.[runtimeId] || {}),
+                ...(globalThis.__hfVariablesByComp?.statistic || {})
+              };
+              const hostVars = readHostVariables(hostElement);
+              const merged = { ...registry, ...direct, ...scoped };
+              for (const [key, value] of Object.entries(hostVars)) {
+                if (value !== undefined && value !== null && value !== "") merged[key] = value;
+              }
+              return merged;
             }
-            window.__playerReady = true;
-            window.__renderReady = true;
-          }
-        })();
-      </script>
+
+            function readHostVariables(element) {
+              const decodeAttr = (value) =>
+                String(value || "")
+                  .replaceAll("&quot;", '"')
+                  .replaceAll("&#34;", '"')
+                  .replaceAll("&#39;", "'")
+                  .replaceAll("&apos;", "'")
+                  .replaceAll("&amp;", "&");
+              const parseBag = (value) => {
+                try {
+                  const parsed = JSON.parse(decodeAttr(value));
+                  return parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : null;
+                } catch {
+                  return null;
+                }
+              };
+              const hasStatData = (bag) => bag && (bag.title !== undefined || Array.isArray(bag.values));
+              let node = element;
+              while (node) {
+                if (node.getAttribute && node.hasAttribute("data-variable-values")) {
+                  const bag = parseBag(node.getAttribute("data-variable-values"));
+                  if (hasStatData(bag)) return bag;
+                }
+                node = node.parentElement;
+              }
+              const anchor = element || root;
+              const hosts = Array.from(document.querySelectorAll("[data-variable-values]"));
+              let best = null;
+              for (const hostNode of hosts) {
+                const bag = parseBag(hostNode.getAttribute("data-variable-values"));
+                if (!hasStatData(bag)) continue;
+                const source = hostNode.getAttribute("data-composition-src") || "";
+                const hostId = hostNode.getAttribute("data-composition-id") || "";
+                const related = hostId === "statistic" || source.includes("statistic/block.html");
+                if (anchor && hostNode.contains(anchor)) {
+                  if (!best || best.node.contains(hostNode)) best = { node: hostNode, bag };
+                } else if (related && !best) {
+                  best = { node: hostNode, bag };
+                }
+              }
+              return best ? best.bag : {};
+            }
+
+            function stringValue(value, fallback) {
+              if (value === undefined || value === null) return fallback;
+              const text = String(value).trim();
+              return text.length > 0 ? text : fallback;
+            }
+
+            function displayUnit(value) {
+              const text = stringValue(value, "");
+              if (!text) return "";
+              const normalized = text === "％" ? "%" : text.toLowerCase();
+              return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+                ? normalized
+                : "";
+            }
+
+            function normalizeRows(labels, rawValues, fallbackTitle) {
+              const count = Math.max(labels.length, rawValues.length);
+              if (count === 0) {
+                return [
+                  {
+                    label: fallbackTitle,
+                    raw: null,
+                    numeric: 0,
+                    decimals: 0,
+                    hasValue: false
+                  }
+                ];
+              }
+              const rows = [];
+              for (let index = 0; index < count; index += 1) {
+                const raw = rawValues[index];
+                const numeric = numericInfo(raw);
+                rows.push({
+                  label: stringValue(labels[index], "항목 " + String(index + 1)),
+                  raw,
+                  numeric: numeric.value,
+                  decimals: numeric.hasValue ? decimalPlaces(raw) : 0,
+                  hasValue: numeric.hasValue
+                });
+              }
+              return rows;
+            }
+
+            function numericInfo(value) {
+              if (typeof value === "number" && Number.isFinite(value)) {
+                return { value, hasValue: true };
+              }
+              const match = String(value ?? "").replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+              return match ? { value: Number(match[0]), hasValue: true } : { value: 0, hasValue: false };
+            }
+
+            function numericValue(value) {
+              return numericInfo(value).value;
+            }
+
+            function decimalPlaces(value) {
+              if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+                return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+              }
+              const match = String(value ?? "").replace(/,/g, "").match(/-?\d+\.(\d+)/);
+              return match ? Math.min(2, match[1].length) : 0;
+            }
+
+            function formatNumber(value, decimals) {
+              const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
+              return new Intl.NumberFormat("ko-KR", {
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals
+              }).format(Number(fixed));
+            }
+
+            function formatDisplayValue(row, suffix) {
+              return row.hasValue ? formatNumber(row.numeric, row.decimals) + suffix : row.label;
+            }
+
+            function ariaLabel(statTitle, statRows, suffix) {
+              const detail = statRows.map((row) => row.label + " " + formatDisplayValue(row, suffix)).join(", ");
+              return statTitle + ": " + detail;
+            }
+
+            function safeColor(value) {
+              const text = stringValue(value, "");
+              return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+                ? text
+                : "var(--rf-accent, var(--rf-text, currentColor))";
+            }
+
+            function blockDuration(element, fallback) {
+              let node = element.parentElement;
+              while (node) {
+                const value = Number(node.getAttribute?.("data-duration"));
+                if (Number.isFinite(value) && value > 0) return value;
+                node = node.parentElement;
+              }
+              const own = Number(element.getAttribute("data-duration"));
+              return Number.isFinite(own) && own > 0 ? own : fallback;
+            }
+
+            function timelineIds(rootElement) {
+              const runtimeId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+              if (runtimeId) return new Set([runtimeId]);
+              return new Set([
+                rootElement?.getAttribute("data-composition-id") || "",
+                rootElement?.getAttribute("data-hf-original-composition-id") || "",
+                "statistic"
+              ]);
+            }
+
+            function signalRuntimeReady() {
+              if (typeof window.__hfForceTimelineRebind === "function") {
+                window.__hfForceTimelineRebind();
+              }
+              if (typeof window.__hfFlushSync === "function") {
+                window.__hfFlushSync();
+              }
+              window.__playerReady = true;
+              window.__renderReady = true;
+            }
+          })();
+        </script>
       </div>
     </template>
   </body>

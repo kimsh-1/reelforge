@@ -1,305 +1,369 @@
 <!doctype html>
-<html lang="ko">
+<html
+  lang="ko"
+  data-composition-variables='[
+    {"id":"title","type":"string","label":"Title","default":"구성 비율"},
+    {"id":"items","type":"json","label":"Items","default":[]},
+    {"id":"values","type":"json","label":"Values","default":[]},
+    {"id":"unit","type":"string","label":"Unit","default":""},
+    {"id":"accent","type":"color","label":"Accent","default":"Highlight"},
+    {"id":"mood","type":"string","label":"Mood","default":"informative"},
+    {"id":"emphasis","type":"string","label":"Emphasis","default":"number"},
+    {"id":"reveal","type":"string","label":"Reveal","default":"draw"},
+    {"id":"visualKind","type":"string","label":"Visual kind","default":"chart"},
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>ReelForge pie block</title>
+  </head>
   <body>
     <template>
-      <style>
-        .pie-block {
-          --rf-pie-accent: currentColor;
-          --rf-pie-ink: currentColor;
-          --rf-pie-muted: color-mix(in srgb, currentColor 62%, transparent);
-          --rf-pie-hairline: color-mix(in srgb, currentColor 16%, transparent);
-          --rf-pie-panel: color-mix(in srgb, var(--rf-pie-accent) 9%, transparent);
-          --rf-pie-panel-strong: color-mix(in srgb, var(--rf-pie-accent) 13%, transparent);
-          --rf-pie-shadow: color-mix(in srgb, currentColor 18%, transparent);
-          position: absolute;
-          inset: 0;
-          width: 1920px;
-          height: 1080px;
-          overflow: hidden;
-          color: inherit;
-          font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-
-        .pie-frame {
-          position: absolute;
-          inset: 0;
-          box-sizing: border-box;
-          display: grid;
-          grid-template-columns: minmax(0, 0.9fr) minmax(32rem, 0.95fr) minmax(28rem, 0.74fr);
-          align-items: center;
-          gap: 4.5rem;
-          padding: 6rem 8.5rem 13rem;
-          transform-origin: 50% 50%;
-          will-change: transform, opacity;
-        }
-
-        .pie-copy {
-          min-width: 0;
-          display: grid;
-          gap: 1.5rem;
-        }
-
-        .pie-kicker {
-          margin: 0;
-          width: 5.5rem;
-          height: 0.35rem;
-          box-sizing: border-box;
-          padding: 0;
-          border: 0;
-          border-radius: 0.1rem;
-          background: var(--rf-pie-accent);
-          color: var(--rf-pie-muted);
-          font-size: 1.45rem;
-          font-weight: 760;
-          line-height: 1;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
-        }
-
-        .pie-title {
-          margin: 0;
-          color: var(--rf-pie-ink);
-          font-size: 5.4rem;
-          font-weight: 900;
-          line-height: 1.04;
-          letter-spacing: -0.03em;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-          text-wrap: balance;
-        }
-
-        .pie-source {
-          margin: 0;
-          max-width: 28rem;
-          color: var(--rf-pie-muted);
-          font-size: 1.35rem;
-          font-weight: 650;
-          line-height: 1.35;
-          letter-spacing: 0;
-          overflow-wrap: anywhere;
-        }
-
-        .pie-visual {
-          position: relative;
-          width: min(100%, 38rem);
-          aspect-ratio: 1;
-          justify-self: center;
-          display: grid;
-          place-items: center;
-        }
-
-        .pie-svg,
-        .pie-center {
-          position: absolute;
-          inset: 0;
-        }
-
-        .pie-svg {
-          width: 100%;
-          height: 100%;
-          overflow: visible;
-        }
-
-        .pie-track {
-          fill: none;
-          stroke: var(--rf-pie-hairline);
-          stroke-width: 3.25rem;
-        }
-
-        .pie-slice {
-          fill: none;
-          stroke: var(--slice-color, var(--rf-pie-accent));
-          stroke-width: 3.25rem;
-          stroke-linecap: butt;
-          transform-box: fill-box;
-          transform-origin: center;
-          will-change: transform, opacity;
-        }
-
-        .pie-slice[data-highlight="false"] {
-          stroke: color-mix(in srgb, var(--rf-pie-muted) 46%, transparent);
-        }
-
-        .pie-slice[data-highlight="true"] {
-          animation: pie-slice-glow 2.42s ease-in-out calc(var(--rf-scene-start, 0s) + 1.12s) infinite alternate;
-        }
-
-        .pie-center {
-          display: grid;
-          place-items: center;
-          pointer-events: none;
-        }
-
-        .pie-center-card {
-          width: 17rem;
-          aspect-ratio: 1;
-          box-sizing: border-box;
-          display: grid;
-          align-content: center;
-          justify-items: center;
-          gap: 0.35rem;
-          border: 0.1rem solid var(--rf-pie-hairline);
-          border-radius: 50%;
-          background: var(--rf-pie-panel-strong);
-          box-shadow: 0 1.4rem 3.4rem var(--rf-pie-shadow);
-          will-change: transform, opacity;
-        }
-
-        .pie-center-label {
-          color: var(--rf-pie-muted);
-          font-size: 1.35rem;
-          font-weight: 780;
-          line-height: 1;
-          letter-spacing: 0;
-        }
-
-        .pie-center-value {
-          color: var(--rf-pie-ink);
-          font-size: 4.65rem;
-          font-weight: 940;
-          line-height: 0.95;
-          letter-spacing: 0;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .pie-legend {
-          min-width: 0;
-          margin: 0;
-          padding: 0;
-          display: grid;
-          gap: 0.9rem;
-          list-style: none;
-        }
-
-        .pie-callouts {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-        }
-
-        .pie-callout {
-          position: absolute;
-          max-width: 11.5rem;
-          box-sizing: border-box;
-          padding: 0.58rem 0.72rem;
-          border: 0.08rem solid var(--rf-pie-hairline);
-          border-radius: 0.4rem;
-          background: color-mix(in srgb, var(--rf-pie-panel-strong) 84%, transparent);
-          color: var(--rf-pie-muted);
-          font-size: 1.16rem;
-          font-weight: 780;
-          line-height: 1.08;
-          letter-spacing: 0;
-          text-align: center;
-          overflow-wrap: anywhere;
-          transform: translate(-50%, -50%);
-          opacity: 0;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .pie-callout[data-highlight="true"] {
-          border-color: var(--rf-pie-accent);
-          color: var(--rf-pie-ink);
-          background: var(--rf-pie-panel-strong);
-        }
-
-        .pie-row {
-          min-width: 0;
-          display: grid;
-          grid-template-columns: 1.15rem minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1rem;
-          box-sizing: border-box;
-          padding: 1.05rem 1.1rem;
-          border: 0.09rem solid var(--rf-pie-hairline);
-          border-radius: 0.5rem;
-          background: var(--rf-pie-panel);
-          box-shadow: 0 0.75rem 2rem var(--rf-pie-shadow);
-          will-change: transform, opacity;
-        }
-
-        .pie-row[data-highlight="false"] {
-          opacity: 0.72;
-        }
-
-        .pie-row[data-highlight="false"] .pie-dot {
-          background: color-mix(in srgb, var(--rf-pie-muted) 46%, transparent);
-        }
-
-        .pie-dot {
-          width: 1.15rem;
-          aspect-ratio: 1;
-          border-radius: 50%;
-          background: var(--slice-color, var(--rf-pie-accent));
-          transform-origin: 50% 50%;
-          animation: pie-dot-orbit 2.26s ease-in-out calc(var(--rf-scene-start, 0s) + 0.98s) infinite alternate;
-        }
-
-        @keyframes pie-slice-glow {
-          0% {
-            filter: brightness(1) drop-shadow(0 0 0 var(--rf-pie-panel));
+      <div
+        class="pie-block"
+        data-composition-id="pie"
+        data-width="1920"
+        data-height="1080"
+        data-duration="4"
+        role="img"
+        aria-label=""
+      >
+        <style>
+          .pie-block {
+            --pie-ink: var(--rf-text, currentColor);
+            --pie-muted: var(--rf-ink-subtle, color-mix(in srgb, var(--rf-text, currentColor) 64%, transparent));
+            --pie-tertiary: var(
+              --rf-ink-tertiary,
+              var(--rf-ink-subtle, color-mix(in srgb, var(--rf-text, currentColor) 44%, transparent))
+            );
+            --pie-accent: var(--rf-accent, var(--rf-text, currentColor));
+            --pie-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+            --pie-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 16%, transparent));
+            --pie-hairline-strong: var(
+              --rf-hairline-strong,
+              var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 30%, transparent))
+            );
+            --pie-type-meta: 1.45rem;
+            --pie-type-title: 5.35rem;
+            --pie-type-value: 12.8rem;
+            position: absolute;
+            inset: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            box-sizing: border-box;
+            color: var(--pie-ink);
+            font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
           }
-          100% {
-            filter: brightness(1.18) drop-shadow(0 0 1.1rem var(--rf-pie-panel-strong));
-          }
-        }
 
-        @keyframes pie-dot-orbit {
-          0% {
-            transform: translate3d(0, -6px, 0) scale(0.96);
+          .pie-stage {
+            position: absolute;
+            inset: 7.2% 6.25%;
+            min-width: 0;
+            min-height: 0;
           }
-          100% {
-            transform: translate3d(0, 6px, 0) scale(1.14);
+
+          .pie-layout {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: minmax(21rem, 0.78fr) minmax(42rem, 1.16fr) minmax(20rem, 0.7fr);
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            column-gap: 3.4rem;
+            min-width: 0;
+            min-height: 0;
           }
-        }
 
-        .pie-label {
-          min-width: 0;
-          color: var(--rf-pie-ink);
-          font-size: 2rem;
-          font-weight: 800;
-          line-height: 1.16;
-          letter-spacing: 0;
-          word-break: keep-all;
-          overflow-wrap: anywhere;
-        }
+          .pie-copy {
+            grid-column: 1;
+            grid-row: 1 / span 2;
+            align-self: start;
+            min-width: 0;
+            padding-top: 1.25rem;
+          }
 
-        .pie-value {
-          color: var(--rf-pie-ink);
-          font-size: 2.25rem;
-          font-weight: 920;
-          line-height: 1;
-          letter-spacing: 0;
-          font-variant-numeric: tabular-nums;
-          white-space: nowrap;
-        }
-      </style>
-      <div class="pie-block" data-composition-id="pie" data-width="1920" data-height="1080" data-duration="4">
-        <div class="pie-frame">
-          <section class="pie-copy" aria-label="차트 제목">
-            <p class="pie-kicker" data-mood></p>
-            <h1 class="pie-title" data-title></h1>
-            <p class="pie-source" data-source></p>
-          </section>
-          <section class="pie-visual" aria-label="도넛 차트">
-            <svg class="pie-svg" viewBox="0 0 440 440" role="img" aria-label="도넛 차트">
-              <circle class="pie-track" cx="220" cy="220" r="168"></circle>
-              <g class="pie-slices" data-slices transform="rotate(-90 220 220)"></g>
-            </svg>
-            <div class="pie-center">
-              <div class="pie-center-card">
-                <div class="pie-center-label">합계</div>
-                <div class="pie-center-value" data-total>0</div>
-              </div>
-            </div>
-          </section>
-          <ol class="pie-legend" data-legend aria-label="차트 항목"></ol>
-        </div>
+          .pie-eyebrow,
+          .pie-source,
+          .pie-center-label,
+          .pie-center-unit,
+          .pie-rail-label,
+          .pie-rail-value {
+            font-size: var(--pie-type-meta);
+          }
+
+          .pie-eyebrow {
+            width: max-content;
+            max-width: 100%;
+            margin: 0 0 1.55rem;
+            color: var(--pie-muted);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .pie-title {
+            max-width: 31rem;
+            margin: 0;
+            color: var(--pie-ink);
+            font-size: var(--pie-type-title);
+            font-weight: 820;
+            line-height: 1.01;
+            letter-spacing: -0.03em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .pie-source {
+            max-width: 27rem;
+            margin: 2rem 0 0;
+            color: var(--pie-muted);
+            font-weight: 620;
+            line-height: 1.42;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .pie-visual {
+            position: relative;
+            grid-column: 2;
+            grid-row: 1 / span 3;
+            align-self: center;
+            justify-self: center;
+            width: min(100%, 47rem);
+            aspect-ratio: 1;
+          }
+
+          .pie-visual--gauge {
+            aspect-ratio: 1 / 0.84;
+            align-self: end;
+            margin-bottom: 4.25rem;
+          }
+
+          .pie-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+          }
+
+          .pie-track,
+          .pie-slice,
+          .pie-gauge-baseline {
+            fill: none;
+            vector-effect: non-scaling-stroke;
+          }
+
+          .pie-track {
+            stroke: var(--pie-hairline);
+            stroke-width: 34;
+          }
+
+          .pie-slice {
+            stroke: var(--pie-tertiary);
+            stroke-width: 34;
+            stroke-linecap: butt;
+            transform-box: fill-box;
+            transform-origin: center;
+            will-change: transform, opacity, stroke-dasharray;
+          }
+
+          .pie-slice[data-highlight="true"] {
+            stroke: var(--pie-accent);
+            animation: pie-accent-breathe 2.4s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          .pie-slice[data-highlight="false"] {
+            opacity: 0.78;
+          }
+
+          .pie-gauge-baseline {
+            stroke: var(--pie-hairline-strong);
+            stroke-width: 1;
+          }
+
+          .pie-center {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            align-content: center;
+            justify-items: center;
+            min-width: 0;
+            pointer-events: none;
+            text-align: center;
+          }
+
+          .pie-visual--gauge .pie-center {
+            padding-top: 11rem;
+          }
+
+          .pie-center-label {
+            max-width: 20rem;
+            margin: 0 0 0.72rem;
+            color: var(--pie-muted);
+            font-weight: 680;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .pie-center-value {
+            max-width: 100%;
+            color: var(--pie-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-size: var(--pie-type-value);
+            font-weight: 760;
+            font-variant-numeric: tabular-nums;
+            line-height: 0.88;
+            letter-spacing: -0.045em;
+            white-space: nowrap;
+            animation: pie-value-breathe 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          .pie-center-value[data-label-value="true"],
+          .pie-center-value[data-compact="true"] {
+            font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-size: var(--pie-type-title);
+            font-variant-numeric: normal;
+            line-height: 0.98;
+            letter-spacing: -0.03em;
+            white-space: normal;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .pie-center-unit {
+            min-height: 1.2em;
+            margin: 1rem 0 0;
+            color: var(--pie-muted);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-weight: 650;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+          }
+
+          .pie-rail {
+            grid-column: 3;
+            grid-row: 2;
+            align-self: center;
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          .pie-rail-row {
+            display: grid;
+            grid-template-columns: 0.42rem minmax(0, 1fr) auto;
+            align-items: baseline;
+            column-gap: 0.95rem;
+            min-width: 0;
+            padding: 1rem 0;
+            border-top: 1px solid var(--pie-hairline);
+          }
+
+          .pie-rail-row:last-child {
+            border-bottom: 1px solid var(--pie-hairline);
+          }
+
+          .pie-rail-marker {
+            align-self: center;
+            width: 0.42rem;
+            height: 1.65rem;
+            background: var(--pie-tertiary);
+          }
+
+          .pie-rail-row[data-tone="accent"] .pie-rail-marker {
+            background: var(--pie-accent-alt);
+            animation: pie-marker-breathe 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          .pie-rail-label {
+            min-width: 0;
+            color: var(--pie-muted);
+            font-weight: 650;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            word-break: keep-all;
+            overflow-wrap: anywhere;
+          }
+
+          .pie-rail-value {
+            margin-left: 0.5rem;
+            color: var(--pie-ink);
+            font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+            font-weight: 720;
+            font-variant-numeric: tabular-nums;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+            white-space: nowrap;
+          }
+
+          .pie-structure-line {
+            grid-column: 1 / span 3;
+            grid-row: 3;
+            align-self: end;
+            width: 100%;
+            height: 1px;
+            background: var(--pie-hairline);
+            opacity: 0.78;
+            animation: pie-structure-breathe 2.5s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          }
+
+          @keyframes pie-accent-breathe {
+            0% {
+              filter: brightness(0.98);
+            }
+            100% {
+              filter: brightness(1.13);
+            }
+          }
+
+          @keyframes pie-value-breathe {
+            0% {
+              filter: brightness(0.98);
+            }
+            100% {
+              filter: brightness(1.08);
+            }
+          }
+
+          @keyframes pie-marker-breathe {
+            0% {
+              opacity: 0.62;
+            }
+            100% {
+              opacity: 1;
+            }
+          }
+
+          @keyframes pie-structure-breathe {
+            0% {
+              opacity: 0.52;
+            }
+            100% {
+              opacity: 0.9;
+            }
+          }
+        </style>
+        <section class="pie-stage" data-pie-stage aria-label="도넛 차트"></section>
       </div>
       <script>
         (function () {
           const root = document.querySelector(".pie-block") ?? document.querySelector("[data-hf-inner-root]");
-          const runtimeCompositionId = typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
+          const runtimeCompositionId =
+            typeof __hfTimelineCompId !== "undefined" && __hfTimelineCompId ? __hfTimelineCompId : "";
           const compositionId =
             runtimeCompositionId ||
             root?.closest("[data-composition-id]")?.getAttribute("data-composition-id") ||
@@ -310,161 +374,91 @@
             window.__timelines[compositionId] = gsap.timeline({ paused: true });
             return;
           }
+
           const hf = typeof __hyperframes !== "undefined" ? __hyperframes : window.__hyperframes;
           const variables = scopedVariables();
-          const items = Array.isArray(variables.items) ? variables.items.map((item) => String(item ?? "")) : [];
-          const rawValues = Array.isArray(variables.values) ? variables.values : [];
-          const unit = String(variables.unit ?? "");
-          const title = String(variables.title ?? "");
-          const source = String(variables.source ?? "");
-          const accent = String(variables.accent ?? "").trim();
-          const rows = items.map((label, index) => ({
-            label,
-            rawValue: rawValues[index] ?? "",
-            numericValue: numericValue(rawValues[index])
-          }));
-          const visibleRows = rows.length > 0 ? rows : [{ label: title, rawValue: 1, numericValue: 1 }];
-          const numericTotal = visibleRows.reduce((sum, row) => sum + Math.max(0, row.numericValue), 0);
-          const shareTotal = numericTotal > 0 ? numericTotal : visibleRows.length;
-          const totalForDisplay = numericTotal > 0 ? numericTotal : visibleRows.length;
-          const highlightIndex = visibleRows.reduce(
-            (best, row, index) => (row.numericValue > visibleRows[best].numericValue ? index : best),
-            0
-          );
-          const circumference = 2 * Math.PI * 168;
-          const gap = Math.min(7, circumference * 0.009);
-          const duration = blockDuration(root, 4);
-          const phases = phaseTimes(duration);
+          const title = stringValue(variables.title, "구성 비율");
+          const source = stringValue(variables.source, "");
+          const mood = stringValue(variables.mood, "informative");
+          const unit = displayUnit(variables.unit);
+          const rows = normalizeRows(arrayValue(variables.items), arrayValue(variables.values), title);
+          const numericRows = rows.filter((row) => row.hasValue);
+          const hasNumericValues = numericRows.length > 0;
+          const total = numericRows.reduce((sum, row) => sum + Math.max(0, row.numeric), 0);
+          const focusIndex = focusRowIndex(rows, hasNumericValues);
+          const focus = rows[focusIndex];
+          const focusShare = hasNumericValues && total > 0 ? Math.max(0, focus.numeric) / total : 0;
+          const repeatIndex = Math.max(0, Math.floor(numericValue(variables.repeatIndex)));
+          const variant = repeatIndex % 2 === 0 ? "donut" : "gauge";
+          const stage = root.querySelector("[data-pie-stage]");
 
-          if (accent) root.style.setProperty("--rf-pie-accent", accent);
-          root.querySelector("[data-title]").textContent = title;
-          root.querySelector("[data-mood]").textContent = "";
-          root.querySelector("[data-mood]").setAttribute("aria-hidden", "true");
-          const sourceEl = root.querySelector("[data-source]");
-          sourceEl.textContent = source;
-          sourceEl.style.opacity = source ? "1" : "0";
+          root.style.setProperty("--pie-accent", safeColor(variables.accent));
+          root.dataset.variant = variant;
+          root.setAttribute("aria-label", ariaLabel(title, focus, unit, variant, focusShare));
+          stage.setAttribute("aria-label", variant === "donut" ? "도넛 차트" : "반원 게이지");
 
-          root.querySelector(".pie-svg").setAttribute("aria-label", title ? `${title} 도넛 차트` : "도넛 차트");
-          const slicesEl = root.querySelector("[data-slices]");
-          const legendEl = root.querySelector("[data-legend]");
-          const calloutsEl = document.createElement("div");
-          const sliceElements = [];
-          const legendRows = [];
-          const callouts = [];
-          let running = 0;
-
-          calloutsEl.className = "pie-callouts";
-          root.querySelector(".pie-visual").appendChild(calloutsEl);
-
-          visibleRows.forEach((row, index) => {
-            const value = Math.max(0, row.numericValue);
-            const share = numericTotal > 0 ? value / shareTotal : 1 / shareTotal;
-            const rawArc = circumference * share;
-            const arc = Math.max(0.5, rawArc - gap);
-            const offset = running + gap / 2;
-            const color =
-              index === highlightIndex
-                ? "var(--rf-pie-accent)"
-                : `color-mix(in srgb, var(--rf-pie-muted) ${Math.max(32, 58 - index * 6)}%, transparent)`;
-            const midAngle = (running + rawArc / 2) / circumference;
-            const theta = midAngle * Math.PI * 2 - Math.PI / 2;
-            const slice = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            slice.setAttribute("class", "pie-slice");
-            slice.dataset.highlight = index === highlightIndex ? "true" : "false";
-            slice.setAttribute("cx", "220");
-            slice.setAttribute("cy", "220");
-            slice.setAttribute("r", "168");
-            slice.style.setProperty("--slice-color", color);
-            slice.style.strokeDasharray = `0 ${circumference}`;
-            slice.style.strokeDashoffset = String(-offset);
-            slicesEl.appendChild(slice);
-            sliceElements.push({ element: slice, arc, rest: Math.max(0, circumference - arc) });
-
-            const callout = document.createElement("span");
-            callout.className = "pie-callout";
-            callout.dataset.highlight = index === highlightIndex ? "true" : "false";
-            callout.textContent = `${row.label} ${formatValue(row.rawValue, unit)}`;
-            callout.style.left = `${50 + Math.cos(theta) * 42}%`;
-            callout.style.top = `${50 + Math.sin(theta) * 42}%`;
-            calloutsEl.appendChild(callout);
-            callouts.push(callout);
-
-            const rowEl = document.createElement("li");
-            rowEl.className = "pie-row";
-            rowEl.dataset.highlight = index === highlightIndex ? "true" : "false";
-            rowEl.style.setProperty("--slice-color", color);
-            rowEl.innerHTML = [
-              '<span class="pie-dot" aria-hidden="true"></span>',
-              '<span class="pie-label"></span>',
-              '<span class="pie-value"></span>'
-            ].join("");
-            rowEl.querySelector(".pie-label").textContent = row.label;
-            rowEl.querySelector(".pie-value").textContent = formatValue(row.rawValue, unit);
-            legendEl.appendChild(rowEl);
-            legendRows.push(rowEl);
-            running += rawArc;
+          const built = buildStage({
+            title,
+            source,
+            mood,
+            rows,
+            focus,
+            focusIndex,
+            unit,
+            total,
+            focusShare,
+            hasNumericValues,
+            variant
           });
-
-          const totalEl = root.querySelector("[data-total]");
-          totalEl.textContent = formatNumber(0, totalForDisplay, unit);
+          stage.append(built.layout);
 
           window.__timelines = window.__timelines || {};
           const tl = gsap.timeline({ paused: true });
           tl.addLabel("start", 0);
-          tl.fromTo(root.querySelector(".pie-frame"), { opacity: 0, y: 30, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 0.74, ease: "power4.out" }, 0);
-          tl.fromTo(root.querySelector(".pie-copy"), { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.56, ease: "power3.out" }, 0.08);
-          tl.fromTo(root.querySelector(".pie-track"), { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.48, ease: "power2.out" }, 0.18);
-          tl.fromTo(root.querySelector(".pie-center-card"), { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1, duration: 0.58, ease: "back.out(1.2)" }, 0.34);
-          sliceElements.forEach((slice, index) => {
+          tl.fromTo(built.eyebrow, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.22, ease: "power2.out" }, 0);
+          tl.fromTo(built.title, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.34, ease: "power3.out" }, 0.06);
+          tl.to(built.eyebrow, { opacity: 0.72, duration: 0.14, ease: "power2.out" }, 0.16);
+          tl.fromTo(
+            built.visual,
+            { opacity: 0, y: 26, scale: 0.96 },
+            { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out" },
+            0.12
+          );
+          tl.fromTo(
+            built.center,
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" },
+            0.28
+          );
+          built.slices.forEach((slice, index) => {
             tl.fromTo(
               slice.element,
-              { opacity: 0.36, strokeDasharray: `0 ${circumference}` },
+              { opacity: 0, strokeDasharray: `0 ${slice.circumference}` },
               {
-                opacity: 1,
-                strokeDasharray: `${slice.arc} ${slice.rest}`,
-                duration: 0.92,
+                opacity: slice.highlight ? 1 : 0.78,
+                strokeDasharray: `${slice.arc} ${Math.max(0, slice.circumference - slice.arc)}`,
+                duration: 0.28,
                 ease: "power3.out",
                 immediateRender: false
               },
-              0.42 + index * 0.12
+              0.16 + index * 0.025
             );
           });
-          const counter = { value: 0 };
-          tl.to(
-            counter,
-            {
-              value: totalForDisplay,
-              duration: phases.countDuration,
-              ease: "power4.out",
-              onUpdate: () => {
-                totalEl.textContent = formatNumber(counter.value, totalForDisplay, unit);
-              },
-              onComplete: () => {
-                totalEl.textContent = formatNumber(totalForDisplay, totalForDisplay, unit);
-              }
-            },
-            0.42
+          tl.fromTo(
+            built.railRows,
+            { opacity: 0, x: 18 },
+            { opacity: 1, x: 0, duration: 0.24, ease: "power2.out", stagger: 0.04 },
+            0.34
           );
           tl.fromTo(
-            legendRows,
-            { opacity: 0, x: 28 },
-            { opacity: 1, x: 0, duration: 0.46, ease: "power3.out", stagger: 0.08 },
-            0.84
+            built.structure,
+            { opacity: 0, scaleX: 0 },
+            { opacity: 0.78, scaleX: 1, duration: 0.3, ease: "power2.out", transformOrigin: "left center" },
+            0.3
           );
-          tl.fromTo(
-            callouts,
-            { opacity: 0, y: 12, scale: 0.96 },
-            { opacity: 1, y: 0, scale: 1, duration: 0.34, ease: "power2.out", stagger: 0.07 },
-            1.0
-          );
-          const highlightSlice = sliceElements[highlightIndex]?.element;
-          if (highlightSlice) {
-            tl.to(highlightSlice, { scale: 1.025, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          }
-          tl.to(root.querySelector(".pie-visual"), { y: -10, rotation: 1.2, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(root.querySelector(".pie-center-card"), { scale: 1.035, duration: 1.6, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.6)), yoyo: true }, phases.livingStart);
-          tl.to(root.querySelector(".pie-frame"), { y: -22, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
-          tl.addLabel("final", duration);
+          addCountUp(tl, focus, built.value, unit, 0.25);
+          tl.addLabel("final", blockDuration(root, 4));
+
           const timelineIds = runtimeCompositionId ? new Set([runtimeCompositionId]) : new Set([compositionId, "pie"]);
           timelineIds.forEach((id) => {
             if (id) window.__timelines[id] = tl;
@@ -473,11 +467,165 @@
           timelineIds.forEach((id) => {
             if (id) globalThis.__timelines[id] = tl;
           });
+          signalRuntimeReady();
 
-          function numericValue(value) {
-            if (typeof value === "number") return Number.isFinite(value) ? value : 0;
-            const parsed = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
-            return Number.isFinite(parsed) ? parsed : 0;
+          function buildStage(config) {
+            const layout = element("div", `pie-layout pie-layout--${config.variant}`);
+            const copy = element("header", "pie-copy");
+            const eyebrow = element("p", "pie-eyebrow", config.mood);
+            const titleEl = element("h1", "pie-title", config.title);
+            copy.append(eyebrow, titleEl);
+            if (config.source) copy.append(element("p", "pie-source", config.source));
+
+            const visual = element("section", `pie-visual pie-visual--${config.variant}`);
+            visual.setAttribute("aria-label", config.variant === "donut" ? "도넛 중심 값" : "반원 게이지 중심 값");
+            const chart = buildChart(config);
+            const center = element("div", "pie-center");
+            const centerLabel = element("p", "pie-center-label", config.focus.label);
+            const value = element(
+              "p",
+              "pie-center-value",
+              config.focus.hasValue ? formatNumber(0, config.focus.decimals) : config.focus.label
+            );
+            const centerUnit = element("p", "pie-center-unit", config.focus.hasValue ? config.unit : "");
+            if (!config.focus.hasValue) value.dataset.labelValue = "true";
+            if (config.focus.hasValue && formatNumber(config.focus.numeric, config.focus.decimals).length > 5) {
+              value.dataset.compact = "true";
+            }
+            if (config.focus.hasValue) center.append(centerLabel, value, centerUnit);
+            else center.append(value);
+            visual.append(chart.svg, center);
+
+            const rail = element("ol", "pie-rail");
+            const railRows = [];
+            const secondaryRows = config.rows.filter((row, index) => index !== config.focusIndex && row.hasValue);
+            if (config.variant === "gauge" && config.hasNumericValues) {
+              railRows.push(appendRailRow(rail, "비중", formatPercent(config.focusShare), "accent"));
+              if (config.total > 0 && secondaryRows.length > 0) {
+                railRows.push(appendRailRow(rail, "전체", formatNumber(config.total, decimalTotal(config.rows)) + config.unit, "muted"));
+              }
+            }
+            secondaryRows.forEach((row) => {
+              railRows.push(appendRailRow(rail, row.label, displayValue(row, config.unit), "muted"));
+            });
+            if (railRows.length === 0) rail.remove();
+
+            const structure = element("div", "pie-structure-line");
+            structure.setAttribute("aria-hidden", "true");
+            layout.append(copy, visual);
+            if (railRows.length > 0) layout.append(rail);
+            layout.append(structure);
+            return { layout, eyebrow, title: titleEl, visual, center, value, railRows, structure, slices: chart.slices };
+          }
+
+          function buildChart(config) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", "pie-svg");
+            svg.setAttribute("viewBox", "0 0 440 440");
+            svg.setAttribute("aria-hidden", "true");
+            const circumference = 2 * Math.PI * 168;
+            const slices = [];
+            if (config.variant === "donut") {
+              svg.append(svgCircle("pie-track", { cx: 220, cy: 220, r: 168 }));
+              const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+              group.setAttribute("transform", "rotate(-90 220 220)");
+              const gap = Math.min(7, circumference * 0.009);
+              let running = 0;
+              const chartRows = config.rows
+                .map((row, index) => ({ row, index }))
+                .filter((entry) => entry.row.hasValue);
+              const numericTotal = chartRows.reduce((sum, entry) => sum + Math.max(0, entry.row.numeric), 0);
+              chartRows.forEach(({ row, index }) => {
+                const share = numericTotal > 0 ? Math.max(0, row.numeric) / numericTotal : 1 / chartRows.length;
+                const rawArc = circumference * share;
+                const arc = share > 0 ? Math.max(1, rawArc - gap) : 0;
+                const slice = svgCircle("pie-slice", { cx: 220, cy: 220, r: 168 });
+                slice.dataset.highlight = String(index === config.focusIndex);
+                slice.style.strokeDasharray = `0 ${circumference}`;
+                slice.style.strokeDashoffset = String(-(running + gap / 2));
+                group.append(slice);
+                slices.push({ element: slice, arc, circumference, highlight: index === config.focusIndex });
+                running += rawArc;
+              });
+              svg.append(group);
+            } else {
+              const halfCircumference = circumference / 2;
+              const track = svgCircle("pie-track", { cx: 220, cy: 220, r: 168 });
+              track.setAttribute("transform", "rotate(180 220 220)");
+              track.style.strokeDasharray = `${halfCircumference} ${circumference - halfCircumference}`;
+              svg.append(track);
+              const slice = svgCircle("pie-slice", { cx: 220, cy: 220, r: 168 });
+              slice.dataset.highlight = "true";
+              slice.setAttribute("transform", "rotate(180 220 220)");
+              slice.style.strokeDasharray = `0 ${circumference}`;
+              svg.append(slice);
+              const baseline = document.createElementNS("http://www.w3.org/2000/svg", "line");
+              baseline.setAttribute("class", "pie-gauge-baseline");
+              baseline.setAttribute("x1", "52");
+              baseline.setAttribute("x2", "388");
+              baseline.setAttribute("y1", "388");
+              baseline.setAttribute("y2", "388");
+              svg.append(baseline);
+              slices.push({
+                element: slice,
+                arc: config.focusShare > 0 ? Math.max(1, halfCircumference * config.focusShare) : 0,
+                circumference,
+                highlight: true
+              });
+            }
+            return { svg, slices };
+          }
+
+          function appendRailRow(rail, labelText, valueText, tone) {
+            const row = element("li", "pie-rail-row");
+            row.dataset.tone = tone;
+            const marker = element("span", "pie-rail-marker");
+            marker.setAttribute("aria-hidden", "true");
+            const label = element("span", "pie-rail-label", labelText);
+            const value = element("span", "pie-rail-value", valueText);
+            row.append(marker, label, value);
+            rail.append(row);
+            return row;
+          }
+
+          function addCountUp(timeline, row, target, suffix, start) {
+            if (!row.hasValue) return;
+            const counter = { value: 0 };
+            const update = function () {
+              target.textContent = formatNumber(counter.value, row.decimals);
+            };
+            timeline.to(
+              counter,
+              { value: row.numeric * 0.5, duration: 0.4, ease: "power2.out", onUpdate: update },
+              start
+            );
+            timeline.to(
+              counter,
+              {
+                value: row.numeric,
+                duration: 0.4,
+                ease: "power2.out",
+                onUpdate: update,
+                onComplete: function () {
+                  target.textContent = formatNumber(row.numeric, row.decimals);
+                }
+              },
+              start + 0.4
+            );
+          }
+
+          function svgCircle(className, attributes) {
+            const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle.setAttribute("class", className);
+            Object.entries(attributes).forEach(([name, value]) => circle.setAttribute(name, String(value)));
+            return circle;
+          }
+
+          function element(tagName, className, text) {
+            const node = document.createElement(tagName);
+            node.className = className;
+            if (text !== undefined) node.textContent = text;
+            return node;
           }
 
           function scopedVariables() {
@@ -494,19 +642,107 @@
             }
           }
 
-          function formatValue(value, suffix) {
-            if (typeof value === "number") return `${formatPlainNumber(value)}${suffix}`;
-            const text = String(value ?? "");
-            return suffix && text && !text.includes(suffix) ? `${text}${suffix}` : text;
+          function arrayValue(value) {
+            if (Array.isArray(value)) return value;
+            if (typeof value !== "string") return [];
+            try {
+              const parsed = JSON.parse(value);
+              return Array.isArray(parsed) ? parsed : [];
+            } catch {
+              return [];
+            }
           }
 
-          function formatNumber(value, finalValue, suffix) {
-            const rounded = Math.abs(finalValue % 1) > 0.001 ? Math.round(value * 10) / 10 : Math.round(value);
-            return `${formatPlainNumber(rounded)}${suffix}`;
+          function normalizeRows(labels, rawValues, fallbackTitle) {
+            const count = Math.max(labels.length, rawValues.length);
+            if (count === 0) {
+              return [{ label: fallbackTitle, numeric: 0, decimals: 0, hasValue: false }];
+            }
+            return Array.from({ length: count }, (_, index) => {
+              const numeric = numericInfo(rawValues[index]);
+              return {
+                label: stringValue(labels[index], `항목 ${index + 1}`),
+                numeric: numeric.value,
+                decimals: numeric.hasValue ? decimalPlaces(rawValues[index]) : 0,
+                hasValue: numeric.hasValue
+              };
+            });
           }
 
-          function formatPlainNumber(value) {
-            return new Intl.NumberFormat("ko-KR", { maximumFractionDigits: 1 }).format(value);
+          function focusRowIndex(rows, hasNumericValues) {
+            if (!hasNumericValues) return 0;
+            const firstNumericIndex = rows.findIndex((row) => row.hasValue);
+            return rows.reduce(
+              (bestIndex, row, index) => (row.hasValue && row.numeric > rows[bestIndex].numeric ? index : bestIndex),
+              firstNumericIndex
+            );
+          }
+
+          function stringValue(value, fallback) {
+            if (value === undefined || value === null) return fallback;
+            const text = String(value).trim();
+            return text.length > 0 ? text : fallback;
+          }
+
+          function numericInfo(value) {
+            if (typeof value === "number" && Number.isFinite(value)) return { value, hasValue: true };
+            const match = String(value ?? "").replace(/,/g, "").match(/-?\d+(?:\.\d+)?/);
+            return match ? { value: Number(match[0]), hasValue: true } : { value: 0, hasValue: false };
+          }
+
+          function numericValue(value) {
+            return numericInfo(value).value;
+          }
+
+          function decimalPlaces(value) {
+            if (typeof value === "number" && Number.isFinite(value) && !Number.isInteger(value)) {
+              return Math.min(2, String(value).split(".")[1]?.length ?? 0);
+            }
+            const match = String(value ?? "").replace(/,/g, "").match(/-?\d+\.(\d+)/);
+            return match ? Math.min(2, match[1].length) : 0;
+          }
+
+          function decimalTotal(rows) {
+            return rows.reduce((maximum, row) => Math.max(maximum, row.decimals), 0);
+          }
+
+          function displayUnit(value) {
+            const text = stringValue(value, "");
+            if (!text) return "";
+            const normalized = text === "％" ? "%" : text.toLowerCase();
+            return new Set(["%", "sec", "원", "건", "개", "명", "회", "hex", "점"]).has(normalized)
+              ? normalized
+              : "";
+          }
+
+          function formatNumber(value, decimals) {
+            const fixed = decimals > 0 ? Number(value).toFixed(decimals) : String(Math.round(value));
+            return new Intl.NumberFormat("ko-KR", {
+              minimumFractionDigits: decimals,
+              maximumFractionDigits: decimals
+            }).format(Number(fixed));
+          }
+
+          function displayValue(row, suffix) {
+            return row.hasValue ? formatNumber(row.numeric, row.decimals) + suffix : row.label;
+          }
+
+          function formatPercent(value) {
+            return `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%`;
+          }
+
+          function ariaLabel(chartTitle, focusRow, suffix, chartVariant, share) {
+            const mode = chartVariant === "donut" ? "도넛" : "게이지";
+            if (!focusRow.hasValue) return `${chartTitle}: ${mode}, ${focusRow.label}`;
+            const value = formatNumber(focusRow.numeric, focusRow.decimals) + suffix;
+            return `${chartTitle}: ${mode}, ${focusRow.label} ${value}, ${formatPercent(share)}`;
+          }
+
+          function safeColor(value) {
+            const text = stringValue(value, "");
+            return /^[A-Za-z]+$|^#[0-9A-Fa-f]{3,8}$|^var\(--[A-Za-z0-9_-]+\)$|^color-mix\(.+\)$/.test(text)
+              ? text
+              : "var(--rf-accent, var(--rf-text, currentColor))";
           }
 
           function blockDuration(element, fallback) {
@@ -520,18 +756,11 @@
             return Number.isFinite(own) && own > 0 ? own : fallback;
           }
 
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.44, Math.max(0.32, total * 0.1));
-            const exitStart = Math.max(1.2, total - exitDuration);
-            const livingStart = Math.min(exitStart - 0.42, Math.max(1.05, total * 0.26));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return {
-              exitStart,
-              exitDuration,
-              livingStart,
-              livingDuration,
-              countDuration: Math.min(2.25, Math.max(1.1, total * 0.54))
-            };
+          function signalRuntimeReady() {
+            if (typeof window.__hfForceTimelineRebind === "function") window.__hfForceTimelineRebind();
+            if (typeof window.__hfFlushSync === "function") window.__hfFlushSync();
+            window.__playerReady = true;
+            window.__renderReady = true;
           }
         })();
       </script>

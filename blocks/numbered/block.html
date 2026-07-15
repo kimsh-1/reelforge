@@ -11,7 +11,8 @@
     {"id":"emphasis","type":"string","label":"Emphasis","default":"rank"},
     {"id":"reveal","type":"string","label":"Reveal","default":"stagger"},
     {"id":"visualKind","type":"string","label":"Visual kind","default":"list"},
-    {"id":"source","type":"string","label":"Source","default":""}
+    {"id":"source","type":"string","label":"Source","default":""},
+    {"id":"repeatIndex","type":"number","label":"Repeat index","default":0}
   ]'
 >
   <head>
@@ -23,385 +24,349 @@
     <template>
       <style>
         .numbered-block {
-          --numbered-accent: var(--rf-accent, currentColor);
-          --numbered-text: var(--rf-text, currentColor);
-          --numbered-muted: var(--rf-muted-text, color-mix(in srgb, currentColor 62%, transparent));
-          --numbered-surface: var(--rf-surface, Canvas);
-          --numbered-panel: var(--rf-panel, color-mix(in srgb, currentColor 7%, Canvas));
-          --numbered-line: color-mix(in srgb, currentColor 16%, transparent);
-          --numbered-accent-soft: color-mix(in srgb, var(--numbered-accent) 16%, transparent);
-          --numbered-shadow: color-mix(in srgb, currentColor 18%, transparent);
-          --row-count: 3;
+          --numbered-ink: var(--rf-text, currentColor);
+          --numbered-muted: var(--rf-ink-subtle, var(--rf-muted-text, var(--rf-text, currentColor)));
+          --numbered-tertiary: var(--rf-ink-tertiary, var(--rf-ink-subtle, var(--rf-text, currentColor)));
+          --numbered-accent: var(--rf-accent, var(--rf-text, currentColor));
+          --numbered-accent-alt: var(--rf-accent-alt, var(--rf-accent, var(--rf-text, currentColor)));
+          --numbered-hairline: var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 18%, transparent));
+          --numbered-hairline-strong: var(
+            --rf-hairline-strong,
+            var(--rf-hairline, color-mix(in srgb, var(--rf-text, currentColor) 34%, transparent))
+          );
+          --numbered-type-meta: 1.45rem;
+          --numbered-type-label: 3.5rem;
+          --numbered-type-display: 21.5rem;
+          --numbered-step-count: 3;
           position: absolute;
           inset: 0;
           width: 1920px;
           height: 1080px;
           box-sizing: border-box;
           overflow: hidden;
-          color: var(--numbered-text);
-          font-family:
-            "Pretendard",
-            "Pretendard Variable",
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
+          color: var(--numbered-ink);
+          font-family: "Pretendard", "Pretendard Variable", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
         .numbered-stage {
           position: absolute;
-          inset: 0;
+          inset: 7.2% 6.25%;
           display: grid;
-          grid-template-rows: auto minmax(0, 1fr) auto;
-          gap: 1.55rem;
+          grid-template-rows: auto minmax(0, 1fr);
+          gap: 2.35rem;
+          min-width: 0;
+          min-height: 0;
           box-sizing: border-box;
-          padding: 4.65rem 6.25rem 8.45rem;
-          animation: numbered-stage-living 2.15s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+          animation: numbered-stage-living 2.3s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
         @keyframes numbered-stage-living {
           0% {
-            filter: brightness(1);
+            filter: brightness(0.99);
           }
           100% {
-            filter: brightness(1.13);
+            filter: brightness(1.06);
+          }
+        }
+
+        @keyframes numbered-ghost-living {
+          0% {
+            opacity: 0.14;
+          }
+          100% {
+            opacity: 0.27;
+          }
+        }
+
+        @keyframes numbered-rail-living {
+          0% {
+            filter: brightness(0.92);
+          }
+          100% {
+            filter: brightness(1.25);
           }
         }
 
         .numbered-header {
+          position: relative;
+          z-index: 2;
           display: grid;
           grid-template-columns: minmax(0, 1fr) auto;
           align-items: end;
-          gap: 2rem;
+          gap: 2.5rem;
+          min-width: 0;
         }
 
-        .numbered-eyebrow {
-          margin: 0 0 0.7rem;
-          width: 5.5rem;
-          height: 0.35rem;
-          background: var(--numbered-accent);
+        .numbered-kicker,
+        .numbered-count,
+        .numbered-detail,
+        .numbered-index {
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: var(--numbered-type-meta);
+          font-variant-numeric: tabular-nums;
+        }
+
+        .numbered-kicker {
+          width: max-content;
+          max-width: 100%;
+          margin: 0 0 0.8rem;
           color: var(--numbered-muted);
-          font-size: 1.45rem;
-          font-weight: 760;
+          font-weight: 700;
           line-height: 1;
-          letter-spacing: 0;
+          letter-spacing: 0.1em;
           text-transform: uppercase;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .numbered-title {
+          max-width: 72rem;
           margin: 0;
-          max-width: 80rem;
-          color: var(--numbered-text);
-          font-size: 5.55rem;
-          font-weight: 920;
-          line-height: 1.04;
+          color: var(--numbered-ink);
+          font-size: var(--numbered-type-label);
+          font-weight: 860;
+          line-height: 1.02;
           letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
-          text-wrap: balance;
-          text-shadow: 0 0.18rem 1rem var(--numbered-shadow);
         }
 
-        .numbered-unit {
-          min-width: 8.2rem;
-          max-width: 22rem;
-          box-sizing: border-box;
-          padding: 0.85rem 1.15rem;
-          border: 0.1rem solid var(--numbered-line);
-          border-radius: 0.5rem;
-          background: var(--numbered-panel);
-          color: var(--numbered-text);
-          font-size: 1.65rem;
-          font-weight: 820;
-          line-height: 1.1;
-          letter-spacing: 0;
-          text-align: center;
+        .numbered-count {
+          align-self: start;
+          margin-top: 0.45rem;
+          color: var(--numbered-tertiary);
+          font-weight: 700;
+          line-height: 1;
+          letter-spacing: 0.08em;
           white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
         }
 
-        .numbered-list {
-          min-height: 0;
-          margin: 0;
-          padding: 0 0.35rem 0 0;
+        .numbered-body {
+          position: relative;
+          z-index: 1;
           display: grid;
-          grid-template-rows: repeat(var(--row-count), minmax(0, 1fr));
-          gap: 1.15rem;
-          list-style: none;
-          overflow: hidden;
+          grid-template-columns: minmax(0, 1.08fr) minmax(34rem, 0.92fr);
+          gap: 3.6rem;
+          min-width: 0;
+          min-height: 0;
         }
 
-        .numbered-row {
+        .numbered-list-shell,
+        .numbered-ghost-shell {
           position: relative;
           min-width: 0;
           min-height: 0;
+        }
+
+        .numbered-list-shell {
+          padding-left: 7.4rem;
+        }
+
+        .numbered-rail {
+          position: absolute;
+          top: 0.5rem;
+          bottom: 0.5rem;
+          left: 3.2rem;
+          width: 1px;
+          background: var(--numbered-hairline);
+        }
+
+        .numbered-rail-progress {
+          position: absolute;
+          inset: 0 auto auto -1px;
+          width: 3px;
+          height: 100%;
+          background: var(--numbered-accent);
+          transform: scaleY(0);
+          transform-origin: center top;
+          animation: numbered-rail-living 2.1s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
+        }
+
+        .numbered-steps {
           display: grid;
-          grid-template-columns: 9.6rem minmax(0, 1fr) auto 0.55rem;
+          grid-template-rows: repeat(var(--numbered-step-count), minmax(0, 1fr));
+          min-height: 100%;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .numbered-step {
+          position: relative;
+          display: grid;
+          grid-template-columns: 6.2rem minmax(0, 1fr);
           align-items: center;
-          gap: 1.35rem;
-          box-sizing: border-box;
-          padding: 1.05rem 1.35rem 1.05rem 1.05rem;
-          border: 0.1rem solid var(--numbered-line);
-          border-radius: 0.5rem;
-          background:
-            linear-gradient(90deg, var(--numbered-accent-soft), transparent 48%),
-            var(--numbered-surface);
-          box-shadow: 0 1rem 2.8rem var(--numbered-shadow);
-          overflow: hidden;
+          gap: 1.45rem;
+          min-width: 0;
+          padding: 0.85rem 0;
+          border-top: 1px solid var(--numbered-hairline);
           opacity: 0;
-          contain: paint;
           will-change: transform, opacity;
         }
 
-        .numbered-row::before {
+        .numbered-step:last-child {
+          border-bottom: 1px solid var(--numbered-hairline);
+        }
+
+        .numbered-step::before {
           content: "";
           position: absolute;
-          inset: 0 auto 0 0;
-          width: 0.38rem;
+          left: -4.24rem;
+          top: 50%;
+          width: 0.82rem;
+          height: 0.82rem;
+          box-sizing: border-box;
+          border: 1px solid var(--numbered-hairline-strong);
+          background: var(--numbered-ink);
+          transform: translateY(-50%);
+        }
+
+        .numbered-step[data-focus="true"]::before {
+          border-color: var(--numbered-accent);
           background: var(--numbered-accent);
         }
 
-        .numbered-stamp {
-          position: relative;
-          z-index: 1;
-          width: 8rem;
-          aspect-ratio: 1;
-          display: grid;
-          align-content: center;
-          justify-items: center;
-          box-sizing: border-box;
-          border: 0.16rem solid var(--numbered-accent);
-          border-radius: 50%;
-          background: var(--numbered-panel);
-          color: var(--numbered-accent);
-          box-shadow:
-            inset 0 0 0 0.32rem color-mix(in srgb, var(--numbered-accent) 12%, transparent),
-            0 0.85rem 1.6rem var(--numbered-shadow);
-        }
-
-        .numbered-stamp::after {
-          content: "";
-          position: absolute;
-          inset: 0.52rem;
-          border: 0.08rem dashed var(--numbered-accent);
-          border-radius: 50%;
-          opacity: 0.72;
-          animation: numbered-ring-orbit 2.48s ease-in-out calc(var(--rf-scene-start, 0s) + 0.94s) infinite alternate;
-        }
-
-        .numbered-rank {
-          position: relative;
-          z-index: 1;
-          font-size: 2.55rem;
-          font-weight: 950;
-          line-height: 0.9;
-          letter-spacing: 0;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .numbered-rank-unit {
-          position: relative;
-          z-index: 1;
-          margin-top: 0.35rem;
-          max-width: 5.4rem;
-          color: var(--numbered-muted);
-          font-size: 0.95rem;
-          font-weight: 780;
+        .numbered-index {
+          color: var(--numbered-tertiary);
+          font-weight: 760;
           line-height: 1;
-          letter-spacing: 0;
-          text-align: center;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          letter-spacing: -0.03em;
+        }
+
+        .numbered-step[data-focus="true"] .numbered-index,
+        .numbered-step[data-focus="true"] .numbered-label {
+          color: var(--numbered-accent);
         }
 
         .numbered-copy {
-          min-width: 0;
           display: grid;
-          gap: 0.55rem;
-        }
-
-        .numbered-tail {
-          justify-self: end;
-          color: var(--numbered-muted);
-          font-size: 2.05rem;
-          font-weight: 800;
-          line-height: 1;
-          letter-spacing: 0.04em;
-          font-variant-numeric: tabular-nums;
-          white-space: nowrap;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: baseline;
+          gap: 1.4rem;
+          min-width: 0;
         }
 
         .numbered-label {
           margin: 0;
-          color: var(--numbered-text);
-          font-size: 3.72rem;
-          font-weight: 880;
-          line-height: 1.08;
-          letter-spacing: 0;
+          color: var(--numbered-ink);
+          font-size: var(--numbered-type-label);
+          font-weight: 820;
+          line-height: 1.04;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
         }
 
-        .numbered-meta {
+        .numbered-detail {
+          justify-self: end;
           margin: 0;
-          color: var(--numbered-muted);
-          font-size: 1.45rem;
-          font-weight: 720;
-          line-height: 1.18;
-          letter-spacing: 0;
+          color: var(--numbered-accent);
+          font-size: var(--numbered-type-label);
+          font-weight: 760;
+          line-height: 1;
+          letter-spacing: -0.03em;
           word-break: keep-all;
           overflow-wrap: anywhere;
         }
 
-        .numbered-rule {
-          width: 100%;
-          max-width: 100%;
-          height: 74%;
-          border-radius: 999rem;
-          background: var(--numbered-accent);
-          justify-self: stretch;
-          transform-origin: center bottom;
-        }
-
-        .numbered-sweep {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(100deg, transparent 0 38%, color-mix(in srgb, var(--numbered-accent) 22%, transparent) 50%, transparent 62% 100%);
-          opacity: 0;
-          transform: translateX(-120%);
-          pointer-events: none;
-          animation: numbered-sweep-living 2.35s ease-in-out calc(var(--rf-scene-start, 0s) + 1.06s) infinite;
-        }
-
-        @keyframes numbered-ring-orbit {
-          0% {
-            transform: rotate(-4deg) scale(0.96);
-            opacity: 0.56;
-          }
-          100% {
-            transform: rotate(8deg) scale(1.06);
-            opacity: 0.88;
-          }
-        }
-
-        @keyframes numbered-sweep-living {
-          0% {
-            opacity: 0;
-            transform: translateX(-125%);
-          }
-          30%,
-          58% {
-            opacity: 0.78;
-          }
-          100% {
-            opacity: 0;
-            transform: translateX(125%);
-          }
-        }
-
-        .numbered-footer {
+        .numbered-ghost-shell {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          align-items: center;
-          gap: 1rem;
-          min-height: 1.8rem;
-          color: var(--numbered-muted);
-          font-size: 1.25rem;
-          font-weight: 650;
-          line-height: 1.2;
-          letter-spacing: 0;
-        }
-
-        .numbered-source {
-          min-width: 0;
+          place-items: center end;
           overflow: hidden;
-          text-overflow: ellipsis;
+          opacity: 0;
+          will-change: transform, opacity;
+        }
+
+        .numbered-ghost {
+          position: relative;
+          right: -0.07em;
+          color: var(--numbered-accent-alt);
+          font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+          font-size: var(--numbered-type-display);
+          font-weight: 740;
+          font-variant-numeric: tabular-nums;
+          line-height: 0.78;
+          letter-spacing: -0.08em;
           white-space: nowrap;
+          opacity: 0.14;
+          animation: numbered-ghost-living 2.45s ease-in-out calc(var(--rf-scene-start, 0s) + 1.2s) infinite alternate;
         }
 
-        .numbered-count {
-          color: var(--numbered-accent);
-          font-weight: 850;
-          white-space: nowrap;
+        .numbered-ghost-shell::before,
+        .numbered-ghost-shell::after {
+          content: "";
+          position: absolute;
+          left: 6%;
+          right: 0;
+          height: 1px;
+          background: var(--numbered-hairline);
         }
 
-        .numbered-block[data-density="medium"] .numbered-stage {
-          gap: 1.6rem;
+        .numbered-ghost-shell::before {
+          top: 22%;
         }
 
-        .numbered-block[data-density="medium"] .numbered-row {
-          grid-template-columns: 8.4rem minmax(0, 1fr) 0.45rem;
-          gap: 1.25rem;
-          padding-block: 0.85rem;
+        .numbered-ghost-shell::after {
+          bottom: 20%;
         }
 
-        .numbered-block[data-density="medium"] .numbered-stamp {
-          width: 7rem;
-        }
-
-        .numbered-block[data-density="medium"] .numbered-label {
-          font-size: 3.05rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-stage {
-          gap: 1.15rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-row {
-          grid-template-columns: 7.1rem minmax(0, 1fr) 0.38rem;
-          gap: 1rem;
-          padding-block: 0.65rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-stamp {
-          width: 5.85rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-rank {
-          font-size: 1.95rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-rank-unit {
-          display: none;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-label {
-          font-size: 2.25rem;
-        }
-
-        .numbered-block[data-density="compact"] .numbered-meta {
-          font-size: 1.12rem;
-        }
-
-        .numbered-block[data-semantic="sequence"] .numbered-row {
-          grid-template-columns: 9.6rem minmax(0, 1fr);
-        }
-
-        .numbered-block[data-semantic="sequence"] .numbered-rule {
-          display: none;
-        }
-
-        .numbered-block[data-semantic="sequence"] .numbered-stamp {
-          border-radius: 0.5rem;
-        }
-
-        .numbered-block[data-semantic="sequence"] .numbered-stamp::after {
-          border-radius: 0.35rem;
-          border-style: solid;
+        .numbered-block[data-variant="ghost-numeral"] .numbered-rail-progress {
           opacity: 0.46;
         }
 
-        .numbered-block[data-density="medium"][data-semantic="sequence"] .numbered-row {
-          grid-template-columns: 8.4rem minmax(0, 1fr);
+        .numbered-block[data-variant="progress-rail"] .numbered-body {
+          grid-template-columns: minmax(32rem, 0.76fr) minmax(0, 1.24fr);
         }
 
-        .numbered-block[data-density="compact"][data-semantic="sequence"] .numbered-row {
-          grid-template-columns: 7.1rem minmax(0, 1fr);
+        .numbered-block[data-variant="progress-rail"] .numbered-list-shell {
+          grid-column: 2;
+          padding-left: 8rem;
+        }
+
+        .numbered-block[data-variant="progress-rail"] .numbered-rail {
+          left: 3.55rem;
+        }
+
+        .numbered-block[data-variant="progress-rail"] .numbered-ghost-shell {
+          grid-column: 1;
+          grid-row: 1;
+          place-items: center start;
+        }
+
+        .numbered-block[data-variant="progress-rail"] .numbered-ghost {
+          right: auto;
+          left: -0.08em;
+          color: var(--numbered-ink);
+        }
+
+        .numbered-block[data-density="medium"] .numbered-body {
+          gap: 2.7rem;
+        }
+
+        .numbered-block[data-density="medium"] .numbered-step {
+          gap: 1.1rem;
+          padding-block: 0.58rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-stage {
+          gap: 1.65rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-body {
+          gap: 2rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-step {
+          gap: 0.95rem;
+          padding-block: 0.36rem;
+        }
+
+        .numbered-block[data-density="compact"] .numbered-detail {
+          max-width: 15rem;
         }
       </style>
+
       <div
         class="numbered-block"
         data-composition-id="numbered"
@@ -414,18 +379,24 @@
         <section class="numbered-stage">
           <header class="numbered-header">
             <div>
-              <p class="numbered-eyebrow" data-numbered-mood></p>
+              <p class="numbered-kicker" data-numbered-kicker></p>
               <h1 class="numbered-title" data-numbered-title></h1>
             </div>
-            <div class="numbered-unit" data-numbered-unit></div>
+            <p class="numbered-count" data-numbered-count></p>
           </header>
-          <ol class="numbered-list" data-numbered-list></ol>
-          <footer class="numbered-footer">
-            <div class="numbered-source" data-numbered-source></div>
-            <div class="numbered-count" data-numbered-count></div>
-          </footer>
+
+          <section class="numbered-body" aria-label="단계 순서">
+            <div class="numbered-list-shell">
+              <span class="numbered-rail" aria-hidden="true"><span class="numbered-rail-progress" data-numbered-rail-progress></span></span>
+              <ol class="numbered-steps" data-numbered-list></ol>
+            </div>
+            <div class="numbered-ghost-shell" aria-hidden="true">
+              <span class="numbered-ghost" data-numbered-ghost>01</span>
+            </div>
+          </section>
         </section>
       </div>
+
       <script>
         (function () {
           window.__timelines = window.__timelines || {};
@@ -452,137 +423,115 @@
           const values = arrayValue(variables.values);
           const unit = displayUnit(variables.unit);
           const source = textValue(variables.source, "");
-          const semantic = numberedSemantic(variables.emphasis);
-          const unitLabel = unit || (semantic === "rank" ? "순위" : "단계");
-          const rows = normalizeRows({ items, values, unit, title, semantic });
+          const rows = normalizeRows({ items, values, unit, title });
+          const repeatIndex = Math.max(0, Math.floor(numberValue(variables.repeatIndex, 0)));
+          const variant = repeatIndex % 2 === 0 ? "ghost-numeral" : "progress-rail";
+          const focusIndex = Math.max(0, rows.length - 1);
           const duration = blockDuration(root, 4);
-          const phases = phaseTimes(duration);
 
           root.style.setProperty("--numbered-accent", safeColor(variables.accent));
-          root.style.setProperty("--row-count", String(Math.max(1, rows.length)));
+          root.style.setProperty("--numbered-step-count", String(Math.max(1, rows.length)));
+          root.dataset.variant = variant;
           root.dataset.density = rows.length > 6 ? "compact" : rows.length > 4 ? "medium" : "standard";
-          root.dataset.semantic = semantic;
+          root.dataset.focusStep = formatStep(focusIndex + 1);
 
           root.querySelector("[data-numbered-title]").textContent = title;
-          root.querySelector("[data-numbered-mood]").textContent = "";
-          root.querySelector("[data-numbered-mood]").setAttribute("aria-hidden", "true");
-          root.querySelector("[data-numbered-unit]").textContent = unitLabel;
-          root.querySelector("[data-numbered-source]").textContent = source || "";
-          root.querySelector("[data-numbered-count]").textContent = `${rows.length}개 항목`;
-          root.setAttribute("aria-label", ariaLabel(title, rows, unitLabel));
+          root.querySelector("[data-numbered-kicker]").textContent = `STEP SEQUENCE / ${formatStep(focusIndex + 1)}`;
+          root.querySelector("[data-numbered-count]").textContent = `${formatStep(rows.length)} STEPS`;
+          root.querySelector("[data-numbered-ghost]").textContent = formatStep(focusIndex + 1);
+          root.setAttribute("aria-label", ariaLabel(title, rows, source));
 
           const list = root.querySelector("[data-numbered-list]");
-          const numericRows = rows.filter((row) => row.numeric !== null);
-          const rankedRule =
-            numericRows.length === rows.length &&
-            new Set(numericRows.map((row) => row.numeric)).size > 1;
-          const ruleMax = rankedRule ? Math.max(...numericRows.map((row) => Math.abs(row.numeric))) : 0;
-          rows.forEach((row) => {
+          rows.forEach((row, index) => {
             const item = document.createElement("li");
-            const stamp = document.createElement("div");
-            const rank = document.createElement("span");
-            const stampUnit = document.createElement("span");
+            const indexEl = document.createElement("span");
             const copy = document.createElement("div");
             const label = document.createElement("h2");
-            const meta = document.createElement("p");
-            const rule = document.createElement("div");
-            const sweep = document.createElement("span");
 
-            item.className = "numbered-row";
-            stamp.className = "numbered-stamp";
-            rank.className = "numbered-rank";
-            stampUnit.className = "numbered-rank-unit";
+            item.className = "numbered-step";
+            indexEl.className = "numbered-index";
             copy.className = "numbered-copy";
             label.className = "numbered-label";
-            meta.className = "numbered-meta";
-            rule.className = "numbered-rule";
-            sweep.className = "numbered-sweep";
-
-            const tail = document.createElement("span");
-            tail.className = "numbered-tail";
-            tail.textContent = `${row.badge} / ${String(rows.length).padStart(2, "0")}`;
-            rank.textContent = row.badge;
-            stampUnit.textContent = unitLabel;
+            item.dataset.focus = String(index === focusIndex);
+            indexEl.textContent = row.badge;
             label.textContent = row.label;
-            meta.textContent = row.meta;
-            if (!row.meta) {
-              meta.hidden = true;
-              meta.style.display = "none";
-            }
-            rule.setAttribute("aria-hidden", "true");
-            if (rankedRule && ruleMax > 0 && row.numeric !== null) {
-              rule.style.height = `${Math.max(18, Math.round((Math.abs(row.numeric) / ruleMax) * 74))}%`;
-            } else {
-              rule.style.display = "none";
+            copy.append(label);
+
+            let detail = null;
+            if (row.detail) {
+              detail = document.createElement("p");
+              detail.className = "numbered-detail";
+              detail.textContent = row.detail;
+              copy.append(detail);
             }
 
-            stamp.append(rank, stampUnit);
-            copy.append(label, meta);
-            item.append(sweep, stamp, copy, tail, rule);
+            item.append(indexEl, copy);
             list.appendChild(item);
-
-            row.elements = { item, stamp, copy, rule, sweep };
+            row.elements = { item, indexEl, copy, detail };
           });
 
+          const header = root.querySelector(".numbered-header");
+          const ghostShell = root.querySelector(".numbered-ghost-shell");
+          const railProgress = root.querySelector("[data-numbered-rail-progress]");
+
           tl.fromTo(
-            root.querySelector(".numbered-header"),
-            { opacity: 0, y: 14 },
+            header,
+            { opacity: 0, y: 16 },
             { opacity: 1, y: 0, duration: 0.22, ease: "power3.out" },
             0
           );
+          tl.fromTo(
+            ghostShell,
+            { opacity: 0, x: variant === "ghost-numeral" ? 30 : -30 },
+            { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" },
+            0.04
+          );
+          tl.fromTo(
+            railProgress,
+            { scaleY: 0, transformOrigin: "center top" },
+            { scaleY: 1, duration: 0.38, ease: "power3.out", transformOrigin: "center top" },
+            0.1
+          );
+
+          const rowStagger = 0.3 / Math.max(1, rows.length - 1);
           rows.forEach((row, index) => {
-            const start = 0.08 + index * 0.035;
+            const start = 0.05 + index * rowStagger;
             tl.fromTo(
               row.elements.item,
-              { opacity: 0, x: -24, scale: 0.995 },
-              { opacity: 1, x: 0, scale: 1, duration: 0.18, ease: "power3.out" },
+              { opacity: 0, x: -22 },
+              { opacity: 1, x: 0, duration: 0.18, ease: "power3.out" },
               start
             );
             tl.fromTo(
-              row.elements.stamp,
-              { opacity: 0, scale: 1.18, rotation: -4 },
-              { opacity: 1, scale: 1, rotation: 0, duration: 0.16, ease: "back.out(1.4)" },
+              row.elements.indexEl,
+              { opacity: 0, x: -10 },
+              { opacity: 1, x: 0, duration: 0.12, ease: "power2.out" },
               start + 0.025
             );
             tl.fromTo(
               row.elements.copy,
-              { opacity: 0, x: 16 },
-              { opacity: 1, x: 0, duration: 0.14, ease: "power2.out" },
+              { opacity: 0, y: 10 },
+              { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" },
               start + 0.04
             );
-            tl.fromTo(
-              row.elements.rule,
-              { scaleY: 0, transformOrigin: "center bottom" },
-              { scaleY: 1, duration: 0.14, ease: "power2.out" },
-              start + 0.06
-            );
-            tl.fromTo(
-              row.elements.sweep,
-              { opacity: 0, x: "-120%" },
-              {
-                opacity: 0.88,
-                x: "120%",
-                duration: 0.56,
-                ease: "power2.inOut",
-                repeat: loopRepeat(0.56, rows.length * 0.2),
-                repeatDelay: rows.length * 0.2
-              },
-              phases.livingStart + index * 0.28
-            );
+            if (row.elements.detail) {
+              tl.fromTo(
+                row.elements.detail,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.1, ease: "power2.out" },
+                start + 0.09
+              );
+            }
+            if (index > 0) {
+              tl.to(
+                rows[index - 1].elements.item,
+                { opacity: 0.68, duration: 0.14, ease: "power2.out" },
+                start + 0.11
+              );
+            }
           });
-          tl.fromTo(
-            root.querySelector(".numbered-footer"),
-            { opacity: 0, y: 8 },
-            { opacity: 1, y: 0, duration: 0.14, ease: "power2.out" },
-            0.24 + rows.length * 0.035
-          );
-          tl.to(root.querySelector(".numbered-list"), { y: -28, duration: phases.livingDuration, ease: "sine.inOut" }, phases.livingStart);
-          tl.to(
-            root.querySelectorAll(".numbered-stamp"),
-            { scale: 1.055, duration: 1.25, ease: "sine.inOut", repeat: Math.max(1, Math.floor(phases.livingDuration / 1.25)), yoyo: true },
-            phases.livingStart
-          );
-          tl.to(root.querySelector(".numbered-stage"), { y: -44, duration: phases.exitDuration, ease: "power2.in" }, phases.exitStart);
+
+          tl.addLabel("final", duration);
 
           timelineIds(host, root).forEach((id) => {
             if (id) window.__timelines[id] = tl;
@@ -625,49 +574,35 @@
             return text ? text : fallback;
           }
 
-          function normalizeRows({ items, values, unit, title, semantic }) {
+          function numberValue(value, fallback) {
+            const number = Number(value);
+            return Number.isFinite(number) ? number : fallback;
+          }
+
+          function normalizeRows({ items, values, unit, title }) {
             const count = Math.max(items.length, values.length);
             if (count === 0) {
-              return [
-                {
-                  label: title,
-                  badge: "01",
-                  meta: unit ? `1 ${unit}` : ""
-                }
-              ];
+              return [{ label: title, badge: "01", detail: "" }];
             }
             const rows = [];
             for (let index = 0; index < count; index += 1) {
               const raw = values[index];
-              const numeric = numericValue(raw);
-              const rank = semantic === "rank" && Number.isFinite(numeric) && numeric > 0 ? Math.round(numeric) : index + 1;
               rows.push({
-                label: stripOrdinalEcho(textValue(items[index], `항목 ${index + 1}`), index),
-                badge: formatRank(rank),
-                meta: metaText(raw, index, unit),
-                numeric: Number.isFinite(numeric) ? numeric : null
+                label: stripOrdinalEcho(textValue(items[index], `단계 ${index + 1}`), index),
+                badge: formatStep(index + 1),
+                detail: detailText(raw, index, unit)
               });
             }
             return rows;
           }
 
-          function numericValue(value) {
-            if (typeof value === "number" && Number.isFinite(value)) return value;
-            const match = String(value ?? "")
-              .replace(/,/g, "")
-              .match(/-?\d+(?:\.\d+)?/);
-            return match ? Number(match[0]) : NaN;
-          }
-
-          function formatRank(value) {
+          function formatStep(value) {
             const normalized = Math.max(1, Math.min(99, Math.round(value)));
             return normalized < 10 ? `0${normalized}` : String(normalized);
           }
 
-          function metaText(raw, index, unit) {
-            if (raw === undefined || raw === null || String(raw).trim() === "") {
-              return unit ? `${index + 1} ${unit}` : "";
-            }
+          function detailText(raw, index, unit) {
+            if (raw === undefined || raw === null || String(raw).trim() === "") return "";
             const text = String(raw).trim();
             if (isOrdinalEcho(text, index)) return "";
             return unit && !text.includes(unit) ? `${text} ${unit}` : text;
@@ -684,10 +619,6 @@
             return new RegExp(`^#?0?${index + 1}$`, "u").test(normalized);
           }
 
-          function numberedSemantic(value) {
-            return String(value ?? "").toLowerCase().includes("rank") ? "rank" : "sequence";
-          }
-
           function displayUnit(value) {
             const text = textValue(value, "");
             if (!text) return "";
@@ -697,10 +628,9 @@
               : "";
           }
 
-          function ariaLabel(chartTitle, chartRows, unit) {
-            const suffix = unit ? ` ${unit}` : "";
-            const summary = chartRows.map((row) => `${row.badge}${suffix} ${row.label}`).join(", ");
-            return `${chartTitle}: ${summary}`;
+          function ariaLabel(chartTitle, chartRows, sourceText) {
+            const steps = chartRows.map((row) => `${row.badge} ${row.label}${row.detail ? ` ${row.detail}` : ""}`).join(", ");
+            return sourceText ? `${chartTitle}: ${steps}. ${sourceText}` : `${chartTitle}: ${steps}`;
           }
 
           function safeColor(value) {
@@ -717,19 +647,6 @@
             }
             const own = Number(element.getAttribute("data-duration"));
             return Number.isFinite(own) && own > 0 ? own : fallback;
-          }
-
-          function phaseTimes(total) {
-            const exitDuration = Math.min(0.42, Math.max(0.3, total * 0.1));
-            const exitStart = Math.max(1.15, total - exitDuration);
-            const livingStart = Math.min(exitStart - 0.42, Math.max(0.72, total * 0.2));
-            const livingDuration = Math.max(0.6, exitStart - livingStart);
-            return { exitStart, exitDuration, livingStart, livingDuration };
-          }
-
-          function loopRepeat(cycleDuration, repeatDelay = 0) {
-            const span = Math.max(0.1, cycleDuration + repeatDelay);
-            return Math.max(2, Math.ceil(72 / span));
           }
 
           function timelineIds(hostElement, rootElement) {
