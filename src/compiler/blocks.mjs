@@ -177,20 +177,39 @@ export function injectBlockRuntimeReady(html) {
   return `${html}${script}`;
 }
 
-export function resolveBlock({ repoRoot, buildDir, layout }) {
+export function resolveBlock({ repoRoot, buildDir, layout, scene, projectDir }) {
   if (layout === HEADLINE_LAYOUT) {
     return { kind: "native", layout, warnings: [] };
   }
 
-  const sourcePath = path.join(repoRoot, "blocks", layout, "block.html");
+  // layout "free": the scene supplies its own authored sub-composition fragment
+  // (block contract: <template> wrapper, one data-composition-id, one paused timeline).
+  const isFree = layout === "free";
+  if (isFree && (!projectDir || !scene?.sourceHtml)) {
+    return {
+      kind: "fallback",
+      layout,
+      warnings: [
+        {
+          code: "free-missing-source",
+          message: `scene ${scene?.sceneId ?? "?"} has layout "free" but no sourceHtml; compiled headline_only fallback`
+        }
+      ]
+    };
+  }
+
+  const sourceLabel = isFree ? scene.sourceHtml : `blocks/${layout}/block.html`;
+  const sourcePath = isFree
+    ? path.join(projectDir, scene.sourceHtml)
+    : path.join(repoRoot, "blocks", layout, "block.html");
   if (!existsSync(sourcePath)) {
     return {
       kind: "fallback",
       layout,
       warnings: [
         {
-          code: "block-missing",
-          message: `blocks/${layout}/block.html not found; compiled headline_only fallback`
+          code: isFree ? "free-missing" : "block-missing",
+          message: `${sourceLabel} not found; compiled headline_only fallback`
         }
       ]
     };
@@ -204,14 +223,16 @@ export function resolveBlock({ repoRoot, buildDir, layout }) {
       layout,
       warnings: [
         {
-          code: "block-invalid",
-          message: `blocks/${layout}/block.html has no data-composition-id; compiled headline_only fallback`
+          code: isFree ? "free-invalid" : "block-invalid",
+          message: `${sourceLabel} has no data-composition-id; compiled headline_only fallback`
         }
       ]
     };
   }
 
-  const targetRel = normalizeRelPath(path.join("blocks", layout, "block.html"));
+  const targetRel = normalizeRelPath(
+    isFree ? path.join("blocks", "free", `${scene.sceneId}.html`) : path.join("blocks", layout, "block.html")
+  );
   const targetPath = path.join(buildDir, targetRel);
   mkdirSync(path.dirname(targetPath), { recursive: true });
   writeFileSync(targetPath, injectBlockRuntimeReady(inlineBlockTransportAssets(html)));

@@ -368,13 +368,29 @@ function blockFrameStyle({ scene, tokens }) {
     ? ["#0F172A"]
     : [tokens.colors?.panel, tokens.colors?.surface, tokens.colors?.background].filter(isHexColor);
   const text = highContrastText(tokens.colors?.text, textBackgrounds);
+  const mutedText = highContrastText(
+    tokens.colors?.mutedText ?? tokens.colors?.text,
+    textBackgrounds
+  );
   return cssVarBlock({
     "--rf-text": text,
-    "--rf-muted-text": text,
+    "--rf-muted-text": mutedText,
     "--rf-surface": surface,
     "--rf-panel": panel,
     "--rf-accent": mood.accent ?? tokens.colors?.accent,
-    "--rf-shadow": tokens.colors?.shadow
+    "--rf-shadow": tokens.colors?.shadow,
+    // extended craft tokens — optional preset keys; cssVarBlock drops empties,
+    // and blocks consume them with fallbacks, so legacy presets stay valid
+    "--rf-bg": tokens.colors?.background,
+    "--rf-surface-2": tokens.colors?.surface2,
+    "--rf-surface-3": tokens.colors?.surface3,
+    "--rf-hairline": tokens.colors?.hairline,
+    "--rf-hairline-strong": tokens.colors?.hairlineStrong,
+    "--rf-ink-subtle": tokens.colors?.inkSubtle,
+    "--rf-ink-tertiary": tokens.colors?.inkTertiary,
+    "--rf-accent-alt": tokens.colors?.accentAlt,
+    "--rf-on-accent": tokens.colors?.onAccent ?? tokens.colors?.onPrimary,
+    "--rf-success": tokens.colors?.success
   });
 }
 
@@ -1034,7 +1050,13 @@ export function compileProject({
       layoutCounts.set(scene.layout, count + 1);
     }
     for (const [index, scene] of renderScenes.entries()) {
-      const block = resolveBlock({ repoRoot, buildDir: tmpDir, layout: scene.layout });
+      const block = resolveBlock({
+        repoRoot,
+        buildDir: tmpDir,
+        layout: scene.layout,
+        scene,
+        projectDir: absoluteProjectDir
+      });
       warnings.push(...block.warnings.map((warning) => ({ sceneId: scene.sceneId, ...warning })));
       blockByScene.set(scene.sceneId, block);
       writeFileEnsured(

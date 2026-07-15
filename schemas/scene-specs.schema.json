@@ -63,7 +63,8 @@
         "statistic",
         "compare",
         "quote",
-        "headline_only"
+        "headline_only",
+        "free"
       ]
     },
     "mood": {
@@ -439,9 +440,35 @@
         },
         "overrides": {
           "$ref": "#/$defs/canvasOverride"
+        },
+        "sourceHtml": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!/)(?!.*\\.\\.).*\\.html$",
+          "description": "layout \"free\" only: project-relative path to the authored scene sub-composition fragment (block contract: <template> wrapper, one data-composition-id, one paused timeline)"
         }
       },
       "allOf": [
+        {
+          "if": {
+            "properties": {
+              "layout": {
+                "const": "free"
+              }
+            },
+            "required": [
+              "layout"
+            ]
+          },
+          "then": {
+            "required": [
+              "sourceHtml"
+            ],
+            "properties": {
+              "sourceHtml": true
+            }
+          }
+        },
         {
           "if": {
             "properties": {

@@ -175,6 +175,20 @@ function checkNoFetch({ rel, html, violations }) {
   }
 }
 
+function checkNoWallClock({ rel, html, violations }) {
+  // wall-clock / randomness breaks seek-safe deterministic renders — especially
+  // in authored free-scene and block fragments the VM smoke check can't exercise
+  for (const pattern of [/\bMath\.random\s*\(/, /\bDate\.now\s*\(/, /\bperformance\.now\s*\(/]) {
+    const match = html.match(pattern);
+    if (match) {
+      pushViolation(violations, rel, "wall-clock/random calls are forbidden in compositions (non-deterministic render)", {
+        call: match[0],
+        line: lineForOffset(html, match.index ?? 0)
+      });
+    }
+  }
+}
+
 function checkPausedTimelines({ rel, html, violations }) {
   for (const call of timelineCalls(html)) {
     if (!/paused\s*:\s*true/.test(call)) {
@@ -187,6 +201,7 @@ function checkSceneFile({ repoRoot, buildDir, file, expectedSceneIds, violations
   const rel = normalizeRelPath(path.relative(repoRoot, file));
   const html = readFileSync(file, "utf8");
   checkNoFetch({ rel, html, violations });
+  checkNoWallClock({ rel, html, violations });
   checkPausedTimelines({ rel, html, violations });
   checkInlineScripts({ rel, html, violations });
 
@@ -293,6 +308,22 @@ export function runRenderLint({ repoRoot, buildDir, scenes }) {
         normalizeRelPath(path.relative(repoRoot, file)),
         "expected compiled scene file is missing"
       );
+    }
+  }
+
+  // block/free sub-composition fragments: light determinism checks only
+  // (the full scene contract does not apply to <template> fragments)
+  const blocksDir = path.join(buildDir, "blocks");
+  if (existsSync(blocksDir)) {
+    for (const entry of readdirSync(blocksDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      for (const file of htmlFilesUnder(path.join(blocksDir, entry.name))) {
+        const rel = normalizeRelPath(path.relative(repoRoot, file));
+        const html = readFileSync(file, "utf8");
+        checkNoFetch({ rel, html, violations });
+        checkNoWallClock({ rel, html, violations });
+        checkPausedTimelines({ rel, html, violations });
+      }
     }
   }
 
