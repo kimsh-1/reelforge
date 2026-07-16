@@ -58,13 +58,22 @@ for this scene), the fragment contract below, and one approved sibling fragment 
 house-style reference.
 ```
 
-Run a **pilot scene first**, review it against the storyboard intent, correct the shared
-brief once, then fan out the rest. Workers never run the CLI, never render, never edit
-`scene_specs.json` or generated HTML.
+**Pilot Gate** (engine-enforced): author one pilot scene first, compile and render it
+alone, run contact-sheet QC, correct the shared brief once, then record the pass in
+`direction/pilot.json` before fanning out the rest. A project with 2+ free scenes is
+**refused by `vf compile`** (RF-PILOT-001/002/003) until that record exists:
+
+```json
+{"schemaVersion":1,"sceneId":"<pilotSceneId>","status":"passed","checkedAt":"<ISO8601>","evidence":{...}}
+```
+
+(schema: `schemas/pilot-report.schema.json`). Workers never run the CLI, never render,
+never edit `scene_specs.json` or generated HTML.
 
 **Fragment contract** (lint-enforced): a full HTML document whose `<body>` contains one
 `<template>` with `<style>`, one root element carrying a unique `data-composition-id`
-(use `free-<sceneId>`), and one `<script>` that synchronously registers exactly one
+(use `free-<sceneId>`) plus `data-rf-fragment-version="1.0"` (required contract version,
+RF-FRAGMENT-014), and one `<script>` that synchronously registers exactly one
 `gsap.timeline({paused:true})` at `window.__timelines["<that id>"]` and ends with
 `tl.seek(0)`.
 
@@ -101,9 +110,12 @@ Compile and lint:
 node bin/vf compile <projectDir> --preset fixtures/presets/<preset>.json
 ```
 
-Compilation fails loudly on schema violations; render-lint rejects `fetch()`,
-`Math.random()`, `Date.now()`, `performance.now()`, and non-paused timelines in every
-composition fragment. A free scene with a missing/invalid fragment degrades to
+Compilation fails loudly on schema violations. Every render-lint failure carries a stable
+`RF-*` code (`RF-FRAGMENT-001..015`, `RF-INDEX-*`, `RF-BUILD-*`) plus a fix hint — apply
+the hint. render-lint rejects `fetch()`, `Math.random()`, `Date.now()`,
+`performance.now()`, non-paused timelines, and any remote `script`/`link` reference
+(RF-FRAGMENT-015) in every composition fragment — GSAP is served from the local vendor
+bundle (scene documents reference `../vendor/gsap.min.js`), never a CDN. A free scene with a missing/invalid fragment degrades to
 `headline_only` with a `free-missing-source`/`free-missing`/`free-invalid` warning — treat
 any of those warnings as a build failure and fix the fragment.
 

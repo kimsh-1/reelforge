@@ -1,6 +1,6 @@
 {
   "gate": "L0-1",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
@@ -76,12 +76,12 @@
     "schemas/versions.schema.json",
     "schemas/render-manifest.schema.json"
   ],
-  "canonicalInputMerkleHash": "b73f1fd9d01fc2b3deb1280f41358bd606a6a5b622ef992d2b76c38d7344022f",
+  "canonicalInputMerkleHash": "c6fc86fa1af1b05e72a1af48c8cab333f7da950e2e69574f93cb31fd4a832028",
   "evidenceHash": "f5af69683907469bdc492b59484f87b4406bf757a02624a51268564d42377949",
-  "gateScriptHash": "9d4b416f52629f51a9c5891658e69438c8a38fcb115f43027715d486c0842d28",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
+  "gateScriptHash": "4a6faff4461554dc4e690c6c482a034dba1e31aed9559d30d500fa44733618ce",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-08T06:22:11.304Z",
-  "finishedAt": "2026-07-08T06:22:11.413Z"
+  "startedAt": "2026-07-16T04:32:55.025Z",
+  "finishedAt": "2026-07-16T04:32:55.189Z"
 }

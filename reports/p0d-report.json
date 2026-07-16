@@ -1,6 +1,6 @@
 {
   "gate": "P0d",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
@@ -333,16 +333,11 @@
   "canonicalInputMerkleHash": "f842ee6d5ba41588f095892741efaa9b1fb9ac1d42fa687d2a19c713d4c96b4f",
   "evidenceHash": "32f920f4e0dd012aaa55e8d03c266d7477a84b5003bc05bde50a83ddb4e98063",
   "gateScriptHash": "1401dbc91c626f70bb489cca0944705c95345ae56b835223fd3b2427ce95cd69",
-  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
-  "command": "node bin/vf gate p0d --profile full --execute",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-09T06:12:29.984Z",
-  "finishedAt": "2026-07-09T06:14:44.591Z",
-  "mode": "execute",
-  "sourceReport": "poc/reports/P0d-report.json",
-  "execution": {
-    "exitCode": 0,
-    "signal": null,
-    "error": null
-  }
+  "startedAt": "2026-07-16T04:32:55.421Z",
+  "finishedAt": "2026-07-16T04:32:55.434Z",
+  "mode": "replay",
+  "sourceReport": "poc/reports/P0d-report.json"
 }

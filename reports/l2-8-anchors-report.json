@@ -1,17 +1,17 @@
 {
   "gate": "L2-8-anchors",
-  "profile": "full",
-  "pass": false,
+  "profile": "fast",
+  "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
-      "pass": false,
+      "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p5-l2-8-anchors.mjs --profile full --json",
-        "exitCode": 1,
+        "command": "/usr/bin/node src/gates/p5-l2-8-anchors.mjs --profile fast --json",
+        "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -205,28 +205,6 @@
         ],
         "failures": []
       }
-    },
-    {
-      "id": "compile:full-8types",
-      "pass": true,
-      "measured": {
-        "command": "/usr/bin/node bin/vf compile tmp/gate-work/p5/l2-8-anchors/full-8types --json",
-        "exitCode": 0,
-        "buildDir": "tmp/gate-work/p5/l2-8-anchors/full-8types/build",
-        "stderrTail": ""
-      }
-    },
-    {
-      "id": "render:full-8types",
-      "pass": false,
-      "measured": {
-        "command": "/home/seunghyeong/reelforge/node_modules/.bin/hyperframes render /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/full-8types/build --output /home/seunghyeong/reelforge/tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4 --fps=30 --quality=standard --workers=1 --no-browser-gpu --browser-timeout=120 --player-ready-timeout=120000",
-        "exitCode": 1,
-        "signal": null,
-        "output": "tmp/gate-work/p5/l2-8-anchors/videos/full-8types.mp4",
-        "bytes": 0,
-        "stderrTail": ""
-      }
     }
   ],
   "inputSet": [
@@ -241,11 +219,11 @@
     "src/gates/p5-l2-8-anchors.mjs"
   ],
   "canonicalInputMerkleHash": "dcf597ff8aa27e8fba79a17cd312f15a4a94524e0522ea4871daca97f6640a21",
-  "evidenceHash": "eabc5b33a87f3120c1f4fe3f8e30a08fac4d0cfff2b2c818eaed949c6e624c7d",
+  "evidenceHash": "2dbe10ef90f2bca014bd3e7f8bb9c606b7518dec628fd15c7925694472b8ed8e",
   "gateScriptHash": "acae470b50b82d708f730926fc5b25a79ec2e82a1e07a896991c4d85d1dbdc2c",
-  "gitCommit": "3025751c2bbc357dd59268b163d528fde54643cf",
-  "command": "node bin/vf gate l2-8-anchors --profile full --execute",
-  "exitCode": 1,
-  "startedAt": "2026-07-09T07:41:14.391Z",
-  "finishedAt": "2026-07-09T08:01:16.035Z"
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
+  "exitCode": 0,
+  "startedAt": "2026-07-16T04:35:41.459Z",
+  "finishedAt": "2026-07-16T04:35:41.703Z"
 }

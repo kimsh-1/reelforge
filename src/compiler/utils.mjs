@@ -14,8 +14,15 @@ import path from "node:path";
 export const DEFAULT_WIDTH = 1920;
 export const DEFAULT_HEIGHT = 1080;
 export const DEFAULT_FPS = 30;
-export const GSAP_CDN = "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js";
 export const GENERATED_COMMENT = "GENERATED — read-only";
+
+// GSAP is served from a hash-verified local vendor copy, never a CDN, so renders are
+// offline-reproducible: same commit + same vendor bundle => same frames.
+export const GSAP_VENDOR_ID = "gsap-core";
+export const GSAP_BUILD_PATH = "vendor/gsap.min.js"; // referenced from build/index.html
+export const GSAP_SCENE_SRC = "../vendor/gsap.min.js"; // referenced from build/scenes/*.html
+export const GSAP_BLOCK_SRC = "../../vendor/gsap.min.js"; // referenced from build/blocks/<layout>/*.html
+export const VENDOR_MANIFEST = "vendor/vendor-checksums.json";
 
 export function normalizeRelPath(value) {
   return value.split(path.sep).join("/");
@@ -37,6 +44,39 @@ export function readJsonFile(filePath) {
 
 export function sha256Text(value) {
   return createHash("sha256").update(String(value), "utf8").digest("hex");
+}
+
+export function stageVendorAssets({ repoRoot, buildDir }) {
+  const manifestPath = path.join(repoRoot, VENDOR_MANIFEST);
+  if (!existsSync(manifestPath)) {
+    throw new Error(
+      `RF-VENDOR-001 vendor manifest missing: ${VENDOR_MANIFEST} | fix: run "node scripts/fetch-vendor.mjs" once and commit vendor/`
+    );
+  }
+  const manifest = readJsonFile(manifestPath);
+  const record = asArray(manifest.records).find((entry) => entry.id === GSAP_VENDOR_ID);
+  if (!record) {
+    throw new Error(
+      `RF-VENDOR-001 vendor manifest has no "${GSAP_VENDOR_ID}" record | fix: run "node scripts/fetch-vendor.mjs"`
+    );
+  }
+  const sourcePath = path.join(repoRoot, record.file);
+  if (!existsSync(sourcePath) || statSync(sourcePath).size === 0) {
+    throw new Error(
+      `RF-VENDOR-002 vendor asset missing or empty: ${record.file} | fix: run "node scripts/fetch-vendor.mjs"`
+    );
+  }
+  const bytes = readFileSync(sourcePath);
+  const digest = createHash("sha256").update(bytes).digest("hex");
+  if (digest !== record.sha256) {
+    throw new Error(
+      `RF-VENDOR-003 vendor asset hash mismatch: ${record.file} expected=${record.sha256} measured=${digest} | fix: re-run "node scripts/fetch-vendor.mjs" or restore the pinned file; never edit vendor bundles in place`
+    );
+  }
+  const targetPath = path.join(buildDir, GSAP_BUILD_PATH);
+  ensureDir(path.dirname(targetPath));
+  copyFileSync(sourcePath, targetPath);
+  return { id: record.id, version: record.version, sha256: record.sha256, buildPath: GSAP_BUILD_PATH };
 }
 
 export function ensureDir(dir) {

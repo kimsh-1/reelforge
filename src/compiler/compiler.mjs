@@ -42,8 +42,10 @@ import {
 import {
   DEFAULT_FPS,
   GENERATED_COMMENT,
-  GSAP_CDN,
+  GSAP_BUILD_PATH,
+  GSAP_SCENE_SRC,
   asArray,
+  stageVendorAssets,
   atomicReplaceDir,
   colorLuminance,
   copyAssetToBuild,
@@ -65,7 +67,7 @@ import {
 import { emitKenBurnsTimeline, kenBurnsCss } from "./motion.mjs";
 
 const DEFAULT_PRESET = "fixtures/presets/light.json";
-const COMPILER_STAMP_INPUTS = ["repo:src/compiler/**", "repo:blocks/**", "repo:package.json"];
+const COMPILER_STAMP_INPUTS = ["repo:src/compiler/**", "repo:blocks/**", "repo:vendor/**", "repo:package.json"];
 
 function sha256Bytes(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
@@ -152,6 +154,38 @@ function assertSourceHashes({ scenes, audioByScene }) {
       );
     }
   }
+}
+
+// Pilot Gate: a multi-scene free project may not assemble until one pilot scene has been
+// rendered, contact-sheet-checked, and recorded as passed in direction/pilot.json. This is
+// the physical backstop for the "pilot first, then fan out" rule in the orchestration skill.
+function assertPilotGate({ repoRoot, projectDir, scenes }) {
+  const freeScenes = scenes.filter((scene) => scene.layout === "free");
+  if (freeScenes.length < 2) return null;
+
+  const pilotRel = path.join("direction", "pilot.json");
+  const pilotPath = path.join(projectDir, pilotRel);
+  if (!existsSync(pilotPath)) {
+    throw new Error(
+      `RF-PILOT-001 pilot gate: ${pilotRel} missing but the project has ${freeScenes.length} free scenes | fix: author ONE pilot scene, compile+render it alone, run the contact-sheet QC, then record {"schemaVersion":1,"sceneId":"<pilotSceneId>","status":"passed","checkedAt":"<ISO8601>"} at ${pilotRel} before fanning out the swarm`
+    );
+  }
+
+  const pilot = readJsonFile(pilotPath);
+  const validation = validateJsonForSchema(repoRoot, pilot, "pilot-report");
+  if (!validation.pass) throw validationError("pilot-report", validation);
+
+  if (pilot.status !== "passed") {
+    throw new Error(
+      `RF-PILOT-002 pilot gate: ${pilotRel} records status="${pilot.status}" | fix: re-author the pilot scene from its storyboard intent, re-run pilot QC, and update ${pilotRel} to "passed" before assembling the full project`
+    );
+  }
+  if (!freeScenes.some((scene) => scene.sceneId === pilot.sceneId)) {
+    throw new Error(
+      `RF-PILOT-003 pilot gate: pilot sceneId "${pilot.sceneId}" is not a free scene of this project | fix: set sceneId to one of [${freeScenes.map((scene) => scene.sceneId).join(", ")}]`
+    );
+  }
+  return pilot;
 }
 
 function copiedAudioAssets({ projectDir, buildDir, audioScenes }) {
@@ -706,7 +740,7 @@ ${
     : ""
 }
       </div>
-      <script src="${GSAP_CDN}"></script>
+      <script src="${GSAP_SCENE_SRC}"></script>
       <script>
         (function () {
           window.__timelines = window.__timelines || {};
@@ -797,7 +831,7 @@ function indexHtml({ projectId, scenes, timing, audioAssets, bgm, transitions, t
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=${renderFormat.width}, height=${renderFormat.height}" />
     <title>ReelForge ${htmlEscape(projectId)}</title>
-    <script src="${GSAP_CDN}"></script>
+    <script src="${GSAP_BUILD_PATH}"></script>
     <style>
       html,
       body {
@@ -986,7 +1020,10 @@ function writeManifestViaVf({ repoRoot, manifestPath, manifest }) {
 
 function renderLintError(lint) {
   const custom = lint.custom.violations
-    .map((item) => `- ${item.file}: ${item.rule} ${JSON.stringify(item.measured ?? {})}`)
+    .map(
+      (item) =>
+        `- ${item.file}: [${item.code}] ${item.rule} ${JSON.stringify(item.measured ?? {})}\n  fix: ${item.hint} (stage: ${item.stage})`
+    )
     .join("\n");
   return new Error(
     [
@@ -1024,12 +1061,14 @@ export function compileProject({
   const scenes = specs.scenes ?? [];
   const audioByScene = sceneMapById(audioMeta.scenes ?? [], "audio_meta.scenes");
   assertSourceHashes({ scenes, audioByScene });
+  assertPilotGate({ repoRoot, projectDir: absoluteProjectDir, scenes });
 
   const buildDir = path.join(absoluteProjectDir, "build");
   const tmpDir = path.join(absoluteProjectDir, `.build-tmp-${process.pid}-${Date.now()}`);
   resetDir(tmpDir);
 
   try {
+    stageVendorAssets({ repoRoot, buildDir: tmpDir });
     const baseTokens = copiedDesignTokens({ repoRoot, buildDir: tmpDir, presetPath: absolutePresetPath, tokens: presetTokens });
     const tokens = tokensForFormat(baseTokens, selectedFormat.format);
     const audioAssets = copiedAudioAssets({ projectDir: absoluteProjectDir, buildDir: tmpDir, audioScenes: audioMeta.scenes });

@@ -94,7 +94,7 @@ CLI 옵션과 설정은 [docs/usage.md](docs/usage.md), Studio 세부는 [docs/s
 
 ## [validation] 프로젝트가 어떻게 검증됐나
 
-P0~P3 실증 결과, 게이트 세부, 아키텍처 기록은 [docs/build-journey.md](docs/build-journey.md)에 있습니다.
+P0~P3 실증 결과, 게이트 세부, 아키텍처 기록은 [docs/history/build-journey.md](docs/history/build-journey.md)에 있습니다.
 
 ## [license-disclaimer] 라이선스와 면책
 

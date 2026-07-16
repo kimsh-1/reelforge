@@ -22,11 +22,16 @@ verification.
 ```
 brief (one line, plus optional music/media/copy sources)
   -> [1] Direction Freeze        direction/frame.md + copy.md + STORYBOARD.md   (user checkpoint)
-  -> [2] Scene Swarm             one worker per scene authors scenes-src/<sceneId>-free.html
-  -> [3] Assemble                thin manifest scene_specs.json -> vf compile -> render-lint
-  -> [4] Render                  headless Chrome deterministic seek render (serial queue)
-  -> [5] Strip QC loop (<=2)     1fps strip machine checks + viewer judgment -> re-author failing scenes only
+  -> [2] Pilot Gate              one pilot scene authored, rendered, QC'd; pass recorded in direction/pilot.json
+  -> [3] Scene Swarm             one worker per scene authors scenes-src/<sceneId>-free.html
+  -> [4] Assemble                thin manifest scene_specs.json -> vf compile -> render-lint
+  -> [5] Render                  headless Chrome deterministic seek render (serial queue)
+  -> [6] Strip QC loop (<=2)     1fps strip machine checks + viewer judgment -> re-author failing scenes only
 ```
+
+The pilot gate is physical, not procedural: `vf compile` refuses a project with 2+ free
+scenes (RF-PILOT-001..003) until `direction/pilot.json` records a passed pilot
+(`schemas/pilot-report.schema.json`).
 
 Timing authority is audio metadata only: TTS duration for narrated scenes, beat grid for
 music-driven pieces, silent mock audio for pure motion scenes. Scene specs never carry a
@@ -64,7 +69,8 @@ duration field.
 ## 5. Fragment contract (what a scene worker must produce)
 
 A full HTML document whose `<body>` holds one `<template>` containing `<style>`, one root
-element with a unique `data-composition-id` (`free-<sceneId>`), and one `<script>` that
+element with a unique `data-composition-id` (`free-<sceneId>`) and
+`data-rf-fragment-version="1.0"` (the supported contract version, lint-enforced), and one `<script>` that
 synchronously registers exactly one `gsap.timeline({paused:true})` at
 `window.__timelines["<id>"]` and ends with `tl.seek(0)`.
 
@@ -91,11 +97,16 @@ receive no further investment and never appear by default.
 ## 7. Verification stack
 
 1. Schema + semantic gates at compile (`vf compile`, closed contracts).
-2. render-lint determinism pass over every scene and fragment.
-3. Contact-sheet machine checks per scene (blank, contrast, frozen living-motion).
-4. 1fps full strip of the draft render, judged as a viewer (never isolated stills):
+2. render-lint determinism pass over every scene and fragment — each violation reports a
+   stable code (`RF-FRAGMENT-001..015` / `RF-INDEX-001..002` / `RF-BUILD-001..002`) with a
+   repair hint, stage, and retryable flag (`LINT_RULES` in `src/compiler/render-lint.mjs`).
+3. Vendor pinning: GSAP is a sha256-verified local bundle (`vendor/gsap/3.14.2/`, staged to
+   `build/vendor/`); remote script/link references are lint errors (RF-FRAGMENT-015) — same
+   commit + same input + same vendor bundle = same frames.
+4. Contact-sheet machine checks per scene (blank, contrast, frozen living-motion).
+5. 1fps full strip of the draft render, judged as a viewer (never isolated stills):
    de-slide rule, no frozen 1.5s stretch, first 3 seconds must stop a feed scroll.
-5. Failing scenes are re-authored individually; two failures escalate to the user.
+6. Failing scenes are re-authored individually; two failures escalate to the user.
 
 ## 8. Performance notes
 

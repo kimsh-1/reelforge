@@ -10,6 +10,12 @@ This file tracks redistribution policy for dependencies and assets that may be p
 | edge-tts | Optional Python/pip Korean TTS path | LGPLv3 library; service path unofficial | Pip dependency only; do not vendor code. Generated voice files must not be committed as distributable assets without a separate rights basis. |
 | faster-whisper | Future transcription/alignment path | MIT | Roadmap only. Pin model/version before any gate relies on it. |
 
+## Vendored Libraries
+
+| Component | Files | License | Source | Policy |
+|---|---|---|---|---|
+| GSAP 3.14.2 | `vendor/gsap/3.14.2/gsap.min.js` (staged to `build/vendor/gsap.min.js` at compile) | GreenSock Standard "no charge" license — `https://gsap.com/standard-license`. The npm package ships no LICENSE file; the license is declared in its `package.json` only. | `https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js` (official gsap npm dist build, redistributed unmodified) | Version-pinned, hash-verified local copy; SHA-256 `c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280` recorded in `vendor/vendor-checksums.json`. Refresh only via `node scripts/fetch-vendor.mjs`. Generated compositions must never reference a CDN (render-lint RF-FRAGMENT-015). |
+
 ## Fonts
 
 | Component | Files | License | Source | Policy |

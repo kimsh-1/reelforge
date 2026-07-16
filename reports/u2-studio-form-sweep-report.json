@@ -1,17 +1,17 @@
 {
   "gate": "U-2-studio-form-sweep",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/u2-studio-form-sweep.mjs --profile full --json",
+        "command": "/usr/bin/node tests/gate-wrappers/u2-studio-form-sweep.mjs --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -94,262 +94,262 @@
       "measured": {
         "jobs": [
           {
-            "id": "compile-90113b60-2c68-4c9a-9ff0-49e0c849759c",
+            "id": "compile-cda93332-d6d0-45f5-8923-c151b8a50724",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-9f3eeb9c-61de-4859-b69a-208d0bc58b7d",
+            "id": "compile-eeea2a9e-c0a7-417f-bf29-73171b015e37",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-6b7937cb-93b6-49a6-b5ab-d3f6817338dc",
+            "id": "compile-977d02eb-1d9e-4698-972b-650a0f51f114",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-420f7a03-1e9c-40d5-b70a-476ffcbe5451",
+            "id": "compile-89515de0-3fc7-4e4c-b851-5f7744049bf3",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-ed3d80e2-db50-432d-be0b-a5e43ec8feed",
+            "id": "compile-8841e681-c727-45c2-85c2-fbc7c64400b0",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-86034ed8-ccb0-4d4e-8d80-ca3212865b8f",
+            "id": "compile-17fddb3c-50e7-40db-8bb1-44d78dbe4cec",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-b9527dbf-1899-4a29-8bf5-b573f137882e",
+            "id": "compile-b0c90ac4-e2e3-4ac1-a0dc-aa56017964df",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-59235f71-9903-4841-9566-7047f4d469b2",
+            "id": "compile-803df9a5-90dd-4aff-b59b-ac7fe054b0af",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-186e24d1-2365-4849-aad7-b40ebfcdbac2",
+            "id": "compile-891f21bf-3bb8-4081-a8f2-02c1610edc84",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-9df6393d-0002-4387-ac19-7c1a99872359",
+            "id": "compile-17afbfff-6f49-4ed5-a4a8-7a6c0e277b8c",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-349b6dcd-2191-43de-a03f-e6dd6de3802a",
+            "id": "compile-164b4e49-907e-4270-81e2-c6ef05a943a4",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-6d99dcc7-6607-4aa1-8eab-bb01aa38e086",
+            "id": "compile-9ae76b0c-e62d-49a3-97d5-601735fc5fe4",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-fdcc682c-530f-499c-91a2-f8b45d7244bd",
+            "id": "compile-cab89df6-7c19-4373-a178-d84b549b85d9",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-bfd90827-8d22-48cd-a71b-922ea21cf873",
+            "id": "compile-1982d584-e9ea-47af-883f-a757d65b5a7e",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-3211e27e-c4e9-45a8-b9fc-8c4abf623814",
+            "id": "compile-88a705e1-339c-436a-b1dd-f70cbb8d2df3",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-cf510198-7905-4dd2-b62b-3342114b4eb5",
+            "id": "compile-638aa047-4216-4fae-99e1-1a2d9c41d172",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-ff4be890-a48b-4d45-b3ff-9135bf1cfb03",
+            "id": "compile-c7ab68d8-6451-4e3d-84a2-b59d7b307384",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-bd1a4a2b-7f60-4b13-8d81-063248b4f09a",
+            "id": "compile-68a382b9-e6e3-4d92-a12a-754e400fec7f",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-1bfce7c3-c3a2-482f-8bf4-0dce684ae809",
+            "id": "compile-64766aa8-6d4a-4cb7-8b69-dd7c8fffd86c",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-c409cfea-d96c-4463-81d5-03fc9c1eee6f",
+            "id": "compile-d85cd285-5c91-43b6-b948-cdfbb9479ad5",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-c4ae64e7-8bd8-439f-8c87-94efe864179c",
+            "id": "compile-63772c43-1971-4081-b47d-ad7ad90dd6ba",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-107d04e4-c8e1-4da4-b3ff-caf871dd7fcf",
+            "id": "compile-89963d6c-81ae-424b-946f-f082d778532c",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-ba0d2930-a1c4-4da3-869a-2f98975c96dc",
+            "id": "compile-d12bd94b-1a9d-4a4d-a908-323c175d932a",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-28001225-ead8-4bb1-aee8-e5f0b3fa5fd0",
+            "id": "compile-715eb15d-7ec0-49e9-b4bd-95331a4c350a",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-db81ffe8-d332-468f-b1da-620f7583fd04",
+            "id": "compile-b583fb0e-ed9e-400a-a215-4faace251a0e",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-cef9e14e-00c4-4800-abcb-5b3b9b87e825",
+            "id": "compile-89f7a3ab-d943-4a7d-b4bb-a60e58e95463",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-d0f06e9b-898c-4231-ad6b-d79419e47202",
+            "id": "compile-6632e831-56c5-4a96-9095-7e11da61c5be",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-59ce84d4-6866-4789-91c0-a1ee1cf88e66",
+            "id": "compile-426e2a7c-e6d6-468b-b0af-eff8be46d929",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-59ef80ac-dad7-4e05-a92f-609db452df62",
+            "id": "compile-4f039303-a270-4eb2-8bfe-6b95ea9f04be",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-b2f5bd8b-bb9c-4507-9852-d7bc23718031",
+            "id": "compile-9040ffd5-3628-4000-9a58-3015d34431e3",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-3a44db0c-7787-4bc6-8343-e2e86e880cf5",
+            "id": "compile-ea586c0c-7fa1-464b-bf5f-6b02401f6693",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-01c345b0-e0c0-4cda-97b7-db39dc771aae",
+            "id": "compile-3a70cf49-e8c5-4b2a-b46f-f1452e0f75a0",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-2b89ba9d-0c48-4357-972c-dbc3706cd24e",
+            "id": "compile-1a5a56ff-6692-4aec-984e-277d9156c59d",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-abb01b1e-4486-43e4-aa23-50af6a74b2b0",
+            "id": "compile-29f6fdda-7869-4525-88af-cdf7c5259d53",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-bf34ba60-8207-4704-87d7-d81e517dfb3a",
+            "id": "compile-fe6e8665-f3e9-4c48-904e-298d20d945b2",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-597b9a11-2ec3-439a-acfd-f02337e21cdb",
+            "id": "compile-fa7ab8d4-6f02-4cbf-b9d6-bbc470afcb08",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-43fa3f41-0b06-486d-84cd-24f11f59e138",
+            "id": "compile-831faf7f-c3fa-4806-8c60-c01f0112bec2",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-787ae3dd-024f-4c98-a78f-527a16a2576d",
+            "id": "compile-81aeff47-ca7c-47e3-bd80-fd17711e9a97",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-272fdfdf-4ebd-4788-bc41-eb5d0d272edb",
+            "id": "compile-3fb2d782-0ac5-4a32-9fad-1bc90e78f0fa",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-a1c0c881-6c45-461d-87f6-516f94160c9d",
+            "id": "compile-84d45bc6-26d8-4bda-8ff5-e2e63b7f14c2",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-206b786c-b788-48f0-b948-426235abc044",
+            "id": "compile-46b4fc78-c40f-4bfe-b417-077e92e13712",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-3dc596d0-53ad-4d39-b979-0297d2e40bbe",
+            "id": "compile-439c4dcd-9b27-4efc-9319-c9220cc9f641",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-269299f4-432f-4ba7-887b-7a32a14522ce",
+            "id": "compile-232ec4f7-6fe3-45a2-b2e3-9819acdf5374",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-98306273-632a-43ce-9ac0-8f3ebbdfe936",
+            "id": "compile-28606b8e-b938-46c5-8c9c-5af0d7553e1c",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-e67fa753-8cc4-48d4-805f-54bb517eb27d",
+            "id": "compile-20f8ffe8-471a-43d5-bc08-baef1dbe61f0",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-8271f469-197a-4b9c-8a9c-f34bbd568f3c",
+            "id": "compile-d4096ea6-632e-4717-bf56-bdf285b329b9",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-0d0de190-eb2e-4da4-b25c-c30a80c5ec67",
+            "id": "compile-4a9c1e8f-fef4-4f25-97bc-f641de3ba3ca",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-bd9191d5-1f9c-4f88-89d1-dc21fa735a9d",
+            "id": "compile-d2a7f397-8df9-461a-ae48-6f8ad77d6430",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-cd7f33bb-5f63-4b14-95e7-737eccf42ecf",
+            "id": "compile-23525b02-a12b-42af-aecb-db63cead6fe8",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-80f3b61e-fcc2-411f-a9c4-e533cfe4734f",
+            "id": "compile-45fe9e9c-7149-4977-a6d0-365b3c56d2ef",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-c2d14317-e926-4482-b67d-19b0ee797879",
+            "id": "compile-444b3c1d-67c0-44d5-8ef9-22c41371af6d",
             "status": "succeeded",
             "error": null
           },
           {
-            "id": "compile-2bb77fba-fa33-49d4-9cba-092ceaa99e26",
+            "id": "compile-1e1ea897-5c78-4950-bc7c-6c1c62bebeb3",
             "status": "succeeded",
             "error": null
           }
@@ -393,12 +393,12 @@
     "tests/gate-wrappers/p4-studio-helpers.mjs",
     "tests/gate-wrappers/u2-studio-form-sweep.mjs"
   ],
-  "canonicalInputMerkleHash": "4b587e5db985a7b863720a1529cb2a39728bd07f4f6877e14a54c822c6fa3e6d",
-  "evidenceHash": "96fd375ef3b9c57e37c2ab513239dd402c45598616b9da4c8a263fab73df5dbc",
+  "canonicalInputMerkleHash": "e28f2e4070df9c42abc1b5dac122b60cb352a755d4931baf64c6e7d97766f034",
+  "evidenceHash": "0ec1bb80345eaea89e2d0a86e564b50d5000c32df1ffa022213ad88fabe26ff8",
   "gateScriptHash": "1c1a85758eaf92875ad7b92cbaeffaa2fdfd0fdc68533f530e7bad7331370f9d",
-  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
-  "command": "node bin/vf gate u2-studio-form-sweep --profile full --execute",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-09T07:27:28.027Z",
-  "finishedAt": "2026-07-09T07:28:58.384Z"
+  "startedAt": "2026-07-16T04:34:22.710Z",
+  "finishedAt": "2026-07-16T04:35:25.458Z"
 }

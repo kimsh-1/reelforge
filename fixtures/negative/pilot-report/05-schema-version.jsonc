@@ -1,0 +1,7 @@
+// 위반 규칙: pilot-report schemaVersion must be the literal 1.
+{
+  "schemaVersion": 2,
+  "sceneId": "s01",
+  "status": "passed",
+  "checkedAt": "2026-07-16T00:00:00.000Z"
+}

@@ -174,6 +174,7 @@ function runGateStep(ctx) {
     "repo:src/pipeline/versions-impl/**",
     "repo:src/compiler/**",
     "repo:blocks/**",
+    "repo:vendor/**",
     `repo:${DEFAULT_PRESET}`,
     "repo:package.json"
   ];
@@ -326,6 +327,7 @@ export function createStepRegistry() {
         `repo:${DEFAULT_PRESET}`,
         "repo:src/compiler/**",
         "repo:blocks/**",
+    "repo:vendor/**",
         "repo:package.json"
       ],
       outputs: ["build/index.html", "build/render-manifest.json", "build/scenes/*.html"],
@@ -353,6 +355,7 @@ export function createStepRegistry() {
         "repo:src/pipeline/versions-impl/**",
         "repo:src/compiler/**",
         "repo:blocks/**",
+    "repo:vendor/**",
         `repo:${DEFAULT_PRESET}`,
         "repo:package.json"
       ],

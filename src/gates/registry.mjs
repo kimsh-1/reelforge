@@ -31,7 +31,8 @@ export const schemaSpecs = {
   "design-tokens": "schemas/design-tokens.schema.json",
   versions: "schemas/versions.schema.json",
   "render-manifest": "schemas/render-manifest.schema.json",
-  "pipeline-state": "schemas/pipeline-state.schema.json"
+  "pipeline-state": "schemas/pipeline-state.schema.json",
+  "pilot-report": "schemas/pilot-report.schema.json"
 };
 
 export const schemaOrder = [
@@ -54,7 +55,9 @@ const schemaAliases = new Map([
   ["render-manifest", "render-manifest"],
   ["rendermanifest", "render-manifest"],
   ["pipeline-state", "pipeline-state"],
-  ["pipelinestate", "pipeline-state"]
+  ["pipelinestate", "pipeline-state"],
+  ["pilot-report", "pilot-report"],
+  ["pilotreport", "pilot-report"]
 ]);
 
 const ignoredScanRoots = new Set([

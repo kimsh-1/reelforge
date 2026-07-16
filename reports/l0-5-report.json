@@ -1,13 +1,13 @@
 {
   "gate": "L0-5",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "scene-specs-duration-intrusion",
       "pass": true,
       "measured": {
-        "filesChecked": 12,
+        "filesChecked": 17,
         "allowedDurationPaths": [
           "/transitions/<index>/duration"
         ],
@@ -19,22 +19,27 @@
     "demos/d1-usage/scene_specs.json",
     "demos/d2-engine/scene_specs.json",
     "demos/d3-intro/scene_specs.json",
+    "demos/intro-v6/scene_specs.json",
+    "demos/showcase-darkhype/scene_specs.json",
     "fixtures/golden-specs/edit-scenario/scene_specs.json",
     "fixtures/golden-specs/full-8types/scene_specs.json",
     "fixtures/golden-specs/minimal-3scene/scene_specs.json",
     "fixtures/golden-specs/stress-edge/scene_specs.json",
+    "ops/2607-craft/free-poc/scene_specs.json",
+    "ops/2607-craft/line-dbg-proj/scene_specs.json",
+    "ops/2607-craft/pilot-s01/scene_specs.json",
     "showcase/edu-explainer/scene_specs.json",
     "showcase/news-brief/scene_specs.json",
     "showcase/quote-wisdom/scene_specs.json",
     "showcase/ranking-top5/scene_specs.json",
     "showcase/stat-briefing/scene_specs.json"
   ],
-  "canonicalInputMerkleHash": "eb9d226873ba3b8c4bf17200f8bc8734903cd89da0b0fcf01730b1c3589e9879",
-  "evidenceHash": "f430680ffd379ad47b14040bcbd250ee0a8980091131f139e8321c49d1cc89a3",
-  "gateScriptHash": "9d4b416f52629f51a9c5891658e69438c8a38fcb115f43027715d486c0842d28",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
+  "canonicalInputMerkleHash": "1eb0b056dbded2852d7f0e4afb2bd0d164036e6b408630ae447c846d28ddfd43",
+  "evidenceHash": "e5155da6f2a81ed7c21a2932f307873303f976f5c820b755900a143863603cff",
+  "gateScriptHash": "4a6faff4461554dc4e690c6c482a034dba1e31aed9559d30d500fa44733618ce",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-08T06:22:11.413Z",
-  "finishedAt": "2026-07-08T06:22:11.550Z"
+  "startedAt": "2026-07-16T04:32:55.191Z",
+  "finishedAt": "2026-07-16T04:32:55.238Z"
 }

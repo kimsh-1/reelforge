@@ -94,7 +94,7 @@ see [docs/compiler.md](docs/compiler.md).
 
 ## [validation] How the Project Was Validated
 
-P0–P3 proof results, gate details, and architecture records are in [docs/build-journey.md](docs/build-journey.md).
+P0–P3 proof results, gate details, and architecture records are in [docs/history/build-journey.md](docs/history/build-journey.md).
 
 ## [license-disclaimer] License and Disclaimer
 

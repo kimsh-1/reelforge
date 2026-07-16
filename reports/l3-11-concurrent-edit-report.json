@@ -1,17 +1,17 @@
 {
   "gate": "L3-11-concurrent-edit",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l3-11-concurrent-edit.mjs --profile full --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l3-11-concurrent-edit.mjs --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -31,7 +31,7 @@
       "measured": {
         "status": 200,
         "class": "E1",
-        "compileJob": "compile-6664291a-f9c7-4e85-94ee-18e028ea78ad",
+        "compileJob": "compile-9f9c2c82-a4a9-4a05-833a-d381ade58452",
         "specsHash": "dce55ae105771108a78f2172080cb6330ea82caf578c53674f7796173a264854"
       }
     },
@@ -39,7 +39,7 @@
       "id": "editor-a-compile-job-succeeded",
       "pass": true,
       "measured": {
-        "jobId": "compile-6664291a-f9c7-4e85-94ee-18e028ea78ad",
+        "jobId": "compile-9f9c2c82-a4a9-4a05-833a-d381ade58452",
         "status": "succeeded",
         "error": null
       }
@@ -63,7 +63,7 @@
       "id": "external-edit-lock-written",
       "pass": true,
       "measured": {
-        "command": "node bin/vf write ../../../tmp/reelforge-l3-11-cKr9BT/minimal-3scene/versions.json --project-root /tmp/reelforge-l3-11-cKr9BT/minimal-3scene --schema versions",
+        "command": "node bin/vf write ../../../tmp/reelforge-l3-11-dqTBI0/minimal-3scene/versions.json --project-root /tmp/reelforge-l3-11-dqTBI0/minimal-3scene --schema versions",
         "exitCode": 0,
         "stderr": ""
       }
@@ -75,11 +75,11 @@
         "status": 409,
         "lock": {
           "owner": "p4-concurrent-external-editor",
-          "acquiredAt": "2026-07-08T06:29:08.641Z"
+          "acquiredAt": "2026-07-16T04:34:22.558Z"
         },
         "persistedLock": {
           "owner": "p4-concurrent-external-editor",
-          "acquiredAt": "2026-07-08T06:29:08.641Z"
+          "acquiredAt": "2026-07-16T04:34:22.558Z"
         }
       }
     },
@@ -89,7 +89,7 @@
       "measured": {
         "editLock": {
           "owner": "p4-concurrent-external-editor",
-          "acquiredAt": "2026-07-08T06:29:08.641Z"
+          "acquiredAt": "2026-07-16T04:34:22.558Z"
         }
       }
     }
@@ -114,12 +114,12 @@
     "tests/gate-wrappers/l3-11-concurrent-edit.mjs",
     "tests/gate-wrappers/p4-studio-helpers.mjs"
   ],
-  "canonicalInputMerkleHash": "e514987997c512ffed5c731d3f5106d5f6089df3ba6213db79af0ea412159767",
-  "evidenceHash": "79f1b44dbabe16a8f5a07665b5fbec077aa4559202233f8846a9f783a7b64482",
+  "canonicalInputMerkleHash": "56005e3b9674e939ae977c387e5d0fa4099b393fe3991aca05f9ac88c3472bc7",
+  "evidenceHash": "48f145a7379da9b6bc3bb49e23c239c7b647f853e4a20d033129ad3f6b59112e",
   "gateScriptHash": "89887acd309fab9dd35810b5d0c036481d0292adf56fa8a94662b2a6d9b7901b",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-08T06:29:07.724Z",
-  "finishedAt": "2026-07-08T06:29:08.797Z"
+  "startedAt": "2026-07-16T04:34:21.398Z",
+  "finishedAt": "2026-07-16T04:34:22.710Z"
 }

@@ -33,6 +33,11 @@ const schemaSpecs = [
     name: "render-manifest",
     schemaPath: "schemas/render-manifest.schema.json",
     minFixtures: 10
+  },
+  {
+    name: "pilot-report",
+    schemaPath: "schemas/pilot-report.schema.json",
+    minFixtures: 5
   }
 ];
 

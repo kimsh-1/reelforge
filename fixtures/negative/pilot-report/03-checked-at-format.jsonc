@@ -1,0 +1,7 @@
+// 위반 규칙: pilot-report checkedAt must be an ISO-8601 date-time.
+{
+  "schemaVersion": 1,
+  "sceneId": "s01",
+  "status": "passed",
+  "checkedAt": "yesterday"
+}

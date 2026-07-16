@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://video-factory.local/schemas/pilot-report.schema.json",
+  "title": "reelforge direction/pilot.json",
+  "description": "Pilot Gate record. A project with two or more free scenes may not compile until one pilot scene passed QC and is recorded here (RF-PILOT-001..003).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "sceneId", "status", "checkedAt"],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "sceneId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "status": {
+      "enum": ["passed", "failed"]
+    },
+    "checkedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contactSheet": {
+          "type": "string",
+          "minLength": 1
+        },
+        "strip": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

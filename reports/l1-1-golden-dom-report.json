@@ -1,17 +1,17 @@
 {
   "gate": "L1-1-golden-dom",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile full --json",
+        "command": "/usr/bin/node tests/gate-wrappers/l1-1-golden-dom.mjs --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -87,7 +87,11 @@
         "violations": [
           {
             "file": "tmp/gate-work/l1-1-golden-dom/render-lint-runtime/minimal-3scene/build/scenes/scene-s01.html",
+            "code": "RF-FRAGMENT-001",
             "rule": "inline scene script must parse and pass the compiler VM smoke check",
+            "hint": "fix the script error in measured.error; the script must run synchronously against the stubbed gsap/document sandbox",
+            "stage": "compiler",
+            "retryable": false,
             "measured": {
               "scriptIndex": 1,
               "line": 379,
@@ -148,12 +152,12 @@
     "src/compiler/transitions.mjs",
     "tests/gate-wrappers/l1-1-golden-dom.mjs"
   ],
-  "canonicalInputMerkleHash": "8152f471be867697ad563a05d94119af8f2cd735bb305cc07fe59be4ca088e1b",
-  "evidenceHash": "b6e81b0c8feee639565def11955ce660bf82d55e4aca455508a3b56c8a54f47a",
+  "canonicalInputMerkleHash": "09788bae7851cc2cce524e7ebf3c1fb19c1f18f866020b7ae61869bd6e8618ca",
+  "evidenceHash": "1a068120139734ce423713d4cf59aa83598f069beb378191372bcf70a85f29be",
   "gateScriptHash": "651739d1570e89f06359912c0be834c9ceed6d0500dc8548ef8a80b8b6a3b36a",
-  "gitCommit": "1562011d6b635eab961bc3942c466c572e8cc325",
-  "command": "node bin/vf gate l1-1-golden-dom --profile full --execute",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-09T07:28:05.626Z",
-  "finishedAt": "2026-07-09T07:28:15.743Z"
+  "startedAt": "2026-07-16T04:32:55.434Z",
+  "finishedAt": "2026-07-16T04:33:04.202Z"
 }

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "policy": "Runtime vendor assets are version-pinned, hash-verified local copies. The compiler stages them into build/vendor/ and refuses to build on a missing or hash-mismatched copy. Generated compositions must never reference a CDN.",
+  "records": [
+    {
+      "id": "gsap-core",
+      "file": "vendor/gsap/3.14.2/gsap.min.js",
+      "kind": "script",
+      "name": "GSAP",
+      "version": "3.14.2",
+      "license": "GreenSock Standard 'no charge' license — https://gsap.com/standard-license",
+      "sourceUrl": "https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js",
+      "provenance": "Official gsap npm package dist build; redistributed unmodified.",
+      "bytes": 72779,
+      "sha256": "c174bfce53a729418d57a8ad8625e7247c793a22fef8e2851e3cfa3de9cd8280"
+    }
+  ]
+}

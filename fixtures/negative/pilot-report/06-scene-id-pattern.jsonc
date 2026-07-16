@@ -1,0 +1,7 @@
+// 위반 규칙: pilot-report sceneId must match ^[A-Za-z][A-Za-z0-9_-]*$.
+{
+  "schemaVersion": 1,
+  "sceneId": "../s01",
+  "status": "passed",
+  "checkedAt": "2026-07-16T00:00:00.000Z"
+}

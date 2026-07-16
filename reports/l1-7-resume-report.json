@@ -1,17 +1,17 @@
 {
   "gate": "L1-7-resume",
-  "profile": "full",
+  "profile": "fast",
   "pass": true,
   "checks": [
     {
       "id": "gate-wrapper-process",
       "pass": true,
       "measured": {
-        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-7-resume --profile full --json",
+        "command": "/usr/bin/node src/gates/p3-gates.mjs --gate l1-7-resume --profile fast --json",
         "exitCode": 0,
         "signal": null,
         "error": null,
-        "profile": "full",
+        "profile": "fast",
         "parseError": null,
         "stderrTail": "",
         "stdoutTail": ""
@@ -43,7 +43,7 @@
         "logs": [
           "pipeline: SKIP tts reason=resume-state inputHash=a10e2fd80745",
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
-          "pipeline: RUN compile reason=missing-outputs inputHash=d4151f72b6fd",
+          "pipeline: RUN compile reason=missing-outputs inputHash=0c7dc850864a",
           "pipeline: PASS completed=tts,images,compile"
         ]
       }
@@ -60,7 +60,7 @@
         "logs": [
           "pipeline: SKIP tts reason=resume-state inputHash=a10e2fd80745",
           "pipeline: SKIP images reason=resume-state inputHash=77462d03e69d",
-          "pipeline: SKIP compile reason=resume-state inputHash=d4151f72b6fd",
+          "pipeline: SKIP compile reason=resume-state inputHash=0c7dc850864a",
           "pipeline: PASS completed=tts,images,compile"
         ]
       }
@@ -73,12 +73,12 @@
     "src/pipeline/core/state.mjs",
     "src/pipeline/core/steps.mjs"
   ],
-  "canonicalInputMerkleHash": "d0e214bc348e55c72108e1566714ce7b3d1baa12157048fd4ea5fb351dae4bde",
+  "canonicalInputMerkleHash": "5bd30cf9cd3a24be4bcb99c15d50bbec202e27a1f6bd40ac6f1c4c5f86a00957",
   "evidenceHash": "932b8ffe1d9c0e3dd771aa264cc98fb5decb31526ae48f0110954e4b6ddd4ad0",
   "gateScriptHash": "39f17733d946271d446baff3dc73017bed235431658c5c7013dce4324a24f75d",
-  "gitCommit": "95a5dae30e032f13a9158b4d4dcafb19314f6f5f",
-  "command": "node bin/vf gate all --profile full --execute",
+  "gitCommit": "6a24f56e3decaa89526dd3a14af050094b10f428",
+  "command": "node bin/vf gate --all --profile fast --replay",
   "exitCode": 0,
-  "startedAt": "2026-07-08T06:23:48.456Z",
-  "finishedAt": "2026-07-08T06:23:51.325Z"
+  "startedAt": "2026-07-16T04:33:46.302Z",
+  "finishedAt": "2026-07-16T04:33:51.992Z"
 }
